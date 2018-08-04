@@ -1,3 +1,4 @@
+import Vue from 'vue';
 const ctx = 'clickoutside';
 const nodeList = [];
 const isServer = Vue.prototype.$isServer;
