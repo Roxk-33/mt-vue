@@ -48,8 +48,10 @@
   }
 }
 
-.box-scale-enter-active, .box-scale-leave-active {
-  transition: all .5s ease;
+.box-scale-enter-active,
+.box-scale-leave-active {
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
 .box-scale-enter-active {

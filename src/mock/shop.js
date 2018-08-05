@@ -20,7 +20,6 @@ export default {
       ],
       status: true,
     });
-    console.log(data);
     return data;
   },
   getShop: () => {
@@ -46,9 +45,9 @@ export default {
             'food_price|1-100': 100,
             type: [
               {
-                name: '规格',
-                selectType: 0,
-                content: [
+                type_name: '规格',
+                type_default: 0,
+                type_content: [
                   {
                     label: '小碗',
                     price: '1',
@@ -60,9 +59,9 @@ export default {
                 ],
               },
               {
-                name: '辣度',
-                selectType: 1,
-                content: [
+                type_name: '辣度',
+                type_default: 1,
+                type_content: [
                   {
                     label: '不辣',
                     price: 3,
@@ -78,9 +77,9 @@ export default {
                 ],
               },
               {
-                name: '面粉，选择',
-                selectType: 1,
-                content: [
+                type_name: '面粉，选择',
+                type_default: 1,
+                type_content: [
                   {
                     label: '小面',
                     price: '12',
@@ -96,9 +95,9 @@ export default {
                 ],
               },
               {
-                name: '面粉，选择',
-                selectType: 1,
-                content: [
+                type_name: '面粉，选择',
+                type_default: 1,
+                type_content: [
                   {
                     label: '小面',
                     price: '12',
@@ -114,9 +113,9 @@ export default {
                 ],
               },
               {
-                name: '面粉，选择',
-                selectType: 1,
-                content: [
+                type_name: '面粉，选择',
+                type_default: 1,
+                type_content: [
                   {
                     label: '小面',
                     price: '12',

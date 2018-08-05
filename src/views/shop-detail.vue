@@ -45,19 +45,19 @@
         <div class='shop-good-list' :style="{marginLeft : trackMarginLeft + 'px'}">
           <better-scroll ref="scroll" :data="Types" @pullingDown="onPullingDown" @pullingUp="onPullingUp" :listenScroll='true' :probeType='probeType' @scroll='onScroll'>
 
-            <div class='good-list-item' v-for="food in shopInfo.food_list" :key="food.food_id">
+            <div class='good-list-item' v-for="foodInfo in shopInfo.food_list" :key="foodInfo.food_id">
               <div class='good-image'>
-                <img :src='food.photo'>
+                <img :src='foodInfo.photo'>
               </div>
               <div class='good-content'>
                 <div class='good-content_info'>
-                  <h4 class='good-content_info_title'>{{food.food_title}}</h4>
-                  <span class='good-content_info_sale'>月售{{food.food_sale}}</span>
-                  <span class='good-content_info_lick'>赞{{food.food_like}}</span>
-                  <p class='good-content_info_price'>${{food.food_price}}</p>
+                  <h4 class='good-content_info_title'>{{foodInfo.food_title}}</h4>
+                  <span class='good-content_info_sale'>月售{{foodInfo.food_sale}}</span>
+                  <span class='good-content_info_lick'>赞{{foodInfo.food_like}}</span>
+                  <p class='good-content_info_price'>${{foodInfo.food_price}}</p>
                 </div>
                 <div class='good-content_buy'>
-                  <van-button size="small" @click="getTypeInfo(food.type, food.food_id, food.food_price)">选规格</van-button>
+                  <van-button size="small" @click="getTypeInfo(foodInfo)">选规格</van-button>
                 </div>
               </div>
             </div>
@@ -66,26 +66,8 @@
         </div>
       </div>
     </div>
-    <pop-box title="测试" :visible.sync="showSpBox" :center='true'>
-      <div class='specification-box'>
-        <div class='box-item' v-for="(typeItem,index) in foodSelected.type" :key="typeItem.value">
-          <p class='box-item_title'>{{typeItem.name}}</p>
-          <ul class='box-item_specification'>
-            <li @click="chooseType(index,type_index,item)" v-for="(item,type_index) in typeItem.content" :key="item.name" :class="{'box-item_selected' : typeItem.selectType === type_index}">
-              {{item.label}}
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class='specification-footer' slot="footer">
-        <div class='footer-info'>
-          <span class='footer-info_price'>￥{{foodSelected.totalPrice}}</span>
-          <span class='footer-info_specification'>({{foodSelected.tyepInfo}})</span>
-        </div>
-        <van-button size='small'>
-          <i class='fa fa-plus'></i>加入购物车</van-button>
-      </div>
-    </pop-box>
+    <specificationBox title="测试" :visible.sync="showSpBox" :center='true' width='90%' :foodInfo="foodSelected">
+    </specificationBox>
 
   </div>
 </template>
@@ -94,7 +76,8 @@
 import { getRect } from '@/utils/dom';
 import { fetchShopDetail } from '@/api/shop';
 import BetterScroll from '@/components/scroll/other';
-import PopBox from '@/components/popBox';
+import specificationBox from '@/views/dumb/specification-box';
+
 export default {
   name: 'shopDetail',
 
@@ -131,7 +114,7 @@ export default {
   },
   components: {
     BetterScroll,
-    PopBox,
+    specificationBox,
   },
   methods: {
     onPullingUp() {},
@@ -159,28 +142,9 @@ export default {
         this.isTop = true;
       }
     },
-    getTypeInfo(type, id, price) {
-      this.foodSelected = {};
-      this.foodSelected.type = type;
-      this.foodSelected.id = id;
+    getTypeInfo(foodInfo) {
+      this.foodSelected = foodInfo;
       this.showSpBox = true;
-      this.foodSelected.typeSelected = [];
-      this.foodSelected.totalPrice = price;
-      this.foodSelected.tyepInfo = '';
-
-      this.foodSelected.type.forEach(item => {
-        this.foodSelected.typeSelected.push(item.content[item.selectType]);
-        this.foodSelected.tyepInfo += `${item.content[item.selectType].label},`;
-        this.foodSelected.totalPrice += parseFloat(item.content[item.selectType].price);
-      });
-      this.foodSelected.tyepInfo = this.foodSelected.tyepInfo.slice(0, this.foodSelected.tyepInfo.length - 1);
-    },
-    chooseType(index, typeIndex, typeInfo) {
-      const reg = new RegExp(this.foodSelected.typeSelected[index].label);
-      this.foodSelected.type[index].selectType = typeIndex;
-      this.foodSelected.tyepInfo = this.foodSelected.tyepInfo.replace(reg, typeInfo.label);
-      this.foodSelected.totalPrice += parseFloat(typeInfo.price) - this.foodSelected.typeSelected[index].price;
-      this.foodSelected.typeSelected[index] = typeInfo;
     },
   },
   created() {
@@ -214,6 +178,8 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
+@import '../assets/style/common';
+
 .shop-config {
   height: 0.6rem;
   display: flex;
@@ -250,7 +216,7 @@ export default {
       transition: all 0.5s;
     }
     &.shop-config_right_white i {
-      color: #ffd161;
+      color: $mt-color;
     }
   }
 }
@@ -389,70 +355,10 @@ export default {
             right: 0;
             margin-right: 5px;
             border-radius: 15px;
-            background-color: #ffd161;
+            background-color: $mt-color;
           }
         }
       }
-    }
-  }
-}
-// 规格
-.specification-box {
-  padding: 10px 5px;
-  padding-bottom: 50px;
-  .box-item {
-    margin-bottom: 10px;
-    .box-item_title {
-      text-align: left;
-      margin: 5px;
-    }
-    .box-item_specification {
-      display: flex;
-      justify-content: flex-start;
-      li {
-        list-style-type: none;
-        width: 60px;
-        height: 25px;
-        line-height: 25px;
-        margin: 5px;
-        border: 1px solid rgb(179, 178, 178);
-        &.box-item_selected {
-          color: #ffca46;
-          border-color: #ffd161;
-          // background-color: #f5f0e5f3;
-        }
-      }
-    }
-  }
-}
-.specification-footer {
-  display: flex;
-  justify-content: space-between;
-  width: 7rem;
-  height: 1.2rem;
-  box-sizing: border-box;
-  padding: 10px 5px;
-  background-color: #fdf6f6;
-  position: fixed;
-  margin-top: -1.2rem;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-  .footer-info {
-    display: flex;
-    justify-content: space-around;
-    text-align: left;
-  }
-  .footer-info_price {
-    font-size: 18px;
-    color: rgb(190, 23, 23);
-    vertical-align: middle;
-  }
-  .van-button {
-    background-color: #ffd161;
-    border-radius: 12px;
-    font-weight: 700px;
-    i {
-      margin: 0 5px;
     }
   }
 }

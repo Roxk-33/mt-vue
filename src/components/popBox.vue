@@ -39,8 +39,8 @@ export default {
       default: '标题',
     },
     width: {
-      type: Number,
-      default: 7,
+      type: String,
+      default: '90%',
     },
     visible: {
       type: Boolean,
@@ -77,7 +77,7 @@ export default {
     style() {
       const style = {};
       if (this.width) {
-        style.width = `${this.width}rem`;
+        style.width = `${this.width}`;
       }
 
       return style;
@@ -148,15 +148,12 @@ export default {
   }
   .mt-pop-box_content {
     box-sizing: border-box;
-    max-height: 8rem;
     overflow-y: scroll;
     overflow-x: hidden;
     position: relative;
-    width: inherit;
   }
   .mt-pop-box_footer {
-    adding: 20px;
-    padding-top: 10px;
+    padding: 10px 20px 0;
     text-align: right;
     box-sizing: border-box;
   }

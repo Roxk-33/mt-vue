@@ -1,4 +1,4 @@
-
+$mt-color: #ffd161;
 
 @-webkit-keyframes zoomIn {
   from {
@@ -14,7 +14,6 @@
 
 @keyframes zoomIn {
   from {
-    
     opacity: 0;
     -webkit-transform: scale3d(0.3, 0.3, 0.3);
     transform: scale3d(0.3, 0.3, 0.3);
@@ -57,23 +56,51 @@
   }
 }
 
-.box-scale-enter-active,.box-scale-leave-active{
-  transition: all .5s ease;
+.box-scale-enter-active,
+.box-scale-leave-active {
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
 }
 
-.box-scale-enter-active{
+.box-scale-enter-active {
   -webkit-animation-duration: 0.5s;
   animation-duration: 0.5s;
   -webkit-animation-name: zoomIn;
   animation-name: zoomIn;
-  
-  
 }
 
-.box-scale-leave-active{
+.box-scale-leave-active {
   -webkit-animation-duration: 0.5s;
   animation-duration: 0.5s;
   -webkit-animation-name: zoomOut;
   animation-name: zoomOut;
-  
+}
+@mixin scroll-style {
+  // 滚动条样式
+  ::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+  }
+
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    border: 5px solid transparent;
+  }
+
+  ::-webkit-scrollbar-track {
+    -webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2) inset;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2) inset;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    min-height: 20px;
+    background-clip: content-box;
+    -webkit-box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.2) inset;
+    box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.2) inset;
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
 }
