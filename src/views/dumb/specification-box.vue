@@ -1,34 +1,36 @@
 <template>
   <div>
-    <div class='specification-box-mask' v-show="visible"></div>
+    <div class='specification-box-mask' v-show="visible" @touchmove.prevent.stop></div>
     <transition name='box-scale'>
-      <div class="specification-box-container" v-show="visible">
-        <div class='specification-box' v-click-outside="closeEvent">
-          <div class='specification-box_header'>
-            <span class='specification-box_title'>{{title}}</span>
-            <i class='specification-box_close fa fa-close' @click="closeEvent"></i>
-          </div>
-          <div class='specification-box_content'>
-            <div class='box-item' v-for="(typeItem,index) in foodInfo.type" :key="typeItem.value">
-              <p class='box-item_title'>{{typeItem.type_name}}</p>
-              <ul class='box-item_specification'>
-                <li @click="chooseType(index,type_index,item)" v-for="(item,type_index) in typeItem.type_content" :key="item.type_name" :class="{'box-item_selected' : selectedInfo.typeSelected[index].label === item.label}">
-                  {{item.label}}
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class='specification-box_footer'>
-            <div class='footer-info'>
-              <span class='footer-info_price'>￥{{selectedInfo.totalPrice}}</span>
-              <span class='footer-info_specification'>({{selectedInfo.typeInfo}})</span>
-            </div>
-            <van-button size="small" @click="pushCard">
-              <i class='fa fa-plus'></i>加入购物车
-            </van-button>
+    <div class="specification-box-container" v-show="visible">
+      <div class='specification-box' v-click-outside="closeEvent">
+        <div class='specification-box_header'>
+          <span class='specification-box_title'>{{title}}</span>
+          <i class='specification-box_close fa fa-close' @click="closeEvent"></i>
+        </div>
+        <div class='specification-box_content'>
+          <div class='box-item' v-for="(typeItem,index) in foodInfo.type" :key="typeItem.value">
+            <p class='box-item_title'>{{typeItem.type_name}}</p>
+            <ul class='box-item_specification'>
+              <li @click="chooseType(index,type_index,item)" v-for="(item,type_index) in typeItem.type_content" :key="item.type_name" :class="{'box-item_selected' : selectedInfo.typeSelected[index].label === item.label}">
+                {{item.label}}
+              </li>
+            </ul>
           </div>
         </div>
+        <div class='specification-box_footer'>
+          <div class='footer-info'>
+            <span class='footer-info_price'>￥{{selectedInfo.totalPrice}}</span>
+            <span class='footer-info_specification'>({{selectedInfo.typeInfo}})</span>
+          </div>
+          <van-button size="small" @click="pushCard">
+            <i class='fa fa-plus'></i>加入购物车
+          </van-button>
+        </div>
       </div>
+    </div>
+
+
     </transition>
   </div>
 </template>
@@ -112,7 +114,7 @@ export default {
         this.getInfo();
         document.body.style.overflow = 'hidden';
       } else {
-        document.body.style.overflow = 'visible';
+        document.documentElement.style.overflow = 'visible';
       }
     },
   },
@@ -129,18 +131,20 @@ export default {
   left: 0;
   z-index: 101;
   width: 100%;
-  height: 100%;
+  transform: translate3d(-50%, -50%, 0);
+  top: 50%;
+  left: 50%;
+  width: 85%;
 }
 .specification-box {
   position: relative;
-  width: 90%;
   border-right: 5px;
   background-color: white;
   z-index: 101;
   border-radius: 5px;
-  margin: 25vh auto;
   @include scroll-style;
-
+  font-size: 12px;
+  overflow: hidden;
   .specification-box_header {
     text-align: left;
     position: relative;
