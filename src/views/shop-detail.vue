@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class='banner-offerInfo'>
-        活动信息
+        活动信息{{totalPrice}}
       </div>
     </div>
 
@@ -66,7 +66,9 @@
         </div>
       </div>
     </div>
-    <specificationBox title="测试" :visible.sync="showSpBox" :center='true' width='90%' :foodInfo="foodSelected">
+    <cart-list></cart-list>
+
+    <specificationBox :totalPrice='totalPrice' :foodList='cartInfo.list' @pushCart="getSelectGoood" :visible.sync="showSpBox" :center='true' width='90%' :foodInfo="foodSelected">
     </specificationBox>
 
   </div>
@@ -77,6 +79,7 @@ import { getRect } from '@/utils/dom';
 import { fetchShopDetail } from '@/api/shop';
 import BetterScroll from '@/components/scroll/other';
 import specificationBox from '@/views/dumb/specification-box';
+import cartList from '@/views/dumb/cart-list';
 
 export default {
   name: 'shopDetail',
@@ -104,7 +107,11 @@ export default {
       isTop: false,
       showSpBox: false,
       shopInfo: {},
-      cartList: [],
+      totalPrice: 0,
+      cartInfo: {
+        list: [],
+        totalPrice: 0,
+      },
       foodSelected: {},
       trackSize: 0, // 商品列表高度
       trackTop: 0, // 商品列表Top
@@ -115,6 +122,7 @@ export default {
   components: {
     BetterScroll,
     specificationBox,
+    cartList,
   },
   methods: {
     onPullingUp() {},
@@ -146,6 +154,17 @@ export default {
       this.foodSelected = foodInfo;
       this.showSpBox = true;
     },
+    getSelectGoood(foodInfo) {
+      this.cartInfo.totalPrice += foodInfo.totalPrice;
+      this.totalPrice = this.cartInfo.totalPrice;
+      // TODO:检测是否有相同规格的商品,两数组之间的对比
+      // this.cartInfo.list.some(_foodInfo => {
+      //   if (_foodInfo.id === foodInfo.id) {
+      //   }
+      // });
+      this.cartInfo.list.push(foodInfo);
+      console.log(this.cartInfo);
+    },
   },
   created() {
     const shopId = this.$route.params.shop_id;
@@ -160,13 +179,9 @@ export default {
     }, 20);
   },
   computed: {
-    totalPrice() {
-      let total = 0;
-      this.cartList.forEach(foodItem => {
-        total += foodItem.food_price * foodItem.selectNum;
-      });
-      return total;
-    },
+    // totalPrice() {
+
+    // },
     shopGoodStyle() {
       return {
         height: `${this.trackSize}px`,

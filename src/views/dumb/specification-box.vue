@@ -2,34 +2,33 @@
   <div>
     <div class='specification-box-mask' v-show="visible" @touchmove.prevent.stop></div>
     <transition name='box-scale'>
-    <div class="specification-box-container" v-show="visible">
-      <div class='specification-box' v-click-outside="closeEvent">
-        <div class='specification-box_header'>
-          <span class='specification-box_title'>{{title}}</span>
-          <i class='specification-box_close fa fa-close' @click="closeEvent"></i>
-        </div>
-        <div class='specification-box_content'>
-          <div class='box-item' v-for="(typeItem,index) in foodInfo.type" :key="typeItem.value">
-            <p class='box-item_title'>{{typeItem.type_name}}</p>
-            <ul class='box-item_specification'>
-              <li @click="chooseType(index,type_index,item)" v-for="(item,type_index) in typeItem.type_content" :key="item.type_name" :class="{'box-item_selected' : selectedInfo.typeSelected[index].label === item.label}">
-                {{item.label}}
-              </li>
-            </ul>
+      <div class="specification-box-container" v-show="visible">
+        <div class='specification-box' v-click-outside="closeEvent">
+          <div class='specification-box_header'>
+            <span class='specification-box_title'>{{title}}</span>
+            <i class='specification-box_close fa fa-close' @click="closeEvent"></i>
           </div>
-        </div>
-        <div class='specification-box_footer'>
-          <div class='footer-info'>
-            <span class='footer-info_price'>￥{{selectedInfo.totalPrice}}</span>
-            <span class='footer-info_specification'>({{selectedInfo.typeInfo}})</span>
+          <div class='specification-box_content'>
+            <div class='box-item' v-for="(typeItem,index) in foodInfo.type" :key="typeItem.value">
+              <p class='box-item_title'>{{typeItem.type_name}}</p>
+              <ul class='box-item_specification'>
+                <li @click="chooseType(index,type_index,item)" v-for="(item,type_index) in typeItem.type_content" :key="item.type_name" :class="{'box-item_selected' : selectedInfo.typeSelected[index].label === item.label}">
+                  {{item.label}}
+                </li>
+              </ul>
+            </div>
           </div>
-          <van-button size="small" @click="pushCard">
-            <i class='fa fa-plus'></i>加入购物车
-          </van-button>
+          <div class='specification-box_footer'>
+            <div class='footer-info'>
+              <span class='footer-info_price'>￥{{selectedInfo.totalPrice}}</span>
+              <span class='footer-info_specification'>({{selectedInfo.typeInfo}})</span>
+            </div>
+            <van-button size="small" @click="pushCart">
+              <i class='fa fa-plus'></i>加入购物车
+            </van-button>
+          </div>
         </div>
       </div>
-    </div>
-
 
     </transition>
   </div>
@@ -89,7 +88,7 @@ export default {
       this.refreshTypeInfo();
     },
     getInfo() {
-      this.selectedInfo.food_id = this.foodInfo.food_id;
+      this.selectedInfo.id = this.foodInfo.food_id;
       this.selectedInfo.typeSelected = [];
       this.selectedInfo.totalPrice = 0;
 
@@ -102,8 +101,10 @@ export default {
       });
       this.refreshTypeInfo();
     },
-    pushCard() {
-      this.$emit('pushCard', this.selectedInfo);
+    pushCart() {
+      console.log(this.selectedInfo);
+
+      this.$emit('pushCart', this.selectedInfo);
       this.closed = false;
     },
   },

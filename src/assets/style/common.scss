@@ -1,5 +1,22 @@
 $mt-color: #ffd161;
 
+// base
+$zindex-first: 10;
+$zindex-second: 20;
+$zindex-third: 30;
+$zindex-fourth: 40;
+
+// common
+$zindex-navbar: 1000;
+$zindex-dropdown: 1010;
+$zindex-tooltip: 1020;
+$zindex-fixed: 3000;
+$zindex-overlay: 9080;
+$zindex-modal: 9090;
+
+// based on project
+$zindex-header: 1005;
+
 @-webkit-keyframes zoomIn {
   from {
     opacity: 0;
@@ -103,4 +120,12 @@ $mt-color: #ffd161;
   ::-webkit-scrollbar-corner {
     background: transparent;
   }
+}
+// 分割线样式 |
+@mixin SeparationLine {
+  content: '|';
+  font-size: 14px;
+  position: relative;
+  top: -2px;
+  margin-left: 5px;
 }
