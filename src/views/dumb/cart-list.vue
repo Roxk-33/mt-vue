@@ -1,6 +1,6 @@
 <template>
   <div class="cart-list">
-    <div class='cart-emtpy' v-if="!isExist">
+    <div class='cart-emtpy' v-if="foodList.length === 0">
       <div class='emtpy-left cart-list-left'>
         <span>{{freight === 0 ? '免配送费' : `另需配送费￥${freight}`}}</span>
         <!-- TODO:自取功能以后再加 -->
@@ -26,7 +26,18 @@
         <!-- <span>差￥1.5起送</span> -->
       </div>
     </div>
-
+    <!-- 列表 -->
+    <ul class='food-list' >
+      <li v-for='(foodInfo,index) in foodList' :key='foodInfo.id'>
+        <span class='food-list_item-name'>{{foodInfo.name}}</span>
+        <span class='food-list_item-price'>{{foodInfo.totalPrice}}</span>
+        <div class='food-list_item-num'>
+          <span class='num-cut-round' @click="adjustNum(0,index)">-</span>
+          <span class='food-list_item-num_content'>1</span>
+          <span class='num-add-round' @click="adjustNum(1,index)">+</span>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -36,6 +47,7 @@ export default {
   props: {
     foodList: {
       type: Array,
+      default: [],
     },
     // 门槛
     threshold: {
@@ -53,14 +65,24 @@ export default {
     },
   },
   data() {
-    return {
-      isExist: false,
-    };
+    return {};
   },
   computed: {},
-  watch: {},
+  watch: {
+    totalPrice: function(old, newDate) {
+      console.log(this.foodList);
+    },
+    isExist() {
+      return this.foodList.length > 0;
+    },
+  },
   components: {},
-  methods: {},
+  methods: {
+    adjustNum(type,index){
+      console.log(type,index)
+      this.$emit('adjustNum',type,index)
+    }
+  },
 };
 </script>
 
@@ -69,20 +91,27 @@ export default {
 
 .cart-list {
   position: fixed;
-  bottom: 0;
+  bottom: 0px;
+  padding-bottom: 10px;
   width: 100%;
-  height: 1.3rem;
-  line-height: 1.3rem;
-  background-color: #464444;
-  font-size: 15px;
-
   z-index: $zindex-navbar;
   color: #d1cccc;
   .cart-emtpy,
   .cart-exist {
+    width: 90%;
+    height: 1.3rem;
+    line-height: 1.3rem;
+    background-color: #464444;
+    font-size: 15px;
+    border-radius: 30px;
     display: flex;
     justify-content: space-between;
     padding-left: 60px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    position: relative;
+    z-index: $zindex-navbar-main;
+    box-shadow: 0px 30px 10px 5px #7c7a7a40;
   }
 
   .emtpy-right {
@@ -105,6 +134,7 @@ export default {
         margin-right: 5px;
       }
       .exist-left-price_original {
+        text-decoration: line-through;
       }
     }
     .exist-left-info {
@@ -114,8 +144,54 @@ export default {
   .cart-list-right {
     &.to-pay {
       background-color: $mt-color;
+      color: #000;
     }
+    border-radius: 0 30px 30px 0;
+    position: relative;
+    right: -1px;
     padding: 0 0.6rem;
+  }
+
+  .food-list {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    padding-bottom: 1.5rem;
+    color: #000;
+    z-index: $zindex-navbar-menu;
+    li {
+      list-style-type: none;
+      width: 100%;
+      line-height: 1.3rem;
+      border-bottom: 1px solid #e6e5e5;
+      display: flex;
+      font-size: 18px;
+      padding: 5px 10px;
+      justify-content: space-between;
+      box-sizing: border-box;
+      .food-list_item-name {
+        display: -webkit-box;
+        width: 35%;
+        text-overflow: ellipsis;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        overflow: hidden;
+      }
+      .food-list_item-num {
+        .num-add-round,
+        .num-cut-round {
+          border-radius: 50%;
+          border: 1px solid #e6e5e5;
+          width: 20px;
+          line-height: 20px;
+          display: inline-block;
+        }
+        .num-add-round {
+          background-color: $mt-color;
+        }
+      }
+    }
   }
 }
 </style>

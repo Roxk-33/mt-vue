@@ -89,6 +89,7 @@ export default {
     },
     getInfo() {
       this.selectedInfo.id = this.foodInfo.food_id;
+      this.selectedInfo.name = this.foodInfo.food_title;
       this.selectedInfo.typeSelected = [];
       this.selectedInfo.totalPrice = 0;
 
@@ -105,6 +106,7 @@ export default {
       console.log(this.selectedInfo);
 
       this.$emit('pushCart', this.selectedInfo);
+      this.closeEvent();
       this.closed = false;
     },
   },

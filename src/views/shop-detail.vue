@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class='banner-offerInfo'>
-        活动信息{{totalPrice}}
+        活动信息{{cartInfo.totalPrice}}
       </div>
     </div>
 
@@ -66,9 +66,9 @@
         </div>
       </div>
     </div>
-    <cart-list></cart-list>
+    <cart-list :total-price='cartInfo.totalPrice' :foodList='cartInfo.list' @adjustNum='adjustNum'></cart-list>
 
-    <specificationBox :totalPrice='totalPrice' :foodList='cartInfo.list' @pushCart="getSelectGoood" :visible.sync="showSpBox" :center='true' width='90%' :foodInfo="foodSelected">
+    <specificationBox @pushCart="getSelectGoood" :visible.sync="showSpBox" :center='true' width='90%' :foodInfo="foodSelected">
     </specificationBox>
 
   </div>
@@ -162,8 +162,27 @@ export default {
       //   if (_foodInfo.id === foodInfo.id) {
       //   }
       // });
-      this.cartInfo.list.push(foodInfo);
+      foodInfo.num = 1;
+      this.cartInfo.list.push(JSON.parse(JSON.stringify(foodInfo)));
       console.log(this.cartInfo);
+    },
+    /**
+     * @description 删除/增加 已选商品
+     * @augments type:0为删除1个，1为增加1个；index:下标
+     */
+    adjustNum(type, index) {
+      let foodInfo = this.cartInfo.list[index];
+      if (type === 1) {
+        foodInfo.num++;
+        this.cartInfo.totalPrice += foodInfo.totalPrice;
+      } else {
+        if (foodInfo.num === 1) {
+          this.cartInfo.list.splice(index, 1);
+        } else {
+          foodInfo.num--;
+        }
+        this.cartInfo.totalPrice -= foodInfo.totalPrice;
+      }
     },
   },
   created() {

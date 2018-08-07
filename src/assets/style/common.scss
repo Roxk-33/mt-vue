@@ -17,6 +17,10 @@ $zindex-modal: 9090;
 // based on project
 $zindex-header: 1005;
 
+// 菜单
+$zindex-navbar-menu: 1001;
+$zindex-navbar-main: 1002;
+
 @-webkit-keyframes zoomIn {
   from {
     opacity: 0;
