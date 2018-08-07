@@ -157,14 +157,32 @@ export default {
     getSelectGoood(foodInfo) {
       this.cartInfo.totalPrice += foodInfo.totalPrice;
       this.totalPrice = this.cartInfo.totalPrice;
-      // TODO:检测是否有相同规格的商品,两数组之间的对比
-      // this.cartInfo.list.some(_foodInfo => {
-      //   if (_foodInfo.id === foodInfo.id) {
-      //   }
-      // });
-      foodInfo.num = 1;
-      this.cartInfo.list.push(JSON.parse(JSON.stringify(foodInfo)));
-      console.log(this.cartInfo);
+      console.log(foodInfo);
+      // TODO:检测是否有相同规格的商品,两数组之间的对比。当前实现方法并不理想
+      if (this.cartInfo.list.length > 0) {
+        this.cartInfo.list.some(_foodInfo => {
+          if (_foodInfo.id === foodInfo.id) {
+            let _typeSelected = _foodInfo.typeSelected;
+            const typeSelected = foodInfo.typeSelected;
+            typeSelected.forEach(ele => {
+              _typeSelected = _typeSelected.filter(_ele => {
+                return ele.label !== _ele.label || ele.price !== _ele.price;
+              });
+            });
+            if (_typeSelected.length === 0) {
+              _foodInfo.num++;
+            } else {
+              foodInfo.num = 1;
+              // 深拷贝
+              this.cartInfo.list.push(JSON.parse(JSON.stringify(foodInfo)));
+            }
+            return true;
+          }
+        });
+      } else {
+        foodInfo.num = 1;
+        this.cartInfo.list.push(JSON.parse(JSON.stringify(foodInfo)));
+      }
     },
     /**
      * @description 删除/增加 已选商品

@@ -27,13 +27,13 @@
       </div>
     </div>
     <!-- 列表 -->
-    <ul class='food-list' >
-      <li v-for='(foodInfo,index) in foodList' :key='foodInfo.id'>
+    <ul class='food-list'>
+      <li v-for='(foodInfo,index) in foodList' :key='index'>
         <span class='food-list_item-name'>{{foodInfo.name}}</span>
         <span class='food-list_item-price'>{{foodInfo.totalPrice}}</span>
         <div class='food-list_item-num'>
           <span class='num-cut-round' @click="adjustNum(0,index)">-</span>
-          <span class='food-list_item-num_content'>1</span>
+          <span class='food-list_item-num_content'>{{foodInfo.num}}</span>
           <span class='num-add-round' @click="adjustNum(1,index)">+</span>
         </div>
       </li>
@@ -78,10 +78,10 @@ export default {
   },
   components: {},
   methods: {
-    adjustNum(type,index){
-      console.log(type,index)
-      this.$emit('adjustNum',type,index)
-    }
+    adjustNum(type, index) {
+      console.log(type, index);
+      this.$emit('adjustNum', type, index);
+    },
   },
 };
 </script>
