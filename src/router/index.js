@@ -6,6 +6,7 @@ import user from '@/views/user';
 import userInfo from '@/views/user-info';
 import shopList from '@/views/shop-list';
 import shopDetail from '@/views/shop-detail';
+import orderPay from '@/views/order-pay';
 
 Vue.use(Router);
 
@@ -42,6 +43,18 @@ export const constantRouterMap = [
         path: 'detail',
         component: shopDetail,
         name: 'shopDetail',
+      },
+    ],
+  },
+  {
+    path: '/order',
+    name: 'order',
+    component: Layout,
+    children: [
+      {
+        path: 'pay',
+        component: orderPay,
+        name: 'orderPay',
       },
     ],
   },

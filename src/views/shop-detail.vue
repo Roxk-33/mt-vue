@@ -78,8 +78,8 @@
 import { getRect } from '@/utils/dom';
 import { fetchShopDetail } from '@/api/shop';
 import BetterScroll from '@/components/scroll/other';
-import specificationBox from '@/views/dumb/specification-box';
-import cartList from '@/views/dumb/cart-list';
+import specificationBox from '@/views/smart/specification-box';
+import cartList from '@/views/smart/cart-list';
 
 export default {
   name: 'shopDetail',
