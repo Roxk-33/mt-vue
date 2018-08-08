@@ -38,6 +38,14 @@ function createDocumentHandler(el, binding, vnode) {
     }
     if (binding.expression && el[ctx].methodName && vnode.context[el[ctx].methodName]) {
       vnode.context[el[ctx].methodName]();
+      const len = nodeList.length;
+      for (let i = 0; i < len; i++) {
+        if (nodeList[i][ctx].id === el[ctx].id) {
+          nodeList.splice(i, 1);
+          break;
+        }
+      }
+      delete el[ctx];
     } else {
       el[ctx].bindingFn && el[ctx].bindingFn();
     }

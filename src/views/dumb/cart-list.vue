@@ -10,7 +10,7 @@
         <span>{{threshold === 0 ? '无门槛':`￥${threshold} 起送`}}</span>
       </div>
     </div>
-    <div class='cart-exist' v-else>
+    <div class='cart-exist' v-else @click='showMenu' >
       <div class='exist-left cart-list-left'>
         <div class='exist-left-price'>
           <span class='exist-left-price_actual'>￥{{totalPrice}}</span>
@@ -27,23 +27,27 @@
       </div>
     </div>
     <!-- 列表 -->
-    <ul class='food-list'>
-      <li v-for='(foodInfo,index) in foodList' :key='index'>
-        <span class='food-list_item-name'>{{foodInfo.name}}</span>
-        <span class='food-list_item-price'>{{foodInfo.totalPrice}}</span>
-        <div class='food-list_item-num'>
-          <span class='num-cut-round' @click="adjustNum(0,index)">-</span>
-          <span class='food-list_item-num_content'>{{foodInfo.num}}</span>
-          <span class='num-add-round' @click="adjustNum(1,index)">+</span>
-        </div>
-      </li>
-    </ul>
+    <transition name='box-up'>
+      <ul class='food-list' v-show='isShow'>
+        <li v-for='(foodInfo,index) in foodList' :key='index'>
+          <span class='food-list_item-name'>{{foodInfo.name}}</span>
+          <span class='food-list_item-price'>{{foodInfo.totalPrice}}</span>
+          <div class='food-list_item-num'>
+            <span class='num-cut-round' @click="adjustNum(0,index)">-</span>
+            <span class='food-list_item-num_content'>{{foodInfo.num}}</span>
+            <span class='num-add-round' @click="adjustNum(1,index)">+</span>
+          </div>
+        </li>
+      </ul>
+    </transition>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+import Clickoutside from '@/directive/clickoutside';
 export default {
   name: '',
+  directives: { Clickoutside },
   props: {
     foodList: {
       type: Array,
@@ -65,7 +69,9 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      isShow: false,
+    };
   },
   computed: {},
   watch: {
@@ -82,6 +88,13 @@ export default {
       console.log(type, index);
       this.$emit('adjustNum', type, index);
     },
+    showMenu() {
+      this.isShow = !this.isShow;
+    },
+    getBox(){
+      console.log('1')
+      this.isShow = false
+    }
   },
 };
 </script>
@@ -193,5 +206,50 @@ export default {
       }
     }
   }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
+
+  to {
+    opacity: 1;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+}
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+  }
+}
+
+.box-up-enter-active,
+.box-up-leave-active {
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+.box-up-enter-active {
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+}
+
+.box-up-leave-active {
+  -webkit-animation-duration: 0.5s;
+  animation-duration: 0.5s;
+  -webkit-animation-name: fadeOutDown;
+  animation-name: fadeOutDown;
 }
 </style>
