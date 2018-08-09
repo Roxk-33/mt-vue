@@ -1,14 +1,26 @@
 <template>
-  <div class='headerNav'>
-    <i class='el-icon-arrow-left back-icon left-icon' v-if='isBack' @click="back"></i>
-    <i class='el-icon-close close-icon left-icon' v-if="isClose" @click="back"></i>
-    <span class='headerNav-title'>{{title}}</span>
+  <div class='header-nav' :style="{'backgroundColor':headerbgColor}">
+    <div class='header-nav-left'>
+      <i class='iconfont icon-xiangzuo' v-if='isBack' @click="onLeft"></i>
+      <i class='iconfont icon-guanbi1' v-if="isClose" @click="onLeft"></i>
+    </div>
+    <div class='header-nav-main'>
+      <span class='headerNav-title'>{{title}}</span>
+    </div>
+    <div class='header-nav-right'>
+      <slot></slot>
+    </div>
   </div>
 </template>
 <script>
 export default {
   name: 'headerNav',
+
   props: {
+    headerbgColor: {
+      type: String,
+      default: '#fff',
+    },
     title: {
       type: String,
       default: '',
@@ -19,33 +31,36 @@ export default {
     },
     isBack: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   methods: {
-    back() {
-      this.$router.back(-1);
+    onLeft() {
+      this.$emit('click-left');
     },
   },
+  created() {},
+  computed: {},
 };
 </script>
-<style scoped>
-.headerNav {
+<style scoped rel="stylesheet/scss" lang="scss">
+@import '../assets/style/common';
+
+.header-nav {
   width: 100%;
-  background-color: whitesmoke;
+  height: 46px;
+  line-height: 46px;
+  background-color: #fff;
   position: relative;
   border-bottom: 1px solid rgba(128, 128, 128, 0.26);
-}
-.left-icon {
-  position: absolute;
-  left: 0.5rem;
-  font-size: 1.5rem;
-  font-weight: bolder;
-  line-height: 3.5rem;
-}
-.headerNav-title {
-  line-height: 3.5rem;
-  font-size: 1.5rem;
-  letter-spacing: 0.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  .header-nav-main {
+    font-size: 16px;
+    @include center;
+  }
 }
 </style>
