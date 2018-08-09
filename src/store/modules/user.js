@@ -9,7 +9,7 @@ const user = {
     code: '',
     // token: getToken(),
     userName: '',
-    userAvatar: '../assets/default.jpg',
+    userAvatar: '../assets/images/default.jpg',
     userTel: '',
     introduction: '',
     roles: [],

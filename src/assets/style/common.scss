@@ -125,6 +125,13 @@ $zindex-navbar-main: 1002;
     background: transparent;
   }
 }
+@mixin center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
 // 分割线样式 |
 @mixin SeparationLine {
   content: '|';
