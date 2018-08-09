@@ -1,16 +1,19 @@
 <template>
   <div class="order-pay">
     <van-nav-bar :title="headerTitle" left-text="" left-arrow @click-left="$router.back(-1);" />
-    <ul class='order-pay-header'>
-      <li class='header-address'>
+    <div class='order-pay-header'>
+      <div class='header-address box-right-arrow'>
         <p class='address-content'>广东财经大学</p>
         <span class='address-person'>肖志豪 18024589062</span>
-      </li>
-      <li class='header-shipping-time'>
+        <i class='iconfont icon-xiangyou'></i>
+      </div>
+      <div class='header-shipping-time box-right-arrow'>
         <span class='shipping-type'>立即送出</span>
         <span class='shipping-time'>23:20</span>
-      </li>
-    </ul>
+        <i class='iconfont icon-xiangyou'></i>
+
+      </div>
+    </div>
     <div class='order-pay-main'>
       <div class='main-header order-pay-main-item'>
         <span>潮爷的虾</span>
@@ -32,28 +35,75 @@
               </div>
             </div>
             <!-- 规格 -->
-            <span class='food-info-type'>香辣</span>
-            <span class='food-info-num'>x 1</span>
+            <p class='food-info-type'>香辣</p>
+            <p class='food-info-num'>x1</p>
+          </div>
+        </li>
+        <li class='food-list-item'>
+          <div class='food-pic'>
+            <img>
+          </div>
+          <div class='food-info'>
+            <div class='food-info-main'>
+              <div class='food-info-name'>
+                香辣小龙虾
+                <span class='food-info-discount'>折</span>
+              </div>
+              <div class='food-info-price'>
+                <span class='food-info-price_original'>￥64</span>
+                ￥48.8
+              </div>
+            </div>
+            <!-- 规格 -->
+            <p class='food-info-type'>香辣</p>
+            <p class='food-info-num'>x1</p>
           </div>
         </li>
       </ul>
       <div class='food-fee'>
         <div>
-          <span>包装费</span>
-          <span>￥16</span>
+          <span class='food-fee-title'>包装费</span>
+          <span class='food-fee-price'>￥16</span>
         </div>
         <div>
-          <span>配送费</span>
-          <span>￥2</span>
+          <span class='food-fee-title'>配送费</span>
+          <span class='food-fee-price'>￥2</span>
         </div>
       </div>
       <div class='food-pay'>
         <span>已优惠
-          <i>￥21.2</i>
+          <i class='food-pay-discount'>￥21.2</i>
         </span>
         <span>小计
-          <i>￥64.8</i>
+          <i class='food-pay-total'>￥64.8</i>
         </span>
+      </div>
+
+    </div>
+    <div class='order-pay-note'>
+      <div class='order-pay-note-item box-right-arrow'>
+        <span class='note-item-left'>备注</span>
+        <span class='note-item-right'></span>
+        <i class='iconfont icon-xiangyou'></i>
+
+      </div>
+      <div class='order-pay-note-item box-right-arrow'>
+        <span class='note-item-left'>餐具数量</span>
+        <span class='note-item-right'></span>
+        <i class='iconfont icon-xiangyou'></i>
+
+      </div>
+      <div class='order-pay-note-item box-right-arrow'>
+        <span class='note-item-left'>发票</span>
+        <span class='note-item-right'></span>
+        <i class='iconfont icon-xiangyou'></i>
+
+      </div>
+      <div class='order-pay-note-item box-right-arrow'>
+        <span class='note-item-left'>支付方式</span>
+        <span class='note-item-right'></span>
+        <i class='iconfont icon-xiangyou'></i>
+
       </div>
 
     </div>
@@ -84,21 +134,9 @@ export default {
   background-color: #fff;
   margin-bottom: 5px;
   margin-top: 5px;
-  li {
-    list-style-type: none;
-    position: relative;
+  .header-address,
+  .header-shipping-time {
     padding: 10px 30px 10px 20px;
-    font-size: 15px;
-    &::after {
-      content: '>';
-      position: absolute;
-      top: 50%;
-      font-size: 20px;
-      font-weight: 700;
-      transform: translateY(-50%);
-      right: 10px;
-      color: gray;
-    }
   }
   .header-address {
     border-bottom: 1px solid #e6e5e5;
@@ -114,6 +152,7 @@ export default {
   .header-shipping-time {
     display: flex;
     justify-content: space-between;
+    font-size: 15px;
     .shipping-type {
       font-weight: 700;
     }
@@ -150,9 +189,11 @@ export default {
       .food-info {
         margin-left: 5px;
         width: 82%;
+        text-align: left;
+
         .food-info-main {
           justify-content: space-between;
-            display: flex;
+          display: flex;
 
           line-height: 21px;
 
@@ -162,7 +203,6 @@ export default {
             padding-right: 30px;
             display: inline-flex;
             align-items: center;
-
           }
           .food-info-discount {
             width: 17px;
@@ -170,7 +210,7 @@ export default {
             line-height: 15px;
             color: #fff;
             font-size: 11px;
-            margin-left:10px;
+            margin-left: 10px;
             background-color: purple;
           }
           .food-info-price {
@@ -186,8 +226,72 @@ export default {
             }
           }
         }
+        .food-info-type,
+        .food-info-num {
+          color: #888;
+          margin: 3px 0;
+          font-size: 13px;
+        }
       }
     }
+  }
+  .food-fee {
+    > div {
+      justify-content: space-between;
+      display: flex;
+      padding: 5px 0;
+      .food-fee-title {
+      }
+      .food-fee-price {
+        font-weight: 600;
+      }
+    }
+  }
+  .food-pay {
+    text-align: right;
+    font-size: 14px;
+    border-top: 1px solid #e6e5e5;
+    padding: 10px 0;
+    .food-pay-discount {
+      color: #ff0000b0;
+      font-size: 16px;
+      font-style: normal;
+    }
+    .food-pay-total {
+      color: red;
+      font-style: normal;
+      font-size: 20px;
+    }
+  }
+}
+.order-pay-note {
+  border-radius: 5px;
+  background-color: #fff;
+  padding: 10px 0 10px 20px;
+  font-size: 15px;
+  margin-top: 5px;
+  .order-pay-note-item {
+    justify-content: space-between;
+    display: flex;
+    position: relative;
+    font-size: 15px;
+    .note-item-left {
+      font-weight: 600;
+    }
+  }
+}
+
+.box-right-arrow {
+  position: relative;
+  padding-right: 30px;
+  .icon-xiangyou {
+    position: absolute;
+    top: 50%;
+    font-size: 20px;
+    font-weight: 700;
+    transform: translateY(-50%);
+    right: 10px;
+    color: #d4d4d4;
   }
 }
 </style>

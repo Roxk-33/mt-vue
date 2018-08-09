@@ -1,6 +1,6 @@
 <template>
   <div class='person-info'>
-    <van-nav-bar :title="headerTitle" left-text="" left-arrow @click-left="$router.back(-1);" />
+    <header-nav is-back="true" :title="headerTitle" @click-left="$router.back(-1);"></header-nav>
 
     <ul class='info-box'>
       <li class='info-box-avatar'>

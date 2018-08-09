@@ -4,20 +4,20 @@
     <div class='shop-config' ref='shopConfig'>
       <div class='config-wrapper' :style="{opacity:trackOpacity}"></div>
       <router-link to='/shop/list'>
-        <i class='fa fa-angle-left fa-2x'></i>
+        <i class='iconfont icon-xiangzuo'></i>
       </router-link>
       <div class='shop-config_right' :class="{'shop-config_right_white' :isTop}">
-        <i class='fa fa-search'></i>
-        <i class='fa fa-star-o'></i>
-        <i class='fa icon-teambuy'></i>
-        <i class='fa icon-more'></i>
+        <i class='iconfont icon-sousuo'></i>
+        <i class='iconfont icon-shoucang'></i>
+        <i class='iconfont icon-pin'></i>
+        <i class='iconfont icon-gengduo'></i>
       </div>
     </div>
 
     <div class='shop-banner' ref='shopBanner'>
       <div class='banner-baseInfo'>
         <div class='banner-shopAvatar'>
-          <img src='../assets/avatar.jpg'>
+          <img src='../assets/images/avatar.jpg'>
         </div>
         <div class='banner-shopInfo'>
           <h4>标题</h4>
@@ -278,7 +278,7 @@ export default {
     padding-top: 2rem;
     height: 4rem;
     box-sizing: border-box;
-    background: url('../assets/banner.jpg') no-repeat;
+    background: url('../assets/images/banner.jpg') no-repeat;
     background-size: 100% 100%;
     text-align: left;
     padding-left: 1rem;
