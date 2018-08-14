@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import user from './modules/user';
-import getters from './getters';
+import globalPlugin from './plugin/global';
 
 Vue.use(Vuex);
 
@@ -9,7 +9,8 @@ const store = new Vuex.Store({
   modules: {
     user,
   },
-  getters,
+  // strict: siteConfig.ENV === 'development' ? true : false,
+  plugins: [globalPlugin],
 });
 
 export default store;

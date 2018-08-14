@@ -39,7 +39,7 @@
   </div>
 </template>
 <script>
-import headerNav from '@/components/headerNav';
+import headerNav from './dumb/header-nav';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -48,7 +48,16 @@ export default {
     headerNav,
   },
   computed: {
-    ...mapGetters(['userName', 'userAvatar', 'userTel']),
+    userName() {
+      return this.$store.state.user.userName;
+    },
+    userAvatar() {
+      return this.$store.state.user.userAvatar;
+    },
+    userTel() {
+      return this.$store.state.user.userTel;
+    },
+    // ...mapGetters(['userName', 'userAvatar', 'userTel']),
   },
   data() {
     return {

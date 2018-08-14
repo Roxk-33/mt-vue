@@ -44,7 +44,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import footerNav from '@/components/footerNav';
+import footerNav from './dumb/footer-nav';
 
 export default {
   name: 'personPage',
@@ -55,7 +55,15 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters(['userStatus', 'userName', 'userAvatar']),
+    userStatus() {
+      return this.$store.state.user.userStatus;
+    },
+    userName() {
+      return this.$store.state.user.userName;
+    },
+    userAvatar() {
+      return this.$store.state.user.userAvatar;
+    },
   },
   methods: {
     toPage() {
