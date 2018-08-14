@@ -1,6 +1,6 @@
 <template>
   <div class='shop-catalog'>
-    <header-nav is-back="true" :title="headerTitle" @click-left="$router.back(-1);"></header-nav>
+    <header-nav :is-back="true" :title="headerTitle" @click-left="$router.push('/user/index');"></header-nav>
     <div class='filter-box'>
       <div class="filter-box-content" v-click-outside="closeEvent">
         <span class='sort-target' @click="dialogVisible = true" :class="{ 'sort-target_bold' : (sortTarget !== 'sale' &&  sortTarget !== 'distance')}">
@@ -89,9 +89,9 @@
 
 <script >
 import { fetchShopList } from '@/api/shop';
-import Scroll from '@/components/scroll/index';
-import Rate from '@/components/rate';
-import headerNav from '@/components/headerNav';
+import Scroll from './dumb/scroll/index';
+import Rate from './dumb/rate';
+import headerNav from './dumb/header-nav';
 
 export default {
   name: 'shopList',

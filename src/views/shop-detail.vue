@@ -77,7 +77,7 @@
 <script>
 import { getRect } from '@/common/dom';
 import { fetchShopDetail } from '@/api/shop';
-import BetterScroll from '@/components/scroll/other';
+import BetterScroll from './dumb/scroll/other';
 import specificationBox from '@/views/smart/specification-box';
 import cartList from '@/views/smart/cart-list';
 
