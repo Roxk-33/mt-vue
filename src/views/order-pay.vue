@@ -23,6 +23,7 @@
           <div class='food-pic'>
             <img>
           </div>
+          <!-- TODO:样式实现较差，需要优化 -->
           <div class='food-info'>
             <div class='food-info-main'>
               <div class='food-info-name'>
@@ -103,9 +104,22 @@
         <span class='note-item-left'>支付方式</span>
         <span class='note-item-right'></span>
         <i class='iconfont icon-xiangyou'></i>
-
       </div>
+    </div>
 
+    <div class='footer-box'>
+      <div class='footer-box-left'>
+        <span class='footer-left_discount'>
+          已优惠￥40.4
+        </span>
+        <span class='footer-left_total'>
+          合计￥
+          <i>115.6</i>
+        </span>
+      </div>
+      <div class='footer-box-right'>
+        <span>提交订单</span>
+      </div>
     </div>
   </div>
 </template>
@@ -125,9 +139,10 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
+@import '../assets/style/common';
+
 .order-pay {
   padding: 5px;
-  background-color: darkgrey;
 }
 .order-pay-header {
   border-radius: 5px;
@@ -206,6 +221,7 @@ export default {
           }
           .food-info-discount {
             width: 17px;
+            text-align: center;
             height: 15px;
             line-height: 15px;
             color: #fff;
@@ -236,6 +252,7 @@ export default {
     }
   }
   .food-fee {
+    padding: 0.3rem 0;
     > div {
       justify-content: space-between;
       display: flex;
@@ -256,6 +273,7 @@ export default {
       color: #ff0000b0;
       font-size: 16px;
       font-style: normal;
+      margin-right: 8px;
     }
     .food-pay-total {
       color: red;
@@ -275,19 +293,46 @@ export default {
     display: flex;
     position: relative;
     font-size: 15px;
-    .note-item-left {
-      font-weight: 600;
-    }
+    padding: 10px 0;
   }
 }
-
+.footer-box {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1rem;
+  display: flex;
+  justify-content: space-between;
+  .footer-box-left {
+    width: 70%;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 30px;
+    align-items: center;
+    > span {
+      line-height: 1rem;
+    }
+    .footer-left_total i {
+      font-size: 20px;
+      font-style: normal;
+    }
+  }
+  .footer-box-right {
+    width: 30%;
+    line-height: 1rem;
+    background-color: $mt-color;
+    color: #000;
+  }
+}
 .box-right-arrow {
   position: relative;
   padding-right: 30px;
   .icon-xiangyou {
     position: absolute;
     top: 50%;
-    font-size: 20px;
+    font-size: 13px;
     font-weight: 700;
     transform: translateY(-50%);
     right: 10px;
