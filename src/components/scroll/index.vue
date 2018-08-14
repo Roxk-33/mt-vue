@@ -21,7 +21,7 @@
 <script type="text/ecmascript-6">
 import BScroll from 'better-scroll';
 import Loading from '../loading';
-import { getRect } from '@/utils/dom';
+import { getRect } from '@/common/dom';
 export default {
   name: 'BetterScroll',
   components: {

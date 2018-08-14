@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { getRect } from '@/utils/dom';
+import { getRect } from '@/common/dom';
 import { fetchShopDetail } from '@/api/shop';
 import BetterScroll from '@/components/scroll/other';
 import specificationBox from '@/views/smart/specification-box';

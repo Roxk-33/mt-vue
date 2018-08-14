@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import request from '@/common/request';
 
 export function fetchShopList(params) {
   return request({
@@ -14,4 +14,3 @@ export function fetchShopDetail(params) {
     params,
   });
 }
-

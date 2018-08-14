@@ -1,6 +1,6 @@
 import md5 from 'js-md5';
 import { loginByAccount, logout } from '@/api/login';
-import { getToken, setToken, removeToken } from '@/utils/auth';
+import { getToken, setToken, removeToken } from '@/common/auth';
 
 const user = {
   state: {

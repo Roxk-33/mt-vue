@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import request from '@/common/request';
 
 export function loginByAccount(account, password) {
   const data = {

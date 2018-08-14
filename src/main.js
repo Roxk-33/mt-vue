@@ -5,7 +5,7 @@ import Vant from 'vant';
 import 'lib-flexible';
 import 'vant/lib/vant-css/index.css';
 import App from './App';
-import router from './router';
+import router from './common/router';
 import store from './store';
 
 import './assets/style/normalize.css';

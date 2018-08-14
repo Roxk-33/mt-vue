@@ -41,7 +41,7 @@
 import BScroll from 'better-scroll';
 import Loading from '../loading';
 import Bubble from '../bubble.vue';
-import { getRect } from '@/utils/dom';
+import { getRect } from '@/common/dom';
 
 const COMPONENT_NAME = 'scroll';
 const DIRECTION_H = 'horizontal';
