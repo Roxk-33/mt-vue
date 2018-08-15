@@ -1,10 +1,12 @@
 # mt-vue
 
-> A Vue.js project
+> 基于 vue，仿美团外卖
 
-## Build Setup
+## 线上地址
 
-``` bash
+http://lococo.site/shop.html#/
+
+```bash
 # install dependencies
 npm install
 
@@ -23,5 +25,3 @@ npm run unit
 # run all tests
 npm test
 ```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
