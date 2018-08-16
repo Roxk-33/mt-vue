@@ -44,31 +44,7 @@
 
         <div class="shop-good-list" :style="{marginLeft : trackMarginLeft + 'px'}">
           <better-scroll ref="scroll" :data="Types" @pullingDown="onPullingDown" @pullingUp="onPullingUp" :listenScroll="true" :probeType="probeType" @scroll="onScroll">
-
-            <div class="good-list-item" v-for="(foodInfo,index) in foodList" :key="foodInfo.food_id">
-              <div class="good-image">
-                <img :src="foodInfo.photo">
-              </div>
-              <div class="good-content">
-                <div class="good-content_info">
-                  <h4 class="good-content_info_title">{{foodInfo.food_title}}</h4>
-                  <span class="good-content_info_sale">月售{{foodInfo.food_sale}}</span>
-                  <span class="good-content_info_lick">赞{{foodInfo.food_like}}</span>
-                  <p class="good-content_info_price">${{foodInfo.food_price}}</p>
-                </div>
-                <div class="good-content_buy" v-if="!!foodInfo.type">
-                  <van-button size="small" @click="getTypeInfo(foodInfo)">选规格</van-button>
-                </div>
-                <div class="good-content_buy good-content_buy_nontype" v-else>
-                  <div class="good-content_buy_nontype_box">
-                    <i class="iconfont icon-jian" @click="selectGood(foodInfo,index,0)" v-if="foodInfo.selectNum > 0"></i>
-                    <span v-if="foodInfo.selectNum > 0">{{foodInfo.selectNum}}</span>
-                    <i class="iconfont icon-jia" @click="selectGood(foodInfo,index,1)"></i>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+            <foodItem v-for="(foodInfo,index) in foodList" :key="foodInfo.food_id" :foodInfo="foodInfo" :foodIndex="index" :selectNum="foodInfo.selectNum" @showType="getTypeInfo" @selectGood="selectGood"/>
           </better-scroll>
         </div>
       </div>
@@ -87,6 +63,7 @@ import { fetchShopDetail } from '@/api/shop';
 import BetterScroll from './dumb/scroll/other';
 import specificationBox from '@/views/smart/specification-box';
 import cartList from '@/views/smart/cart-list';
+import foodItem from '@/views/smart/food-item';
 
 export default {
   name: 'shopDetail',
@@ -131,6 +108,7 @@ export default {
     BetterScroll,
     specificationBox,
     cartList,
+    foodItem,
   },
   methods: {
     onPullingUp() {},
@@ -158,10 +136,7 @@ export default {
         this.isTop = true;
       }
     },
-    getTypeInfo(foodInfo) {
-      this.foodSelected = foodInfo;
-      this.showSpBox = true;
-    },
+
     getSelectGoood(foodInfo) {
       this.cartInfo.totalPrice += foodInfo.totalPrice;
       this.totalPrice = this.cartInfo.totalPrice;
@@ -215,7 +190,12 @@ export default {
     toSettle() {
       this.$router.push('/order/pay');
     },
-    selectGood(foodInfo, index, type) {
+    getTypeInfo(index) {
+      this.foodSelected = this.foodList[index];
+      this.showSpBox = true;
+    },
+    selectGood(index, type) {
+      let foodInfo = this.foodList[index];
       if (type) {
         this.foodList[index].selectNum++;
         this.cartInfo.totalPrice += foodInfo.food_price;
@@ -386,83 +366,6 @@ export default {
   .shop-good-list {
     width: 100%;
     overflow: hidden;
-    .good-list-item {
-      justify-content: flex-start;
-      display: flex;
-      height: 2.1rem;
-      margin-bottom: 0.3rem;
-
-      .good-image {
-        width: 30%;
-        height: 100%;
-        img {
-          width: 100%;
-          height: 100%;
-        }
-      }
-      .good-content {
-        width: 70%;
-        height: 100%;
-        justify-content: space-between;
-        display: flex;
-        padding-right: 9px;
-        .good-content_info {
-          position: relative;
-          margin-left: 10px;
-          padding-left: 5px;
-          text-align: left;
-          .good-content_info_title {
-            color: black;
-            margin: 5px 0;
-            font-size: 17px;
-          }
-          .good-content_info_sale,
-          .good-content_info_lick {
-            color: gray;
-            font-size: 10px;
-          }
-          .good-content_info_price {
-            position: absolute;
-            bottom: 5px;
-            left: 5px;
-            color: red;
-            margin: 0;
-            font-weight: 700;
-            font-size: 15px;
-          }
-        }
-        .good-content_buy {
-          position: relative;
-          &.good-content_buy_nontype {
-            .good-content_buy_nontype_box {
-              position: absolute;
-              bottom: 0;
-              right: 0;
-              width: 100px;
-              text-align: right;
-            }
-            .icon-jia {
-              color: $mt-color;
-            }
-            .icon-jian {
-              color: $mt-gray;
-            }
-            span {
-              font-size: 17px;
-              margin: 0 5px;
-            }
-          }
-          .van-button {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            margin-right: 5px;
-            border-radius: 15px;
-            background-color: $mt-color;
-          }
-        }
-      }
-    }
   }
 }
 </style>

@@ -257,8 +257,7 @@ export default {
       justify-content: space-between;
       display: flex;
       padding: 5px 0;
-      .food-fee-title {
-      }
+
       .food-fee-price {
         font-weight: 600;
       }
