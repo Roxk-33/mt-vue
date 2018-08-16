@@ -89,7 +89,7 @@ export default {
     },
     getInfo() {
       this.selectedInfo.id = this.foodInfo.food_id;
-      this.selectedInfo.name = this.foodInfo.food_title;
+      this.selectedInfo.food_title = this.foodInfo.food_title;
       this.selectedInfo.typeSelected = [];
       this.selectedInfo.totalPrice = 0;
 

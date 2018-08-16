@@ -10,7 +10,7 @@
         <span>{{threshold === 0 ? '无门槛':`￥${threshold} 起送`}}</span>
       </div>
     </div>
-    <div class='cart-exist' v-else @click='showMenu' >
+    <div class='cart-exist' v-else @click='showMenu'>
       <div class='exist-left cart-list-left'>
         <div class='exist-left-price'>
           <span class='exist-left-price_actual'>￥{{totalPrice}}</span>
@@ -21,7 +21,7 @@
           <span>支持自取</span>
         </div>
       </div>
-      <div class='exist-right cart-list-right to-pay'>
+      <div class='exist-right cart-list-right to-pay' @click.prevent="toSettle">
         <span>去结算</span>
         <!-- <span>差￥1.5起送</span> -->
       </div>
@@ -30,7 +30,7 @@
     <transition name='box-up'>
       <ul class='food-list' v-show='isShow'>
         <li v-for='(foodInfo,index) in foodList' :key='index'>
-          <span class='food-list_item-name'>{{foodInfo.name}}</span>
+          <span class='food-list_item-name'>{{foodInfo.food_title}}</span>
           <span class='food-list_item-price'>{{foodInfo.totalPrice}}</span>
           <div class='food-list_item-num'>
             <span class='num-cut-round' @click="adjustNum(0,index)">-</span>
@@ -75,9 +75,6 @@ export default {
   },
   computed: {},
   watch: {
-    totalPrice: function(old, newDate) {
-      console.log(this.foodList);
-    },
     isExist() {
       return this.foodList.length > 0;
     },
@@ -91,10 +88,14 @@ export default {
     showMenu() {
       this.isShow = !this.isShow;
     },
-    getBox(){
-      console.log('1')
-      this.isShow = false
-    }
+    getBox() {
+      console.log('1');
+      this.isShow = false;
+    },
+    toSettle(event) {
+      this.$emit('toSettle');
+      event.stopPropagation();
+    },
   },
 };
 </script>

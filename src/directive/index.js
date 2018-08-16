@@ -65,7 +65,6 @@ Vue.directive('click-outside', {
   bind(el, binding, vnode) {
     nodeList.push(el);
     const id = seed++;
-    console.log(1);
     el[ctx] = {
       id,
       documentHandler: createDocumentHandler(el, binding, vnode),

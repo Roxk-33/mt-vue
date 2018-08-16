@@ -301,7 +301,7 @@ export default {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 1rem;
+  height: 1.2rem;
   display: flex;
   justify-content: space-between;
   .footer-box-left {
@@ -312,7 +312,7 @@ export default {
     padding: 0 30px;
     align-items: center;
     > span {
-      line-height: 1rem;
+      line-height: 1.2rem;
     }
     .footer-left_total i {
       font-size: 20px;
@@ -321,7 +321,7 @@ export default {
   }
   .footer-box-right {
     width: 30%;
-    line-height: 1rem;
+    line-height: 1.2rem;
     background-color: $mt-color;
     color: #000;
   }

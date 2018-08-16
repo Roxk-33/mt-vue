@@ -1,63 +1,70 @@
 
 <template>
   <div class="shopDetail">
-    <div class='shop-config' ref='shopConfig'>
-      <div class='config-wrapper' :style="{opacity:trackOpacity}"></div>
-      <router-link to='/shop/list'>
-        <i class='iconfont icon-xiangzuo'></i>
+    <div class="shop-config" ref="shopConfig">
+      <div class="config-wrapper" :style="{opacity:trackOpacity}"></div>
+      <router-link to="/shop/list">
+        <i class="iconfont icon-xiangzuo"></i>
       </router-link>
-      <div class='shop-config_right' :class="{'shop-config_right_white' :isTop}">
-        <i class='iconfont icon-sousuo'></i>
-        <i class='iconfont icon-shoucang'></i>
-        <i class='iconfont icon-pin'></i>
-        <i class='iconfont icon-gengduo'></i>
+      <div class="shop-config_right" :class="{'shop-config_right_white' :isTop}">
+        <i class="iconfont icon-sousuo"></i>
+        <i class="iconfont icon-shoucang"></i>
+        <i class="iconfont icon-pin"></i>
+        <i class="iconfont icon-gengduo"></i>
       </div>
     </div>
 
-    <div class='shop-banner' ref='shopBanner'>
-      <div class='banner-baseInfo'>
-        <div class='banner-shopAvatar'>
-          <img src='../assets/images/avatar.jpg'>
+    <div class="shop-banner" ref="shopBanner">
+      <div class="banner-baseInfo">
+        <div class="banner-shopAvatar">
+          <img src="../assets/images/avatar.jpg">
         </div>
-        <div class='banner-shopInfo'>
+        <div class="banner-shopInfo">
           <h4>标题</h4>
           <label>公告</label>
         </div>
       </div>
-      <div class='banner-offerInfo'>
-        活动信息{{cartInfo.totalPrice}}
+      <div class="banner-offerInfo">
+        活动信息
       </div>
     </div>
 
-    <div class='shop-good' ref='shopGood' :style="shopGoodStyle">
-      <div class='shop-good-tab' ref='shopTab'>
+    <div class="shop-good" ref="shopGood" :style="shopGoodStyle">
+      <div class="shop-good-tab" ref="shopTab">
         <van-tabs v-model="tabActive">
           <van-tab v-for="(tab,index) in tabs" :title="tab.label" :key="index"></van-tab>
         </van-tabs>
       </div>
-      <div class='shop-good-content'>
-        <div class='shop-good-menu' ref='goodMenu'>
+      <div class="shop-good-content">
+        <div class="shop-good-menu" ref="goodMenu">
           <better-scroll ref="scroll" :data="Types" @pullingDown="onPullingDown" @pullingUp="onPullingUp">
-            <div class='menu-item' v-for="catalog in shopInfo.shop_catalog" :key="catalog.value">{{catalog.title}}</div>
+            <div class="menu-item" v-for="catalog in shopInfo.shop_catalog" :key="catalog.value">{{catalog.title}}</div>
           </better-scroll>
         </div>
 
-        <div class='shop-good-list' :style="{marginLeft : trackMarginLeft + 'px'}">
-          <better-scroll ref="scroll" :data="Types" @pullingDown="onPullingDown" @pullingUp="onPullingUp" :listenScroll='true' :probeType='probeType' @scroll='onScroll'>
+        <div class="shop-good-list" :style="{marginLeft : trackMarginLeft + 'px'}">
+          <better-scroll ref="scroll" :data="Types" @pullingDown="onPullingDown" @pullingUp="onPullingUp" :listenScroll="true" :probeType="probeType" @scroll="onScroll">
 
-            <div class='good-list-item' v-for="foodInfo in shopInfo.food_list" :key="foodInfo.food_id">
-              <div class='good-image'>
-                <img :src='foodInfo.photo'>
+            <div class="good-list-item" v-for="(foodInfo,index) in foodList" :key="foodInfo.food_id">
+              <div class="good-image">
+                <img :src="foodInfo.photo">
               </div>
-              <div class='good-content'>
-                <div class='good-content_info'>
-                  <h4 class='good-content_info_title'>{{foodInfo.food_title}}</h4>
-                  <span class='good-content_info_sale'>月售{{foodInfo.food_sale}}</span>
-                  <span class='good-content_info_lick'>赞{{foodInfo.food_like}}</span>
-                  <p class='good-content_info_price'>${{foodInfo.food_price}}</p>
+              <div class="good-content">
+                <div class="good-content_info">
+                  <h4 class="good-content_info_title">{{foodInfo.food_title}}</h4>
+                  <span class="good-content_info_sale">月售{{foodInfo.food_sale}}</span>
+                  <span class="good-content_info_lick">赞{{foodInfo.food_like}}</span>
+                  <p class="good-content_info_price">${{foodInfo.food_price}}</p>
                 </div>
-                <div class='good-content_buy'>
+                <div class="good-content_buy" v-if="!!foodInfo.type">
                   <van-button size="small" @click="getTypeInfo(foodInfo)">选规格</van-button>
+                </div>
+                <div class="good-content_buy good-content_buy_nontype" v-else>
+                  <div class="good-content_buy_nontype_box">
+                    <i class="iconfont icon-jian" @click="selectGood(foodInfo,index,0)" v-if="foodInfo.selectNum > 0"></i>
+                    <span v-if="foodInfo.selectNum > 0">{{foodInfo.selectNum}}</span>
+                    <i class="iconfont icon-jia" @click="selectGood(foodInfo,index,1)"></i>
+                  </div>
                 </div>
               </div>
             </div>
@@ -66,9 +73,9 @@
         </div>
       </div>
     </div>
-    <cart-list :total-price='cartInfo.totalPrice' :foodList='cartInfo.list' @adjustNum='adjustNum'></cart-list>
+    <cart-list :total-price="cartInfo.totalPrice" :foodList="cartInfo.list" @adjustNum="adjustNum" @toSettle="toSettle"></cart-list>
 
-    <specificationBox @pushCart="getSelectGoood" :visible.sync="showSpBox" :center='true' width='90%' :foodInfo="foodSelected">
+    <specificationBox @pushCart="getSelectGoood" :visible.sync="showSpBox" :center="true" width="90%" :foodInfo="foodSelected">
     </specificationBox>
 
   </div>
@@ -107,6 +114,7 @@ export default {
       isTop: false,
       showSpBox: false,
       shopInfo: {},
+      foodList: [],
       totalPrice: 0,
       cartInfo: {
         list: [],
@@ -183,6 +191,7 @@ export default {
         foodInfo.num = 1;
         this.cartInfo.list.push(JSON.parse(JSON.stringify(foodInfo)));
       }
+      console.log(this.cartInfo);
     },
     /**
      * @description 删除/增加 已选商品
@@ -202,12 +211,34 @@ export default {
         this.cartInfo.totalPrice -= foodInfo.totalPrice;
       }
     },
+    // 去结算
+    toSettle() {
+      this.$router.push('/order/pay');
+    },
+    selectGood(foodInfo, index, type) {
+      if (type) {
+        this.foodList[index].selectNum++;
+        this.cartInfo.totalPrice += foodInfo.food_price;
+      } else if (this.foodList[index].selectNum > 0) {
+        this.foodList[index].selectNum--;
+        this.cartInfo.totalPrice -= foodInfo.food_price;
+      }
+      this.foodList[index].totalPrice = foodInfo.food_price * this.foodList[index].selectNum;
+
+      if (this.foodList[index].selectNum == 1) {
+        this.cartInfo.list.push(this.foodList[index]);
+      }
+    },
   },
   created() {
     const shopId = this.$route.params.shop_id;
 
     fetchShopDetail({ shop_id: shopId }).then(resp => {
       this.shopInfo = resp.data.info;
+      resp.data.food_list.forEach(item => {
+        item.selectNum = 0;
+      });
+      this.foodList = resp.data.food_list;
     });
   },
   mounted() {
@@ -374,6 +405,7 @@ export default {
         height: 100%;
         justify-content: space-between;
         display: flex;
+        padding-right: 9px;
         .good-content_info {
           position: relative;
           margin-left: 10px;
@@ -401,6 +433,25 @@ export default {
         }
         .good-content_buy {
           position: relative;
+          &.good-content_buy_nontype {
+            .good-content_buy_nontype_box {
+              position: absolute;
+              bottom: 0;
+              right: 0;
+              width: 100px;
+              text-align: right;
+            }
+            .icon-jia {
+              color: $mt-color;
+            }
+            .icon-jian {
+              color: $mt-gray;
+            }
+            span {
+              font-size: 17px;
+              margin: 0 5px;
+            }
+          }
           .van-button {
             position: absolute;
             bottom: 0;
