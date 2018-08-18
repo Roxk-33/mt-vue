@@ -1,7 +1,8 @@
 import md5 from 'js-md5';
-import { loginByAccount, logout } from '@/api/login';
 import { getToken, setToken, removeToken } from '@/common/auth';
-
+import ajax from '@/common/request';
+import config from '@/common/config';
+const API = config.API;
 const state = {
   user: '',
   userStatus: false,
@@ -50,23 +51,14 @@ const getters = {
 const actions = {
   // 用户名登录
   LoginByAccount({ commit }, userInfo) {
+    console.log(11);
+    console.log(userInfo.password);
     const account = userInfo.account.trim();
-    const password = md5(userInfo.password);
-
+    const password = userInfo.password;
     return new Promise((resolve, reject) => {
-      loginByAccount(account, password)
-        .then(resp => {
-          const { name, tel, avatar } = resp.data.data;
-          commit('SET_NAME', name);
-          commit('SET_TEL', tel);
-          commit('SET_AVATAR', avatar);
-          commit('SET_STATUS', true);
-
-          resolve();
-        })
-        .catch(error => {
-          reject(error);
-        });
+      ajax({ url: API.USER_LOGIN, data: { account, password } }).then(resp => {
+        resolve();
+      });
     });
   },
 
@@ -121,9 +113,9 @@ const actions = {
 };
 
 export default {
-  namespaced: true,
+  // namespaced: true,
   state,
-  mutations,
-  getters,
   actions,
+  getters,
+  mutations,
 };

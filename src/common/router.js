@@ -4,6 +4,8 @@ import Layout from '@/views/layout';
 import Login from '@/views/login';
 import user from '@/views/user';
 import userInfo from '@/views/user-info';
+import userAddressList from '@/views/user-address-list';
+import userAddressInfo from '@/views/user-address-info';
 import shopList from '@/views/shop-list';
 import shopDetail from '@/views/shop-detail';
 import orderPay from '@/views/order-pay';
@@ -28,6 +30,16 @@ export const constantRouterMap = [
         name: 'userInfo',
       },
     ],
+  },
+  {
+    path: '/user/address/list/',
+    component: userAddressList,
+    name: 'userAddressList',
+  },
+  {
+    path: '/user/address/info/',
+    component: userAddressInfo,
+    name: 'userAddressInfo',
   },
   {
     path: '/shop',

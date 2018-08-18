@@ -6,10 +6,10 @@ import 'lib-flexible';
 import 'vant/lib/vant-css/index.css';
 import App from './App';
 import router from './common/router';
-import store from './store';
+import store from './store/index';
 
 import './assets/style/normalize.css';
-import './mock';
+// import './mock';
 import './directive';
 import './assets/style/common.css';
 

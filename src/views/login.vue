@@ -29,12 +29,13 @@ export default {
     handleLogin() {
       // this.$refs['loginForm'].validate((valid) => {
       // if (valid) {
-      this.loading = true;
+      console.log(this.loginForm);
+      // this.loading = true;
       this.$store
         .dispatch('LoginByAccount', this.loginForm)
         .then(() => {
           this.loading = false;
-          this.$router.push({ path: '/person/index' });
+          this.$router.push({ path: '/user/index' });
         })
         .catch(() => {
           this.loading = false;

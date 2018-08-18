@@ -1,8 +1,8 @@
 <template>
   <div class='header-nav' :style="{'backgroundColor':headerbgColor}">
     <div class='header-nav-left'>
-      <i class='iconfont icon-xiangzuo' v-if='isBack' @click="onLeft"></i>
-      <i class='iconfont icon-guanbi1' v-if="isClose" @click="onLeft"></i>
+      <i class='iconfont icon-xiangzuo' v-if='isBack' @click="clickLeft"></i>
+      <i class='iconfont icon-guanbi1' v-if="isClose" @click="clickLeft"></i>
     </div>
     <div class='header-nav-main'>
       <span class='headerNav-title'>{{title}}</span>
@@ -31,12 +31,20 @@ export default {
     },
     isBack: {
       type: Boolean,
+      default: true,
+    },
+    onLeft: {
+      type: Boolean,
       default: false,
     },
   },
   methods: {
-    onLeft() {
-      this.$emit('click-left');
+    clickLeft() {
+      if (!!this.onLeft) {
+        this.$emit('click-left');
+      } else {
+        this.$router.go(-1);
+      }
     },
   },
   created() {},

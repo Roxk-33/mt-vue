@@ -21,19 +21,19 @@
       <van-row class='fn-list' type="flex" justify="space-around">
         <van-col :span="8">
           <div class='fn-list-item'>
-            <i class='fa fa-star fa-3x'></i>
+            <i class='iconfont icon-gouwudai'></i>
             <p>我的收藏</p>
           </div>
         </van-col>
         <van-col :span="8">
           <div class='fn-list-item'>
-            <i class='fa icon-evaluation fa-3x'></i>
+            <i class='iconfont icon-pingjia'></i>
             <p>我的评价</p>
           </div>
         </van-col>
         <van-col :span="8">
           <div class='fn-list-item'>
-            <i class='fa icon-address fa-3x'></i>
+            <i class='iconfont icon-dizhi'></i>
             <p>我的地址</p>
           </div>
         </van-col>
@@ -77,9 +77,11 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss">
+@import '../assets/style/common';
+
 .personPage-header {
   height: 4rem;
-  background-color: #ffd161;
+  background-color: $mt-color;
 
   .header_setting {
     width: 20%;
@@ -136,8 +138,8 @@ export default {
     font-size: 12px;
     font-weight: 500;
 
-    .fa {
-      color: #ffd161;
+    .iconfont {
+      color: $mt-color;
     }
   }
 }
