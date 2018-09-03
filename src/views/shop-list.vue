@@ -33,8 +33,7 @@
         <i class='fa fa-bars' style="margin-left:5px;"></i>
       </div>
     </div>
-    <div class="shopList">
-      <div class='shop-loadding' v-show="dialogVisible"></div>
+    <div class="shop-list">
       <van-list v-model="loading" :finished="finished" @load="onPullingUp">
         <van-cell v-for="(shop,index) in shopList" :key='index' style="padding:10px">
           <router-link class='shop-item' :to="{ name: 'shopDetail', params: { shopId: shop.shop_id }}">
@@ -118,17 +117,15 @@ export default {
     headerNav,
   },
   methods: {
-    getList(isInit = true) {
+    getList() {
       fetchShopList({ page: this.page, type: this.sortTarget }).then(resp => {
-        if (isInit) {
-          this.shopList = resp.data.list;
-        } else {
-          this.shopList = this.shopList.concat(resp.data.list);
-        }
+        this.loading = false;
+        this.shopList = this.shopList.concat(resp.data.list);
       });
     },
     onPullingUp() {
-      this.getList(false);
+      this.loading = true;
+      this.getList();
     },
     selectSortType(type) {
       this.sortTarget = type;
@@ -146,9 +143,7 @@ export default {
       this.dialogVisible = false;
     },
   },
-  created() {
-    this.getList();
-  },
+  created() {},
 
   filters: {
     sortI18n(value) {
@@ -224,7 +219,7 @@ export default {
     }
   }
 }
-.shopList {
+.shop-list {
   background-color: white;
   min-height: 42rem;
   position: relative;
