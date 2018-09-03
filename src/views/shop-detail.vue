@@ -13,23 +13,20 @@
       </div>
       <div class="shop-good-content">
         <div class="shop-good-menu">
-          <better-scroll>
+          <better-scroll :isDisable="scrollDisabel">
             <div class="menu-item" v-for="catalog in shopInfo.shop_catalog" :key="catalog.value">{{catalog.title}}</div>
           </better-scroll>
         </div>
-
         <div class="shop-good-list">
-          <better-scroll :listenScroll="true" :probeType="probeType" @scroll="onScroll">
+          <better-scroll :listenScroll="true" :probeType="probeType" @scroll="onScroll" :isDisable="scrollDisabel" @pullingDown="pullingDown">
             <foodItem v-for="(foodInfo,index) in foodList" :key="foodInfo.food_id" :foodInfo="foodInfo" :foodIndex="index" :selectNum="foodInfo.selectNum" @showType="getTypeInfo" @selectGood="selectGood" />
           </better-scroll>
         </div>
       </div>
     </div>
     <cart-list :total-price="cartInfo.totalPrice" :foodList="cartInfo.list" @adjustNum="adjustNum" @toSettle="toSettle"></cart-list>
-
     <specificationBox @pushCart="getSelectGoood" :visible.sync="showSpBox" :center="true" width="90%" :foodInfo="foodSelected">
     </specificationBox>
-
   </div>
 </template>
 
@@ -45,7 +42,6 @@ import shopNav from '@/views/smart/shop-nav';
 
 export default {
   name: 'shop-detail',
-
   data() {
     return {
       tabs: [
@@ -70,6 +66,7 @@ export default {
       shopInfo: {},
       foodList: [],
       totalPrice: 0,
+      scrollDisabel: false,
       cartInfo: {
         list: [],
         totalPrice: 0,
@@ -89,6 +86,25 @@ export default {
     shopNav,
   },
   methods: {
+    scroll() {
+      document.addEventListener('scroll', e => {
+        console.log(document.documentElement.scrollTop, this.bannerHeight);
+        if (!this.scrollDisabel) {
+          const scorllY = Math.abs(document.documentElement.scrollTop);
+          if (this.bannerHeight > scorllY) {
+            console.log('封印啦');
+            this.trackOpacity = scorllY / this.bannerHeight;
+            this.isTop = false;
+          }
+          if (this.bannerHeight <= scorllY) {
+            console.log('解除封印');
+            this.scrollDisabel = true;
+            this.trackOpacity = '1';
+            this.isTop = true;
+          }
+        }
+      });
+    },
     initMenu() {
       // 35为 header-nav的高度
       // 45为 shop-good-tab的高度
@@ -96,23 +112,14 @@ export default {
       this.trackSize = window.innerHeight - 45 - 35 + 1;
     },
     onScroll(op) {
-      const scorllY = Math.abs(op.y) * 0.5;
-      if (op.y <= -10) {
-        this.trackOpacity = 0;
-      }
-
-      if (this.bannerHeight > scorllY && op.y < 0) {
-        this.trackTop = -scorllY;
-        this.trackOpacity = scorllY / this.bannerHeight;
-        this.isTop = false;
-      }
-      if (this.bannerHeight <= scorllY) {
-        this.trackTop = -this.bannerHeight;
-        this.trackOpacity = '1';
-        this.isTop = true;
+      if (op.y > 10) {
+        this.scrollDisabel = false;
       }
     },
-
+    pullingDown() {
+      console.log('上拉');
+      this.scrollDisabel = false;
+    },
     getSelectGoood(foodInfo) {
       this.cartInfo.totalPrice += foodInfo.totalPrice;
       this.totalPrice = this.cartInfo.totalPrice;
@@ -191,7 +198,7 @@ export default {
   },
   created() {
     const shopId = this.$route.params.shop_id;
-
+    this.scroll();
     fetchShopDetail({ shop_id: shopId }).then(resp => {
       this.shopInfo = resp.data.info;
       resp.data.food_list.forEach(item => {
@@ -201,9 +208,7 @@ export default {
     });
   },
   mounted() {
-    setTimeout(() => {
-      this.initMenu();
-    }, 20);
+    this.initMenu();
   },
   computed: {
     // totalPrice() {

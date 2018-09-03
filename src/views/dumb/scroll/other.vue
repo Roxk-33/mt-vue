@@ -110,6 +110,10 @@ export default {
       type: String,
       default: '加载中',
     },
+    isDisable: {
+      type: Boolean,
+      default: true,
+    },
   },
   data() {
     return {
@@ -156,6 +160,7 @@ export default {
         mouseWheel: this.mouseWheel,
         bounce: this.bounce,
       };
+
       this.scroll = new BScroll(this.$refs.wrapper, options);
       if (this.listenScroll) {
         this.scroll.on('scroll', pos => {
@@ -172,6 +177,9 @@ export default {
       }
       if (this.pullUpLoad) {
         this._initPullUpLoad();
+      }
+      if (!this.isDisable) {
+        this.scroll.disable();
       }
     },
     disable() {
@@ -263,6 +271,19 @@ export default {
       setTimeout(() => {
         this.forceUpdate(true);
       }, this.refreshDelay);
+    },
+
+    isDisable: {
+      handler(val) {
+        console.log(val);
+        if (val) {
+          this.enable();
+        } else {
+          this.disable();
+        }
+      },
+      deep: true,
+      immediate: true,
     },
   },
   components: {
