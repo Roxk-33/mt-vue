@@ -1,34 +1,10 @@
 
 <template>
-  <div class="shopDetail">
-    <div class="shop-config" ref="shopConfig">
-      <div class="config-wrapper" :style="{opacity:trackOpacity}"></div>
-      <router-link to="/shop/list">
-        <i class="iconfont icon-xiangzuo"></i>
-      </router-link>
-      <div class="shop-config_right" :class="{'shop-config_right_white' :isTop}">
-        <i class="iconfont icon-sousuo"></i>
-        <i class="iconfont icon-shoucang"></i>
-        <i class="iconfont icon-pin"></i>
-        <i class="iconfont icon-gengduo"></i>
-      </div>
+  <div class="shop-detail">
+    <shop-nav :trackOpacity="trackOpacity" :isTop="isTop"></shop-nav>
+    <div ref="shopBanner">
+      <shop-header></shop-header>
     </div>
-
-    <div class="shop-banner" ref="shopBanner">
-      <div class="banner-baseInfo">
-        <div class="banner-shopAvatar">
-          <img src="../assets/images/avatar.jpg">
-        </div>
-        <div class="banner-shopInfo">
-          <h4>标题</h4>
-          <label>公告</label>
-        </div>
-      </div>
-      <div class="banner-offerInfo">
-        活动信息
-      </div>
-    </div>
-
     <div class="shop-good" ref="shopGood" :style="shopGoodStyle">
       <div class="shop-good-tab" ref="shopTab">
         <van-tabs v-model="tabActive">
@@ -44,7 +20,7 @@
 
         <div class="shop-good-list" :style="{marginLeft : trackMarginLeft + 'px'}">
           <better-scroll ref="scroll" :data="Types" @pullingDown="onPullingDown" @pullingUp="onPullingUp" :listenScroll="true" :probeType="probeType" @scroll="onScroll">
-            <foodItem v-for="(foodInfo,index) in foodList" :key="foodInfo.food_id" :foodInfo="foodInfo" :foodIndex="index" :selectNum="foodInfo.selectNum" @showType="getTypeInfo" @selectGood="selectGood"/>
+            <foodItem v-for="(foodInfo,index) in foodList" :key="foodInfo.food_id" :foodInfo="foodInfo" :foodIndex="index" :selectNum="foodInfo.selectNum" @showType="getTypeInfo" @selectGood="selectGood" />
           </better-scroll>
         </div>
       </div>
@@ -64,9 +40,11 @@ import BetterScroll from './dumb/scroll/other';
 import specificationBox from '@/views/smart/specification-box';
 import cartList from '@/views/smart/cart-list';
 import foodItem from '@/views/smart/food-item';
+import shopHeader from '@/views/smart/shop-header';
+import shopNav from '@/views/smart/shop-nav';
 
 export default {
-  name: 'shopDetail',
+  name: 'shop-detail',
 
   data() {
     return {
@@ -109,14 +87,16 @@ export default {
     specificationBox,
     cartList,
     foodItem,
+    shopHeader,
+    shopNav,
   },
   methods: {
     onPullingUp() {},
     onPullingDown() {},
     initMenu() {
-      this.bannerHeight = getRect(this.$refs.shopBanner).height - Math.floor(getRect(this.$refs.shopConfig).height);
-      this.trackSize =
-        window.innerHeight - getRect(this.$refs.shopTab).height - getRect(this.$refs.shopConfig).height + 1;
+      // 35为 header-nav的高度
+      this.bannerHeight = getRect(this.$refs.shopBanner).height - 35;
+      this.trackSize = window.innerHeight - getRect(this.$refs.shopTab).height - 35 + 1;
       this.trackMarginLeft = getRect(this.$refs.goodMenu).width + 10;
     },
     onScroll(op) {
@@ -142,6 +122,9 @@ export default {
       this.totalPrice = this.cartInfo.totalPrice;
       console.log(foodInfo);
       // TODO:检测是否有相同规格的商品,两数组之间的对比。当前实现方法并不理想
+      // const removeDuplicateItems = arr => [...new Set(arr)];
+      // removeDuplicateItems([42, 'foo', 42, 'foo', true, true]);
+      //=> [42, "foo", true]
       if (this.cartInfo.list.length > 0) {
         this.cartInfo.list.some(_foodInfo => {
           if (_foodInfo.id === foodInfo.id) {
@@ -242,46 +225,8 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss">
 @import '../assets/style/common';
-
-.shop-config {
-  height: 0.6rem;
-  display: flex;
-  justify-content: space-between;
-  line-height: 0.5rem;
-  padding: 0.1rem;
-  box-sizing: border-box;
-  width: 100%;
-  color: white;
-  position: fixed;
-  top: 0;
-  left: 0;
-  transition: all 0.5s;
-
-  .config-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: inherit;
-    background: white;
-    opacity: 0;
-    z-index: -1;
-  }
-  a {
-    margin-top: -0.1rem;
-  }
-  .shop-config_right {
-    color: white;
-
-    i {
-      font-size: 15px;
-      margin: 0 5px;
-      transition: all 0.5s;
-    }
-    &.shop-config_right_white i {
-      color: $mt-color;
-    }
-  }
+.shop-detail {
+  background-color: #fff;
 }
 
 .shop-banner {
@@ -328,16 +273,21 @@ export default {
   background-color: white;
   position: relative;
   .shop-good-tab {
-    width: 100%;
+    width: 70%;
     background-color: white;
     display: block;
     margin-bottom: 5px;
-    .van-tabs__wrap::after {
-      border-top: 0;
-    }
-    .van-tabs__line {
-      margin-left: 50px;
-      width: 25px !important;
+    position: relative;
+    &::after {
+      content: '邀请拼单';
+      color: $mt-color;
+      position: absolute;
+      top: 50%;
+      right: -90px;
+      transform: translateY(-50%);
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid $mt-color;
     }
   }
   .shop-good-content {
@@ -366,6 +316,25 @@ export default {
   .shop-good-list {
     width: 100%;
     overflow: hidden;
+  }
+}
+</style>
+<style lang="scss">
+@import '../assets/style/common';
+
+.shop-detail {
+  .van-ellipsis {
+  }
+  .van-tabs__wrap::after {
+    border: 0;
+  }
+  .van-tabs__line {
+    margin-left: 34px;
+    width: 25px !important;
+    background-color: $mt-color;
+  }
+  .van-tab--active {
+    color: #000;
   }
 }
 </style>

@@ -4,9 +4,7 @@ const API = config.API;
 const state = {};
 
 const mutations = {};
-const getters = {
-  userAvatar: state => state.userAvatar,
-};
+const getters = {};
 const actions = {
   // 添加收货地址
   addAddress({ commit }, address) {

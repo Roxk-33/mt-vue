@@ -106,6 +106,10 @@ export default {
     bounce: {
       default: true,
     },
+    pullUpTxt: {
+      type: String,
+      default: '加载中',
+    },
   },
   data() {
     return {
@@ -119,15 +123,6 @@ export default {
     };
   },
   computed: {
-    pullUpTxt() {
-      const moreTxt =
-        (this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.more) ||
-        this.$i18n.t('scrollComponent.defaultLoadTxtMore');
-      const noMoreTxt =
-        (this.pullUpLoad && this.pullUpLoad.txt && this.pullUpLoad.txt.noMore) ||
-        this.$i18n.t('scrollComponent.defaultLoadTxtNoMore');
-      return this.pullUpDirty ? moreTxt : noMoreTxt;
-    },
     refreshTxt() {
       return (this.pullDownRefresh && this.pullDownRefresh.txt) || this.$i18n.t('scrollComponent.defaultRefreshTxt');
     },
@@ -239,6 +234,7 @@ export default {
     },
     _initPullUpLoad() {
       this.scroll.on('pullingUp', () => {
+        console.log(123);
         this.isPullUpLoad = true;
         this.$emit('pullingUp');
       });
