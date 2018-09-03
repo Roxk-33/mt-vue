@@ -6,20 +6,20 @@
       <shop-header></shop-header>
     </div>
     <div class="shop-good" ref="shopGood" :style="shopGoodStyle">
-      <div class="shop-good-tab" ref="shopTab">
+      <div class="shop-good-tab">
         <van-tabs v-model="tabActive">
           <van-tab v-for="(tab,index) in tabs" :title="tab.label" :key="index"></van-tab>
         </van-tabs>
       </div>
       <div class="shop-good-content">
-        <div class="shop-good-menu" ref="goodMenu">
-          <better-scroll ref="scroll" :data="Types" @pullingDown="onPullingDown" @pullingUp="onPullingUp">
+        <div class="shop-good-menu">
+          <better-scroll>
             <div class="menu-item" v-for="catalog in shopInfo.shop_catalog" :key="catalog.value">{{catalog.title}}</div>
           </better-scroll>
         </div>
 
-        <div class="shop-good-list" :style="{marginLeft : trackMarginLeft + 'px'}">
-          <better-scroll ref="scroll" :data="Types" @pullingDown="onPullingDown" @pullingUp="onPullingUp" :listenScroll="true" :probeType="probeType" @scroll="onScroll">
+        <div class="shop-good-list">
+          <better-scroll :listenScroll="true" :probeType="probeType" @scroll="onScroll">
             <foodItem v-for="(foodInfo,index) in foodList" :key="foodInfo.food_id" :foodInfo="foodInfo" :foodIndex="index" :selectNum="foodInfo.selectNum" @showType="getTypeInfo" @selectGood="selectGood" />
           </better-scroll>
         </div>
@@ -62,7 +62,6 @@ export default {
           value: 'business',
         },
       ],
-      Types: ['韩式辣味系列'],
       tabActive: 0,
       probeType: 3,
       bannerHeight: 0,
@@ -79,7 +78,6 @@ export default {
       trackSize: 0, // 商品列表高度
       trackTop: 0, // 商品列表Top
       trackOpacity: 0, // 顶部状态栏opacity
-      trackMarginLeft: 0, // 顶部状态栏opacity
     };
   },
   components: {
@@ -91,13 +89,11 @@ export default {
     shopNav,
   },
   methods: {
-    onPullingUp() {},
-    onPullingDown() {},
     initMenu() {
       // 35为 header-nav的高度
+      // 45为 shop-good-tab的高度
       this.bannerHeight = getRect(this.$refs.shopBanner).height - 35;
-      this.trackSize = window.innerHeight - getRect(this.$refs.shopTab).height - 35 + 1;
-      this.trackMarginLeft = getRect(this.$refs.goodMenu).width + 10;
+      this.trackSize = window.innerHeight - 45 - 35 + 1;
     },
     onScroll(op) {
       const scorllY = Math.abs(op.y) * 0.5;
@@ -274,6 +270,7 @@ export default {
   position: relative;
   .shop-good-tab {
     width: 70%;
+    height: 45px;
     background-color: white;
     display: block;
     margin-bottom: 5px;
@@ -298,7 +295,7 @@ export default {
     background-color: white;
   }
   .shop-good-menu {
-    width: 20%;
+    width: 80px;
     position: absolute;
     left: 0;
     top: 0;
@@ -315,6 +312,7 @@ export default {
   }
   .shop-good-list {
     width: 100%;
+    margin-left: 90px;
     overflow: hidden;
   }
 }

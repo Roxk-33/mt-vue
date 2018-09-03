@@ -52,94 +52,94 @@ export default {
           'like|1-1000': 1000,
           photo: Random.image('100x100'),
           'food_price|1-100': 100,
-          // type: [
-          //   {
-          //     type_name: '规格',
-          //     type_default: 0,
-          //     type_content: [
-          //       {
-          //         label: '小碗',
-          //         price: '1',
-          //       },
-          //       {
-          //         label: '大碗',
-          //         price: '2',
-          //       },
-          //     ],
-          //   },
-          //   {
-          //     type_name: '辣度',
-          //     type_default: 1,
-          //     type_content: [
-          //       {
-          //         label: '不辣',
-          //         price: 3,
-          //       },
-          //       {
-          //         label: '微辣',
-          //         price: 2,
-          //       },
-          //       {
-          //         label: '中辣',
-          //         price: '1',
-          //       },
-          //     ],
-          //   },
-          //   {
-          //     type_name: '面粉，选择',
-          //     type_default: 1,
-          //     type_content: [
-          //       {
-          //         label: '小面',
-          //         price: '12',
-          //       },
-          //       {
-          //         label: '大面',
-          //         price: '11',
-          //       },
-          //       {
-          //         label: '粉',
-          //         price: '12',
-          //       },
-          //     ],
-          //   },
-          //   {
-          //     type_name: '面粉，选择',
-          //     type_default: 1,
-          //     type_content: [
-          //       {
-          //         label: '小面',
-          //         price: '12',
-          //       },
-          //       {
-          //         label: '大面',
-          //         price: '11',
-          //       },
-          //       {
-          //         label: '粉',
-          //         price: '12',
-          //       },
-          //     ],
-          //   },
-          //   {
-          //     type_name: '面粉，选择',
-          //     type_default: 1,
-          //     type_content: [
-          //       {
-          //         label: '小面',
-          //         price: '12',
-          //       },
-          //       {
-          //         label: '大面',
-          //         price: '11',
-          //       },
-          //       {
-          //         label: '粉',
-          //         price: '12',
-          //       },
-          //     ],
-          //   },
-          // ],
+          type: [
+            {
+              type_name: '规格',
+              type_default: 0,
+              type_content: [
+                {
+                  label: '小碗',
+                  price: '1',
+                },
+                {
+                  label: '大碗',
+                  price: '2',
+                },
+              ],
+            },
+            {
+              type_name: '辣度',
+              type_default: 1,
+              type_content: [
+                {
+                  label: '不辣',
+                  price: 3,
+                },
+                {
+                  label: '微辣',
+                  price: 2,
+                },
+                {
+                  label: '中辣',
+                  price: '1',
+                },
+              ],
+            },
+            {
+              type_name: '面粉，选择',
+              type_default: 1,
+              type_content: [
+                {
+                  label: '小面',
+                  price: '12',
+                },
+                {
+                  label: '大面',
+                  price: '11',
+                },
+                {
+                  label: '粉',
+                  price: '12',
+                },
+              ],
+            },
+            {
+              type_name: '面粉，选择',
+              type_default: 1,
+              type_content: [
+                {
+                  label: '小面',
+                  price: '12',
+                },
+                {
+                  label: '大面',
+                  price: '11',
+                },
+                {
+                  label: '粉',
+                  price: '12',
+                },
+              ],
+            },
+            {
+              type_name: '面粉，选择',
+              type_default: 1,
+              type_content: [
+                {
+                  label: '小面',
+                  price: '12',
+                },
+                {
+                  label: '大面',
+                  price: '11',
+                },
+                {
+                  label: '粉',
+                  price: '12',
+                },
+              ],
+            },
+          ],
         },
       ],
       status: true,
