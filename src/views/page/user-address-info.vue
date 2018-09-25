@@ -16,9 +16,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-import headerNav from './dumb/header-nav';
-import formItem from './dumb/form-item';
-import CONSTANT from '../common/constant';
+import headerNav from '@/views/dumb/header-nav';
+import formItem from '@/views/dumb/form-item';
+import CONSTANT from '@/common/constant';
 export default {
   name: 'user-address-info',
   data() {
@@ -71,7 +71,7 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '../assets/style/common';
+@import '../../assets/style/common';
 .user-address-info-sex {
   padding: 10px 10px 10px 90px;
   display: flex;
@@ -94,7 +94,7 @@ export default {
 }
 </style>
 <style rel="stylesheet/scss" lang="scss">
-@import '../assets/style/common';
+@import '../../assets/style/common';
 
 .van-radio .van-icon-checked {
   color: $mt-color;

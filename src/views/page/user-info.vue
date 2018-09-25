@@ -39,7 +39,7 @@
   </div>
 </template>
 <script>
-import headerNav from './dumb/header-nav';
+import headerNav from '@/views/dumb/header-nav';
 import { mapGetters } from 'vuex';
 
 export default {

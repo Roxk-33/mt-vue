@@ -1,14 +1,14 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Layout from '@/views/layout';
-import Login from '@/views/login';
-import user from '@/views/user';
-import userInfo from '@/views/user-info';
-import userAddressList from '@/views/user-address-list';
-import userAddressInfo from '@/views/user-address-info';
-import shopList from '@/views/shop-list';
-import shopDetail from '@/views/shop-detail';
-import orderPay from '@/views/order-pay';
+import Login from '@/views/page/login';
+import user from '@/views/page/user';
+import userInfo from '@/views/page/user-info';
+import userAddressList from '@/views/page/user-address-list';
+import userAddressInfo from '@/views/page/user-address-info';
+import shopList from '@/views/page/shop-list';
+import shopDetail from '@/views/page/shop-detail';
+import orderPay from '@/views/page/order-pay';
 
 Vue.use(Router);
 

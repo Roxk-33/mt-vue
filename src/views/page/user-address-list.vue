@@ -15,7 +15,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import headerNav from './dumb/header-nav';
+import headerNav from '@/views/dumb/header-nav';
 
 export default {
   name: 'user-address-list',

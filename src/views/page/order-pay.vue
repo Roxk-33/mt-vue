@@ -23,42 +23,42 @@
           <div class='food-pic'>
             <img>
           </div>
-          <!-- TODO:样式实现较差，需要优化 -->
-          <div class='food-info'>
-            <div class='food-info-main'>
-              <div class='food-info-name'>
-                香辣小龙虾
-                <span class='food-info-discount'>折</span>
+            <!-- TODO:样式实现较差，需要优化 -->
+            <div class='food-info'>
+              <div class='food-info-main'>
+                <div class='food-info-name'>
+                  香辣小龙虾
+                  <span class='food-info-discount'>折</span>
+                </div>
+                <div class='food-info-price'>
+                  <span class='food-info-price_original'>￥64</span>
+                  ￥48.8
+                </div>
               </div>
-              <div class='food-info-price'>
-                <span class='food-info-price_original'>￥64</span>
-                ￥48.8
-              </div>
+              <!-- 规格 -->
+              <p class='food-info-type'>香辣</p>
+              <p class='food-info-num'>x1</p>
             </div>
-            <!-- 规格 -->
-            <p class='food-info-type'>香辣</p>
-            <p class='food-info-num'>x1</p>
-          </div>
         </li>
         <li class='food-list-item'>
           <div class='food-pic'>
             <img>
           </div>
-          <div class='food-info'>
-            <div class='food-info-main'>
-              <div class='food-info-name'>
-                香辣小龙虾
-                <span class='food-info-discount'>折</span>
+            <div class='food-info'>
+              <div class='food-info-main'>
+                <div class='food-info-name'>
+                  香辣小龙虾
+                  <span class='food-info-discount'>折</span>
+                </div>
+                <div class='food-info-price'>
+                  <span class='food-info-price_original'>￥64</span>
+                  ￥48.8
+                </div>
               </div>
-              <div class='food-info-price'>
-                <span class='food-info-price_original'>￥64</span>
-                ￥48.8
-              </div>
+              <!-- 规格 -->
+              <p class='food-info-type'>香辣</p>
+              <p class='food-info-num'>x1</p>
             </div>
-            <!-- 规格 -->
-            <p class='food-info-type'>香辣</p>
-            <p class='food-info-num'>x1</p>
-          </div>
         </li>
       </ul>
       <div class='food-fee'>
@@ -139,7 +139,7 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '../assets/style/common';
+@import '../../assets/style/common';
 
 .order-pay {
   padding: 5px;

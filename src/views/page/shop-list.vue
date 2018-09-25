@@ -40,44 +40,44 @@
             <div class='shop-item_left'>
               <img :src='shop.photo'>
             </div>
-            <div class='shop-item_right'>
-              <p class='shop-title'>{{shop.shop_title}}</p>
-              <div class='shop-basedata'>
-                <div class='double-box'>
-                  <div class='sale-data'>
-                    <div class='sale-data-item sale-data-stars'>
-                      <rate :rateValue="shop.rate"></rate>
+              <div class='shop-item_right'>
+                <p class='shop-title'>{{shop.shop_title}}</p>
+                <div class='shop-basedata'>
+                  <div class='double-box'>
+                    <div class='sale-data'>
+                      <div class='sale-data-item sale-data-stars'>
+                        <rate :rateValue="shop.rate"></rate>
+                      </div>
+                      <div class='sale-data-item' style="text-align:right;">
+                        月售
+                        <i>{{shop.sales}}</i>
+                      </div>
                     </div>
-                    <div class='sale-data-item' style="text-align:right;">
-                      月售
-                      <i>{{shop.sales}}</i>
+                    <div class='logistics-data'>
+                      <span class='logistics-data-item'>
+                        <i>{{shop.transportTime}}</i>分钟
+                      </span>
+                      <span class='logistics-data-item'>
+                        <i>{{shop.distance}}</i>Km
+                      </span>
                     </div>
                   </div>
-                  <div class='logistics-data'>
-                    <span class='logistics-data-item'>
-                      <i>{{shop.transportTime}}</i>分钟
+                  <div class='price-data'>
+                    <span class='price-data-item'>
+                      起送￥
+                      <i>{{shop.threshold}}</i>
                     </span>
-                    <span class='logistics-data-item'>
-                      <i>{{shop.distance}}</i>Km
+                    <span class='price-data-item'>
+                      配送￥
+                      <i>{{shop.freight}}</i>
+                    </span>
+                    <span class='price-data-item'>
+                      人均￥
+                      <i>{{shop.perCapita}}</i>
                     </span>
                   </div>
-                </div>
-                <div class='price-data'>
-                  <span class='price-data-item'>
-                    起送￥
-                    <i>{{shop.threshold}}</i>
-                  </span>
-                  <span class='price-data-item'>
-                    配送￥
-                    <i>{{shop.freight}}</i>
-                  </span>
-                  <span class='price-data-item'>
-                    人均￥
-                    <i>{{shop.perCapita}}</i>
-                  </span>
                 </div>
               </div>
-            </div>
           </router-link>
         </van-cell>
       </van-list>
@@ -88,9 +88,9 @@
 
 <script >
 import { fetchShopList } from '@/api/shop';
-import Scroll from './dumb/scroll/index';
-import Rate from './dumb/rate';
-import headerNav from './dumb/header-nav';
+import Scroll from '@/views/dumb/scroll/index';
+import Rate from '@/views/dumb/rate';
+import headerNav from '@/views/dumb/header-nav';
 
 export default {
   name: 'shopList',

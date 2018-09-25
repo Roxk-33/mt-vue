@@ -33,7 +33,7 @@
 <script>
 import { getRect } from '@/common/dom';
 import { fetchShopDetail } from '@/api/shop';
-import BetterScroll from './dumb/scroll/other';
+import BetterScroll from '@/views/dumb/scroll/other';
 import specificationBox from '@/views/smart/specification-box';
 import cartList from '@/views/smart/cart-list';
 import foodItem from '@/views/smart/food-item';
@@ -88,16 +88,13 @@ export default {
   methods: {
     scroll() {
       document.addEventListener('scroll', e => {
-        console.log(document.documentElement.scrollTop, this.bannerHeight);
         if (!this.scrollDisabel) {
           const scorllY = Math.abs(document.documentElement.scrollTop);
           if (this.bannerHeight > scorllY) {
-            console.log('封印啦');
             this.trackOpacity = scorllY / this.bannerHeight;
             this.isTop = false;
           }
           if (this.bannerHeight <= scorllY) {
-            console.log('解除封印');
             this.scrollDisabel = true;
             this.trackOpacity = '1';
             this.isTop = true;
@@ -225,7 +222,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-@import '../assets/style/common';
+@import '../../assets/style/common';
 .shop-detail {
   background-color: #fff;
 }
@@ -235,7 +232,7 @@ export default {
     padding-top: 2rem;
     height: 4rem;
     box-sizing: border-box;
-    background: url('../assets/images/banner.jpg') no-repeat;
+    background: url('../../assets/images/banner.jpg') no-repeat;
     background-size: 100% 100%;
     text-align: left;
     padding-left: 1rem;
@@ -323,7 +320,7 @@ export default {
 }
 </style>
 <style lang="scss">
-@import '../assets/style/common';
+@import '../../assets/style/common';
 
 .shop-detail {
   .van-ellipsis {
