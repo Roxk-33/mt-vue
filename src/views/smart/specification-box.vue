@@ -18,7 +18,7 @@
               </ul>
             </div>
           </div>
-          <div class='specification-box_footer'>
+          <div class='specification-box_footer mt-flex-space-between'>
             <div class='footer-info'>
               <span class='footer-info_price'>￥{{selectedInfo.totalPrice}}</span>
               <span class='footer-info_specification'>({{selectedInfo.typeInfo}})</span>
@@ -174,8 +174,7 @@ export default {
     max-height: 7rem;
   }
   .specification-box_footer {
-    display: flex;
-    justify-content: space-between;
+
     height: 1.2rem;
     width: 100%;
     line-height: 0.6rem;

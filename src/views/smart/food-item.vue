@@ -3,7 +3,7 @@
     <div class="good-image">
       <img :src="foodInfo.photo">
     </div>
-    <div class="good-content">
+    <div class="good-content mt-flex-space-between">
       <div class="good-content_info">
         <h4 class="good-content_info_title">{{foodInfo.food_title}}</h4>
         <span class="good-content_info_sale">月售{{foodInfo.food_sale}}</span>
@@ -78,8 +78,6 @@ export default {
   .good-content {
     width: 70%;
     height: 100%;
-    justify-content: space-between;
-    display: flex;
     padding-right: 9px;
     .good-content_info {
       position: relative;

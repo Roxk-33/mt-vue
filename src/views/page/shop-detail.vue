@@ -171,7 +171,7 @@ export default {
     },
     // 去结算
     toSettle() {
-      this.$router.push('/order/pay');
+      this.$router.push('/pay');
     },
     getTypeInfo(index) {
       this.foodSelected = this.foodList[index];

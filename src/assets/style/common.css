@@ -67,3 +67,12 @@
   -webkit-animation-name: zoomOut;
   animation-name: zoomOut;
 }
+
+.mt-flex-space-between {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}

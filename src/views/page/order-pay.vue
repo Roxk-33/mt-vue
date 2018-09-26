@@ -7,7 +7,7 @@
         <span class='address-person'>肖志豪 18024589062</span>
         <i class='iconfont icon-xiangyou'></i>
       </div>
-      <div class='header-shipping-time box-right-arrow'>
+      <div class='header-shipping-time box-right-arrow mt-flex-space-between'>
         <span class='shipping-type'>立即送出</span>
         <span class='shipping-time'>23:20</span>
         <i class='iconfont icon-xiangyou'></i>
@@ -25,7 +25,7 @@
           </div>
             <!-- TODO:样式实现较差，需要优化 -->
             <div class='food-info'>
-              <div class='food-info-main'>
+              <div class='food-info-main mt-flex-space-between'>
                 <div class='food-info-name'>
                   香辣小龙虾
                   <span class='food-info-discount'>折</span>
@@ -45,7 +45,7 @@
             <img>
           </div>
             <div class='food-info'>
-              <div class='food-info-main'>
+              <div class='food-info-main mt-flex-space-between'>
                 <div class='food-info-name'>
                   香辣小龙虾
                   <span class='food-info-discount'>折</span>
@@ -88,27 +88,27 @@
         <i class='iconfont icon-xiangyou'></i>
 
       </div>
-      <div class='order-pay-note-item box-right-arrow'>
+      <div class='order-pay-note-item box-right-arrow mt-flex-space-between'>
         <span class='note-item-left'>餐具数量</span>
         <span class='note-item-right'></span>
         <i class='iconfont icon-xiangyou'></i>
 
       </div>
-      <div class='order-pay-note-item box-right-arrow'>
+      <div class='order-pay-note-item box-right-arrow mt-flex-space-between'>
         <span class='note-item-left'>发票</span>
         <span class='note-item-right'></span>
         <i class='iconfont icon-xiangyou'></i>
 
       </div>
-      <div class='order-pay-note-item box-right-arrow'>
+      <div class='order-pay-note-item box-right-arrow mt-flex-space-between'>
         <span class='note-item-left'>支付方式</span>
         <span class='note-item-right'></span>
         <i class='iconfont icon-xiangyou'></i>
       </div>
     </div>
 
-    <div class='footer-box'>
-      <div class='footer-box-left'>
+    <div class='footer-box mt-flex-space-between'>
+      <div class='footer-box-left mt-flex-space-between'>
         <span class='footer-left_discount'>
           已优惠￥40.4
         </span>
@@ -165,8 +165,6 @@ export default {
     }
   }
   .header-shipping-time {
-    display: flex;
-    justify-content: space-between;
     font-size: 15px;
     .shipping-type {
       font-weight: 700;
@@ -207,11 +205,7 @@ export default {
         text-align: left;
 
         .food-info-main {
-          justify-content: space-between;
-          display: flex;
-
           line-height: 21px;
-
           height: 21px;
           .food-info-name {
             font-weight: 700;
@@ -288,8 +282,6 @@ export default {
   font-size: 15px;
   margin-top: 5px;
   .order-pay-note-item {
-    justify-content: space-between;
-    display: flex;
     position: relative;
     font-size: 15px;
     padding: 10px 0;
@@ -301,13 +293,9 @@ export default {
   left: 0;
   width: 100%;
   height: 1.2rem;
-  display: flex;
-  justify-content: space-between;
   .footer-box-left {
     width: 70%;
     background-color: #fff;
-    display: flex;
-    justify-content: space-between;
     padding: 0 30px;
     align-items: center;
     > span {

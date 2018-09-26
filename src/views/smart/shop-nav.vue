@@ -1,5 +1,5 @@
 <template>
-  <div class="shop-nav">
+  <div class="shop-nav mt-flex-space-between">
     <div class="nav-wrapper" :style="{opacity:trackOpacity}"></div>
     <router-link to="/shop/list">
       <i class="iconfont icon-xiangzuo"></i>
@@ -37,8 +37,6 @@ export default {
 @import '../../assets/style/common';
 
 .shop-nav {
-  display: flex;
-  justify-content: space-between;
   line-height: 0.5rem;
   padding: 0.1rem;
   box-sizing: border-box;

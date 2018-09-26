@@ -1,6 +1,6 @@
 <template>
   <div class="cart-list">
-    <div class='cart-emtpy' v-if="foodList.length === 0">
+    <div class='cart-emtpy mt-flex-space-between' v-if="foodList.length === 0">
       <div class='emtpy-left cart-list-left'>
         <span>{{freight === 0 ? '免配送费' : `另需配送费￥${freight}`}}</span>
         <!-- TODO:自取功能以后再加 -->
@@ -10,7 +10,7 @@
         <span>{{threshold === 0 ? '无门槛':`￥${threshold} 起送`}}</span>
       </div>
     </div>
-    <div class='cart-exist' v-else @click='showMenu'>
+    <div class='cart-exist mt-flex-space-between' v-else @click='showMenu'>
       <div class='exist-left cart-list-left'>
         <div class='exist-left-price'>
           <span class='exist-left-price_actual'>￥{{totalPrice}}</span>
@@ -118,8 +118,6 @@ export default {
     background-color: #464444;
     font-size: 15px;
     border-radius: 30px;
-    display: flex;
-    justify-content: space-between;
     padding-left: 60px;
     box-sizing: border-box;
     margin: 0 auto;
@@ -180,9 +178,9 @@ export default {
       line-height: 1.3rem;
       border-bottom: 1px solid #e6e5e5;
       display: flex;
+      justify-content: space-between;
       font-size: 18px;
       padding: 5px 10px;
-      justify-content: space-between;
       box-sizing: border-box;
       .food-list_item-name {
         display: -webkit-box;

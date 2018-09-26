@@ -1,7 +1,7 @@
 <template>
   <div class='shop-catalog'>
     <header-nav :is-back="true" :title="headerTitle" :onLeft="true" @click-left="$router.push('/user/index');"></header-nav>
-    <div class='filter-box'>
+    <div class='filter-box mt-flex-space-between'>
       <div class="filter-box-content" v-click-outside="closeEvent">
         <span class='sort-target' @click="dialogVisible = true" :class="{ 'sort-target_bold' : (sortTarget !== 'sale' &&  sortTarget !== 'distance')}">
           {{sortText | sortI18n}}
@@ -177,8 +177,6 @@ export default {
   padding: 2px 10px;
   box-sizing: border-box;
   position: relative;
-  display: flex;
-  justify-content: space-between;
   align-items: center;
   .filter-box-content {
     text-align: left;
