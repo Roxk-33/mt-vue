@@ -11,7 +11,7 @@
           <div class='specification-box_content'>
             <div class='box-item' v-for="(typeItem,index) in foodInfo.type" :key="typeItem.value">
               <p class='box-item_title'>{{typeItem.type_name}}</p>
-              <ul class='box-item_specification'>
+              <ul class='box-item-specification'>
                 <li @click="chooseType(index,type_index,item)" v-for="(item,type_index) in typeItem.type_content" :key="item.type_name" :class="{'box-item_selected' : selectedInfo.typeSelected[index].label === item.label}">
                   {{item.label}}
                 </li>
@@ -174,7 +174,6 @@ export default {
     max-height: 7rem;
   }
   .specification-box_footer {
-
     height: 1.2rem;
     width: 100%;
     line-height: 0.6rem;
@@ -202,11 +201,12 @@ export default {
     text-align: left;
     margin: 5px;
   }
-  .box-item_specification {
+  .box-item-specification {
     display: flex;
     justify-content: flex-start;
     li {
       list-style-type: none;
+      text-align: center;
       width: 60px;
       height: 25px;
       line-height: 25px;

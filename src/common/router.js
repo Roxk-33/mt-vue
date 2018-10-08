@@ -9,6 +9,8 @@ import userAddressInfo from '@/views/page/user-address-info';
 import shopList from '@/views/page/shop-list';
 import shopDetail from '@/views/page/shop-detail';
 import orderPay from '@/views/page/order-pay';
+import userOrderList from '@/views/page/user-order-list';
+import userOrderDetail from '@/views/page/user-order-detail';
 
 Vue.use(Router);
 
@@ -29,18 +31,20 @@ export const constantRouterMap = [
         component: userInfo,
         name: 'userInfo',
       },
+
+      {
+        path: 'address/list',
+        component: userAddressList,
+        name: 'userAddressList',
+      },
+      {
+        path: 'address/info',
+        component: userAddressInfo,
+        name: 'userAddressInfo',
+      },
     ],
   },
-  {
-    path: '/user/address/list/',
-    component: userAddressList,
-    name: 'userAddressList',
-  },
-  {
-    path: '/user/address/info/',
-    component: userAddressInfo,
-    name: 'userAddressInfo',
-  },
+
   {
     path: '/shop',
     name: 'shop',
@@ -58,15 +62,26 @@ export const constantRouterMap = [
       },
     ],
   },
+
   {
     path: '/order',
     name: 'order',
     component: Layout,
     children: [
       {
+        path: 'list',
+        component: userOrderList,
+        name: 'userOrderList',
+      },
+      {
+        path: 'detail',
+        component: userOrderDetail,
+        name: 'userOrderDetail',
+      },
+      {
         path: 'pay',
+        name: 'pay',
         component: orderPay,
-        name: 'orderPay',
       },
     ],
   },
