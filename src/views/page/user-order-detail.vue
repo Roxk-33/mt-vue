@@ -149,7 +149,6 @@ export default {
     .detail-box-title {
       font-size: 18px;
       padding-bottom: 5px;
-      color: #000;
       height: 28px;
       border-bottom: 1px solid #cccccc;
     }
@@ -204,7 +203,6 @@ export default {
         height: 60px;
         position: relative;
         .good-info-name {
-          color: #000;
           font-size: 16px;
         }
         .good-info-price {
@@ -235,9 +233,7 @@ export default {
     .info-box-title {
       color: #797979;
     }
-    .info-box-content {
-      color: #000;
-    }
+
   }
 }
 </style>

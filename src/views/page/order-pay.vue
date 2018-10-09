@@ -23,42 +23,42 @@
           <div class='food-pic'>
             <img>
           </div>
-            <!-- TODO:样式实现较差，需要优化 -->
-            <div class='food-info'>
-              <div class='food-info-main mt-flex-space-between'>
-                <div class='food-info-name'>
-                  香辣小龙虾
-                  <span class='food-info-discount'>折</span>
-                </div>
-                <div class='food-info-price'>
-                  <span class='food-info-price_original'>￥64</span>
-                  ￥48.8
-                </div>
+          <!-- TODO:样式实现较差，需要优化 -->
+          <div class='food-info'>
+            <div class='food-info-main mt-flex-space-between'>
+              <div class='food-info-name'>
+                香辣小龙虾
+                <span class='food-info-discount'>折</span>
               </div>
-              <!-- 规格 -->
-              <p class='food-info-type'>香辣</p>
-              <p class='food-info-num'>x1</p>
+              <div class='food-info-price'>
+                <span class='food-info-price_original'>￥64</span>
+                ￥48.8
+              </div>
             </div>
+            <!-- 规格 -->
+            <p class='food-info-type'>香辣</p>
+            <p class='food-info-num'>x1</p>
+          </div>
         </li>
         <li class='food-list-item'>
           <div class='food-pic'>
             <img>
           </div>
-            <div class='food-info'>
-              <div class='food-info-main mt-flex-space-between'>
-                <div class='food-info-name'>
-                  香辣小龙虾
-                  <span class='food-info-discount'>折</span>
-                </div>
-                <div class='food-info-price'>
-                  <span class='food-info-price_original'>￥64</span>
-                  ￥48.8
-                </div>
+          <div class='food-info'>
+            <div class='food-info-main mt-flex-space-between'>
+              <div class='food-info-name'>
+                香辣小龙虾
+                <span class='food-info-discount'>折</span>
               </div>
-              <!-- 规格 -->
-              <p class='food-info-type'>香辣</p>
-              <p class='food-info-num'>x1</p>
+              <div class='food-info-price'>
+                <span class='food-info-price_original'>￥64</span>
+                ￥48.8
+              </div>
             </div>
+            <!-- 规格 -->
+            <p class='food-info-type'>香辣</p>
+            <p class='food-info-num'>x1</p>
+          </div>
         </li>
       </ul>
       <div class='food-fee'>
@@ -82,7 +82,7 @@
 
     </div>
     <div class='order-pay-note'>
-      <div class='order-pay-note-item box-right-arrow'>
+      <div class='order-pay-note-item box-right-arrow' @click="showRemarks = true">
         <span class='note-item-left'>备注</span>
         <span class='note-item-right'></span>
         <i class='iconfont icon-xiangyou'></i>
@@ -100,7 +100,7 @@
         <i class='iconfont icon-xiangyou'></i>
 
       </div>
-      <div class='order-pay-note-item box-right-arrow mt-flex-space-between'>
+      <div class='order-pay-note-item box-right-arrow mt-flex-space-between' @click="showPay = true">
         <span class='note-item-left'>支付方式</span>
         <span class='note-item-right'></span>
         <i class='iconfont icon-xiangyou'></i>
@@ -121,20 +121,51 @@
         <span>提交订单</span>
       </div>
     </div>
+
+    <van-popup v-model="showPay" position="bottom" :overlay="true">
+      <pop-up @cancel="cancelPay">
+        <div class="pay-way-box">
+          <p @click="cancelPay">在线支付</p>
+          <p @click="cancelPay">货到付款</p>
+        </div>
+      </pop-up>
+    </van-popup>
+    <van-popup v-model="showRemarks" position="right" :overlay="false">
+      <div class="remark-box">
+        <div class="remark-box-header mt-flex-space-between">
+          <i class="iconfont icon-xiangzuo" @click="showRemarks = false"></i>
+          <span class="title">添加备注</span>
+          <span @click="saveRemarks" class="save-btn">完成</span>
+        </div>
+        <textarea class="content">
+        </textarea>
+      </div>
+    </van-popup>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+import popUp from '@/views/dumb/pop-up';
+
 export default {
-  name: '',
+  name: 'order-pay',
 
   data() {
     return {
       headerTitle: '提交订单',
+      showPay: false,
+      showRemarks: false,
     };
   },
-  components: {},
-  methods: {},
+  components: {
+    popUp,
+  },
+  methods: {
+    cancelPay() {
+      this.showPay = false;
+    },
+    saveRemarks() {},
+  },
 };
 </script>
 
@@ -142,7 +173,7 @@ export default {
 @import '../../assets/style/common';
 
 .order-pay {
-  padding: 5px;
+  padding: 0 5px 50px;
 }
 .order-pay-header {
   border-radius: 5px;
@@ -310,7 +341,7 @@ export default {
     width: 30%;
     line-height: 1.2rem;
     background-color: $mt-color;
-    color: #000;
+    text-align: center;
   }
 }
 .box-right-arrow {
@@ -325,5 +356,43 @@ export default {
     right: 10px;
     color: #d4d4d4;
   }
+}
+.pay-way-box {
+  padding: 5px 10px;
+  p {
+    font-size: 15px;
+    padding: 5px 0;
+    &:first-child {
+      border-bottom: 1px solid #b1adad4f;
+    }
+  }
+}
+.remark-box {
+  text-align :center;
+  .remark-box-header {
+    margin-bottom: 10px;
+    padding: 0 5px;
+    line-height: 30px;
+    .title {
+      font-size: 18px;
+    }
+    .save-btn {
+      color: $mt-color;
+      font-size: 16px;
+    }
+
+  }
+  .content {
+    width: 90%;
+    height: 80px;
+    margin: 10px auto;
+    background-color: #d1cece3d;
+  }
+}
+</style>
+<style>
+.order-pay .van-popup--right {
+  width: 100%;
+  height: 100%;
 }
 </style>

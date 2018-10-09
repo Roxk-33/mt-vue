@@ -33,7 +33,6 @@ export default {
   border-bottom: 1px solid #cccccc;
   .header-top p {
     text-align: center;
-    color: #000;
     font-size: 18px;
     margin: 10px 0;
   }

@@ -156,7 +156,6 @@ export default {
   .cart-list-right {
     &.to-pay {
       background-color: $mt-color;
-      color: #000;
     }
     border-radius: 0 30px 30px 0;
     position: relative;
@@ -170,7 +169,6 @@ export default {
     width: 100%;
     background-color: #fff;
     padding-bottom: 1.5rem;
-    color: #000;
     z-index: $zindex-navbar-menu;
     li {
       list-style-type: none;

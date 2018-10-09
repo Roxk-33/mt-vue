@@ -57,7 +57,6 @@ export default {
       .item-header-shop-info {
         display: inline-block;
         .shop-info-name {
-          color: #000;
           margin-left: 10px;
           font-size: 14px;
         }
@@ -89,7 +88,6 @@ export default {
       }
       .order-price {
         float: right;
-        color: #000;
         font-weight: 600;
         font-size: 15px;
       }
@@ -100,7 +98,6 @@ export default {
       .item-content-btn {
         padding: 5px;
         border: 1px solid #cccccc;
-        color: #000;
       }
     }
   }
