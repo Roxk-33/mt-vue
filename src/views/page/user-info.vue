@@ -86,13 +86,7 @@ export default {
 .info-box {
   background-color: white;
   padding: 0;
-  .info-box_title {
-  }
-  .info-box_content {
-    .van-icon {
-      vertical-align: text-top;
-    }
-  }
+
   .info-box-avatar {
     height: 1.5rem;
     line-height: 1.5rem;
@@ -101,7 +95,6 @@ export default {
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 50%;
-    vertical-align: middle;
   }
   li {
     display: flex;
@@ -117,6 +110,7 @@ export default {
 .info-footer {
   position: absolute;
   bottom: 0;
+  text-align: center;
   width: 100%;
   height: 1.5rem;
   line-height: 1.5rem;

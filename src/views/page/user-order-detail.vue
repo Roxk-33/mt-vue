@@ -2,16 +2,23 @@
   <div class="user-order-detail">
     <div class="detail-top">
       <div class="icons">
-        <span>
+        <router-link to="/order/list">
           <i class="iconfont icon-xiangzuo"></i>
-        </span>
+        </router-link>
       </div>
       <p class="order-progress">
         订单完成
         <i class='iconfont icon-xiangyou'></i>
       </p>
     </div>
-
+    <div class="detail-box detail-other">
+      <p>感谢您对美团外卖的信任，期待再次光临</p>
+      <div class="detail-top-btn">
+        <div class="after-sale">申请售后</div>
+        <div class="again">再来一单</div>
+        <div class="evaluation">评价</div>
+      </div>
+    </div>
     <div class="detail-box good-box">
       <div class="detail-box-title">
         <span>李功夫中华鸡排</span>
@@ -27,7 +34,8 @@
         </div>
 
       </div>
-      <div class="detail-content  detail-box-item">
+
+      <div class="detail-box-item detail-content">
         <div class="detail-content-item">
           <img class="good-img" src="https://via.placeholder.com/80x80" alt="">
           <div class="good-info">
@@ -104,21 +112,26 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
+@import '../../assets/style/common';
+
 .user-order-detail {
   padding: 80px 10px 0;
   .icon-xiangyou {
     color: #2c3e50;
   }
-  .detail-top{
+  .detail-top {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     height: 80px;
     padding: 0 10px;
+    background-color: whitesmoke;
+    z-index: $zindex-header;
     .icons {
-      margin-bottom: 15px;
-      span {
+      margin-bottom: 10px;
+      padding-top: 10px;
+      a {
         display: inline-block;
         width: 20px;
         text-align: center;
@@ -126,15 +139,15 @@ export default {
         height: 20px;
         margin: 0 5px;
         border-radius: 50%;
-        background-color: #000;
+        background-color: #827e7e;
       }
       i {
         color: #fff;
+        margin-left: -2px;
       }
     }
     .order-progress {
-      font-size: 25px;
-      font-weight: 600;
+      font-size: 22px;
       margin-bottom: 15px;
       i {
         font-size: 15px;
@@ -151,6 +164,26 @@ export default {
       padding-bottom: 5px;
       height: 28px;
       border-bottom: 1px solid #cccccc;
+    }
+  }
+  .detail-other {
+    p {
+      font-size: 15px;
+      margin-bottom: 15px;
+    }
+    .detail-top-btn {
+      > div {
+        height: 20px;
+        line-height: 20px;
+        padding: 2px 10px;
+        display: inline-block;
+        border: 1px solid #cccccc;
+      }
+      .again,
+      .evaluation {
+        background-color: $mt-color;
+        border-color: $mt-color;
+      }
     }
   }
   .good-box {
@@ -233,7 +266,6 @@ export default {
     .info-box-title {
       color: #797979;
     }
-
   }
 }
 </style>

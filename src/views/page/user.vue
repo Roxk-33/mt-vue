@@ -9,38 +9,38 @@
         <div class='content-avatar' @click="toPage">
           <img :src='userAvatar'>
         </div>
-          <span v-if="userStatus" class='content-info_body' @click="toPage">
-            {{userName}}
-          </span>
-          <div v-else class='content-info_login' to='../login' @click="toPage">
-            登录/注册
-          </div>
+        <span v-if="userStatus" class='content-info_body' @click="toPage">
+          {{userName}}
+        </span>
+        <div v-else class='content-info_login' to='../login' @click="toPage">
+          登录/注册
         </div>
       </div>
-      <div class='personPage-body'>
-        <van-row class='fn-list' type="flex" justify="space-around">
-          <van-col :span="8">
-            <div class='fn-list-item'>
-              <i class='iconfont icon-gouwudai'></i>
-              <p>我的收藏</p>
-            </div>
-          </van-col>
-          <van-col :span="8">
-            <div class='fn-list-item'>
-              <i class='iconfont icon-pingjia'></i>
-              <p>我的评价</p>
-            </div>
-          </van-col>
-          <van-col :span="8">
-            <div class='fn-list-item'>
-              <i class='iconfont icon-dizhi'></i>
-              <p>我的地址</p>
-            </div>
-          </van-col>
-        </van-row>
-      </div>
-      <footer-nav active='1'></footer-nav>
     </div>
+    <div class='personPage-body'>
+      <van-row class='fn-list' type="flex" justify="space-around">
+        <van-col :span="8">
+          <div class='fn-list-item'>
+            <i class='iconfont icon-gouwudai'></i>
+            <p>我的收藏</p>
+          </div>
+        </van-col>
+        <van-col :span="8">
+          <div class='fn-list-item'>
+            <i class='iconfont icon-pingjia'></i>
+            <p>我的评价</p>
+          </div>
+        </van-col>
+        <van-col :span="8">
+          <div class='fn-list-item'>
+            <i class='iconfont icon-dizhi'></i>
+            <p>我的地址</p>
+          </div>
+        </van-col>
+      </van-row>
+    </div>
+    <footer-nav active='1'></footer-nav>
+  </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
@@ -80,7 +80,7 @@ export default {
 @import '../../assets/style/common';
 
 .personPage-header {
-  height: 4rem;
+  height: 3rem;
   background-color: $mt-color;
 
   .header_setting {
@@ -92,9 +92,9 @@ export default {
   .header_content {
     text-align: left;
     height: 100%;
-    margin: 0px 30px;
+    margin-left: 20px;
     box-sizing: border-box;
-    padding-top: 1.5rem;
+    padding-top: 0.5rem;
     display: flex;
     align-items: center;
 
@@ -132,14 +132,16 @@ export default {
   }
 }
 .fn-list {
-  padding-top: 1rem;
+  padding: 0.4rem 0;
   background-color: white;
+  text-align: center;
   .fn-list-item {
     font-size: 12px;
     font-weight: 500;
 
     .iconfont {
       color: $mt-color;
+      font-size: 28px;
     }
   }
 }

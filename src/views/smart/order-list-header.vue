@@ -40,6 +40,7 @@ export default {
     display: flex;
     justify-content: space-around;
     .header-nav-item {
+      text-align: center;
       width: 100px;
       padding: 10px 0;
       font-size: 15px;

@@ -11,6 +11,7 @@ import shopDetail from '@/views/page/shop-detail';
 import orderPay from '@/views/page/order-pay';
 import userOrderList from '@/views/page/user-order-list';
 import userOrderDetail from '@/views/page/user-order-detail';
+import userOrderEvaluation from '@/views/page/user-order-evaluation';
 
 Vue.use(Router);
 
@@ -79,15 +80,20 @@ export const constantRouterMap = [
         name: 'userOrderDetail',
       },
       {
+        path: 'evaluation',
+        component: userOrderEvaluation,
+        name: 'userOrderEvaluation',
+      },
+      {
         path: 'pay',
         name: 'pay',
         component: orderPay,
       },
     ],
   },
-  { path: '/', component: shopList, hidden: true },
-  // { path: '/404', component: _import('errorPage/404'), hidden: true },
-  // { path: '/401', component: _import('errorPage/401'), hidden: true },
+  { path: '/', redirect: '/user/index' },
+  // { path: '/404', component: _import('errorPage/404'),  },
+  // { path: '/401', component: _import('errorPage/401'),  },
   // {
   //     path: '',
   //     component: Layout,

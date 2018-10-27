@@ -53,6 +53,7 @@ export default {
 .login-container {
   background-color: white;
   height: 100%;
+  text-align: center;
   .container-box {
     width: 100%;
     margin: 10px auto;

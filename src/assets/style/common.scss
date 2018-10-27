@@ -1,5 +1,6 @@
 $mt-color: #ffd161;
 $mt-gray: #b1adad;
+$mt-light-gray: #bebdbd8f;
 // base
 $zindex-first: 10;
 $zindex-second: 20;
@@ -147,4 +148,12 @@ $zindex-navbar-main: 1002;
   -webkit-box-pack: justify;
   -ms-flex-pack: justify;
   justify-content: space-between;
+}
+.mt-flex-space-around {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-around;
 }

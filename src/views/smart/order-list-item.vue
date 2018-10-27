@@ -12,7 +12,7 @@
         <p>订单已完成</p>
       </div>
     </div>
-    <div class="item-content">
+    <div class="item-content" @click="gotoDetail">
       <div class="item-content-info">
         <span class="info-name">原香鸡排</span>
         <span class="info-num">等<i>2</i>件商品</span>
@@ -21,6 +21,7 @@
       <div class="item-content-btn-box">
         <span class="item-content-btn">再来一单</span>
         <span class="item-content-btn">再来一单</span>
+        <span class="item-content-btn evaluation-btn" @click.stop="gotoEva">评价</span>
       </div>
     </div>
   </div>
@@ -34,11 +35,19 @@ export default {
     return {};
   },
   components: {},
-  methods: {},
+  methods: {
+    gotoDetail() {
+      this.$router.push('/order/detail');
+    },
+    gotoEva() {
+      this.$router.push('/order/evaluation');
+    },
+  },
 };
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
+@import '../../assets/style/common';
 .order-list-item {
   background-color: #fff;
   margin: 0 auto 10px;
@@ -56,6 +65,7 @@ export default {
       }
       .item-header-shop-info {
         display: inline-block;
+        vertical-align: middle;
         .shop-info-name {
           margin-left: 10px;
           font-size: 14px;
@@ -96,8 +106,16 @@ export default {
       text-align: right;
       margin-top: 20px;
       .item-content-btn {
+        display: inline-block;
+        text-align: center;
+        width: 60px;
+        box-sizing: border-box;
         padding: 5px;
         border: 1px solid #cccccc;
+        &.evaluation-btn {
+          background-color: $mt-color;
+          border-color: $mt-color;
+        }
       }
     }
   }
