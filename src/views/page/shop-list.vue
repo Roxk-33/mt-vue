@@ -43,15 +43,13 @@
             <div class='shop-item_right'>
               <p class='shop-title'>{{shop.shop_title}}</p>
               <div class='shop-basedata'>
-                <div class='double-box'>
-                  <div class='sale-data'>
-                    <div class='sale-data-item sale-data-stars'>
-                      <rate :rateValue="shop.rate"></rate>
-                    </div>
-                    <div class='sale-data-item' style="text-align:right;">
-                      月售
-                      <i>{{shop.sales}}</i>
-                    </div>
+                <div class='mt-flex-space-between'>
+                  <div class='sale-data-stars'>
+                    <rate v-model="shop.rate" size="10" marginLeft="2"></rate>
+                  </div>
+                  <div class='sale-data-volume'>
+                    月售
+                    <i>{{shop.sales}}</i>
                   </div>
                   <div class='logistics-data'>
                     <span class='logistics-data-item'>
@@ -275,30 +273,24 @@ export default {
       font-size: 17px;
       color: black;
     }
-    .double-box {
-      display: flex;
-      justify-content: space-around;
-    }
+
     .sale-data {
-      display: inline-block;
-      width: 60%;
       .sale-data-item {
-        width: 40%;
-        float: left;
+        display: inline-block;
         line-height: 18px;
       }
       .sale-data-stars {
-        width: 55%;
+        width: 60%;
         height: 100%;
         margin-right: 5px;
+        .rate {
+          white-space: nowrap;
+        }
         // background-color: red;
       }
     }
 
     .logistics-data {
-      display: inline-block;
-      width: 46%;
-      line-height: 19px;
       text-align: right;
     }
 
