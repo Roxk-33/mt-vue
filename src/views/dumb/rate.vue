@@ -1,11 +1,9 @@
 <template>
-  <div class="page">
-    <span v-for="(item,index) in max" :key="index">
-      <i :class="classes[index]" style="margin-left:1px;"></i>
+  <div class="rate">
+    <span v-for="(item,index) in list" :key="index" @click="onSelect(index)">
+      <i class="iconfont" :class="item ? selectIcon : notIcon" :style="style"></i>
     </span>
-
-    <span>{{ currentValue }}</span>
-
+    <span v-if="isShowText">{{ value }}</span>
   </div>
 </template>
 
@@ -15,14 +13,25 @@ export default {
 
   data() {
     return {
-      currentValue: this.rateValue,
       hoverIndex: -1,
+      selectIcon: '',
+      notIcon: '',
     };
   },
+  mounted() {
+    this.selectIcon = this.iconClasses[0];
+    this.notIcon = this.iconClasses[1];
+    console.log(this.selectIcon);
+  },
   props: {
-    rateValue: {
-      type: Number,
-      default: 0,
+    isShowText: {
+      type: Boolean,
+      default: true,
+    },
+
+    disabled: {
+      type: Boolean,
+      default: false,
     },
     max: {
       type: Number,
@@ -31,8 +40,20 @@ export default {
     iconClasses: {
       type: Array,
       default() {
-        return ['fa fa-star', 'fa fa-star-half-empty', 'fa fa-star-o'];
+        return ['icon-star', 'icon-empty-star'];
       },
+    },
+    value: {
+      type: Number,
+      default: 0,
+    },
+    size: {
+      type: Number,
+      default: 20,
+    },
+    marginLeft: {
+      type: Number,
+      default: 10,
     },
   },
   computed: {
@@ -45,32 +66,34 @@ export default {
     halfClass() {
       return this.iconClasses[1];
     },
-    classes() {
-      const result = [];
-      let i;
-      const threshold = Math.floor(this.currentValue);
-      for (i = 0; i < threshold; i += 1) {
-        result.push(this.activeClass);
-      }
-      if (this.currentValue - threshold) {
-        result.push(this.halfClass);
-        i += 1;
-      }
-      for (; i <= this.max; i += 1) {
-        result.push(this.voidClass);
-      }
-
-      return result;
+    style() {
+      return {
+        fontSize: this.size + 'px',
+        marginLeft: this.marginLeft + 'px',
+      };
+    },
+    list() {
+      console.log(Array.apply(null, { length: this.max }).map((value, index) => index < this.value));
+      return Array.apply(null, { length: this.max }).map((value, index) => index < this.value);
     },
   },
   components: {},
-  methods: {},
+  methods: {
+    onSelect(index) {
+      if (!this.disabled) {
+        this.$emit('input', index + 1);
+        this.$emit('change', index + 1);
+      }
+    },
+  },
 };
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-.fa-star,
-.fa-star-half-empty {
+.iconfont {
+  margin-left: 5px;
+}
+.icon-star {
   color: #ffd161;
 }
 </style>
