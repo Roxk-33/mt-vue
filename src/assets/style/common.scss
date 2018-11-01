@@ -1,4 +1,5 @@
 $mt-color: #ffd161;
+$mt-light-color: #ffd161;
 $mt-gray: #b1adad;
 $mt-light-gray: #bebdbd8f;
 // base
@@ -11,6 +12,9 @@ $zindex-fourth: 40;
 $zindex-navbar: 1000;
 $zindex-dropdown: 1010;
 $zindex-tooltip: 1020;
+$zindex-mask: 2000;
+$zindex-mask-box: 2001;
+
 $zindex-fixed: 3000;
 $zindex-overlay: 9080;
 $zindex-modal: 9090;
