@@ -1,8 +1,9 @@
 <template>
   <div class='shop-catalog'>
     <header-nav :is-back="true" :title="headerTitle" :onLeft="true" @click-left="$router.push('/user/index');"></header-nav>
-    <shop-list-header :sortTarget="sortTarget" @change="changeFilter"></shop-list-header>
+    <shop-list-header :sortTarget="sortTarget" @change="changeFilter" @showMask="showMask"></shop-list-header>
     <div class="shop-list">
+      <mt-mask v-model="show"></mt-mask>
       <van-list v-model="loading" :finished="finished" @load="onPullingUp">
         <van-cell v-for="(shop,index) in shopList" :key='index' style="padding:10px">
           <router-link class='shop-item' :to="{ name: 'shopDetail', params: { shopId: shop.shop_id }}">
@@ -48,7 +49,6 @@
           </router-link>
         </van-cell>
       </van-list>
-
     </div>
   </div>
 </template>
@@ -59,6 +59,7 @@ import Scroll from '@/views/dumb/scroll';
 import Rate from '@/views/dumb/rate';
 import headerNav from '@/views/dumb/header-nav';
 import shopListHeader from '@/views/smart/shop-list-header';
+import mtMask from '@/views/dumb/mask';
 
 export default {
   name: 'shopList',
@@ -71,6 +72,7 @@ export default {
       headerTitle: '美食',
       sortTarget: 'complex',
       page: 1,
+      show: false,
       pullUpLoad: {
         threshold: 10,
         txt: { more: '', noMore: '暂无更多数据' },
@@ -82,8 +84,13 @@ export default {
     Rate,
     headerNav,
     shopListHeader,
+    mtMask,
   },
   methods: {
+    // 点击排序框时，显示店铺列表遮罩层
+    showMask(result) {
+      this.show = result;
+    },
     getList() {
       fetchShopList({ page: this.page, type: this.sortTarget }).then(resp => {
         this.loading = false;
@@ -107,6 +114,14 @@ export default {
   background-color: white;
   min-height: 42rem;
   position: relative;
+
+  .mt-modal {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
   i {
     font-style: normal;
   }
@@ -152,6 +167,10 @@ export default {
         height: 20px;
       }
       text-align: left;
+      .sale-data-volume {
+        font-weight: 900;
+        color: #000;
+      }
     }
     .shop-title {
       font-weight: 700;

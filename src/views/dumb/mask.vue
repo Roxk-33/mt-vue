@@ -34,7 +34,7 @@ export default {
 };
 </script>
 
-<style scoped rel="stylesheet/scss" lang="scss">
+<style rel="stylesheet/scss" lang="scss">
 @import '../../assets/style/common';
 
 .mt-modal {

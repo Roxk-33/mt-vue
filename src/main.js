@@ -11,7 +11,7 @@ import store from './store/index';
 import './assets/style/normalize.css';
 import './mock';
 import './directive';
-import './assets/style/common.css';
+import './assets/style/common.scss';
 import { Dialog } from 'vant';
 
 Vue.use(Dialog);

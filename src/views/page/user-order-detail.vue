@@ -14,9 +14,9 @@
     <div class="detail-box detail-other">
       <p>感谢您对美团外卖的信任，期待再次光临</p>
       <div class="detail-top-btn">
-        <div class="after-sale">申请售后</div>
-        <div class="again">再来一单</div>
-        <div class="evaluation">评价</div>
+        <router-link class="again" to="/order/evaluation">再来一单</router-link>
+        <router-link class="after-sale" to="/order/evaluation">申请售后</router-link>
+        <router-link class="evaluation" to="/order/evaluation">评价</router-link>
       </div>
     </div>
     <div class="detail-box good-box">
@@ -107,7 +107,10 @@ export default {
     return {};
   },
   components: {},
-  methods: {},
+  methods: {
+    getDate() {},
+  },
+  created() {},
 };
 </script>
 
@@ -172,7 +175,7 @@ export default {
       margin-bottom: 15px;
     }
     .detail-top-btn {
-      > div {
+      > a {
         height: 20px;
         line-height: 20px;
         padding: 2px 10px;
