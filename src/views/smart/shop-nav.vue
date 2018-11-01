@@ -37,7 +37,6 @@ export default {
 @import '../../assets/style/common';
 
 .shop-nav {
-  line-height: 0.5rem;
   padding: 0.1rem;
   box-sizing: border-box;
   width: 100%;

@@ -25,7 +25,7 @@
       </div>
     </div>
     <cart-list :total-price="cartInfo.totalPrice" :foodList="cartInfo.list" @adjustNum="adjustNum" @toSettle="toSettle"></cart-list>
-    <specificationBox @pushCart="getSelectGoood" :visible.sync="showSpBox" :center="true" width="90%" :foodInfo="foodSelected">
+    <specificationBox @pushCart="getSelectGoood" v-model="showSpBox" :center="true" width="90%" :foodInfo="foodSelected">
     </specificationBox>
   </div>
 </template>

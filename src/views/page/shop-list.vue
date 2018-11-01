@@ -1,38 +1,7 @@
 <template>
   <div class='shop-catalog'>
     <header-nav :is-back="true" :title="headerTitle" :onLeft="true" @click-left="$router.push('/user/index');"></header-nav>
-    <div class='filter-box mt-flex-space-between'>
-      <div class="filter-box-content" v-click-outside="closeEvent">
-        <span class='sort-target' @click="dialogVisible = true" :class="{ 'sort-target_bold' : (sortTarget !== 'sale' &&  sortTarget !== 'distance')}">
-          {{sortText | sortI18n}}
-          <i :class="{'fa fa-angle-down' : !dialogVisible,'fa fa-angle-up' : dialogVisible}"></i>
-        </span>
-        <span class='sort-target sort-target_small' @click="selectSortType('sale')" :class="{ 'sort-target_bold' : sortTarget === 'sale' }">销量</span>
-        <span class='sort-target sort-target_small' @click="selectSortType('distance')" :class="{ 'sort-target_bold' : sortTarget === 'distance' }">距离</span>
-
-        <transition name="slide-fade">
-          <div class='sort-box' v-if='dialogVisible'>
-            <p @click="selectSortType('complex')" :class="{ 'sort-target_selected' : sortTarget === 'complex' }">
-              综合排序
-            </p>
-            <p @click="selectSortType('speed')" :class="{ 'sort-target_selected' : sortTarget === 'speed' }">
-              速度最快
-            </p>
-            <p @click="selectSortType('rate')" :class="{ 'sort-target_selected' : sortTarget === 'rate' }">
-              评分最高
-            </p>
-            <p @click="selectSortType('threshold')" :class="{ 'sort-target_selected' : sortTarget === 'threshold' }">起送价最低</p>
-            <p @click="selectSortType('freight')" :class="{ 'sort-target_selected' : sortTarget === 'freight' }">配送费最低</p>
-            <p @click="selectSortType('perCapitaDec')" :class="{ 'sort-target_selected' : sortTarget === 'perCapitaDec' }">人均高到低</p>
-            <p @click="selectSortType('perCapitaAsc')" :class="{ 'sort-target_selected' : sortTarget === 'perCapitaAsc' }">人均低到高</p>
-          </div>
-        </transition>
-      </div>
-      <div class="filter-box-content filter-box-content_right">
-        筛选
-        <i class='fa fa-bars' style="margin-left:5px;"></i>
-      </div>
-    </div>
+    <shop-list-header :sortTarget="sortTarget" @change="changeFilter"></shop-list-header>
     <div class="shop-list">
       <van-list v-model="loading" :finished="finished" @load="onPullingUp">
         <van-cell v-for="(shop,index) in shopList" :key='index' style="padding:10px">
@@ -45,7 +14,7 @@
               <div class='shop-basedata'>
                 <div class='mt-flex-space-between'>
                   <div class='sale-data-stars'>
-                    <rate v-model="shop.rate" size="10" marginLeft="2"></rate>
+                    <rate v-model="shop.rate" :size="10" :marginLeft="2"></rate>
                   </div>
                   <div class='sale-data-volume'>
                     月售
@@ -86,9 +55,10 @@
 
 <script >
 import { fetchShopList } from '@/api/shop';
-import Scroll from '@/views/dumb/scroll/index';
+import Scroll from '@/views/dumb/scroll';
 import Rate from '@/views/dumb/rate';
 import headerNav from '@/views/dumb/header-nav';
+import shopListHeader from '@/views/smart/shop-list-header';
 
 export default {
   name: 'shopList',
@@ -100,8 +70,6 @@ export default {
       shopList: [],
       headerTitle: '美食',
       sortTarget: 'complex',
-      sortText: 'complex',
-      dialogVisible: false, // 排序框
       page: 1,
       pullUpLoad: {
         threshold: 10,
@@ -113,6 +81,7 @@ export default {
     Scroll,
     Rate,
     headerNav,
+    shopListHeader,
   },
   methods: {
     getList() {
@@ -125,96 +94,15 @@ export default {
       this.loading = true;
       this.getList();
     },
-    selectSortType(type) {
+    changeFilter(type) {
       this.sortTarget = type;
-      if (!(type === 'sale' || type === 'distance')) {
-        this.sortText = type;
-        this.dialogVisible = !this.dialogVisible;
-      } else {
-        this.sortText = 'complex';
-        this.dialogVisible = false;
-      }
-
-      this.getList();
-    },
-    closeEvent() {
-      this.dialogVisible = false;
     },
   },
   created() {},
-
-  filters: {
-    sortI18n(value) {
-      switch (value) {
-        case 'complex':
-          return '综合排序';
-        case 'speed':
-          return '速度最快';
-        case 'rate':
-          return '评分最高';
-        case 'threshold':
-          return '起送价最低';
-        case 'freight':
-          return '配送费最低';
-        case 'perCapitaDec':
-          return '人均高到低';
-        case 'perCapitaAsc':
-          return '人均低到高';
-        default:
-          return this.sortI18n;
-      }
-    },
-  },
 };
 </script>
 
 <style  rel="stylesheet/scss" lang="scss">
-.filter-box {
-  background-color: white;
-  height: 40px;
-  padding: 2px 10px;
-  box-sizing: border-box;
-  position: relative;
-  align-items: center;
-  .filter-box-content {
-    text-align: left;
-    padding-left: 0.5rem;
-    display: flex;
-    box-sizing: border-box;
-    align-items: center;
-    font-size: 12px;
-    color: rgb(165, 164, 164);
-  }
-  .sort-target {
-    margin-right: 5px;
-    &:first-child {
-      width: 80px;
-      display: inline-block;
-      color: black;
-    }
-    &.sort-target_bold {
-      font-weight: 600;
-      color: black;
-    }
-  }
-  .sort-box {
-    position: absolute;
-    width: 100%;
-    text-align: left;
-    padding-left: 20px;
-    font-size: 13px;
-    left: -2px;
-    top: 0;
-    z-index: 999;
-    margin-top: 35px;
-    background-color: white;
-    color: black;
-    .sort-target_selected {
-      color: #ffd161;
-      font-weight: 700;
-    }
-  }
-}
 .shop-list {
   background-color: white;
   min-height: 42rem;
