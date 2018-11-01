@@ -17,19 +17,17 @@ export default {
   },
   close(id) {
     const { stack } = context;
-
-    if (stack.length) {
-      if (context.top.vm._popupId === id) {
-        stack.pop();
-        this.update();
-      } else {
-        context.stack = stack.filter(item => item.vm._popupId !== id);
-      }
-    }
+    // if (stack.length) {
+    // if (context.top.vm._popupId === id) {
+    stack.pop();
+    this.update();
+    // } else {
+    // context.stack = stack.filter(item => item.vm._popupId !== id);
+    // }
+    // }
   },
   update() {
     let { modal } = context;
-
     if (!modal) {
       modal = new (Vue.extend(Modal))({
         el: document.createElement('div'),
@@ -38,6 +36,7 @@ export default {
 
       context.modal = modal;
     }
+    console.log(1);
     if (modal.$el.parentNode) {
       modal.visible = false;
     }

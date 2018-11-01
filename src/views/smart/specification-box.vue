@@ -51,16 +51,11 @@ export default {
       type: String,
       default: '标题',
     },
-    value: {
-      type: Boolean,
-      default: true,
-    },
+
     foodInfo: {
       type: Object,
     },
   },
-  computed: {},
-  mounted() {},
   methods: {
     refreshTypeInfo() {
       this.selectedInfo.typeInfo = '';
@@ -94,7 +89,7 @@ export default {
       console.log(this.selectedInfo);
 
       this.$emit('pushCart', this.selectedInfo);
-      this.closeEvent();
+      this.$emit('input', false);
       this.closed = false;
     },
   },

@@ -120,7 +120,6 @@ export default {
     getSelectGoood(foodInfo) {
       this.cartInfo.totalPrice += foodInfo.totalPrice;
       this.totalPrice = this.cartInfo.totalPrice;
-      console.log(foodInfo);
       // TODO:检测是否有相同规格的商品,两数组之间的对比。当前实现方法并不理想
       // const removeDuplicateItems = arr => [...new Set(arr)];
       // removeDuplicateItems([42, 'foo', 42, 'foo', true, true]);
@@ -149,7 +148,6 @@ export default {
         foodInfo.num = 1;
         this.cartInfo.list.push(JSON.parse(JSON.stringify(foodInfo)));
       }
-      console.log(this.cartInfo);
     },
     /**
      * @description 删除/增加 已选商品
