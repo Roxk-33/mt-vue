@@ -150,7 +150,7 @@ export default {
       font-size: 22px;
       margin-bottom: 15px;
       i {
-        font-size: 15px;
+        font-size: 20px;
       }
     }
   }
@@ -204,8 +204,11 @@ export default {
         display: inline-block;
         margin: 0 5px;
         border-radius: 50%;
-        padding: 3px;
+        width: 20px;
+        height: 20px;
         border: 1px solid #cccccc;
+        text-align: center;
+        line-height: 16px;
       }
       i {
         font-size: 12px;

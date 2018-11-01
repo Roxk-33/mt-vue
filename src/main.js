@@ -12,7 +12,9 @@ import './assets/style/normalize.css';
 import './mock';
 import './directive';
 import './assets/style/common.css';
+import { Dialog } from 'vant';
 
+Vue.use(Dialog);
 // A modern alternative to CSS resets
 Vue.config.productionTip = false;
 Vue.use(Vant);

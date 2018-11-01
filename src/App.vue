@@ -18,4 +18,7 @@ export default {
   /* color: #2c3e50; */
   color: #000;
 }
+.mt-overflow-hidden {
+  overflow: hidden !important;
+}
 </style>

@@ -1,45 +1,41 @@
 <template>
-  <div>
-    <div class='specification-box-mask' v-show="visible" @touchmove.prevent.stop></div>
-    <transition name='box-scale'>
-      <div class="specification-box-container" v-show="visible">
-        <div class='specification-box' v-click-outside="closeEvent">
-          <div class='specification-box_header'>
-            <span class='specification-box_title'>{{title}}</span>
-            <i class='specification-box_close fa fa-close' @click="closeEvent"></i>
-          </div>
-          <div class='specification-box_content'>
-            <div class='box-item' v-for="(typeItem,index) in foodInfo.type" :key="typeItem.value">
-              <p class='box-item_title'>{{typeItem.type_name}}</p>
-              <ul class='box-item-specification'>
-                <li @click="chooseType(index,type_index,item)" v-for="(item,type_index) in typeItem.type_content" :key="item.type_name" :class="{'box-item_selected' : selectedInfo.typeSelected[index].label === item.label}">
-                  {{item.label}}
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class='specification-box_footer mt-flex-space-between'>
-            <div class='footer-info'>
-              <span class='footer-info_price'>￥{{selectedInfo.totalPrice}}</span>
-              <span class='footer-info_specification'>({{selectedInfo.typeInfo}})</span>
-            </div>
-            <van-button size="small" @click="pushCart">
-              <i class='fa fa-plus'></i>加入购物车
-            </van-button>
+  <transition name='box-scale'>
+    <div class="specification-box-container" v-show="value">
+      <div class='specification-box'>
+        <div class='specification-box_header'>
+          <span class='specification-box_title'>{{title}}</span>
+          <i class='specification-box_close fa fa-close'></i>
+        </div>
+        <div class='specification-box_content'>
+          <div class='box-item' v-for="(typeItem,index) in foodInfo.type" :key="typeItem.value">
+            <p class='box-item_title'>{{typeItem.type_name}}</p>
+            <ul class='box-item-specification'>
+              <li @click="chooseType(index,type_index,item)" v-for="(item,type_index) in typeItem.type_content" :key="item.type_name" :class="{'box-item_selected' : selectedInfo.typeSelected[index].label === item.label}">
+                {{item.label}}
+              </li>
+            </ul>
           </div>
         </div>
+        <div class='specification-box_footer mt-flex-space-between'>
+          <div class='footer-info'>
+            <span class='footer-info_price'>￥{{selectedInfo.totalPrice}}</span>
+            <span class='footer-info_specification'>({{selectedInfo.typeInfo}})</span>
+          </div>
+          <van-button size="small" @click="pushCart">
+            <i class='fa fa-plus'></i>加入购物车
+          </van-button>
+        </div>
       </div>
-
-    </transition>
-  </div>
+    </div>
+  </transition>
 </template>
 
 <script type="text/ecmascript-6">
-import Clickoutside from '@/directive/clickoutside';
+import Popup from '@/mixins/popup';
 
 export default {
   name: 'specification-box',
-
+  mixins: [Popup],
   data() {
     return {
       closed: false,
@@ -50,14 +46,12 @@ export default {
       },
     };
   },
-  directives: { Clickoutside },
-
   props: {
     title: {
       type: String,
       default: '标题',
     },
-    visible: {
+    value: {
       type: Boolean,
       default: true,
     },
@@ -68,12 +62,6 @@ export default {
   computed: {},
   mounted() {},
   methods: {
-    closeEvent() {
-      if (this.visible) {
-        this.$emit('update:visible', false);
-        this.closed = false;
-      }
-    },
     refreshTypeInfo() {
       this.selectedInfo.typeInfo = '';
       this.selectedInfo.typeSelected.forEach(typeInfo => {
@@ -112,12 +100,9 @@ export default {
   },
 
   watch: {
-    visible(val) {
+    value(val) {
       if (val) {
         this.getInfo();
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.documentElement.style.overflow = 'visible';
       }
     },
   },
@@ -138,6 +123,7 @@ export default {
   top: 50%;
   left: 50%;
   width: 85%;
+  z-index: $zindex-mask-box;
 }
 .specification-box {
   position: relative;
@@ -184,16 +170,6 @@ export default {
     border-radius: 5px;
   }
 }
-.specification-box-mask {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 100;
-}
-
 .box-item {
   margin-bottom: 10px;
   padding: 0 5px;

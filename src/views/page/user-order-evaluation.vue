@@ -1,5 +1,6 @@
 <template>
   <div class="evaluation">
+    <header-nav :is-back="true"  :onLeft="true" headerbgColor="whitesmoke" :border="false" :isBack="false" :isClose="true"  @click-left="close"></header-nav>
     <div class="evaluation-person evaluation-box">
       <div class="top">
         <div class="info">
@@ -40,18 +41,33 @@
       </div>
       <textarea class="evaluation-content" rows="8" cols="40"></textarea>
       <ul class="evaluation-good">
+
         <li class="evaluation-good-item mt-flex-space-between">
           <span class="good-name">撒尿牛丸</span>
           <div class="good-review">
-            <span class="good-like">赞</span>
-            <span class="good-dislike">踩</span>
+            <span class="good-like"><i class="iconfont icon-dianzan_xianxing"></i> 赞</span>
+            <span class="good-dislike"><i class="iconfont icon-cai"></i> 踩</span>
           </div>
         </li>
         <li class="evaluation-good-item mt-flex-space-between">
           <span class="good-name">撒尿牛丸</span>
           <div class="good-review">
-            <span class="good-like">赞</span>
-            <span class="good-dislike">踩</span>
+            <span class="good-like"><i class="iconfont icon-dianzan_xianxing"></i> 赞</span>
+            <span class="good-dislike"><i class="iconfont icon-cai"></i> 踩</span>
+          </div>
+        </li>
+        <li class="evaluation-good-item mt-flex-space-between">
+          <span class="good-name">撒尿牛丸</span>
+          <div class="good-review">
+            <span class="good-like"><i class="iconfont icon-dianzan_xianxing"></i> 赞</span>
+            <span class="good-dislike"><i class="iconfont icon-cai"></i> 踩</span>
+          </div>
+        </li>
+        <li class="evaluation-good-item mt-flex-space-between">
+          <span class="good-name">撒尿牛丸</span>
+          <div class="good-review">
+            <span class="good-like"><i class="iconfont icon-dianzan_xianxing"></i> 赞</span>
+            <span class="good-dislike"><i class="iconfont icon-cai"></i> 踩</span>
           </div>
         </li>
       </ul>
@@ -62,6 +78,7 @@
 
 <script type="text/ecmascript-6">
 import Rate from '@/views/dumb/rate';
+import headerNav from '@/views/dumb/header-nav';
 
 export default {
   name: 'order-evaluation',
@@ -113,6 +130,7 @@ export default {
   },
   components: {
     Rate,
+    headerNav,
   },
   methods: {
     evaPerson(target) {
@@ -127,6 +145,23 @@ export default {
       this.isSatisfied = type;
       this.evaPersonSelect = [];
     },
+    close(){
+      const oThis = this;
+       this.$dialog.alert({
+        message: '确定关闭评价？',
+        showCancelButton:true,
+        cancelButtonText:'关闭评价',
+        confirmButtonText:'再想想',
+        beforeClose(action, done) {
+          if (action === 'confirm') {
+            done();
+          } else {
+            oThis.$router.go(-1);
+            done();
+          }
+        }
+    });
+    }
   },
   computed: {
     evaluationTitle() {
@@ -243,6 +278,17 @@ export default {
           border-radius: 10px;
           padding: 2px 8px;
           margin: 0 2px;
+          i {
+            font-size: 13px;
+          }
+        }
+        .good-like.select {
+          border-color: $mt-color;
+          color: $mt-color;
+        }
+        .good-dislike.select {
+          border-color: $mt-light-gray;
+          background-color: $mt-light-gray;
         }
       }
     }

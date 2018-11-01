@@ -1,5 +1,5 @@
 <template>
-  <div class='header-nav' :style="{'backgroundColor':headerbgColor}">
+  <div class='header-nav' :style="style">
     <div class='header-nav-left'>
       <i class='iconfont icon-xiangzuo' v-if='isBack' @click="clickLeft"></i>
       <i class='iconfont icon-guanbi1' v-if="isClose" @click="clickLeft"></i>
@@ -37,6 +37,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    border: {
+      type: Boolean,
+      default: true,
+    },
   },
   methods: {
     clickLeft() {
@@ -48,7 +52,14 @@ export default {
     },
   },
   created() {},
-  computed: {},
+  computed: {
+    style() {
+      return {
+        borderBottom: this.border ? '1px solid rgba(128, 128, 128, 0.26)' : '0',
+        backgroundColor: this.headerbgColor,
+      };
+    },
+  },
 };
 </script>
 <style scoped rel="stylesheet/scss" lang="scss">

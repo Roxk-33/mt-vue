@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mt-pop">
     <div class='mt-pop-mask' v-show="visible"></div>
     <transition name='box-scale'>
       <div class="mt-pop" v-show="visible">
