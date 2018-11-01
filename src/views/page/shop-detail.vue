@@ -33,7 +33,7 @@
 <script>
 import { getRect } from '@/common/dom';
 import { fetchShopDetail } from '@/api/shop';
-import BetterScroll from '@/views/dumb/scroll/other';
+import BetterScroll from '@/views/dumb/scroll';
 import specificationBox from '@/views/smart/specification-box';
 import cartList from '@/views/smart/cart-list';
 import foodItem from '@/views/smart/food-item';
@@ -329,7 +329,7 @@ export default {
     border: 0;
   }
   .van-tabs__line {
-    margin-left: 34px;
+    margin-left: 8px;
     width: 25px !important;
     background-color: $mt-color;
   }

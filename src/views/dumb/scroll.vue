@@ -39,8 +39,8 @@
 
 <script type="text/ecmascript-6">
 import BScroll from 'better-scroll';
-import Loading from '../loading';
-import Bubble from '../bubble.vue';
+import Loading from '@/views/dumb/loading';
+import Bubble from '@/views/dumb/bubble.vue';
 import { getRect } from '@/common/dom';
 
 const COMPONENT_NAME = 'scroll';
