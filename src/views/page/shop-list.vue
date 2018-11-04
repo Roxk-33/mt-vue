@@ -19,7 +19,7 @@
                   </div>
                   <div class='sale-data-volume'>
                     月售
-                    <i>{{shop.sales}}</i>
+                    <i>{{shop.total_sales}}</i>
                   </div>
                   <div class='logistics-data'>
                     <span class='logistics-data-item'>
@@ -92,10 +92,15 @@ export default {
       this.show = result;
     },
     getList() {
-      fetchShopList({ page: this.page, type: this.sortTarget }).then(resp => {
-        this.loading = false;
-        this.shopList = this.shopList.concat(resp.data.list);
-      });
+      fetchShopList({ page: this.page, type: this.sortTarget })
+        .then(resp => {
+          this.loading = false;
+          console.log(resp.data.data);
+          this.shopList = this.shopList.concat(resp.data.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     onPullingUp() {
       this.loading = true;
@@ -105,7 +110,9 @@ export default {
       this.sortTarget = type;
     },
   },
-  created() {},
+  created() {
+    this.getList();
+  },
 };
 </script>
 

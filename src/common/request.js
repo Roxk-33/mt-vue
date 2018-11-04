@@ -3,7 +3,7 @@ import { Popup } from 'vant';
 import store from '@/store';
 // create an axios instance
 const service = axios.create({
-  baseURL: 'http://localhost:7001/', // api的base_url
+  baseURL: 'http://localhost:7001/api/v1/', // api的base_url
   timeout: 50000, // request timeout
 });
 
@@ -34,7 +34,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const data = response.data;
-
+    console.log();
     if (!data.status) {
       // Message({
       //   message: data.message,

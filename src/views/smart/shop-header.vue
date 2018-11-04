@@ -1,10 +1,10 @@
 <template>
   <div class="shop-header">
     <div class="box">
-      <h3 class="title">骨汤麻辣烫</h3>
-      <p class="fee">配送费约32分钟</p>
-      <p class="announcement">公告：</p>
-      <img class="pic" src="https://via.placeholder.com/150x150">
+      <h3 class="title">{{title}}</h3>
+      <p class="fee">配送约32分钟</p>
+      <p class="announcement">公告：{{announcement}}</p>
+      <img class="pic" :src="photo">
     </div>
   </div>
 </template>
@@ -12,7 +12,14 @@
 <script type="text/ecmascript-6">
 export default {
   name: 'shop-header',
-
+  props: {
+    title: String,
+    announcement: String,
+    photo: {
+      type: String,
+      default: 'https://via.placeholder.com/150x150',
+    },
+  },
   data() {
     return {};
   },

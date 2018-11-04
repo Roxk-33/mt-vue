@@ -3,7 +3,7 @@
   <div class="shop-detail">
     <shop-nav :trackOpacity="trackOpacity" :isTop="isTop"></shop-nav>
     <div ref="shopBanner">
-      <shop-header></shop-header>
+      <shop-header :title="shopInfo.shop_title" :announcement="shopInfo.announcement" :photo="shopInfo.photo"></shop-header>
     </div>
     <div class="shop-good" ref="shopGood" :style="shopGoodStyle">
       <div class="shop-good-tab">
@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <cart-list :total-price="cartInfo.totalPrice" :foodList="cartInfo.list" @adjustNum="adjustNum" @toSettle="toSettle"></cart-list>
+    <cart-list :threshold="shopInfo.threshold" :freight="shopInfo.freight" :total-price="cartInfo.totalPrice" :foodList="cartInfo.list" @adjustNum="adjustNum" @toSettle="toSettle"></cart-list>
     <specificationBox @pushCart="getSelectGoood" v-model="showSpBox" :center="true" width="90%" :foodInfo="foodSelected">
     </specificationBox>
   </div>
@@ -39,6 +39,7 @@ import cartList from '@/views/smart/cart-list';
 import foodItem from '@/views/smart/food-item';
 import shopHeader from '@/views/smart/shop-header';
 import shopNav from '@/views/smart/shop-nav';
+import { deepClone } from '@/common/utils';
 
 export default {
   name: 'shop-detail',
@@ -127,9 +128,9 @@ export default {
       if (this.cartInfo.list.length > 0) {
         this.cartInfo.list.some(_foodInfo => {
           if (_foodInfo.id === foodInfo.id) {
-            let _typeSelected = _foodInfo.typeSelected;
-            const typeSelected = foodInfo.typeSelected;
-            typeSelected.forEach(ele => {
+            let _typeSelected = _foodInfo.specArr;
+            const specArr = foodInfo.specArr;
+            specArr.forEach(ele => {
               _typeSelected = _typeSelected.filter(_ele => {
                 return ele.label !== _ele.label || ele.price !== _ele.price;
               });
@@ -139,14 +140,14 @@ export default {
             } else {
               foodInfo.num = 1;
               // 深拷贝
-              this.cartInfo.list.push(JSON.parse(JSON.stringify(foodInfo)));
+              this.cartInfo.list.push(deepClone(foodInfo));
             }
             return true;
           }
         });
       } else {
         foodInfo.num = 1;
-        this.cartInfo.list.push(JSON.parse(JSON.stringify(foodInfo)));
+        this.cartInfo.list.push(deepClone(foodInfo));
       }
     },
     /**

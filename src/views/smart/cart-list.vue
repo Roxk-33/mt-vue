@@ -7,7 +7,7 @@
         <span>支持自取</span>
       </div>
       <div class='emtpy-right cart-list-right'>
-        <span>{{threshold === 0 ? '无门槛':`￥${threshold} 起送`}}</span>
+        <span>￥{{threshold }}起送</span>
       </div>
     </div>
     <div class='cart-exist mt-flex-space-between' v-else @click='showMenu'>
@@ -17,20 +17,22 @@
           <span class='exist-left-price_original'>￥35.4</span>
         </div>
         <div class='exist-left-info'>
-          <span>另需配送费￥3</span>
           <span>支持自取</span>
         </div>
       </div>
-      <div class='exist-right cart-list-right to-pay' @click.prevent="toSettle">
-        <span>去结算</span>
-        <!-- <span>差￥1.5起送</span> -->
+      <div class='exist-right cart-list-right ' :class="{'to-pay' : threshold - totalPrice <= 0}">
+        <span v-if="threshold - totalPrice > 0">差￥{{threshold - totalPrice}}起送</span>
+        <span v-else @click.prevent="toSettle">去结算</span>
       </div>
     </div>
     <!-- 列表 -->
     <transition name='box-up'>
       <ul class='food-list' v-show='isShow'>
-        <li v-for='(foodInfo,index) in foodList' :key='index'>
-          <span class='food-list_item-name'>{{foodInfo.food_title}}</span>
+        <li v-for='(foodInfo,index) in foodList' :key='index' class="mt-flex-space-between">
+          <div class='food-list_item-name'>
+            {{foodInfo.food_title}}
+            <p>{{foodInfo.specArr | getSpec}}</p>
+          </div>
           <span class='food-list_item-price'>{{foodInfo.totalPrice}}</span>
           <div class='food-list_item-num'>
             <span class='num-cut-round' @click="adjustNum(0,index)">-</span>
@@ -82,19 +84,22 @@ export default {
   components: {},
   methods: {
     adjustNum(type, index) {
-      console.log(type, index);
       this.$emit('adjustNum', type, index);
     },
     showMenu() {
+      console.log(this.foodList);
       this.isShow = !this.isShow;
     },
     getBox() {
-      console.log('1');
       this.isShow = false;
     },
     toSettle(event) {
       this.$emit('toSettle');
-      event.stopPropagation();
+    },
+  },
+  filters: {
+    getSpec(data) {
+      return data.reduce((str, item) => (str += ' ' + item.label), '');
     },
   },
 };
@@ -156,6 +161,7 @@ export default {
   .cart-list-right {
     &.to-pay {
       background-color: $mt-color;
+      color: #000;
     }
     border-radius: 0 30px 30px 0;
     position: relative;
@@ -173,13 +179,11 @@ export default {
     li {
       list-style-type: none;
       width: 100%;
-      line-height: 1.3rem;
       border-bottom: 1px solid #e6e5e5;
-      display: flex;
-      justify-content: space-between;
       font-size: 18px;
-      padding: 5px 10px;
+      padding: 15px 10px;
       box-sizing: border-box;
+      color: #000;
       .food-list_item-name {
         display: -webkit-box;
         width: 35%;
@@ -187,6 +191,10 @@ export default {
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 1;
         overflow: hidden;
+        p{
+          font-size: 12px;
+          color:$mt-gray;
+        }
       }
       .food-list_item-num {
         .num-add-round,
@@ -196,6 +204,7 @@ export default {
           width: 20px;
           line-height: 20px;
           display: inline-block;
+          text-align: center;
         }
         .num-add-round {
           background-color: $mt-color;

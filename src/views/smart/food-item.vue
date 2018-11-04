@@ -6,11 +6,11 @@
     <div class="good-content mt-flex-space-between">
       <div class="good-content_info">
         <h4 class="good-content_info_title">{{foodInfo.food_title}}</h4>
-        <span class="good-content_info_sale">月售{{foodInfo.food_sale}}</span>
+        <span class="good-content_info_sale">月售 {{foodInfo.food_sales}}</span>
         <span class="good-content_info_lick">赞{{foodInfo.food_like}}</span>
-        <p class="good-content_info_price">${{foodInfo.food_price}}</p>
+        <p class="good-content_info_price">{{foodInfo.food_price}}</p>
       </div>
-      <div class="good-content_buy" v-if="!!foodInfo.type">
+      <div class="good-content_buy" v-if="!!foodInfo.spec_arr">
         <van-button size="small" @click="getTypeInfo">选规格</van-button>
       </div>
       <div class="good-content_buy good-content_buy_nontype" v-else>
@@ -102,6 +102,10 @@ export default {
         margin: 0;
         font-weight: 700;
         font-size: 15px;
+        &::before {
+          content: '￥';
+          font-size: 12px;
+        }
       }
     }
     .good-content_buy {

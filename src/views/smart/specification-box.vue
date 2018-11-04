@@ -7,10 +7,10 @@
           <i class='specification-box_close fa fa-close'></i>
         </div>
         <div class='specification-box_content'>
-          <div class='box-item' v-for="(typeItem,index) in foodInfo.type" :key="typeItem.value">
+          <div class='box-item' v-for="(typeItem,index) in foodInfo.spec_arr" :key="typeItem.value">
             <p class='box-item_title'>{{typeItem.type_name}}</p>
             <ul class='box-item-specification'>
-              <li @click="chooseType(index,type_index,item)" v-for="(item,type_index) in typeItem.type_content" :key="item.type_name" :class="{'box-item_selected' : selectedInfo.typeSelected[index].label === item.label}">
+              <li @click="chooseType(item,index,type_index)" v-for="(item,type_index) in typeItem.type_content" :key="item.type_name" :class="{'box-item_selected' : selectedInfo.specArr[index].label === item.label}">
                 {{item.label}}
               </li>
             </ul>
@@ -19,7 +19,7 @@
         <div class='specification-box_footer mt-flex-space-between'>
           <div class='footer-info'>
             <span class='footer-info_price'>￥{{selectedInfo.totalPrice}}</span>
-            <span class='footer-info_specification'>({{selectedInfo.typeInfo}})</span>
+            <span class='footer-info_specification'>({{slogan}})</span>
           </div>
           <van-button size="small" @click="pushCart">
             <i class='fa fa-plus'></i>加入购物车
@@ -40,10 +40,10 @@ export default {
     return {
       closed: false,
       selectedInfo: {
-        typeSelected: [],
+        specArr: [],
         totalPrice: 0,
-        typeInfo: '',
       },
+      slogan: '',
     };
   },
   props: {
@@ -51,44 +51,49 @@ export default {
       type: String,
       default: '标题',
     },
-
     foodInfo: {
       type: Object,
     },
   },
   methods: {
+    // 更新规格文案
     refreshTypeInfo() {
-      this.selectedInfo.typeInfo = '';
-      this.selectedInfo.typeSelected.forEach(typeInfo => {
-        this.selectedInfo.typeInfo += `${typeInfo.label},`;
+      this.slogan = '';
+
+      this.selectedInfo.specArr.forEach(specInfo => {
+        this.slogan += `${specInfo.label},`;
       });
       // 去掉最后的逗号
-      this.selectedInfo.typeInfo = this.selectedInfo.typeInfo.slice(0, this.selectedInfo.typeInfo.length - 1);
+      this.slogan = this.slogan.slice(0, -1);
     },
-    chooseType(index, typeIndex, typeInfo) {
-      this.selectedInfo.totalPrice += parseFloat(typeInfo.price) - this.selectedInfo.typeSelected[index].price;
-      this.selectedInfo.typeSelected[index] = typeInfo;
+    /**
+     * @param specInfo 所选规格信息
+     * @param index 所选规格种类下标
+     * @param typeIndex 所选规格数值下标
+     */
+    chooseType(specInfo, index, typeIndex) {
+      this.selectedInfo.totalPrice += parseFloat(specInfo.price) - this.selectedInfo.specArr[index].price;
+      this.selectedInfo.specArr[index] = specInfo;
       this.refreshTypeInfo();
     },
-    getInfo() {
+    // 初始化
+    init() {
       this.selectedInfo.id = this.foodInfo.food_id;
       this.selectedInfo.food_title = this.foodInfo.food_title;
-      this.selectedInfo.typeSelected = [];
-      this.selectedInfo.totalPrice = 0;
-
+      this.selectedInfo.specArr = [];
       this.selectedInfo.totalPrice = this.foodInfo.food_price;
-      this.selectedInfo.typeInfo = '';
-      this.foodInfo.type.forEach(item => {
+
+      this.slogan = '';
+      this.foodInfo.spec_arr.forEach(item => {
         const content = item.type_content[item.type_default];
-        this.selectedInfo.typeSelected.push(content);
+        this.selectedInfo.specArr.push(content);
         this.selectedInfo.totalPrice += parseFloat(content.price);
       });
       this.refreshTypeInfo();
     },
     pushCart() {
-      console.log(this.selectedInfo);
-
       this.$emit('pushCart', this.selectedInfo);
+      // 关闭规格弹窗
       this.$emit('input', false);
       this.closed = false;
     },
@@ -97,7 +102,7 @@ export default {
   watch: {
     value(val) {
       if (val) {
-        this.getInfo();
+        this.init();
       }
     },
   },

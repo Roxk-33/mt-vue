@@ -27,7 +27,8 @@ export default {
     const data = Mock.mock({
       info: {
         shop_id: '@guid()',
-        shop_announcement: '@cname',
+        announcement: '@cname',
+        'threshold|50-100': 100,
         shop_title: '@cname',
         'shop_catalog|10': [
           {
@@ -51,8 +52,8 @@ export default {
           'food_sales|1-1000': 1000,
           'like|1-1000': 1000,
           photo: Random.image('100x100'),
-          'food_price|1-100': 100,
-          type: [
+          'food_price|1-5': 5,
+          spec_arr: [
             {
               type_name: '规格',
               type_default: 0,
@@ -85,42 +86,7 @@ export default {
                 },
               ],
             },
-            {
-              type_name: '面粉，选择',
-              type_default: 1,
-              type_content: [
-                {
-                  label: '小面',
-                  price: '12',
-                },
-                {
-                  label: '大面',
-                  price: '11',
-                },
-                {
-                  label: '粉',
-                  price: '12',
-                },
-              ],
-            },
-            {
-              type_name: '面粉，选择',
-              type_default: 1,
-              type_content: [
-                {
-                  label: '小面',
-                  price: '12',
-                },
-                {
-                  label: '大面',
-                  price: '11',
-                },
-                {
-                  label: '粉',
-                  price: '12',
-                },
-              ],
-            },
+
             {
               type_name: '面粉，选择',
               type_default: 1,
