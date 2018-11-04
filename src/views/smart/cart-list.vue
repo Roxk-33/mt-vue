@@ -25,6 +25,7 @@
         <span v-else @click.prevent="toSettle">去结算</span>
       </div>
     </div>
+    <mt-mask v-model="isShow"></mt-mask>
     <!-- 列表 -->
     <transition name='box-up'>
       <ul class='food-list' v-show='isShow'>
@@ -46,10 +47,13 @@
 </template>
 
 <script type="text/ecmascript-6">
-import Clickoutside from '@/directive/clickoutside';
+import clickoutside from '@/directive/clickoutside';
+import mtMask from '@/views/dumb/mask';
+
 export default {
-  name: '',
-  directives: { Clickoutside },
+  name: 'cart-list',
+  directives: { clickoutside },
+
   props: {
     foodList: {
       type: Array,
@@ -70,6 +74,9 @@ export default {
       default: 0,
     },
   },
+  components: {
+    mtMask,
+  },
   data() {
     return {
       isShow: false,
@@ -81,13 +88,12 @@ export default {
       return this.foodList.length > 0;
     },
   },
-  components: {},
   methods: {
     adjustNum(type, index) {
       this.$emit('adjustNum', type, index);
     },
     showMenu() {
-      console.log(this.foodList);
+      console.log(12);
       this.isShow = !this.isShow;
     },
     getBox() {
@@ -127,7 +133,7 @@ export default {
     box-sizing: border-box;
     margin: 0 auto;
     position: relative;
-    z-index: $zindex-navbar-main;
+    z-index: $zindex-mask-box-more;
     box-shadow: 0px 30px 10px 5px #7c7a7a40;
   }
 
@@ -175,7 +181,7 @@ export default {
     width: 100%;
     background-color: #fff;
     padding-bottom: 1.5rem;
-    z-index: $zindex-navbar-menu;
+    z-index: $zindex-mask-box;
     li {
       list-style-type: none;
       width: 100%;
@@ -191,9 +197,9 @@ export default {
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 1;
         overflow: hidden;
-        p{
+        p {
           font-size: 12px;
-          color:$mt-gray;
+          color: $mt-gray;
         }
       }
       .food-list_item-num {
