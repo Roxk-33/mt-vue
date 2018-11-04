@@ -59,7 +59,7 @@ import Scroll from '@/views/dumb/scroll';
 import Rate from '@/views/dumb/rate';
 import headerNav from '@/views/dumb/header-nav';
 import shopListHeader from '@/views/smart/shop-list-header';
-import mtMask from '@/views/dumb/mask';
+import mtMask from '@/views/dumb/mt-mask';
 
 export default {
   name: 'shopList',

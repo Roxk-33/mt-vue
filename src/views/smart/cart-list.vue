@@ -48,7 +48,7 @@
 
 <script type="text/ecmascript-6">
 import clickoutside from '@/directive/clickoutside';
-import mtMask from '@/views/dumb/mask';
+import mtMask from '@/views/dumb/mt-mask';
 
 export default {
   name: 'cart-list',
