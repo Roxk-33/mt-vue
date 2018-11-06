@@ -21,9 +21,15 @@
             <span class='footer-info_price'>￥{{selectedInfo.totalPrice}}</span>
             <span class='footer-info_specification'>({{slogan}})</span>
           </div>
-          <van-button size="small" @click="pushCart">
+          <van-button size="small" @click="pushCart" v-if="isExist == -1">
             <i class='fa fa-plus'></i>加入购物车
           </van-button>
+
+          <div class='specification-box-num-btn' v-else>
+            <span class='num-cut-round' @click="adjustNum(0)">-</span>
+            <span class='food-num'>{{selectedInfo.num}}</span>
+            <span class='num-add-round' @click="adjustNum(1)">+</span>
+          </div>
         </div>
       </div>
     </div>
@@ -32,21 +38,32 @@
 
 <script type="text/ecmascript-6">
 import Popup from '@/mixins/popup';
+import { deepClone } from '@/common/utils';
+import foodIsRepeat from '@/mixins/food-is-repeat';
 
 export default {
   name: 'specification-box',
-  mixins: [Popup],
+  mixins: [Popup, foodIsRepeat],
   data() {
     return {
       closed: false,
       selectedInfo: {
         specArr: [],
         totalPrice: 0,
+        num: 0,
+        title: '',
+        id: -1,
       },
       slogan: '',
+      isExist: -1,
     };
   },
   props: {
+    // 购物车中的商品
+    cartList: {
+      type: Array,
+      default: [],
+    },
     title: {
       type: String,
       default: '标题',
@@ -59,7 +76,6 @@ export default {
     // 更新规格文案
     refreshTypeInfo() {
       this.slogan = '';
-
       this.selectedInfo.specArr.forEach(specInfo => {
         this.slogan += `${specInfo.label},`;
       });
@@ -72,30 +88,59 @@ export default {
      * @param typeIndex 所选规格数值下标
      */
     chooseType(specInfo, index, typeIndex) {
-      this.selectedInfo.totalPrice += parseFloat(specInfo.price) - this.selectedInfo.specArr[index].price;
+      // 前一个规格的价钱
+      let price = this.selectedInfo.specArr[index].price;
       this.selectedInfo.specArr[index] = specInfo;
+      this.isExist = this.isRepeat(this.cartList, this.selectedInfo);
+
+      if (this.isExist === -1) {
+        this.selectedInfo.num = 0;
+        this.selectedInfo.totalPrice += parseFloat(specInfo.price) - price;
+      } else {
+        this.copyData(this.cartList[this.isExist]);
+      }
       this.refreshTypeInfo();
     },
     // 初始化
     init() {
-      this.selectedInfo.id = this.foodInfo.food_id;
-      this.selectedInfo.food_title = this.foodInfo.food_title;
-      this.selectedInfo.specArr = [];
-      this.selectedInfo.totalPrice = this.foodInfo.food_price;
-
+      // TODO:检测是否有相同规格的商品,两数组之间的对比。当前实现方法并不理想
+      this.isExist = this.isRepeat(this.cartList, this.selectedInfo);
+      if (this.isExist === -1) {
+        this.copyData(this.foodInfo);
+        // 计算默认规格的价钱
+        this.foodInfo.spec_arr.forEach(item => {
+          const content = item.type_content[item.type_default];
+          this.selectedInfo.specArr.push(content);
+          this.selectedInfo.totalPrice += parseFloat(content.price);
+        });
+      } else {
+        this.copyData(this.cartList[this.isExist]);
+      }
       this.slogan = '';
-      this.foodInfo.spec_arr.forEach(item => {
-        const content = item.type_content[item.type_default];
-        this.selectedInfo.specArr.push(content);
-        this.selectedInfo.totalPrice += parseFloat(content.price);
-      });
       this.refreshTypeInfo();
     },
+    // 复制数据
+    copyData(data) {
+      let target = deepClone(data);
+      this.selectedInfo.id = target.id;
+      this.selectedInfo.title = target.title;
+      this.selectedInfo.num = target.num || 0;
+      this.selectedInfo.specArr = target.specArr || [];
+      this.selectedInfo.totalPrice = target.totalPrice || target.price;
+    },
     pushCart() {
-      this.$emit('pushCart', this.selectedInfo);
-      // 关闭规格弹窗
-      this.$emit('input', false);
-      this.closed = false;
+      this.selectedInfo.num++;
+      this.$emit('pushCart', this.isExist, this.selectedInfo, 1);
+      this.isExist = this.isRepeat(this.cartList, this.selectedInfo);
+    },
+    adjustNum(type) {
+      if (type === 1) {
+        this.selectedInfo.num++;
+        this.$emit('pushCart', this.isExist, this.selectedInfo, type);
+      } else if (this.selectedInfo.num > 0) {
+        this.selectedInfo.num--;
+        this.$emit('pushCart', this.isExist, this.selectedInfo, type);
+      }
     },
   },
 
@@ -106,6 +151,7 @@ export default {
       }
     },
   },
+  computed: {},
 };
 </script>
 
@@ -168,6 +214,23 @@ export default {
     background-color: #fdf6f6;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     border-radius: 5px;
+    .specification-box-num-btn {
+      .num-add-round,
+      .num-cut-round {
+        border-radius: 50%;
+        border: 1px solid #e6e5e5;
+        width: 20px;
+        line-height: 20px;
+        display: inline-block;
+        text-align: center;
+      }
+      .num-add-round {
+        background-color: $mt-color;
+      }
+      .food-num {
+        margin: 0 8px;
+      }
+    }
   }
 }
 .box-item {

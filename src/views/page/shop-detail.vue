@@ -19,13 +19,13 @@
         </div>
         <div class="shop-good-list">
           <better-scroll :listenScroll="true" :probeType="probeType" @scroll="onScroll" :isDisable="scrollDisabel" @pullingDown="pullingDown">
-            <foodItem v-for="(foodInfo,index) in foodList" :key="foodInfo.food_id" :foodInfo="foodInfo" :foodIndex="index" :selectNum="foodInfo.selectNum" @showType="getTypeInfo" @selectGood="selectGood" />
+            <foodItem v-for="(foodInfo,index) in foodList" :key="foodInfo.food_id" :foodInfo="foodInfo" :foodIndex="index" :selectNum="foodInfo.selectNum" @showSpec="getSpecInfo" @selectGood="selectGood" />
           </better-scroll>
         </div>
       </div>
     </div>
     <cart-list :threshold="shopInfo.threshold" :freight="shopInfo.freight" :total-price="cartInfo.totalPrice" :foodList="cartInfo.list" @adjustNum="adjustNum" @toSettle="toSettle"></cart-list>
-    <specificationBox @pushCart="getSelectGoood" v-model="showSpBox" :center="true" width="90%" :foodInfo="foodSelected">
+    <specificationBox @pushCart="getSelectGoood" v-model="showSpecBox" :center="true" width="90%" :foodInfo="foodSelected" :cartList="cartInfo.list">
     </specificationBox>
   </div>
 </template>
@@ -39,6 +39,7 @@ import foodItem from '@/views/smart/food-item';
 import shopHeader from '@/views/smart/shop-header';
 import shopNav from '@/views/smart/shop-nav';
 import { deepClone } from '@/common/utils';
+import foodIsRepeat from '@/mixins/food-is-repeat';
 
 export default {
   name: 'shop-detail',
@@ -62,7 +63,7 @@ export default {
       probeType: 3,
       bannerHeight: 0,
       isTop: false,
-      showSpBox: false,
+      showSpecBox: false,
       shopInfo: {},
       foodList: [],
       totalPrice: 0,
@@ -85,16 +86,20 @@ export default {
     shopHeader,
     shopNav,
   },
+  mixins: [foodIsRepeat],
   methods: {
     getData() {
-      this.$store.dispatch('shop/getShopDetail', { id: this.shopID }).then(resp => {
-        this.shopInfo = resp.data;
-        this.shopInfo.food_list.forEach(item => {
-          item.selectNum = 0;
-          item.spec_arr = JSON.parse(item.spec_arr);
-        });
-        this.foodList = this.shopInfo.food_list;
-      });
+      this.$store
+        .dispatch('shop/getShopDetail', { id: this.shopID })
+        .then(resp => {
+          this.shopInfo = resp.data;
+          this.shopInfo.food_list.forEach(item => {
+            item.selectNum = 0;
+            item.spec_arr = JSON.parse(item.spec_arr);
+          });
+          this.foodList = this.shopInfo.food_list;
+        })
+        .catch(e => console.log(e));
     },
     scroll() {
       document.addEventListener('scroll', e => {
@@ -127,35 +132,20 @@ export default {
       console.log('上拉');
       this.scrollDisabel = false;
     },
-    getSelectGoood(foodInfo) {
-      this.cartInfo.totalPrice += foodInfo.totalPrice;
-      this.totalPrice = this.cartInfo.totalPrice;
-      // TODO:检测是否有相同规格的商品,两数组之间的对比。当前实现方法并不理想
-
-      if (this.cartInfo.list.length > 0) {
-        this.cartInfo.list.some(_foodInfo => {
-          if (_foodInfo.id === foodInfo.id) {
-            let _typeSelected = _foodInfo.specArr;
-            const specArr = foodInfo.specArr;
-            specArr.forEach(ele => {
-              _typeSelected = _typeSelected.filter(_ele => {
-                return ele.label !== _ele.label || ele.price !== _ele.price;
-              });
-            });
-            if (_typeSelected.length === 0) {
-              _foodInfo.num++;
-            } else {
-              foodInfo.num = 1;
-              // 深拷贝
-              this.cartInfo.list.push(deepClone(foodInfo));
-            }
-            return true;
-          }
-        });
+    getSelectGoood(isExist, foodInfo, type) {
+      let _foodInfo = deepClone(foodInfo);
+      this.cartInfo.totalPrice += type === 1 ? foodInfo.totalPrice : -foodInfo.totalPrice;
+      if (isExist > -1) {
+        if (type === 0 && foodInfo.num === 0) {
+          this.cartInfo.list.splice(isExist, 1);
+        } else {
+          this.cartInfo.list.splice(isExist, 1, _foodInfo);
+        }
       } else {
-        foodInfo.num = 1;
-        this.cartInfo.list.push(deepClone(foodInfo));
+        this.cartInfo.list.push(_foodInfo);
       }
+
+      this.totalPrice = this.cartInfo.totalPrice;
     },
     /**
      * @description 删除/增加 已选商品
@@ -179,9 +169,9 @@ export default {
     toSettle() {
       this.$router.push('/pay');
     },
-    getTypeInfo(index) {
+    getSpecInfo(index) {
       this.foodSelected = this.foodList[index];
-      this.showSpBox = true;
+      this.showSpecBox = true;
     },
     selectGood(index, type) {
       let foodInfo = this.foodList[index];
