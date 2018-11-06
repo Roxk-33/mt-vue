@@ -32,7 +32,6 @@
 
 <script>
 import { getRect } from '@/common/dom';
-import { fetchShopDetail } from '@/api/shop';
 import BetterScroll from '@/views/dumb/scroll';
 import specificationBox from '@/views/smart/specification-box';
 import cartList from '@/views/smart/cart-list';
@@ -87,6 +86,16 @@ export default {
     shopNav,
   },
   methods: {
+    getData() {
+      this.$store.dispatch('shop/getShopDetail', { id: this.shopID }).then(resp => {
+        this.shopInfo = resp.data;
+        this.shopInfo.food_list.forEach(item => {
+          item.selectNum = 0;
+          item.spec_arr = JSON.parse(item.spec_arr);
+        });
+        this.foodList = this.shopInfo.food_list;
+      });
+    },
     scroll() {
       document.addEventListener('scroll', e => {
         if (!this.scrollDisabel) {
@@ -122,9 +131,7 @@ export default {
       this.cartInfo.totalPrice += foodInfo.totalPrice;
       this.totalPrice = this.cartInfo.totalPrice;
       // TODO:检测是否有相同规格的商品,两数组之间的对比。当前实现方法并不理想
-      // const removeDuplicateItems = arr => [...new Set(arr)];
-      // removeDuplicateItems([42, 'foo', 42, 'foo', true, true]);
-      //=> [42, "foo", true]
+
       if (this.cartInfo.list.length > 0) {
         this.cartInfo.list.some(_foodInfo => {
           if (_foodInfo.id === foodInfo.id) {
@@ -180,12 +187,12 @@ export default {
       let foodInfo = this.foodList[index];
       if (type) {
         this.foodList[index].selectNum++;
-        this.cartInfo.totalPrice += foodInfo.food_price;
+        this.cartInfo.totalPrice += foodInfo.price;
       } else if (this.foodList[index].selectNum > 0) {
         this.foodList[index].selectNum--;
-        this.cartInfo.totalPrice -= foodInfo.food_price;
+        this.cartInfo.totalPrice -= foodInfo.price;
       }
-      this.foodList[index].totalPrice = foodInfo.food_price * this.foodList[index].selectNum;
+      this.foodList[index].totalPrice = foodInfo.price * this.foodList[index].selectNum;
 
       if (this.foodList[index].selectNum == 1) {
         this.cartInfo.list.push(this.foodList[index]);
@@ -193,23 +200,16 @@ export default {
     },
   },
   created() {
-    const shopId = this.$route.params.shop_id;
     this.scroll();
-    fetchShopDetail({ shop_id: shopId }).then(resp => {
-      this.shopInfo = resp.data.info;
-      resp.data.food_list.forEach(item => {
-        item.selectNum = 0;
-      });
-      this.foodList = resp.data.food_list;
-    });
+    this.getData();
   },
   mounted() {
     this.initMenu();
   },
   computed: {
-    // totalPrice() {
-
-    // },
+    shopID() {
+      return this.$route.params.shopId || 1;
+    },
     shopGoodStyle() {
       return {
         height: `${this.trackSize}px`,

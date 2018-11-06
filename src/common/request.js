@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Popup } from 'vant';
 import store from '@/store';
 // create an axios instance
 const service = axios.create({
@@ -34,7 +33,6 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const data = response.data;
-    console.log();
     if (!data.status) {
       // Message({
       //   message: data.message,
@@ -58,7 +56,7 @@ service.interceptors.response.use(
       }
       return Promise.reject('error');
     }
-    return Promise.resolve(response);
+    return Promise.resolve(data);
   },
 
   error => {

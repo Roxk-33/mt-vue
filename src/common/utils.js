@@ -1,6 +1,3 @@
-export default {
-  on() {},
-};
 export function deepClone(source) {
   if (!source && typeof source !== 'object') {
     throw new Error('error arguments', 'shallowClone');
@@ -15,4 +12,10 @@ export function deepClone(source) {
     }
   });
   return targetObj;
+}
+export function formatURL(url, target) {
+  Object.keys(target).forEach(key => {
+    url = url.replace(':' + key, target[key]);
+  });
+  return url;
 }

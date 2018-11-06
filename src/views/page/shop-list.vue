@@ -6,7 +6,7 @@
       <mt-mask v-model="show"></mt-mask>
       <van-list v-model="loading" :finished="finished" @load="onPullingUp">
         <van-cell v-for="(shop,index) in shopList" :key='index' style="padding:10px">
-          <router-link class='shop-item' :to="{ name: 'shopDetail', params: { shopId: shop.shop_id }}">
+          <router-link class='shop-item' :to="{ name: 'shopDetail', params: { shopId: shop.id }}">
             <div class='shop-item_left'>
               <img :src='shop.photo'>
             </div>
@@ -54,7 +54,6 @@
 </template>
 
 <script >
-import { fetchShopList } from '@/api/shop';
 import Scroll from '@/views/dumb/scroll';
 import Rate from '@/views/dumb/rate';
 import headerNav from '@/views/dumb/header-nav';
@@ -92,11 +91,11 @@ export default {
       this.show = result;
     },
     getList() {
-      fetchShopList({ page: this.page, type: this.sortTarget })
+      this.$store
+        .dispatch('shop/getShopList', { page: this.page, type: this.sortTarget })
         .then(resp => {
           this.loading = false;
-          console.log(resp.data.data);
-          this.shopList = this.shopList.concat(resp.data.data);
+          this.shopList = this.shopList.concat(resp.data);
         })
         .catch(err => {
           console.log(err);
