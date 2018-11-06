@@ -36,7 +36,6 @@ export default {
 
       context.modal = modal;
     }
-    console.log(1);
     if (modal.$el.parentNode) {
       modal.visible = false;
     }

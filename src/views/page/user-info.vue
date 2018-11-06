@@ -66,7 +66,6 @@ export default {
   },
   methods: {
     logout() {
-      console.log(1);
       this.$store
         .dispatch('LogOut')
         .then(() => {

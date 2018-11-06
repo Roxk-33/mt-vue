@@ -22,7 +22,6 @@ export default {
   components: {},
   methods: {
     cancel() {
-      console.log(1);
       this.$emit('cancel');
     },
   },
@@ -35,7 +34,6 @@ export default {
   height: 30px;
   line-height: 30px;
   font-size: 15px;
-  ;
   padding-top: 10px 0;
   border-top: 5px solid #c3c2c2;
 }

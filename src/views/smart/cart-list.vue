@@ -31,7 +31,7 @@
       <ul class='food-list' v-show='isShow'>
         <li v-for='(foodInfo,index) in foodList' :key='index' class="mt-flex-space-between">
           <div class='food-list_item-name'>
-            {{foodInfo.food_title}}
+            {{foodInfo.title}}
             <p>{{foodInfo.specArr | getSpec}}</p>
           </div>
           <span class='food-list_item-price'>{{foodInfo.totalPrice}}</span>

@@ -6,16 +6,18 @@ export default {
     const data = Mock.mock({
       'list|8': [
         {
-          shop_id: '@guid()',
+          // shop_id: '@guid()',
           shop_title: '@cname',
           'rate|1-5': 5,
-          'sales|1-1000': 1000,
-          'distance|1-10': 10,
-          'transportTime|10-30': 10,
+          'total_sales|1-1000': 1000,
+          tel: /^1[385][1-9]\d{8}/,
+          // 'distance|1-10': 10,
+          // 'transportTime|10-30': 10,
           'threshold|10-30': 10, // 起送门槛
           'freight|0-30': 30, // 运费
-          'perCapita|0-30': 30, // 人均
+          // 'perCapita|0-30': 30, // 人均
           photo: Random.image('100x100'),
+          announcement: Random.csentence(8),
         },
       ],
       status: true,
@@ -25,34 +27,34 @@ export default {
   getShop: () => {
     const Random = Mock.Random;
     const data = Mock.mock({
-      info: {
-        shop_id: '@guid()',
-        announcement: '@cname',
-        'threshold|50-100': 100,
-        shop_title: '@cname',
-        'shop_catalog|10': [
-          {
-            title: '@cname',
-            value: '@guid()',
-          },
-        ],
+      id: Random.increment(),
+      announcement: '@cname',
+      'threshold|50-100': 100,
+      shop_title: '@cname',
+      'shop_catalog|10': [
+        {
+          title: '@cname',
+          value: '@guid()',
+        },
+      ],
 
-        'rate|1-5': 5,
-        'sales|1-1000': 1000,
-        'distance|1-10': 10,
-        'transportTime|10-30': 10,
-        'threshold|10-30': 10, // 起送门槛
-        'freight|0-30': 30, // 运费
-        'perCapita|0-30': 30, // 人均
-      },
+      'rate|1-5': 5,
+      'sales|1-1000': 1000,
+      'distance|1-10': 10,
+      'transportTime|10-30': 10,
+      'threshold|10-30': 10, // 起送门槛
+      'freight|0-30': 30, // 运费
+      'perCapita|0-30': 30, // 人均
       'food_list|10-20': [
         {
-          food_title: '@cname',
-          food_id: '@guid()',
-          'food_sales|1-1000': 1000,
+          title: '@cname',
+          id: '@id()',
+          shop_id: '1',
+          'month_sale|1-1000': 1000,
           'like|1-1000': 1000,
           photo: Random.image('100x100'),
-          'food_price|1-5': 5,
+          description: Random.csentence(8),
+          'price|1-5': 5,
           spec_arr: [
             {
               type_name: '规格',
@@ -60,11 +62,11 @@ export default {
               type_content: [
                 {
                   label: '小碗',
-                  price: '1',
+                  'price|1-5': 5,
                 },
                 {
                   label: '大碗',
-                  price: '2',
+                  'price|1-5': 5,
                 },
               ],
             },
@@ -74,15 +76,15 @@ export default {
               type_content: [
                 {
                   label: '不辣',
-                  price: 3,
+                  'price|1-5': 5,
                 },
                 {
                   label: '微辣',
-                  price: 2,
+                  'price|1-5': 5,
                 },
                 {
                   label: '中辣',
-                  price: '1',
+                  'price|1-5': 5,
                 },
               ],
             },
@@ -93,15 +95,15 @@ export default {
               type_content: [
                 {
                   label: '小面',
-                  price: '12',
+                  'price|1-15': 5,
                 },
                 {
                   label: '大面',
-                  price: '11',
+                  'price|1-15': 5,
                 },
                 {
                   label: '粉',
-                  price: '12',
+                  'price|1-15': 5,
                 },
               ],
             },
@@ -110,7 +112,11 @@ export default {
       ],
       status: true,
     });
-    console.log(data);
-    return data;
+    data.food_list.forEach(item => {
+      item.spec_arr = JSON.stringify(item.spec_arr);
+    });
+    let resp = { data: data, status: true };
+    console.log(resp);
+    return resp;
   },
 };

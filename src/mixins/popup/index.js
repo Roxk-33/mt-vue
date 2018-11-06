@@ -37,7 +37,6 @@ export default {
       }
     },
     close() {
-      console.log(1);
       manager.close(this._popupId);
       this.$emit('input', false);
     },

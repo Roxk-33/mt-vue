@@ -6,6 +6,6 @@ import shopAPI from './shop';
 
 // 店铺相关
 // Mock.mock(/\/shop\/list/, 'get', shopAPI.getList);
-Mock.mock(/\/shop\/shop/, 'get', shopAPI.getShop);
+Mock.mock(/\/shop/, 'get', shopAPI.getShop);
 
 export default Mock;

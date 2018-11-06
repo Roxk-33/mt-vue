@@ -5,13 +5,13 @@
     </div>
     <div class="good-content mt-flex-space-between">
       <div class="good-content_info">
-        <h4 class="good-content_info_title">{{foodInfo.food_title}}</h4>
-        <span class="good-content_info_sale">月售 {{foodInfo.food_sales}}</span>
+        <h4 class="good-content_info_title">{{foodInfo.title}}</h4>
+        <span class="good-content_info_sale">月售 {{foodInfo.month_sale}}</span>
         <span class="good-content_info_lick">赞{{foodInfo.food_like}}</span>
-        <p class="good-content_info_price">{{foodInfo.food_price}}</p>
+        <p class="good-content_info_price">{{foodInfo.price}}</p>
       </div>
       <div class="good-content_buy" v-if="!!foodInfo.spec_arr">
-        <van-button size="small" @click="getTypeInfo">选规格</van-button>
+        <van-button size="small" @click="getSpecInfo">选规格</van-button>
       </div>
       <div class="good-content_buy good-content_buy_nontype" v-else>
         <div class="good-content_buy_nontype_box">
@@ -48,8 +48,8 @@ export default {
   computed: {},
   components: {},
   methods: {
-    getTypeInfo() {
-      this.$emit('showType', this.foodIndex);
+    getSpecInfo() {
+      this.$emit('showSpec', this.foodIndex);
     },
     selectGood(type) {
       this.$emit('selectGood', this.foodIndex, type);

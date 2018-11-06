@@ -80,8 +80,6 @@ Vue.directive('click-outside', {
   },
   // 只调用一次，指令与元素解绑时调用
   unbind(el, binding, vnode) {
-    console.log(1);
-
     const len = nodeList.length;
     for (let i = 0; i < len; i++) {
       if (nodeList[i][ctx].id === el[ctx].id) {

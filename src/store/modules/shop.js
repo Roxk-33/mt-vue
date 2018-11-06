@@ -19,7 +19,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       ajax({ url: formatURL(API.SHOP_DETAIL, { id: payload.id }) }).then(resp => {
         resolve(resp);
-      });
+      }).catch(e=>reject(e))
     });
   },
 };
