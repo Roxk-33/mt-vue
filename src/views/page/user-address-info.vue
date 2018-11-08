@@ -71,7 +71,7 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '../../assets/style/common';
+@import '~css/common';
 .user-address-info-sex {
   padding: 10px 10px 10px 90px;
   display: flex;
@@ -94,7 +94,7 @@ export default {
 }
 </style>
 <style rel="stylesheet/scss" lang="scss">
-@import '../../assets/style/common';
+@import '~css/common';
 
 .van-radio .van-icon-checked {
   color: $mt-color;

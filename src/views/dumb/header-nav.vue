@@ -63,7 +63,7 @@ export default {
 };
 </script>
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '../../assets/style/common';
+@import '~css/common';
 
 .header-nav {
   width: 100%;

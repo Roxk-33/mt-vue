@@ -5,12 +5,12 @@
     </div>
     <div class="good-content mt-flex-space-between">
       <div class="good-content_info">
-        <h4 class="good-content_info_title">{{foodInfo.title}}</h4>
+        <h4 class="good-content_info_title">{{foodInfo.food_name}}</h4>
         <span class="good-content_info_sale">月售 {{foodInfo.month_sale}}</span>
         <span class="good-content_info_lick">赞{{foodInfo.food_like}}</span>
         <p class="good-content_info_price">{{foodInfo.price}}</p>
       </div>
-      <div class="good-content_buy" v-if="!!foodInfo.spec_arr">
+      <div class="good-content_buy" v-if="foodInfo.spec_arr.length">
         <van-button size="small" @click="getSpecInfo">选规格</van-button>
       </div>
       <div class="good-content_buy good-content_buy_nontype" v-else>
@@ -59,7 +59,7 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '../../assets/style/common';
+@import '~css/common';
 
 .good-list-item {
   justify-content: flex-start;
@@ -120,8 +120,11 @@ export default {
         }
         .icon-jia {
           color: $mt-color;
+          font-size: 18px;
         }
         .icon-jian {
+          font-size: 18px;
+
           color: $mt-gray;
         }
         span {
@@ -133,7 +136,6 @@ export default {
         position: absolute;
         bottom: 0;
         right: 0;
-        margin-right: 5px;
         border-radius: 15px;
         background-color: $mt-color;
       }

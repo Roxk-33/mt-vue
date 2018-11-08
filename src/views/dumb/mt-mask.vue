@@ -35,7 +35,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-@import '../../assets/style/common';
+@import '~css/common';
 
 .mt-modal {
   position: fixed;
