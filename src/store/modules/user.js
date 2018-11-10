@@ -1,64 +1,74 @@
 import md5 from 'js-md5';
+import * as types from '../mutation-types';
 import { getToken, setToken, removeToken } from '@/common/auth';
 import ajax from '@/common/request';
 import config from '@/common/config';
 const API = config.API;
 const state = {
-  user: '',
   userStatus: false,
   code: '',
-  // token: getToken(),
+  userId: null,
   userName: '',
   userAvatar: '../assets/images/default.jpg',
   userTel: '',
   introduction: '',
-  roles: [],
-  setting: {
-    articlePlatform: [],
-  },
+  token: getToken(),
 };
 
 const mutations = {
-  SET_TOKEN: (state, token) => {
+  [types.SET_TOKEN](state, token) {
+    setToken(token);
     state.token = token;
   },
-  SET_INTRODUCTION: (state, introduction) => {
+  [types.REMOVE_TOKEN](state) {
+    removeToken();
+    state.token = null;
+  },
+  [types.SET_INTRODUCTION](state, introduction) {
     state.introduction = introduction;
   },
-  SET_SETTING: (state, setting) => {
-    state.setting = setting;
+  [types.SET_USERID](state, id) {
+    state.userId = id;
   },
-  SET_STATUS: (state, status) => {
-    state.userStatus = status;
-  },
-  SET_NAME: (state, name) => {
+
+  [types.SET_NAME](state, name) {
     state.userName = name;
   },
-  SET_AVATAR: (state, avatar) => {
+  [types.SET_AVATAR](state, avatar) {
     state.userAvatar = avatar;
   },
-  SET_TEL: (state, tel) => {
+  [types.SET_TEL](state, tel) {
     state.userTel = tel;
   },
 };
 const getters = {
   userAvatar: state => state.userAvatar,
   userName: state => state.userName,
+  userId: state => state.userId,
   userTel: state => state.userTel,
   introduction: state => state.introduction,
-  userStatus: state => state.userStatus,
+  token: state => state.token,
 };
 const actions = {
   // 用户名登录
   LoginByAccount({ commit }, userInfo) {
-    console.log(11);
-    console.log(userInfo.password);
     const account = userInfo.account.trim();
-    const password = userInfo.password;
+    const password = userInfo.password.trim();
     return new Promise((resolve, reject) => {
-      ajax({ url: API.USER_LOGIN, data: { account, password } }).then(resp => {
-        resolve();
-      });
+      ajax
+        .post(API.USER_LOGIN, {
+          account,
+          password,
+        })
+        .then(resp => {
+          resolve(resp);
+          commit(types.SET_TOKEN, resp.data.token);
+          commit(types.SET_NAME, resp.data.user.user_name);
+          commit(types.SET_AVATAR, resp.data.user.avatar);
+          commit(types.SET_USERID, resp.data.user.id);
+          commit(types.SET_TEL, resp.data.user.tel);
+        })
+        .catch(reject);
     });
   },
 
@@ -88,12 +98,10 @@ const actions = {
     return new Promise((resolve, reject) => {
       logout()
         .then(() => {
-          commit('SET_TOKEN', '');
+          commit('REMOVE_TOKEN', '');
           commit('SET_NAME', '');
           commit('SET_TEL', '');
           commit('SET_AVATAR', '');
-          commit('SET_STATUS', false);
-          // removeToken();
           resolve();
         })
         .catch(error => {
@@ -113,7 +121,7 @@ const actions = {
 };
 
 export default {
-  // namespaced: true,
+  namespaced: true,
   state,
   actions,
   getters,

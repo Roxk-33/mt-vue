@@ -4,7 +4,7 @@
     <div class='container-box'>
       <van-cell-group>
         <van-field v-model="loginForm.account" label="用户名" placeholder="请输入用户名" />
-        <van-field v-model="loginForm.password" label="密码" type='password' placeholder="请输入手机号" />
+        <van-field v-model="loginForm.password" label="密码" type='password' placeholder="请输入密码" required clearable />
       </van-cell-group>
       <van-button type="default" round @click="handleLogin" :loading='loading'>登录</van-button>
     </div>
@@ -20,31 +20,30 @@ export default {
       loading: false,
       loginForm: {
         account: 'admin',
-        password: '123456',
+        password: '5634398',
       },
     };
   },
 
   methods: {
     handleLogin() {
-      // this.$refs['loginForm'].validate((valid) => {
-      // if (valid) {
       console.log(this.loginForm);
       // this.loading = true;
       this.$store
-        .dispatch('LoginByAccount', this.loginForm)
+        .dispatch('user/LoginByAccount', this.loginForm)
         .then(() => {
+          console.log(111);
           this.loading = false;
+          this.$store.dispatch('cart/getCartList');
           this.$router.push({ path: '/user/index' });
         })
-        .catch(() => {
+        .catch(e => {
+          console.log(e);
+          this.$dialog.alert({
+            message: e,
+          });
           this.loading = false;
         });
-      // } else {
-      //     console.log('error submit!!');
-      //     return false;
-      // }
-      // });
     },
   },
 };

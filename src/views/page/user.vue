@@ -9,7 +9,7 @@
         <div class='content-avatar' @click="toPage">
           <img :src='userAvatar'>
         </div>
-        <span v-if="userStatus" class='content-info_body' @click="toPage">
+        <span v-if="userName" class='content-info_body' @click="toPage">
           {{userName}}
         </span>
         <div v-else class='content-info_login' to='../login' @click="toPage">
@@ -54,10 +54,8 @@ export default {
   data() {
     return {};
   },
+  mounted() {},
   computed: {
-    userStatus() {
-      return this.$store.state.user.userStatus;
-    },
     userName() {
       return this.$store.state.user.userName;
     },
