@@ -71,6 +71,22 @@ const actions = {
         .catch(reject);
     });
   },
+  getUserInfo({ commit, state }, userInfo) {
+    const token = state.token;
+    if (!token) return;
+    return new Promise((resolve, reject) => {
+      ajax
+        .get(API.USER_INFO)
+        .then(resp => {
+          resolve(resp);
+          commit(types.SET_NAME, resp.data.user_name);
+          commit(types.SET_AVATAR, resp.data.avatar);
+          commit(types.SET_USERID, resp.data.id);
+          commit(types.SET_TEL, resp.data.tel);
+        })
+        .catch(reject);
+    });
+  },
 
   // 获取用户信息
   // GetUserInfo({ commit, state }, token) {

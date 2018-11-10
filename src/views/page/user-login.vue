@@ -27,12 +27,10 @@ export default {
 
   methods: {
     handleLogin() {
-      console.log(this.loginForm);
       // this.loading = true;
       this.$store
         .dispatch('user/LoginByAccount', this.loginForm)
         .then(() => {
-          console.log(111);
           this.loading = false;
           this.$store.dispatch('cart/getCartList');
           this.$router.push({ path: '/user/index' });

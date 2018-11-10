@@ -24,7 +24,6 @@
           <van-button size="small" @click="pushCart" v-if="isExist == -1">
             <i class='fa fa-plus'></i>加入购物车
           </van-button>
-
           <div class='specification-box-num-btn' v-else>
             <span class='num-cut-round' @click="adjustNum(0)">-</span>
             <span class='food-num'>{{num}}</span>

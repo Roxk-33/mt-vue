@@ -10,7 +10,12 @@
 
 <script>
 export default {
-  name: 'AppMain',
+  name: 'layout',
+  created() {
+    this.$store.dispatch('user/getUserInfo').then(() => {
+      this.$store.dispatch('cart/getCartList');
+    });
+  },
   computed: {
     cachedViews() {
       // return this.$store.state.app.cachedViews;
