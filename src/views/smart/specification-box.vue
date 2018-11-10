@@ -3,14 +3,14 @@
     <div class="specification-box-container" v-show="value">
       <div class='specification-box'>
         <div class='specification-box_header'>
-          <span class='specification-box_title'>{{title}}</span>
+          <span class='specification-box_title'>{{foodInfo.food_name}}</span>
           <i class='specification-box_close fa fa-close'></i>
         </div>
         <div class='specification-box_content'>
-          <div class='box-item' v-for="(typeItem,index) in foodInfo.spec_arr" :key="typeItem.value">
-            <p class='box-item_title'>{{typeItem.type_name}}</p>
+          <div class='box-item' v-for="(typeItem,index) in totalSpec" :key="typeItem.value">
+            <p class='box-item_title'>{{typeItem.spec_name}}</p>
             <ul class='box-item-specification'>
-              <li @click="chooseType(item,index,type_index)" v-for="(item,type_index) in typeItem.type_content" :key="item.type_name" :class="{'box-item_selected' : selectedInfo.specArr[index].label === item.label}">
+              <li @click="chooseType(item,index,type_index)" v-for="(item,type_index) in typeItem.spec_arr" :key="type_index" :class="{'box-item_selected' :specArr[index] == item.id}">
                 {{item.label}}
               </li>
             </ul>
@@ -18,7 +18,7 @@
         </div>
         <div class='specification-box_footer mt-flex-space-between'>
           <div class='footer-info'>
-            <span class='footer-info_price'>￥{{selectedInfo.totalPrice}}</span>
+            <span class='footer-info_price'>￥{{totalPrice}}</span>
             <span class='footer-info_specification'>({{slogan}})</span>
           </div>
           <van-button size="small" @click="pushCart" v-if="isExist == -1">
@@ -27,7 +27,7 @@
 
           <div class='specification-box-num-btn' v-else>
             <span class='num-cut-round' @click="adjustNum(0)">-</span>
-            <span class='food-num'>{{selectedInfo.num}}</span>
+            <span class='food-num'>{{num}}</span>
             <span class='num-add-round' @click="adjustNum(1)">+</span>
           </div>
         </div>
@@ -46,16 +46,11 @@ export default {
   mixins: [Popup, foodIsRepeat],
   data() {
     return {
-      closed: false,
-      selectedInfo: {
-        specArr: [],
-        totalPrice: 0,
-        num: 0,
-        title: '',
-        id: -1,
-      },
-      slogan: '',
+      totalSpec: [],
+      totalPrice: 0,
       isExist: -1,
+      specArr: [],
+      specText: [],
     };
   },
   props: {
@@ -64,24 +59,12 @@ export default {
       type: Array,
       default: [],
     },
-    title: {
-      type: String,
-      default: '标题',
-    },
+
     foodInfo: {
       type: Object,
     },
   },
   methods: {
-    // 更新规格文案
-    refreshTypeInfo() {
-      this.slogan = '';
-      this.selectedInfo.specArr.forEach(specInfo => {
-        this.slogan += `${specInfo.label},`;
-      });
-      // 去掉最后的逗号
-      this.slogan = this.slogan.slice(0, -1);
-    },
     /**
      * @param specInfo 所选规格信息
      * @param index 所选规格种类下标
@@ -89,57 +72,114 @@ export default {
      */
     chooseType(specInfo, index, typeIndex) {
       // 前一个规格的价钱
-      let price = this.selectedInfo.specArr[index].price;
-      this.selectedInfo.specArr[index] = specInfo;
-      this.isExist = this.isRepeat(this.cartList, this.selectedInfo);
-
+      let price = this.totalSpec[index].spec_arr.find(
+        item => item.id == this.specArr[index]
+      ).price;
+      this.specArr.splice(index, 1, specInfo.id);
+      this.specText.splice(index, 1, specInfo.label);
+      this.isExist = this.isRepeat(this.cartList, {
+        id: this.foodId,
+        specArr: this.specArr,
+      });
       if (this.isExist === -1) {
-        this.selectedInfo.num = 0;
-        this.selectedInfo.totalPrice += parseFloat(specInfo.price) - price;
+        this.num = 0;
+        this.totalPrice += parseFloat(specInfo.price) - price;
       } else {
-        this.copyData(this.cartList[this.isExist]);
+        const item = this.cartList[this.isExist];
+        this.specArr = item.spec_id.split(',');
+        this.specText = item.spec_text.split(' ');
+        this.totalPrice = item.price;
+        this.num = item.num;
       }
-      this.refreshTypeInfo();
+    },
+    isExistCart() {
+      this.isExist = this.cartList.findIndex(
+        item => item.food_id == this.foodId
+      );
+      if (this.isExist !== -1) {
+        const item = this.cartList[this.isExist];
+        this.specArr = item.spec_id.split(',');
+        this.specText = item.spec_text.split(',');
+        this.totalPrice = item.price;
+        this.num = item.num;
+        return true;
+      }
+      return false;
     },
     // 初始化
     init() {
-      // TODO:检测是否有相同规格的商品,两数组之间的对比。当前实现方法并不理想
-      this.isExist = this.isRepeat(this.cartList, this.selectedInfo);
-      if (this.isExist === -1) {
-        this.copyData(this.foodInfo);
+      this.formatSpec(this.foodInfo.spec_arr);
+      if (!this.isExistCart()) {
+        console.log('购物车中未有该商品');
+        // 购物车中未有该商品
         // 计算默认规格的价钱
-        this.foodInfo.spec_arr.forEach(item => {
-          const content = item.type_content[item.type_default];
-          this.selectedInfo.specArr.push(content);
-          this.selectedInfo.totalPrice += parseFloat(content.price);
+        this.totalPrice = this.foodInfo.price;
+        this.totalSpec.forEach(item => {
+          const content = item.spec_arr[item.spec_default];
+          this.totalPrice += parseFloat(content.price);
         });
-      } else {
-        this.copyData(this.cartList[this.isExist]);
       }
-      this.slogan = '';
-      this.refreshTypeInfo();
     },
-    // 复制数据
-    copyData(data) {
-      let target = deepClone(data);
-      this.selectedInfo.id = target.id;
-      this.selectedInfo.title = target.title;
-      this.selectedInfo.num = target.num || 0;
-      this.selectedInfo.specArr = target.specArr || [];
-      this.selectedInfo.totalPrice = target.totalPrice || target.price;
+    // 将后端传来的规格数据格式转换成前端展示需要的格式
+    formatSpec(data) {
+      let temp = {};
+      data.forEach((item, index) => {
+        let _type = item.spec_type;
+        if (!temp[_type]) {
+          temp[_type] = {};
+          temp[_type] = {
+            spec_name: item.spec_name,
+            spec_arr: [],
+            spec_default: 0,
+          };
+        }
+
+        temp[_type].spec_arr.push({
+          price: item.price,
+          stock: item.stock,
+          label: item.label,
+          id: item.id,
+        });
+        if (item.is_default) {
+          temp[_type].spec_default = temp[_type].spec_arr.length - 1;
+          this.specArr.push(item.id);
+          this.specText.push(item.label);
+        }
+      });
+
+      Object.keys(temp).forEach(key => this.totalSpec.push(temp[key]));
     },
+
     pushCart() {
-      this.selectedInfo.num++;
-      this.$emit('pushCart', this.isExist, this.selectedInfo, 1);
-      this.isExist = this.isRepeat(this.cartList, this.selectedInfo);
+      this.num++;
+      this.$emit(
+        'pushCart',
+        this.isExist,
+        this.specArr,
+        this.specText,
+        this.totalPrice,
+        1
+      );
+      this.isExist = this.isRepeat(this.cartList, {
+        id: this.foodId,
+        specArr: this.specArr,
+      });
     },
     adjustNum(type) {
       if (type === 1) {
-        this.selectedInfo.num++;
-        this.$emit('pushCart', this.isExist, this.selectedInfo, type);
-      } else if (this.selectedInfo.num > 0) {
-        this.selectedInfo.num--;
-        this.$emit('pushCart', this.isExist, this.selectedInfo, type);
+        console.log('增加');
+        this.num++;
+        this.$emit(
+          'pushCart',
+          this.isExist,
+          this.specArr,
+          this.specText,
+          this.totalPrice,
+          type
+        );
+      } else if (this.num > 0) {
+        this.num--;
+        this.$emit('pushCart', this.isExist, this.specArr, this.specText, type);
       }
     },
   },
@@ -150,13 +190,23 @@ export default {
         this.init();
       }
     },
+    cartList() {
+      this.isExistCart();
+    },
   },
-  computed: {},
+  computed: {
+    foodId() {
+      return this.foodInfo.id;
+    },
+    slogan() {
+      return this.specText.join(',');
+    },
+  },
 };
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '../../assets/style/common';
+@import '~css/common';
 // 弹窗
 
 .specification-box-container {

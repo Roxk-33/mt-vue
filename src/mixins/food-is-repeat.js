@@ -1,20 +1,17 @@
+// TODO:检测是否有相同规格的商品,两数组之间的对比。当前实现方法并不理想
+
 export default {
   methods: {
     isRepeat(list, target) {
       let indexRepeat = -1;
-
       if (list.length > 0) {
-        list.some((_foodInfo, index) => {
-          if (_foodInfo.id === target.id) {
-            let _typeSelected = _foodInfo.specArr;
+        list.some((item, index) => {
+          if (item.food_id === target.id) {
+            let _specArr = item.spec_id.split(',');
             const specArr = target.specArr;
-            specArr.forEach(ele => {
-              _typeSelected = _typeSelected.filter(_ele => {
-                return ele.label !== _ele.label || ele.price !== _ele.price;
-              });
-            });
-
-            if (_typeSelected.length === 0) {
+            // 若规格ID不相同，返回true
+            const result = specArr.some((id, index) => id != _specArr[index]);
+            if (!result) {
               indexRepeat = index;
               return true;
             }

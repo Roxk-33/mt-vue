@@ -24,8 +24,8 @@
         </div>
       </div>
     </div>
-    <cart-list :threshold="shopInfo.threshold" :freight="shopInfo.freight" :total-price="cartInfo.totalPrice" :foodList="cartInfo.list" @adjustNum="adjustNum" @toSettle="toSettle"></cart-list>
-    <specificationBox @pushCart="getSelectGoood" v-model="showSpecBox" :center="true" width="90%" :foodInfo="foodSelected" :cartList="cartInfo.list">
+    <cart-list :threshold="shopInfo.threshold" :freight="shopInfo.freight" :total-price="totalPrice" :foodList="list" @adjustNum="adjustNum" @toSettle="toSettle"></cart-list>
+    <specificationBox @pushCart="getSelectGoood" v-model="showSpecBox" :center="true" width="90%" :foodInfo="foodSelected" :cartList="list">
     </specificationBox>
   </div>
 </template>
@@ -40,7 +40,7 @@ import shopHeader from '@/views/smart/shop-header';
 import shopNav from '@/views/smart/shop-nav';
 import { deepClone } from '@/common/utils';
 import foodIsRepeat from '@/mixins/food-is-repeat';
-
+import { mapGetters } from 'vuex';
 export default {
   name: 'shop-detail',
   data() {
@@ -66,7 +66,6 @@ export default {
       showSpecBox: false,
       shopInfo: {},
       foodList: [],
-      totalPrice: 0,
       scrollDisabel: false,
       cartInfo: {
         list: [],
@@ -95,7 +94,6 @@ export default {
           this.shopInfo = resp.data;
           this.shopInfo.food_list.forEach(item => {
             item.selectNum = 0;
-            item.spec_arr = JSON.parse(item.spec_arr);
           });
           this.foodList = this.shopInfo.food_list;
         })
@@ -132,20 +130,31 @@ export default {
       console.log('上拉');
       this.scrollDisabel = false;
     },
-    getSelectGoood(isExist, foodInfo, type) {
-      let _foodInfo = deepClone(foodInfo);
-      this.cartInfo.totalPrice += type === 1 ? foodInfo.totalPrice : -foodInfo.totalPrice;
-      if (isExist > -1) {
-        if (type === 0 && foodInfo.num === 0) {
-          this.cartInfo.list.splice(isExist, 1);
-        } else {
-          this.cartInfo.list.splice(isExist, 1, _foodInfo);
-        }
-      } else {
-        this.cartInfo.list.push(_foodInfo);
-      }
+    getSelectGoood(isExist, specArr, specText, totalPrice, type) {
+      // let _foodInfo = deepClone(foodInfo);
+      // this.cartInfo.totalPrice +=
+      //   type === 1 ? foodInfo.totalPrice : -foodInfo.totalPrice;
+      // if (isExist > -1) {
+      //   if (type === 0 && foodInfo.num === 0) {
+      //     this.cartInfo.list.splice(isExist, 1);
+      //   } else {
+      //     this.cartInfo.list.splice(isExist, 1, _foodInfo);
+      //   }
+      // } else {
+      //   this.cartInfo.list.push(_foodInfo);
+      // }
 
-      this.totalPrice = this.cartInfo.totalPrice;
+      // this.totalPrice = this.cartInfo.totalPrice;
+      const data = {
+        specArr,
+        foodName: this.foodSelected.food_name,
+        specText,
+        foodId: this.foodSelected.id,
+        num: type === 1 ? 1 : -1,
+        totalPrice,
+        shop_id: this.shopID,
+      };
+      this.$store.dispatch('cart/addProductToCart', data).then(value => {});
     },
     /**
      * @description 删除/增加 已选商品
@@ -182,7 +191,8 @@ export default {
         this.foodList[index].selectNum--;
         this.cartInfo.totalPrice -= foodInfo.price;
       }
-      this.foodList[index].totalPrice = foodInfo.price * this.foodList[index].selectNum;
+      this.foodList[index].totalPrice =
+        foodInfo.price * this.foodList[index].selectNum;
 
       if (this.foodList[index].selectNum == 1) {
         this.cartInfo.list.push(this.foodList[index]);
@@ -192,11 +202,30 @@ export default {
   created() {
     this.scroll();
     this.getData();
+
+    // TODO:将请求购物车接口转移到登陆成功后的页面
+    this.$store.dispatch('cart/getCartList').then(resp => {
+      console.log(resp);
+    });
   },
   mounted() {
     this.initMenu();
   },
   computed: {
+    // 获取特定商店的购物车详情
+    list() {
+      return this.$store.getters['cart/list'].filter(
+        item => item.shop_id === this.shopID
+      );
+    },
+    // 计算当前店铺购物车内总价
+    totalPrice() {
+      if (!this.list) return 0;
+      return this.list.reduce(
+        (previous, current) => (previous += current.price * current.num),
+        0
+      );
+    },
     shopID() {
       return this.$route.params.shopId || 1;
     },
@@ -211,7 +240,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-@import '../../assets/style/common';
+@import '~css/common';
 .shop-detail {
   background-color: #fff;
 }
@@ -309,7 +338,7 @@ export default {
 }
 </style>
 <style lang="scss">
-@import '../../assets/style/common';
+@import '~css/common';
 
 .shop-detail {
   .van-ellipsis {

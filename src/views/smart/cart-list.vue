@@ -31,10 +31,10 @@
       <ul class='food-list' v-show='isShow'>
         <li v-for='(foodInfo,index) in foodList' :key='index' class="mt-flex-space-between">
           <div class='food-list_item-name'>
-            {{foodInfo.title}}
-            <p>{{foodInfo.specArr | getSpec}}</p>
+            {{foodInfo.food_name}}
+            <p>{{foodInfo.spec_text}}</p>
           </div>
-          <span class='food-list_item-price'>{{foodInfo.totalPrice}}</span>
+          <span class='food-list_item-price'>{{foodInfo.price * foodInfo.num}}</span>
           <div class='food-list_item-num'>
             <span class='num-cut-round' @click="adjustNum(0,index)">-</span>
             <span class='food-list_item-num_content'>{{foodInfo.num}}</span>
@@ -93,7 +93,6 @@ export default {
       this.$emit('adjustNum', type, index);
     },
     showMenu() {
-      console.log(12);
       this.isShow = !this.isShow;
     },
     getBox() {
@@ -103,16 +102,11 @@ export default {
       this.$emit('toSettle');
     },
   },
-  filters: {
-    getSpec(data) {
-      return data.reduce((str, item) => (str += ' ' + item.label), '');
-    },
-  },
 };
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '../../assets/style/common';
+@import '~css/common';
 
 .cart-list {
   position: fixed;
@@ -198,6 +192,7 @@ export default {
         -webkit-line-clamp: 1;
         overflow: hidden;
         p {
+          margin-top: 5px;
           font-size: 12px;
           color: $mt-gray;
         }

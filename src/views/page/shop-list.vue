@@ -92,7 +92,10 @@ export default {
     },
     getList() {
       this.$store
-        .dispatch('shop/getShopList', { page: this.page, type: this.sortTarget })
+        .dispatch('shop/getShopList', {
+          page: this.page,
+          type: this.sortTarget,
+        })
         .then(resp => {
           this.loading = false;
           this.shopList = this.shopList.concat(resp.data);
