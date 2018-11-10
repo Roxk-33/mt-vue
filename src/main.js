@@ -9,7 +9,6 @@ import router from './common/router';
 import store from './store/index';
 
 import './assets/style/normalize.css';
-import './mock';
 import './directive';
 import './assets/style/common.scss';
 import { Dialog } from 'vant';
