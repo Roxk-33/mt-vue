@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Layout from '@/views/layout';
-import Login from '@/views/page/user-login';
+import userLogin from '@/views/page/user-login';
+import userRegister from '@/views/page/user-register';
 import user from '@/views/page/user';
 import userInfo from '@/views/page/user-info';
 import userAddressList from '@/views/page/user-address-list';
@@ -16,7 +17,6 @@ import userOrderEvaluation from '@/views/page/user-order-evaluation';
 Vue.use(Router);
 
 export const constantRouterMap = [
-  { path: '/login', component: Login },
   {
     path: '/user',
     name: 'user',
@@ -42,6 +42,16 @@ export const constantRouterMap = [
         path: 'address/info',
         component: userAddressInfo,
         name: 'userAddressInfo',
+      },
+      {
+        path: 'register',
+        component: userRegister,
+        name: 'userRegister',
+      },
+      {
+        path: 'login',
+        component: userLogin,
+        name: 'userLogin',
       },
     ],
   },

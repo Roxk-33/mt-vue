@@ -43,7 +43,7 @@ import headerNav from '@/views/dumb/header-nav';
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'personInfo',
+  name: 'user-info',
   components: {
     headerNav,
   },
@@ -67,15 +67,16 @@ export default {
   methods: {
     logout() {
       this.$store
-        .dispatch('LogOut')
+        .dispatch('user/LogOut')
         .then(() => {
-          this.$router.push({ path: '/person/index' });
+          this.$router.push({ path: '/user/index' });
         })
         .catch(message => {});
     },
   },
   filters: {
     filterTel(value) {
+      if (!value) return '未绑定手机号';
       return `${value.substr(0, 3)}****${value.substr(7, 4)}`;
     },
   },

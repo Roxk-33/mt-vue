@@ -50,6 +50,26 @@ const getters = {
   token: state => state.token,
 };
 const actions = {
+  RegiterByAccount({ commit }, userInfo) {
+    const account = userInfo.account.trim();
+    const password = userInfo.password.trim();
+    return new Promise((resolve, reject) => {
+      ajax
+        .post(API.USER_REGISTER, {
+          account,
+          password,
+        })
+        .then(resp => {
+          resolve(resp);
+          commit(types.SET_TOKEN, resp.data.token);
+          commit(types.SET_NAME, resp.data.user.user_name);
+          commit(types.SET_AVATAR, resp.data.user.avatar);
+          commit(types.SET_USERID, resp.data.user.id);
+          commit(types.SET_TEL, resp.data.user.tel);
+        })
+        .catch(reject);
+    });
+  },
   // 用户名登录
   LoginByAccount({ commit }, userInfo) {
     const account = userInfo.account.trim();
@@ -110,19 +130,18 @@ const actions = {
   // },
 
   // 登出
-  LogOut({ commit, state }) {
+  LogOut({ commit }) {
     return new Promise((resolve, reject) => {
-      logout()
-        .then(() => {
+      ajax
+        .get(API.USER_LOGOUT)
+        .then(resp => {
           commit('REMOVE_TOKEN', '');
           commit('SET_NAME', '');
           commit('SET_TEL', '');
           commit('SET_AVATAR', '');
-          resolve();
+          resolve(resp);
         })
-        .catch(error => {
-          reject(error);
-        });
+        .catch(reject);
     });
   },
 

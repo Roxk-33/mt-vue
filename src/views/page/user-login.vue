@@ -1,6 +1,8 @@
 <template>
   <div class='login-container'>
-    <van-nav-bar :title="headerTitle" left-text="" left-arrow @click-left="$router.back(-1);" />
+    <header-nav :is-back="true" :title="headerTitle" :onLeft="true" @click-left="$router.back(-1);">
+      <router-link to="/user/register" class="register">注册</router-link>
+    </header-nav>
     <div class='container-box'>
       <van-cell-group>
         <van-field v-model="loginForm.account" label="用户名" placeholder="请输入用户名" />
@@ -11,9 +13,10 @@
   </div>
 </template>
 <script>
+import headerNav from '@/views/dumb/header-nav';
+
 export default {
-  name: 'loginPage',
-  components: {},
+  name: 'user-login',
   data() {
     return {
       headerTitle: '登录美团',
@@ -24,7 +27,9 @@ export default {
       },
     };
   },
-
+  components: {
+    headerNav,
+  },
   methods: {
     handleLogin() {
       // this.loading = true;
@@ -47,6 +52,9 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
+.register {
+  color: #000;
+}
 .login-container {
   background-color: white;
   height: 100%;

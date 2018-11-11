@@ -6,15 +6,15 @@
         <i class='fa fa-commenting-o' style="    vertical-align: top;"></i>
       </div>
       <div class='header_content'>
-        <div class='content-avatar' @click="toPage">
+        <router-link class='content-avatar' to="/user/info">
           <img :src='userAvatar'>
-        </div>
-        <span v-if="userName" class='content-info_body' @click="toPage">
+        </router-link>
+        <router-link v-if="userName" class='content-info_body' to="/user/info">
           {{userName}}
-        </span>
-        <div v-else class='content-info_login' to='../login' @click="toPage">
+        </router-link>
+        <router-link v-else class='content-info_login' to="/user/login">
           登录/注册
-        </div>
+        </router-link>
       </div>
     </div>
     <div class='personPage-body'>
@@ -63,15 +63,7 @@ export default {
       return this.$store.state.user.userAvatar;
     },
   },
-  methods: {
-    toPage() {
-      if (this.userStatus) {
-        this.$router.push('info');
-      } else {
-        this.$router.push({ path: '/login' });
-      }
-    },
-  },
+  methods: {},
 };
 </script>
 <style rel="stylesheet/scss" lang="scss">

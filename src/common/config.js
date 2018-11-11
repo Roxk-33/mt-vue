@@ -4,6 +4,7 @@ export default {
   API: {
     // 登录
     USER_LOGIN: `/user/login`,
+    USER_LOGOUT: `/user/logout`,
     USER_INFO: `/user`,
     USER_REGISTER: `/user/register`,
     // 送货地址
