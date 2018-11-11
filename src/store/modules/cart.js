@@ -40,8 +40,11 @@ const mutations = {
   [types.CART_ADD_ITEM](state, payload) {
     // 这里的 `state` 对象是模块的局部状态
     const { data, index } = payload;
-    if (index !== -1) state.list[index].num++;
-    else {
+    if (index !== -1) {
+      let item = state.list[index];
+      item.num++;
+      state.list.splice(index, 1, item);
+    } else {
       state.list.push({
         food_id: data.foodId,
         spec_id: data.specArr.join(','),
@@ -55,8 +58,11 @@ const mutations = {
   },
   [types.CART_DEL_ITEM](state, payload) {
     const { index } = payload;
-    if (state.list[index].num > 1) state.list[index].num--;
-    else {
+    if (state.list[index].num > 1) {
+      let item = state.list[index];
+      item.num--;
+      state.list.splice(index, 1, item);
+    } else {
       state.list.splice(index, 1);
     }
   },

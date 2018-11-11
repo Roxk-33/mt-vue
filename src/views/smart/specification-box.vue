@@ -85,8 +85,8 @@ export default {
         this.totalPrice += parseFloat(specInfo.price) - price;
       } else {
         const item = this.cartList[this.isExist];
-        this.specArr = item.spec_id.split(',');
-        this.specText = item.spec_text.split(' ');
+        this.specArr = item.spec_id;
+        this.specText = item.spec_text;
         this.totalPrice = item.price;
         this.num = item.num;
       }
@@ -97,8 +97,8 @@ export default {
       );
       if (this.isExist !== -1) {
         const item = this.cartList[this.isExist];
-        this.specArr = item.spec_id.split(',');
-        this.specText = item.spec_text.split(',');
+        this.specArr = item.spec_id;
+        this.specText = item.spec_text;
         this.totalPrice = item.price;
         this.num = item.num;
         return true;
@@ -107,6 +107,7 @@ export default {
     },
     // 初始化
     init() {
+      console.log(this.cartList);
       this.formatSpec(this.foodInfo.spec_arr);
       if (!this.isExistCart()) {
         console.log('购物车中未有该商品');
@@ -190,6 +191,7 @@ export default {
       }
     },
     cartList() {
+      console.log('更新了');
       this.isExistCart();
     },
   },
