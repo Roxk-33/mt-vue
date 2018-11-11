@@ -53,6 +53,7 @@ const mutations = {
         price: data.totalPrice,
         shop_id: data.shop_id,
         food_name: data.foodName,
+        picture: data.picture,
       });
     }
   },
@@ -86,6 +87,7 @@ const actions = {
   // },
 
   getCartList({ commit, rootState }, payload) {
+    if (!rootState.user.userId) return;
     return new Promise((resolve, reject) => {
       ajax
         .get(formatURL(API.CART_LIST, { id: rootState.user.userId }))

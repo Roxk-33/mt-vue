@@ -19,7 +19,7 @@
         </div>
         <div class="shop-good-list">
           <better-scroll :listenScroll="true" :probeType="probeType" @scroll="onScroll" :isDisable="scrollDisabel" @pullingDown="pullingDown">
-            <foodItem v-for="(foodInfo,index) in foodList" :key="foodInfo.food_id" :foodInfo="foodInfo" :foodIndex="index" :selectNum="foodInfo.selectNum" @showSpec="getSpecInfo" @selectGood="selectGood" />
+            <foodItem v-for="(foodInfo,index) in foodList" :key="foodInfo.food_id" :foodInfo="foodInfo" :foodIndex="index" :selectNum="foodInfo.selectNum" @showSpec="getSpecInfo" @adjustNum="adjustNum" />
           </better-scroll>
         </div>
       </div>
@@ -40,7 +40,6 @@ import shopHeader from '@/views/smart/shop-header';
 import shopNav from '@/views/smart/shop-nav';
 import { deepClone } from '@/common/utils';
 import foodIsRepeat from '@/mixins/food-is-repeat';
-import { mapGetters } from 'vuex';
 export default {
   name: 'shop-detail',
   data() {
@@ -131,30 +130,18 @@ export default {
       this.scrollDisabel = false;
     },
     getSelectGoood(isExist, specArr, specText, totalPrice, type) {
-      // let _foodInfo = deepClone(foodInfo);
-      // this.cartInfo.totalPrice +=
-      //   type === 1 ? foodInfo.totalPrice : -foodInfo.totalPrice;
-      // if (isExist > -1) {
-      //   if (type === 0 && foodInfo.num === 0) {
-      //     this.cartInfo.list.splice(isExist, 1);
-      //   } else {
-      //     this.cartInfo.list.splice(isExist, 1, _foodInfo);
-      //   }
-      // } else {
-      //   this.cartInfo.list.push(_foodInfo);
-      // }
-
-      // this.totalPrice = this.cartInfo.totalPrice;
       const data = {
         specArr,
         foodName: this.foodSelected.food_name,
         specText,
         foodId: this.foodSelected.id,
+        picture: this.foodSelected.picture,
         num: type === 1 ? 1 : -1,
         totalPrice,
         shop_id: this.shopID,
+        picture: foodInfo.picture,
       };
-      this.$store.dispatch('cart/addProductToCart', data).then(value => {});
+      this.pushCart(data);
     },
     /**
      * @description 删除/增加 已选商品
@@ -182,21 +169,29 @@ export default {
       this.foodSelected = this.foodList[index];
       this.showSpecBox = true;
     },
-    selectGood(index, type) {
+    adjustNum(index, type) {
       let foodInfo = this.foodList[index];
       if (type) {
         this.foodList[index].selectNum++;
-        this.cartInfo.totalPrice += foodInfo.price;
       } else if (this.foodList[index].selectNum > 0) {
         this.foodList[index].selectNum--;
-        this.cartInfo.totalPrice -= foodInfo.price;
       }
-      this.foodList[index].totalPrice =
-        foodInfo.price * this.foodList[index].selectNum;
 
-      if (this.foodList[index].selectNum == 1) {
-        this.cartInfo.list.push(this.foodList[index]);
-      }
+      const data = {
+        specArr: [],
+        foodName: foodInfo.food_name,
+        specText: [],
+        foodId: foodInfo.id,
+        picture: foodInfo.picture,
+        num: type === 1 ? 1 : -1,
+        totalPrice: foodInfo.price,
+        picture: foodInfo.picture,
+        shop_id: this.shopID,
+      };
+      this.pushCart(data);
+    },
+    pushCart(data) {
+      this.$store.dispatch('cart/addProductToCart', data).then(value => {});
     },
   },
   created() {

@@ -32,7 +32,7 @@
         <li v-for='(foodInfo,index) in foodList' :key='index' class="mt-flex-space-between">
           <div class='food-list_item-name'>
             {{foodInfo.food_name}}
-            <p>{{foodInfo.spec_text}}</p>
+            <p v-show="foodInfo.spec_text[0]">{{foodInfo.spec_text}}</p>
           </div>
           <span class='food-list_item-price'>{{foodInfo.price * foodInfo.num}}</span>
           <div class='food-list_item-num'>

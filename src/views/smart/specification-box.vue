@@ -50,6 +50,7 @@ export default {
       isExist: -1,
       specArr: [],
       specText: [],
+      num: 0,
     };
   },
   props: {
@@ -107,7 +108,6 @@ export default {
     },
     // 初始化
     init() {
-      console.log(this.cartList);
       this.formatSpec(this.foodInfo.spec_arr);
       if (!this.isExistCart()) {
         console.log('购物车中未有该商品');
@@ -123,6 +123,8 @@ export default {
     // 将后端传来的规格数据格式转换成前端展示需要的格式
     formatSpec(data) {
       let temp = {};
+      this.specArr.splice(0, this.specArr.length);
+      this.specText.splice(0, this.specText.length);
       data.forEach((item, index) => {
         let _type = item.spec_type;
         if (!temp[_type]) {
@@ -192,7 +194,7 @@ export default {
     },
     cartList() {
       console.log('更新了');
-      this.isExistCart();
+      this.value && this.isExistCart();
     },
   },
   computed: {

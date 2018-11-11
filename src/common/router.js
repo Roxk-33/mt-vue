@@ -11,6 +11,7 @@ import shopList from '@/views/page/shop-list';
 import shopDetail from '@/views/page/shop-detail';
 import orderPay from '@/views/page/order-pay';
 import userOrderList from '@/views/page/user-order-list';
+import userCart from '@/views/page/user-cart';
 import userOrderDetail from '@/views/page/user-order-detail';
 import userOrderEvaluation from '@/views/page/user-order-evaluation';
 
@@ -52,6 +53,11 @@ export const constantRouterMap = [
         path: 'login',
         component: userLogin,
         name: 'userLogin',
+      },
+      {
+        path: 'cart',
+        component: userCart,
+        name: 'userCart',
       },
     ],
   },

@@ -1,7 +1,7 @@
 <template>
   <div class="good-list-item">
     <div class="good-image">
-      <img :src="foodInfo.photo">
+      <img :src="foodInfo.picture">
     </div>
     <div class="good-content mt-flex-space-between">
       <div class="good-content_info">
@@ -15,9 +15,9 @@
       </div>
       <div class="good-content_buy good-content_buy_nontype" v-else>
         <div class="good-content_buy_nontype_box">
-          <i class="iconfont icon-jian" @click="selectGood(0)" v-if="selectNum > 0"></i>
+          <i class="iconfont icon-jian" @click="adjustNum(0)" v-if="selectNum > 0"></i>
           <span v-if="selectNum > 0">{{selectNum}}</span>
-          <i class="iconfont icon-jia" @click="selectGood(1)"></i>
+          <i class="iconfont icon-jia" @click="adjustNum(1)"></i>
         </div>
       </div>
     </div>
@@ -51,8 +51,8 @@ export default {
     getSpecInfo() {
       this.$emit('showSpec', this.foodIndex);
     },
-    selectGood(type) {
-      this.$emit('selectGood', this.foodIndex, type);
+    adjustNum(type) {
+      this.$emit('adjustNum', this.foodIndex, type);
     },
   },
 };
