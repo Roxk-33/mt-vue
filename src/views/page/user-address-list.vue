@@ -4,10 +4,10 @@
       <span @click="go('add')">新增地址</span>
     </header-nav>
     <div class="address-list-box">
-      <div class="address-list-item">
-        <p class="address-content">广东财经大学</p>
-        <span class="address-user">肖志豪</span>
-        <span class="address-sex">先生</span>
+      <div class="address-list-item" v-for="item in list" :key="item.id">
+        <p class="address-content">{{item.address}}</p>
+        <span class="address-user">{{item.user_name}}</span>
+        <span class="address-sex">{{item.user_sex == 0 ? '先生':'女士'}}</span>
         <i class="iconfont icon-xiugai" @click="go('edit',1)"></i>
       </div>
     </div>
@@ -21,7 +21,9 @@ export default {
   name: 'user-address-list',
 
   data() {
-    return {};
+    return {
+      list: [],
+    };
   },
   components: {
     headerNav,
@@ -30,6 +32,14 @@ export default {
     go(type, id = -1) {
       this.$router.push({ path: '/user/address/info/', query: { type, id } });
     },
+    getData() {
+      this.$store.dispatch('user/getAddressList').then(resp => {
+        this.list = resp.data;
+      });
+    },
+  },
+  created() {
+    this.getData();
   },
 };
 </script>

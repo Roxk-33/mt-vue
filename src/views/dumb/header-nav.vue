@@ -71,7 +71,7 @@ export default {
   line-height: 46px;
   background-color: #fff;
   position: relative;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.26);
+  border-bottom: 1px solid #b1adad12;
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -3,9 +3,10 @@
     <div class="form-item-label">
       <p v-if="label">{{label}}:</p>
     </div>
-    <div class="form-item-input">
-      <input :type="type" :value="value" :readonly="readonly" ref="input" v-on="listeners">
+    <div class="form-item-input" v-if="!showSlot">
+      <input :type="type" :value="value" :readonly="readonly" ref="input" v-on="listeners" :placeholder="placeholder">
     </div>
+    <slot></slot>
   </div>
 </template>
 
@@ -22,11 +23,19 @@ export default {
       type: String,
       default: '',
     },
+    placeholder: {
+      type: String,
+      default: '',
+    },
     isRequired: {
       type: Boolean,
       default: false,
     },
     readonly: {
+      type: Boolean,
+      default: false,
+    },
+    showSlot: {
       type: Boolean,
       default: false,
     },
@@ -99,14 +108,16 @@ export default {
   align-items: center;
   background-color: #fff;
   padding: 10px;
-  font-size: 17px;
-  border-bottom: 1px solid #b1adad57;
+  font-size: 16px;
+  border-bottom: 1px solid #b1adad12;
   .form-item-label {
     margin-right: 20px;
     min-width: 55px;
   }
   .form-item-input {
     input {
+      font-size: 15px;
+
       border: 0;
     }
   }

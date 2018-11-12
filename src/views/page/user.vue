@@ -1,9 +1,9 @@
 <template>
-  <div class='personPage'>
-    <div class='personPage-header'>
+  <div class='user-index'>
+    <div class='user-index-header'>
       <div class='header_setting'>
         <i class='fa fa-cog'></i>
-        <i class='fa fa-commenting-o' style="    vertical-align: top;"></i>
+        <i class='fa fa-commenting-o' style="vertical-align: top;"></i>
       </div>
       <div class='header_content'>
         <router-link class='content-avatar' to="/user/info">
@@ -17,7 +17,7 @@
         </router-link>
       </div>
     </div>
-    <div class='personPage-body'>
+    <div class='user-index-body'>
       <van-row class='fn-list' type="flex" justify="space-around">
         <van-col :span="8">
           <div class='fn-list-item'>
@@ -32,10 +32,10 @@
           </div>
         </van-col>
         <van-col :span="8">
-          <div class='fn-list-item'>
+          <router-link class='fn-list-item' to="/user/address/list">
             <i class='iconfont icon-dizhi'></i>
             <p>我的地址</p>
-          </div>
+          </router-link>
         </van-col>
       </van-row>
     </div>
@@ -47,7 +47,7 @@ import { mapGetters } from 'vuex';
 import footerNav from '@/views/dumb/footer-nav';
 
 export default {
-  name: 'personPage',
+  name: 'user-index',
   components: {
     footerNav,
   },
@@ -68,8 +68,10 @@ export default {
 </script>
 <style rel="stylesheet/scss" lang="scss">
 @import '~css/common';
-
-.personPage-header {
+a {
+  color: #000;
+}
+.user-index-header {
   height: 3rem;
   background-color: $mt-color;
 
@@ -134,16 +136,5 @@ export default {
       font-size: 28px;
     }
   }
-}
-.test-box {
-  height: 100px;
-}
-.test {
-  display: inline-block;
-}
-.test img {
-  width: 120px;
-  height: 80px;
-  display: inline-block;
 }
 </style>

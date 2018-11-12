@@ -8,6 +8,7 @@ export default {
     USER_INFO: `/user`,
     USER_REGISTER: `/user/register`,
     // 送货地址
+    USER_ADDRESS_LIST: `/user/address`, // 地址列表
     USER_ADDRESS_ADD: `/user/address`, // 新增地址
     USER_ADDRESS_EDIT: `/user/address`, // 修改地址
 
@@ -17,5 +18,6 @@ export default {
     // 购物车
     CART_LIST: `/user/:id/cart`,
     CART_ADD: `/user/cart`,
+    CART_UPDATE: `/user/cart`,
   },
 };
