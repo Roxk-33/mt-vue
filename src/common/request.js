@@ -1,5 +1,6 @@
 import axios from 'axios';
 import store from '@/store';
+import { Toast } from 'vant'
 // create an axios instance
 const baseURL =
   process.env.NODE_ENV === 'production'
@@ -32,16 +33,18 @@ service.interceptors.response.use(
   response => {
     const data = response.data;
     if (!data.status) {
-      if (data.code === 1009 || data.code === 1007 || data.code === 4001) {
-        // store.dispatch('FedLogOut').then(() => {
-        //   location.reload();// 为了重新实例化vue-router对象 避免bug
-        // });
+      if (data.code === 4001 || data.code === 4002 || data.code === 4001) {
+        Toast('请登录！');
+        store.dispatch('user/FedLogOut').then(() => {
+          location.reload();// 为了重新实例化vue-router对象 避免bug
+        });
       } else if (data.code === 1003) {
         // store.dispatch('FedLogOut').then(() => {
         //     location.reload();// 为了重新实例化vue-router对象 避免bug
         //   });
       }
-      return Promise.reject(data.message);
+      Toast(data.message);
+      return Promise.reject(data);
     }
     return Promise.resolve(data);
   },

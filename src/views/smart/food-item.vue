@@ -52,7 +52,7 @@ export default {
       this.$emit('showSpec', this.foodIndex);
     },
     adjustNum(type) {
-      this.$emit('adjustNum', this.foodIndex, type);
+      this.$emit('adjustNum', type, -1, this.foodIndex);
     },
   },
 };

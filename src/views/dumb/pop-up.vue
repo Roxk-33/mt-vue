@@ -1,8 +1,15 @@
 <template>
-  <div class="mt-popUp">
+  <div class="mt-pop-up">
+    <div class="pop-up-header mt-flex-space-between">
+      <span class="header-left" @click="emitEvent('clickHeaderLeft')">{{headerLeft}}</span>
+      <span class="header-title">
+        {{headerTitle}}
+      </span>
+      <span class="header-right" @click="emitEvent('clickHeaderRight')">{{headerRight}}</span>
+    </div>
     <slot></slot>
-    <div class="popUp-bottom" @click="cancel">
-      {{bottomText}}
+    <div class="pop-up-bottom" @click="cancel" v-if="showBottomText">
+      <i class="iconfont" v-if="bottomTextIcon" :class="bottomTextIcon"></i>{{bottomText}}
     </div>
   </div>
 </template>
@@ -11,9 +18,29 @@
 export default {
   name: 'mt-popUp',
   props: {
+    headerLeft: {
+      type: String,
+      default: '',
+    },
+    headerRight: {
+      type: String,
+      default: '',
+    },
+    headerTitle: {
+      type: String,
+      default: '',
+    },
     bottomText: {
       type: String,
       default: '取消',
+    },
+    bottomTextIcon: {
+      type: String,
+      default: '',
+    },
+    showBottomText: {
+      type: Boolean,
+      default: true,
     },
   },
   data() {
@@ -21,6 +48,9 @@ export default {
   },
   components: {},
   methods: {
+    emitEvent(event) {
+      this.$emit(event);
+    },
     cancel() {
       this.$emit('cancel');
     },
@@ -29,12 +59,20 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-.popUp-bottom {
+.pop-up-header {
+  padding: 10px;
+  border-bottom: 1px solid #b1adad12;
+  .header-title {
+    font-size: 16px;
+  }
+}
+.pop-up-bottom {
   text-align: center;
-  height: 30px;
-  line-height: 30px;
   font-size: 15px;
-  padding-top: 10px 0;
-  border-top: 5px solid #c3c2c2;
+  padding: 10px 0;
+  border-top: 2px solid #b1adad12;
+  i {
+    margin-right: 5px;
+  }
 }
 </style>

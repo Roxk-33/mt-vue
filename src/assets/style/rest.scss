@@ -1,0 +1,9 @@
+@import '~css/common';
+
+.van-radio .van-icon-checked {
+  color: $mt-color;
+}
+.van-checkbox__icon--checked .van-icon {
+  border-color: $mt-color;
+  background-color: $mt-color;
+}
