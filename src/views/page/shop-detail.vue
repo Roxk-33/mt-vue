@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <cart-list :threshold="shopInfo.threshold" :freight="shopInfo.freight" :total-price="totalPrice" :foodList="list" @adjustNum="adjustNum" @toSettle="toSettle"></cart-list>
+    <cart-list :threshold="shopInfo.threshold" :freight="shopInfo.freight" :cartList="list" @adjustNum="adjustNum" @toSettle="toSettle"></cart-list>
     <specificationBox @pushCart="getSelectGoood" v-model="showSpecBox" :center="true" width="90%" :foodInfo="foodSelected" :cartList="list">
     </specificationBox>
   </div>
@@ -66,10 +66,6 @@ export default {
       shopInfo: {},
       foodList: [],
       scrollDisabel: false,
-      cartInfo: {
-        list: [],
-        totalPrice: 0,
-      },
       foodSelected: {},
       trackSize: 0, // 商品列表高度
       trackTop: 0, // 商品列表Top
@@ -86,14 +82,12 @@ export default {
   },
   mixins: [foodIsRepeat],
   methods: {
-    getData() {
+    getShopData() {
       this.$store
         .dispatch('shop/getShopDetail', { id: this.shopID })
         .then(resp => {
           this.shopInfo = resp.data;
-          this.shopInfo.food_list.forEach(item => {
-            item.selectNum = 0;
-          });
+
           this.foodList = this.shopInfo.food_list;
         })
         .catch(e => console.log(e));
@@ -130,97 +124,121 @@ export default {
       this.scrollDisabel = false;
     },
     getSelectGoood(isExist, specArr, specText, totalPrice, type) {
+      if (isExist !== -1) {
+        this.adjustNum(type, isExist);
+        return;
+      }
       const data = {
         specArr,
         foodName: this.foodSelected.food_name,
         specText,
         foodId: this.foodSelected.id,
-        picture: this.foodSelected.picture,
-        num: type === 1 ? 1 : -1,
         totalPrice,
         shop_id: this.shopID,
-        picture: foodInfo.picture,
+        picture: this.foodSelected.picture,
       };
-      this.pushCart(data);
+      this.pushCart(data, isExist);
     },
-    /**
-     * @description 删除/增加 已选商品
-     * @augments type:0为删除1个，1为增加1个；index:下标
-     */
-    adjustNum(type, index) {
-      let foodInfo = this.cartInfo.list[index];
-      if (type === 1) {
-        foodInfo.num++;
-        this.cartInfo.totalPrice += foodInfo.totalPrice;
-      } else {
-        if (foodInfo.num === 1) {
-          this.cartInfo.list.splice(index, 1);
-        } else {
-          foodInfo.num--;
-        }
-        this.cartInfo.totalPrice -= foodInfo.totalPrice;
-      }
-    },
+
     // 去结算
     toSettle() {
-      this.$router.push('/pay');
+      this.$router.push({
+        name: 'pay',
+        params: { shopId: this.shopID },
+      });
     },
     getSpecInfo(index) {
       this.foodSelected = this.foodList[index];
       this.showSpecBox = true;
     },
-    adjustNum(index, type) {
-      let foodInfo = this.foodList[index];
-      if (type) {
-        this.foodList[index].selectNum++;
-      } else if (this.foodList[index].selectNum > 0) {
-        this.foodList[index].selectNum--;
+    /**
+     * @description 删除/增加 已选商品
+     * @augments type:0为删除1个，1为增加1个；index:下标,indexCart为在购物车中的下标，indexMenu表示在foodList的下标
+     */
+    adjustNum(type, indexCart = -1, indexMenu = -1) {
+      let foodInfo = null;
+      if (indexMenu !== -1) {
+        foodInfo = this.foodList[indexMenu];
+        // 因为从目录中添加商品，无法得知购物车中是否已有
+        let index = this.list.findIndex(item => item.food_id === foodInfo.id);
+
+        // 为新增商品
+        if (index === -1) {
+          const data = {
+            specArr: [],
+            foodName: foodInfo.food_name,
+            specText: [],
+            foodId: foodInfo.id,
+            totalPrice: foodInfo.price,
+            shop_id: this.shopID,
+            picture: foodInfo.picture,
+          };
+          return this.pushCart(data);
+        } else {
+          indexCart = index;
+        }
       }
 
+      if (indexCart !== -1) {
+        foodInfo = this.list[indexCart];
+      }
+      // if (type) {
+      //   this.foodList[index].selectNum++;
+      // } else if (this.foodList[index].selectNum > 0) {
+      //   this.foodList[index].selectNum--;
+      // }
       const data = {
-        specArr: [],
-        foodName: foodInfo.food_name,
-        specText: [],
-        foodId: foodInfo.id,
-        picture: foodInfo.picture,
-        num: type === 1 ? 1 : -1,
-        totalPrice: foodInfo.price,
-        picture: foodInfo.picture,
-        shop_id: this.shopID,
+        id: foodInfo.id, // 此id为购物车内商品的购物车自增ID
+        type: type === 1 ? 1 : -1,
       };
-      this.pushCart(data);
+      this.pushCart(data, indexCart);
     },
-    pushCart(data) {
-      this.$store.dispatch('cart/addProductToCart', data).then(value => {});
+    pushCart(data, isExist = -1) {
+      if (isExist !== -1) {
+        this.$store.dispatch('cart/updateProductToCart', data).then(value => {
+          this.$store.dispatch('cart/getCartList');
+        });
+      } else {
+        this.$store.dispatch('cart/addProductToCart', data).then(value => {
+          this.$store.dispatch('cart/getCartList');
+        });
+      }
+    },
+    showSelectNum() {
+      this.foodList.forEach(item => {
+        // 非规格商品需要在目录上显示已选数量
+        if (item.spec_arr.length === 0) {
+          let index = this.list.findIndex(food => food.food_id == item.id);
+          if (index !== -1) {
+            item.selectNum = this.list[index].num;
+          } else {
+            item.selectNum = 0;
+          }
+        }
+      });
     },
   },
   created() {
     this.scroll();
-    this.getData();
-
-    // TODO:将请求购物车接口转移到登陆成功后的页面
-    this.$store.dispatch('cart/getCartList').then(resp => {
-      console.log(resp);
-    });
   },
   mounted() {
     this.initMenu();
+    this.getShopData();
+  },
+  watch: {
+    list(val) {
+      this.showSelectNum();
+    },
   },
   computed: {
     // 获取特定商店的购物车详情
     list() {
-      return this.$store.getters['cart/list'].filter(
-        item => item.shop_id === this.shopID
-      );
+      let arr = this.$store.getters['cart/listArr'];
+      let target = arr.find(item => item.shop_info.id == this.shopID);
+      if (!target) return [];
+      else return target.foodList;
     },
-    // 计算当前店铺购物车内总价
-    totalPrice() {
-      if (!this.list) return 0;
-      return this.list.reduce(
-        (previous, current) => (previous += current.price * current.num),
-        0
-      );
-    },
+
     shopID() {
       return this.$route.params.shopId || 1;
     },

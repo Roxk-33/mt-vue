@@ -21,7 +21,7 @@
             <span class='footer-info_price'>￥{{totalPrice}}</span>
             <span class='footer-info_specification'>({{slogan}})</span>
           </div>
-          <van-button size="small" @click="pushCart" v-if="isExist == -1">
+          <van-button size="small" @click="pushCart" v-if="isExist == -1 || num == 0">
             <i class='fa fa-plus'></i>加入购物车
           </van-button>
           <div class='specification-box-num-btn' v-else>
@@ -86,20 +86,22 @@ export default {
         this.totalPrice += parseFloat(specInfo.price) - price;
       } else {
         const item = this.cartList[this.isExist];
-        this.specArr = item.spec_id;
-        this.specText = item.spec_text;
+        this.specArr = deepClone(item.spec_arr);
+        this.specText = deepClone(item.spec_text);
         this.totalPrice = item.price;
         this.num = item.num;
       }
     },
     isExistCart() {
-      this.isExist = this.cartList.findIndex(
-        item => item.food_id == this.foodId
-      );
+      this.isExist = this.isRepeat(this.cartList, {
+        id: this.foodId,
+        specArr: this.specArr,
+      });
+
       if (this.isExist !== -1) {
         const item = this.cartList[this.isExist];
-        this.specArr = item.spec_id;
-        this.specText = item.spec_text;
+        this.specArr = deepClone(item.spec_arr);
+        this.specText = deepClone(item.spec_text);
         this.totalPrice = item.price;
         this.num = item.num;
         return true;
@@ -162,10 +164,6 @@ export default {
         this.totalPrice,
         1
       );
-      this.isExist = this.isRepeat(this.cartList, {
-        id: this.foodId,
-        specArr: this.specArr,
-      });
     },
     adjustNum(type) {
       if (type === 1) {
@@ -193,7 +191,6 @@ export default {
       }
     },
     cartList() {
-      console.log('更新了');
       this.value && this.isExistCart();
     },
   },

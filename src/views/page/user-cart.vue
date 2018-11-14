@@ -4,10 +4,10 @@
       <span>编辑</span>
     </header-nav>
     <div class="cart-list">
-      <div class="cart-list-item" v-for="item in list" :key="item.shop_info.shop_id">
-        <router-link class="item-title" :to="{ path: '/shop/detail', params: { shopId: item.shop_info.id }}">
-          <van-checkbox v-model="checked" checked-color="#4b0"></van-checkbox>
-          <div class="content">
+      <div class="cart-list-item" v-for="item in cartList" :key="item.shop_info.shop_id">
+        <div class="item-title">
+          <van-checkbox v-model="item.select"></van-checkbox>
+          <router-link class="content" :to="{ name: 'shopDetail', params: { shopId: item.shop_info.id }}">
             <img class="shop-avatar" :src="item.shop_info.photo">
             <span class="shop-title">{{item.shop_info.shop_title}}</span>
             <i class='iconfont icon-xiangyou'></i>
@@ -16,30 +16,32 @@
               <div class="discount-icon">促销</div>
               <p class="shop-discount-info">满15减1</p>
             </div> -->
-          </div>
-        </router-link>
+          </router-link>
+        </div>
         <div class="food-list">
-          <router-link class="food-list-item" v-for="foodInfo in item.foodList" :key="foodInfo.id" :to="{ path: '/shop/detail', params: { shopId: item.shop_info.id }}">
-            <van-checkbox v-model="checked" checked-color="#4b0"></van-checkbox>
-            <div class="content">
-              <div class="food-info-box">
-                <img class="food-img" :src="foodInfo.picture">
-                <div class="food-info">
-                  <p class="food-info-title">{{foodInfo.food_name}}</p>
-                  <p class="food-info-spec">规格：{{foodInfo.spec_text.join(',')}}</p>
-                  <div class="food-info-num">
-                    <span class="num">x{{foodInfo.num}}</span>
-                    <span class="price">￥{{foodInfo.num * foodInfo.price}}</span>
+          <van-checkbox-group v-model="item.selArr">
+            <div class="food-list-item" v-for="foodInfo in item.foodList" :key="foodInfo.id">
+              <van-checkbox :name="foodInfo.id"></van-checkbox>
+              <div class="content">
+                <div class="food-info-box">
+                  <img class="food-img" :src="foodInfo.picture">
+                  <div class="food-info">
+                    <p class="food-info-title">{{foodInfo.food_name}}</p>
+                    <p class="food-info-spec">规格：{{foodInfo.spec_text.join(',')}}</p>
+                    <div class="food-info-num">
+                      <span class="num">x{{foodInfo.num}}</span>
+                      <span class="price">￥{{foodInfo.num * foodInfo.price}}</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </router-link>
+          </van-checkbox-group>
 
           <div class="fee-info">
             <div class="mt-flex-space-between fee-info-item">
-              <span>包装费</span>
-              <span>￥1</span>
+              <span>运费</span>
+              <span>￥{{item.shop_info.freight}}</span>
             </div>
           </div>
         </div>
@@ -47,7 +49,7 @@
           <span class="other-info">已优惠2元</span>
           <div class="right">
             <span class="total-price">{{item.foodList | getTotalPrice}}元</span>
-            <button class="settle-btn">
+            <button class="settle-btn" @click="toPay(item)">
               <span>去结算</span>
             </button>
           </div>
@@ -60,6 +62,8 @@
 <script type="text/ecmascript-6">
 import headerNav from '@/views/dumb/header-nav';
 import { mapGetters } from 'vuex';
+import { deepClone } from '@/common/utils';
+
 export default {
   name: 'user-cart',
 
@@ -67,38 +71,44 @@ export default {
     return {
       checked: false,
       headerTitle: '购物车',
+      cartList: [],
     };
   },
   components: {
     headerNav,
   },
-  mounted() {
-    console.log(this.list);
+  methods: {
+    // 无法直接更store
+    getCart() {
+      let temp = deepClone(this.list);
+      temp.forEach(item => {
+        let obj = Object.assign({}, item, { selArr: [] });
+        this.cartList.push(obj);
+      });
+    },
+    toPay(target) {
+      const foodIdArr = target.selArr;
+      if (foodIdArr.length === 0) return this.$toast('请选择食品');
+      console.log(foodIdArr);
+    },
   },
-  methods: {},
   computed: {
-    // ...mapGetters({
-    //   list: 'cart/list'
-    // }),
     list() {
-      console.log(this.$store.getters['cart/list']);
-      return this.$store.getters['cart/list'].reduce((previous, current) => {
-        let index = previous.findIndex(
-          item => item.shop_info.id == current.shop_id
-        );
-        if (index === -1)
-          previous.push({ shop_info: current.shop_info, foodList: [current] });
-        else previous[index].foodList.push(current);
-        return previous;
-      }, []);
+      return this.$store.getters['cart/listArr'];
     },
   },
   filters: {
     getTotalPrice(foodList) {
+      if (foodList.length === 0) return 0;
       return foodList.reduce(
         (totalPrice, item) => (totalPrice += item.num * item.price),
         0
       );
+    },
+  },
+  watch: {
+    list() {
+      this.getCart();
     },
   },
 };
@@ -151,7 +161,8 @@ export default {
       display: flex;
       margin-bottom: 5px;
       .van-checkbox {
-        vertical-align: middle;
+        display: flex;
+        align-items: center;
       }
       .content {
         flex: 1;

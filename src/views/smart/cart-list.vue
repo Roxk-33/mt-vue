@@ -1,6 +1,6 @@
 <template>
   <div class="cart-list">
-    <div class='cart-emtpy mt-flex-space-between' v-if="foodList.length === 0">
+    <div class='cart-emtpy mt-flex-space-between' v-if="cartList.length === 0">
       <div class='emtpy-left cart-list-left'>
         <span>{{freight === 0 ? '免配送费' : `另需配送费￥${freight}`}}</span>
         <!-- TODO:自取功能以后再加 -->
@@ -29,10 +29,10 @@
     <!-- 列表 -->
     <transition name='box-up'>
       <ul class='food-list' v-show='isShow'>
-        <li v-for='(foodInfo,index) in foodList' :key='index' class="mt-flex-space-between">
+        <li v-for='(foodInfo,index) in cartList' :key='index' class="mt-flex-space-between">
           <div class='food-list_item-name'>
             {{foodInfo.food_name}}
-            <p v-show="foodInfo.spec_text[0]">{{foodInfo.spec_text}}</p>
+            <p v-show="foodInfo.spec_text.length">{{foodInfo.spec_text.join(',')}}</p>
           </div>
           <span class='food-list_item-price'>{{foodInfo.price * foodInfo.num}}</span>
           <div class='food-list_item-num'>
@@ -55,7 +55,7 @@ export default {
   directives: { clickoutside },
 
   props: {
-    foodList: {
+    cartList: {
       type: Array,
       default: [],
     },
@@ -69,10 +69,6 @@ export default {
       type: Number,
       default: 0,
     },
-    totalPrice: {
-      type: Number,
-      default: 0,
-    },
   },
   components: {
     mtMask,
@@ -82,10 +78,19 @@ export default {
       isShow: false,
     };
   },
-  computed: {},
+  computed: {
+    // 计算当前店铺购物车内总价
+    totalPrice() {
+      if (this.cartList.length === 0) return 0;
+      return this.cartList.reduce(
+        (previous, current) => (previous += current.price * current.num),
+        0
+      );
+    },
+  },
   watch: {
     isExist() {
-      return this.foodList.length > 0;
+      return this.cartList.length > 0;
     },
   },
   methods: {
