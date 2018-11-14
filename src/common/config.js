@@ -16,8 +16,12 @@ export default {
     SHOP_DETAIL: `/shop/:id`, // 商店详情
 
     // 购物车
-    CART_LIST: `/user/:id/cart`,
+    CART_LIST: `/user/cart`,
+    CART_SHOP_LIST: `/user/cart/settle/:shopId`,
     CART_ADD: `/user/cart`,
     CART_UPDATE: `/user/cart`,
+
+    // 订单
+    ORDER_PAY: '/order/pay'
   },
 };

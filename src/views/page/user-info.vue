@@ -1,6 +1,6 @@
 <template>
   <div class='person-info'>
-    <header-nav is-back="true" :title="headerTitle" @click-left="$router.back(-1);"></header-nav>
+    <header-nav :is-back="true" :title="headerTitle" @click-left="$router.back(-1);"></header-nav>
 
     <ul class='info-box'>
       <li class='info-box-avatar'>
@@ -70,6 +70,7 @@ export default {
         .dispatch('user/LogOut')
         .then(() => {
           this.$router.push({ path: '/user/index' });
+          window.location.reload();
         })
         .catch(message => {});
     },

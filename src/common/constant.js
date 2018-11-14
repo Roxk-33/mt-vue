@@ -13,6 +13,14 @@ export default {
       male: 0,
       female: 1,
     },
+    TAGS: {
+      0: '学校',
+      1: '公司',
+      2: '家',
+    },
+  },
+  COLOR: {
+    MT: '#ffd161',
   },
   // 店铺页-筛选
   fliterList: {

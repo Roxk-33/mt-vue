@@ -13,6 +13,7 @@ const state = {
   userTel: '',
   introduction: '',
   token: getToken(),
+  addressList: [],
 };
 
 const mutations = {
@@ -30,7 +31,6 @@ const mutations = {
   [types.SET_USERID](state, id) {
     state.userId = id;
   },
-
   [types.SET_NAME](state, name) {
     state.userName = name;
   },
@@ -39,6 +39,9 @@ const mutations = {
   },
   [types.SET_TEL](state, tel) {
     state.userTel = tel;
+  },
+  [types.SET_ADDRESS](state, addressList) {
+    state.addressList = addressList;
   },
 };
 const getters = {
@@ -107,6 +110,36 @@ const actions = {
         .catch(reject);
     });
   },
+  addAddress({ commit, state }, payload) {
+    return new Promise((resolve, reject) => {
+      ajax
+        .post(API.USER_ADDRESS_ADD, payload)
+        .then(resp => {
+          resolve(resp);
+        })
+        .catch(reject);
+    });
+  },
+  editAddress({ commit, state }, payload) {
+    return new Promise((resolve, reject) => {
+      ajax
+        .put(API.USER_ADDRESS_EDIT, payload)
+        .then(resp => {
+          resolve(resp);
+        })
+        .catch(reject);
+    });
+  },
+  getAddressList({ commit }) {
+    return new Promise((resolve, reject) => {
+      ajax
+        .get(API.USER_ADDRESS_LIST)
+        .then(resp => {
+          resolve(resp);
+        })
+        .catch(reject);
+    });
+  },
 
   // 获取用户信息
   // GetUserInfo({ commit, state }, token) {
@@ -135,7 +168,7 @@ const actions = {
       ajax
         .get(API.USER_LOGOUT)
         .then(resp => {
-          commit('REMOVE_TOKEN', '');
+          commit('REMOVE_TOKEN');
           commit('SET_NAME', '');
           commit('SET_TEL', '');
           commit('SET_AVATAR', '');
@@ -146,13 +179,12 @@ const actions = {
   },
 
   // 前端 登出
-  // FedLogOut({ commit }) {
-  //   return new Promise((resolve) => {
-  //     commit('SET_TOKEN', '');
-  //     removeToken();
-  //     resolve();
-  //   });
-  // },
+  FedLogOut({ commit }) {
+    return new Promise((resolve) => {
+      commit('REMOVE_TOKEN');
+      resolve();
+    });
+  },
 };
 
 export default {

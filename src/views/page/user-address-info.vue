@@ -127,10 +127,3 @@ export default {
   }
 }
 </style>
-<style rel="stylesheet/scss" lang="scss">
-@import '~css/common';
-
-.van-radio .van-icon-checked {
-  color: $mt-color;
-}
-</style>

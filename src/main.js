@@ -10,8 +10,9 @@ import store from './store/index';
 
 import './assets/style/normalize.css';
 import './directive';
-import './assets/style/common.scss';
 import { Dialog } from 'vant';
+import './assets/style/common.scss';
+import './assets/style/rest.scss';
 
 Vue.use(Dialog);
 // A modern alternative to CSS resets
