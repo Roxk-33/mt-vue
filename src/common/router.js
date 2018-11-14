@@ -9,7 +9,7 @@ import userAddressList from '@/views/page/user-address-list';
 import userAddressInfo from '@/views/page/user-address-info';
 import shopList from '@/views/page/shop-list';
 import shopDetail from '@/views/page/shop-detail';
-import orderPay from '@/views/page/order-pay';
+import orderCreate from '@/views/page/order-create';
 import userOrderList from '@/views/page/user-order-list';
 import userCart from '@/views/page/user-cart';
 import userOrderDetail from '@/views/page/user-order-detail';
@@ -101,9 +101,9 @@ export const constantRouterMap = [
         name: 'userOrderEvaluation',
       },
       {
-        path: 'pay',
-        name: 'pay',
-        component: orderPay,
+        path: 'create',
+        name: 'orderCreate',
+        component: orderCreate,
       },
     ],
   },

@@ -179,7 +179,16 @@ export default {
   components: {
     popUp,
   },
+
   created() {
+    if (!this.shopId) {
+      this.$toast('非法操作！');
+      this.$router.push({
+        name: 'userIndex',
+      });
+    }
+  },
+  mounted() {
     this.getData();
   },
   methods: {
@@ -192,8 +201,13 @@ export default {
       this.$store
         .dispatch('cart/getCartListByShop', { shopId: this.shopId })
         .then(resp => {
-          this.foodList = resp.data;
-          console.log(resp);
+          if (this.foodIdArr.length) {
+            this.foodList = resp.data.filter(
+              item => this.foodIdArr.indexOf(item.id) !== -1
+            );
+          } else {
+            this.foodList = resp.data;
+          }
           this.shopInfo = this.foodList[0].shop_info;
         });
     },
@@ -240,6 +254,12 @@ export default {
     },
     shopId() {
       return this.$route.params.shopId || 1;
+    },
+    isAll() {
+      return this.$route.params.isAll || false;
+    },
+    foodIdArr() {
+      return this.$route.params.foodIdArr || [];
     },
   },
 };

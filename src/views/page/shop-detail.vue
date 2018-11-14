@@ -143,8 +143,8 @@ export default {
     // 去结算
     toSettle() {
       this.$router.push({
-        name: 'pay',
-        params: { shopId: this.shopID },
+        name: 'orderCreate',
+        params: { shopId: this.shopID, isAll: true },
       });
     },
     getSpecInfo(index) {

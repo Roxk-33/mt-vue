@@ -50,6 +50,7 @@
         </van-cell>
       </van-list>
     </div>
+    <to-cart-list></to-cart-list>
   </div>
 </template>
 
@@ -58,6 +59,7 @@ import Scroll from '@/views/dumb/scroll';
 import Rate from '@/views/dumb/rate';
 import headerNav from '@/views/dumb/header-nav';
 import shopListHeader from '@/views/smart/shop-list-header';
+import toCartList from '@/views/smart/to-cart-list';
 import mtMask from '@/views/dumb/mt-mask';
 
 export default {
@@ -84,6 +86,7 @@ export default {
     headerNav,
     shopListHeader,
     mtMask,
+    toCartList,
   },
   methods: {
     // 点击排序框时，显示店铺列表遮罩层

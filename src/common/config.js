@@ -22,6 +22,6 @@ export default {
     CART_UPDATE: `/user/cart`,
 
     // 订单
-    ORDER_PAY: '/order/pay'
+    ORDER_CREATE: '/order',
   },
 };

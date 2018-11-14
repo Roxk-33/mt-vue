@@ -5,27 +5,24 @@ import { formatURL } from '@/common/utils';
 
 const API = config.API;
 // state
-const state = {
-};
+const state = {};
 
 // getters
-const getters = {
-};
+const getters = {};
 
 // mutations
-const mutations = {
-};
+const mutations = {};
 
 // actions
 const actions = {
-
-  sumbitOrder({ }, payload) {
+  sumbitOrder({}, payload) {
     return new Promise((resolve, reject) => {
       ajax
-        .post(API.ORDER_PAY, payload)
+        .post(API.ORDER_CREATE, payload)
         .then(resp => {
           resolve(resp);
-        }).catch(reject);
+        })
+        .catch(reject);
     });
   },
 };

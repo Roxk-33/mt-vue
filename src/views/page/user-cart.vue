@@ -6,7 +6,7 @@
     <div class="cart-list">
       <div class="cart-list-item" v-for="item in cartList" :key="item.shop_info.shop_id">
         <div class="item-title">
-          <van-checkbox v-model="item.select"></van-checkbox>
+          <check-box v-model="item.selectAll" @click="selectAll(item)"></check-box>
           <router-link class="content" :to="{ name: 'shopDetail', params: { shopId: item.shop_info.id }}">
             <img class="shop-avatar" :src="item.shop_info.photo">
             <span class="shop-title">{{item.shop_info.shop_title}}</span>
@@ -46,11 +46,13 @@
           </div>
         </div>
         <div class="settle-info mt-flex-space-between">
-          <span class="other-info">已优惠2元</span>
+          <span class="other-info"></span>
+          <!-- <span class="other-info">已优惠2元</span> -->
           <div class="right">
-            <span class="total-price">{{item.foodList | getTotalPrice}}元</span>
-            <button class="settle-btn" @click="toPay(item)">
-              <span>去结算</span>
+            <span class="total-price">{{item.totalPrice}}元</span>
+            <button class="settle-btn" :class="{'not' : (item.shop_info.threshold - item.totalPrice > 0)} ">
+              <span v-if="item.shop_info.threshold - item.totalPrice > 0">差￥{{item.shop_info.threshold - item.totalPrice}}起送</span>
+              <span v-else @click="toPay(item)">去结算</span>
             </button>
           </div>
         </div>
@@ -61,6 +63,7 @@
 
 <script type="text/ecmascript-6">
 import headerNav from '@/views/dumb/header-nav';
+import checkBox from '@/views/dumb/check-box';
 import { mapGetters } from 'vuex';
 import { deepClone } from '@/common/utils';
 
@@ -76,20 +79,50 @@ export default {
   },
   components: {
     headerNav,
+    checkBox,
+  },
+  created() {
+    this.getCart();
   },
   methods: {
+    selectAll(target) {
+      const len = target.selArr.length;
+      target.selArr.splice(0, target.selArr.length);
+      if (len !== target.foodList.length) {
+        target.foodList.forEach(item => {
+          target.selArr.push(item.id);
+        });
+      }
+    },
     // 无法直接更store
     getCart() {
       let temp = deepClone(this.list);
       temp.forEach(item => {
-        let obj = Object.assign({}, item, { selArr: [] });
+        let selArr = [];
+        let totalPrice = 0;
+        item.foodList.forEach(item => {
+          totalPrice += item.num * item.price;
+          selArr.push(item.id);
+        });
+        let obj = Object.assign({}, item, {
+          selArr,
+          totalPrice,
+          selectAll: true,
+        });
         this.cartList.push(obj);
       });
     },
     toPay(target) {
       const foodIdArr = target.selArr;
-      if (foodIdArr.length === 0) return this.$toast('请选择食品');
-      console.log(foodIdArr);
+      let isAll = false;
+      if (foodIdArr.length === 0) return this.$toast('请选择商品');
+
+      // 长度相同表示全选
+      if (foodIdArr.length === target.foodList.length) isAll = true;
+      this.$router.push({
+        name: 'orderCreate',
+        params: { shopId: this.shopID, isAll, foodIdArr },
+      });
     },
   },
   computed: {
@@ -98,11 +131,11 @@ export default {
     },
   },
   filters: {
-    getTotalPrice(foodList) {
-      if (foodList.length === 0) return 0;
-      return foodList.reduce(
+    getTotalPrice(item) {
+      let price = item.shop_info.freight;
+      return item.foodList.reduce(
         (totalPrice, item) => (totalPrice += item.num * item.price),
-        0
+        price
       );
     },
   },
@@ -127,6 +160,9 @@ export default {
     color: #000;
     height: 33px;
     display: inline-block;
+    .check-box {
+      margin-left: 6px;
+    }
     .shop-avatar {
       width: 25px;
       height: 25px;
@@ -201,7 +237,7 @@ export default {
       }
     }
     .fee-info-item {
-      margin: 5px 10px 5px 30px;
+      margin: 10px 10px 10px 30px;
     }
   }
   .settle-info {
@@ -223,6 +259,16 @@ export default {
       background-color: $mt-color;
       text-align: center;
       border: 0;
+      span {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        line-height: 30px;
+      }
+      &.not {
+        background-color: $mt-gray;
+        color: #fff;
+      }
     }
   }
 }
@@ -230,5 +276,6 @@ export default {
   display: inline-block;
   vertical-align: top;
   margin: 0 5px;
+  transform: scale(0.8);
 }
 </style>
