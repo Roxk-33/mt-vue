@@ -2,7 +2,7 @@
 <template>
   <div class="shop-detail">
     <shop-nav :trackOpacity="trackOpacity" :isTop="isTop"></shop-nav>
-    <div ref="shopBanner">
+    <div ref="shopBanner" class="shop-header-box">
       <shop-header :title="shopInfo.shop_title" :announcement="shopInfo.announcement" :photo="shopInfo.photo"></shop-header>
     </div>
     <div class="shop-good" ref="shopGood" :style="shopGoodStyle">
@@ -99,17 +99,21 @@ export default {
     },
     scroll() {
       document.addEventListener('scroll', e => {
+        const scorllY = Math.abs(
+          document.documentElement.scrollTop || window.pageYOffset
+        );
         if (!this.scrollDisabel) {
-          const scorllY = Math.abs(document.documentElement.scrollTop);
+          // 为了兼容Safari
+          this.isTop = false;
           if (this.bannerHeight > scorllY) {
             this.trackOpacity = scorllY / this.bannerHeight;
-            this.isTop = false;
-          }
-          if (this.bannerHeight <= scorllY) {
+          } else {
             this.scrollDisabel = true;
             this.trackOpacity = '1';
             this.isTop = true;
           }
+        } else if (this.bannerHeight > scorllY) {
+          this.scrollDisabel = false;
         }
       });
     },
@@ -120,7 +124,8 @@ export default {
       this.trackSize = window.innerHeight - 45 - 35 + 1;
     },
     onScroll(op) {
-      if (op.y > 10) {
+      if (op.y > 1) {
+        console.log('菜单到顶');
         this.scrollDisabel = false;
       }
     },

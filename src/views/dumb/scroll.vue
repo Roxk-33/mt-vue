@@ -128,7 +128,10 @@ export default {
   },
   computed: {
     refreshTxt() {
-      return (this.pullDownRefresh && this.pullDownRefresh.txt) || this.$i18n.t('scrollComponent.defaultRefreshTxt');
+      return (
+        (this.pullDownRefresh && this.pullDownRefresh.txt) ||
+        this.$i18n.t('scrollComponent.defaultRefreshTxt')
+      );
     },
   },
   created() {
@@ -145,7 +148,8 @@ export default {
         return;
       }
       if (this.$refs.listWrapper && (this.pullDownRefresh || this.pullUpLoad)) {
-        this.$refs.listWrapper.style.minHeight = `${getRect(this.$refs.wrapper).height + 1}px`;
+        this.$refs.listWrapper.style.minHeight = `${getRect(this.$refs.wrapper)
+          .height + 1}px`;
       }
       const options = {
         probeType: this.probeType,
@@ -231,12 +235,16 @@ export default {
         }
         if (this.beforePullDown) {
           this.bubbleY = Math.max(0, pos.y + this.pullDownInitTop);
-          this.pullDownStyle = `top:${Math.min(pos.y + this.pullDownInitTop, 10)}px`;
+          this.pullDownStyle = `top:${Math.min(
+            pos.y + this.pullDownInitTop,
+            10
+          )}px`;
         } else {
           this.bubbleY = 0;
         }
         if (this.isRebounding) {
-          this.pullDownStyle = `top:${10 - (this.pullDownRefresh.stop - pos.y)}px`;
+          this.pullDownStyle = `top:${10 -
+            (this.pullDownRefresh.stop - pos.y)}px`;
         }
       });
     },
@@ -275,7 +283,6 @@ export default {
 
     isDisable: {
       handler(val) {
-        console.log(val);
         if (val) {
           this.enable();
         } else {
