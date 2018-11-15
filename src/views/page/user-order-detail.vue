@@ -74,7 +74,7 @@
       <ul class="order-box-info-box">
         <li class="mt-flex-space-between">
           <span class="info-box-title">订单号码</span>
-          <span class="info-box-content">123456</span>
+          <span class="info-box-content">{{orderInfo.id}}</span>
         </li>
         <li class="mt-flex-space-between">
           <span class="info-box-title">下单时间</span>
@@ -101,9 +101,15 @@ export default {
   components: {},
   methods: {
     getData() {
-      this.$store.dispatch('order/getOrderDetail', this.orderId).then(resp => {
-        this.orderInfo = resp.data;
-      }).catch(this.$toast);
+      this.$store
+        .dispatch('order/getOrderDetail', this.orderId)
+        .then(resp => {
+          this.orderInfo = resp.data;
+        })
+        .catch(err => {
+          this.$toast(err);
+          this.$router.back(-1);
+        });
     },
   },
   created() {
@@ -111,7 +117,7 @@ export default {
   },
   computed: {
     orderId() {
-      return this.$route.params.orderId || 1;
+      return this.$route.query.orderId;
     },
     shopInfo() {
       if (!this.orderInfo) return {};

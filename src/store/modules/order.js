@@ -16,14 +16,7 @@ const mutations = {};
 // actions
 const actions = {
   sumbitOrder({}, payload) {
-    return new Promise((resolve, reject) => {
-      ajax
-        .post(API.ORDER_CREATE, payload)
-        .then(resp => {
-          resolve(resp);
-        })
-        .catch(reject);
-    });
+    return ajax.post(API.ORDER_CREATE, payload);
   },
   getOrderList({ commit }, payload = 1) {
     return new Promise((resolve, reject) => {

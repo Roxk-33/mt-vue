@@ -40,10 +40,13 @@ export default {
   components: {},
   methods: {
     gotoDetail() {
-      this.$router.push('/order/detail');
+      this.$router.push({
+        path: '/user/order/detail',
+        query: { orderId: this.orderId },
+      });
     },
     gotoEva() {
-      this.$router.push('/order/evaluation');
+      this.$router.push('/user/order/evaluation');
     },
   },
   computed: {

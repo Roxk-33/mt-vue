@@ -10,11 +10,9 @@ export default {
 };
 </script>
 <style lang="scss" rel="stylesheet/scss">
-.mf-loading-container {
-  img {
-    width: 20px;
-    height: 20px;
-    display: block;
-  }
+.mf-loading-container img {
+  width: 20px;
+  height: 20px;
+  display: block;
 }
 </style>

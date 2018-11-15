@@ -83,14 +83,16 @@ export default {
   mixins: [foodIsRepeat],
   methods: {
     getShopData() {
+      this.mtLoading = true;
       this.$store
         .dispatch('shop/getShopDetail', { id: this.shopID })
         .then(resp => {
           this.shopInfo = resp.data;
-
+          this.mtLoading = false;
           this.foodList = this.shopInfo.food_list;
         })
         .catch(err => {
+          this.mtLoading = false;
           this.$toast(err);
           this.$router.back(-1);
         });

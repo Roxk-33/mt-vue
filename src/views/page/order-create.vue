@@ -1,6 +1,6 @@
 <template>
   <div class="order-pay">
-    <van-nav-bar :title="headerTitle" left-text="" left-arrow @click-left="$router.back(-1);" />
+    <header-nav :title="headerTitle" :onLeft="true" @click-left="$router.back(-1);"></header-nav>
     <div class='order-pay-header'>
       <div class='header-address box-right-arrow' @click="showAddress = true">
         <p class='address-content' v-if="orderInfo.address.address">{{orderInfo.address.address}}</p>
@@ -152,6 +152,7 @@
 <script type="text/ecmascript-6">
 import popUp from '@/views/dumb/pop-up';
 import CONSTANT from '@/common/constant';
+import headerNav from '@/views/dumb/header-nav';
 
 export default {
   name: 'order-pay',
@@ -178,6 +179,7 @@ export default {
   },
   components: {
     popUp,
+    headerNav,
   },
 
   created() {
@@ -191,9 +193,12 @@ export default {
   },
   methods: {
     getData() {
+      this.mtLoading = true;
+
       this.$store
         .dispatch('user/getAddressList')
         .then(resp => {
+          this.mtLoading = false;
           this.addressList = this.addressList.concat(resp.data);
           this.getDefaultAddress();
         })
@@ -202,6 +207,8 @@ export default {
       this.$store
         .dispatch('cart/getCartListByShop', { shopId: this.shopId })
         .then(resp => {
+          this.mtLoading = false;
+
           if (this.foodIdArr.length) {
             this.foodList = resp.data.filter(
               item => this.foodIdArr.indexOf(item.id) !== -1
@@ -255,11 +262,15 @@ export default {
       this.$store
         .dispatch('order/sumbitOrder', this.orderInfo)
         .then(resp => {
-          this.$router.push({ name: 'orderPay', params: resp.data.id });
+          this.$router.push({
+            name: 'orderPay',
+            params: { orderId: resp.data.id },
+          });
           // 重新获取购物车
           this.$store.dispatch('cart/getCartList');
         })
         .catch(err => {
+          console.log(err);
           this.$toast('提交订单失败！');
           this.$router.back(-1);
         });

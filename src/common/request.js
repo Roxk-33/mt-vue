@@ -33,6 +33,7 @@ service.interceptors.response.use(
   response => {
     const data = response.data;
     if (!data.status) {
+      console.log('出错！');
       if (data.code === 4001 || data.code === 4002) {
         Toast('请登录！');
         store.dispatch('user/FedLogOut').then(() => {
@@ -49,7 +50,7 @@ service.interceptors.response.use(
   error => {
     console.log(`err${error}`); // for debug
     const resp = error.response;
-    if (resp.data.message) {
+    if (resp && resp.data && resp.data.message) {
       return Promise.reject(error.response.data.message);
     }
     return Promise.reject('系统出错');

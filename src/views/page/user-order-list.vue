@@ -36,19 +36,24 @@ export default {
     this.getList();
   },
   methods: {
+    // bug:若接口报错，会反复请求
     onPullingUp() {
       this.loading = true;
       this.getList();
     },
     getList() {
+      this.mtLoading = true;
       this.$store
         .dispatch('order/getOrderList', this.page)
         .then(resp => {
+          this.mtLoading = false;
+
           this.loading = false;
           this.page++;
           this.orderList = resp.data;
         })
         .catch(err => {
+          this.mtLoading = false;
           this.$toast(err);
           this.loading = false;
         });
