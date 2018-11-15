@@ -1,14 +1,15 @@
 import axios from 'axios';
 import store from '@/store';
 import { Toast } from 'vant';
-// create an axios instance
+import CONFIG from './config';
+
 const baseURL =
   process.env.NODE_ENV === 'production'
-    ? 'http://lococo.site:3000/api/v1/'
-    : 'http://localhost:7001/api/v1/';
+    ? CONFIG.BASE_URL.PRO
+    : CONFIG.BASE_URL.DEV;
 const service = axios.create({
-  baseURL: baseURL, // api的base_url
-  timeout: 50000, // request timeout
+  baseURL: baseURL,
+  timeout: 50000,
 });
 
 // request interceptor
@@ -32,18 +33,15 @@ service.interceptors.response.use(
   response => {
     const data = response.data;
     if (!data.status) {
-      if (data.code === 4001 || data.code === 4002 || data.code === 4001) {
+      if (data.code === 4001 || data.code === 4002) {
         Toast('请登录！');
         store.dispatch('user/FedLogOut').then(() => {
           location.reload(); // 为了重新实例化vue-router对象 避免bug
         });
-      } else if (data.code === 1003) {
-        // store.dispatch('FedLogOut').then(() => {
-        //     location.reload();// 为了重新实例化vue-router对象 避免bug
-        //   });
+      } else {
+        Toast(data.message);
+        return Promise.reject(data);
       }
-      Toast(data.message);
-      return Promise.reject(data);
     }
     return Promise.resolve(data);
   },

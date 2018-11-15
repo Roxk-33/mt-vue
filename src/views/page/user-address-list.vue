@@ -1,7 +1,7 @@
 <template>
   <div class="user-address-list">
     <header-nav title="我的收货地址">
-      <span @click="go('add')">新增地址</span>
+      <router-link :to="{ name:'userAddressInfo', query: { type, id } }">新增地址</router-link>
     </header-nav>
     <div class="address-list-box">
       <div class="address-list-item" v-for="item in list" :key="item.id">
@@ -29,13 +29,13 @@ export default {
     headerNav,
   },
   methods: {
-    go(type, id = -1) {
-      this.$router.push({ path: '/user/address/info/', query: { type, id } });
-    },
     getData() {
-      this.$store.dispatch('user/getAddressList').then(resp => {
-        this.list = resp.data;
-      });
+      this.$store
+        .dispatch('user/getAddressList')
+        .then(resp => {
+          this.list = resp.data;
+        })
+        .catch(this.$toast);
     },
   },
   created() {

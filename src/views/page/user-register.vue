@@ -41,12 +41,10 @@ export default {
         .dispatch('user/RegiterByAccount', this.registerForm)
         .then(() => {
           this.loading = false;
-          this.$router.push({ path: '/user/index' });
+          this.$router.push({ name: '/userIndex' });
         })
         .catch(e => {
-          this.$dialog.alert({
-            message: e,
-          });
+          this.$toast(e);
           this.loading = false;
         });
     },

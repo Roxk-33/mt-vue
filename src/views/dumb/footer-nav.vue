@@ -3,7 +3,7 @@
     <div class="grid-content bg-purple" @click="toPage('/shop/list')">
       <i class='iconfont icon-index' :class='{"active" : routeName === "home" }'></i>
     </div>
-    <div class="grid-content bg-purple" @click="toPage('/order/list')">
+    <div class="grid-content bg-purple" @click="toPage('/user/order/list')">
       <i class='iconfont icon-order-list' :class='{"active" : routeName === "userOrderList" }'></i>
     </div>
     <div class="grid-content bg-purple" @click="toPage('/user/index')">

@@ -103,7 +103,7 @@ export default {
     getData() {
       this.$store.dispatch('order/getOrderDetail', this.orderId).then(resp => {
         this.orderInfo = resp.data;
-      });
+      }).catch(this.$toast);
     },
   },
   created() {

@@ -116,8 +116,8 @@
       <pop-up class="address-list" @cancel="cancel('address')" @clickHeaderLeft="cancel('address')" headerTitle="选择收货地址" header-left="取消" bottomText="新增收货地址" bottomTextIcon="icon-add_icon">
         <div class="address-list-box">
           <ul class="list-box">
-            <li class="list-box-item" v-for="(item,index) in addressList" :key="item.id" @click="chooseAddress(index)">
-              <van-radio :name="true" v-model="item.selected" @click="chooseAddress(index)" :checkedColor="mtColor"></van-radio>
+            <li class="list-box-item" v-for="(item,index) in addressList" :key="item.id" @click="selAddress(index)">
+              <van-radio :name="true" v-model="item.selected" @click="selAddress(index)" :checkedColor="mtColor"></van-radio>
               <div class="content">
                 <div class="address">{{item.address}}
                   <div class="tag" v-if="item.tag !== ''" :class="{'school':item.tag == 0,'company':item.tag == 1,'home' :item.tag == 2}">
@@ -183,9 +183,7 @@ export default {
   created() {
     if (!this.shopId) {
       this.$toast('非法操作！');
-      this.$router.push({
-        name: 'userIndex',
-      });
+      this.$router.push({ name: 'userIndex' });
     }
   },
   mounted() {
@@ -193,10 +191,13 @@ export default {
   },
   methods: {
     getData() {
-      this.$store.dispatch('user/getAddressList').then(resp => {
-        this.addressList = this.addressList.concat(resp.data);
-        this.getAddress();
-      });
+      this.$store
+        .dispatch('user/getAddressList')
+        .then(resp => {
+          this.addressList = this.addressList.concat(resp.data);
+          this.getDefaultAddress();
+        })
+        .catch(this.$toast);
 
       this.$store
         .dispatch('cart/getCartListByShop', { shopId: this.shopId })
@@ -209,10 +210,11 @@ export default {
             this.foodList = resp.data;
           }
           this.shopInfo = this.foodList[0].shop_info;
-        });
+        })
+        .catch(this.$toast);
     },
     // 获取默认地址
-    getAddress() {
+    getDefaultAddress() {
       this.addressList.forEach(item => {
         item = Object.assign({}, item, { select: false });
         if (item.is_default) {
@@ -221,16 +223,24 @@ export default {
         }
       });
     },
-    chooseAddress(index) {
+    selAddress(index) {
       this.orderInfo.address.selected = false;
       this.addressList[index].selected = true;
       this.orderInfo.address = this.addressList[index];
       this.cancel('address');
     },
     cancel(type) {
-      if (type === 'address') this.showAddress = false;
-      if (type === 'pay') this.showPay = false;
-      if (type === 'remarks') this.showRemarks = false;
+      switch (type) {
+        case 'address':
+          this.showAddress = false;
+          break;
+        case 'pay':
+          this.showPay = false;
+          break;
+        case 'remarks':
+          this.showRemarks = false;
+          break;
+      }
     },
     saveRemarks() {
       this.orderInfo.remarks = this.tempRemarks;
@@ -242,10 +252,17 @@ export default {
       }
       this.orderInfo.cartIdArr = this.foodIdArr;
       this.orderInfo.shopId = this.shopId;
-      this.$store.dispatch('order/sumbitOrder', this.orderInfo).then(value => {
-        // 重新获取购物车
-        this.$store.dispatch('cart/getCartList');
-      });
+      this.$store
+        .dispatch('order/sumbitOrder', this.orderInfo)
+        .then(resp => {
+          this.$router.push({ name: 'orderPay', params: resp.data.id });
+          // 重新获取购物车
+          this.$store.dispatch('cart/getCartList');
+        })
+        .catch(err => {
+          this.$toast('提交订单失败！');
+          this.$router.back(-1);
+        });
     },
   },
   computed: {
@@ -257,7 +274,7 @@ export default {
       );
     },
     shopId() {
-      return this.$route.params.shopId || 1;
+      return this.$route.params.shopId;
     },
     isAll() {
       return this.$route.params.isAll || false;

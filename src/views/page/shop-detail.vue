@@ -90,7 +90,10 @@ export default {
 
           this.foodList = this.shopInfo.food_list;
         })
-        .catch(e => console.log(e));
+        .catch(err => {
+          this.$toast(err);
+          this.$router.back(-1);
+        });
     },
     scroll() {
       document.addEventListener('scroll', e => {
@@ -182,11 +185,6 @@ export default {
       if (indexCart !== -1) {
         foodInfo = this.list[indexCart];
       }
-      // if (type) {
-      //   this.foodList[index].selectNum++;
-      // } else if (this.foodList[index].selectNum > 0) {
-      //   this.foodList[index].selectNum--;
-      // }
       const data = {
         id: foodInfo.id, // 此id为购物车内商品的购物车自增ID
         type: type === 1 ? 1 : -1,
@@ -194,14 +192,19 @@ export default {
       this.pushCart(data, indexCart);
     },
     pushCart(data, isExist = -1) {
-      if (isExist !== -1) {
-        this.$store.dispatch('cart/updateProductToCart', data).then(value => {
-          this.$store.dispatch('cart/getCartList');
-        });
-      } else {
-        this.$store.dispatch('cart/addProductToCart', data).then(value => {
-          this.$store.dispatch('cart/getCartList');
-        });
+      try {
+        if (isExist !== -1) {
+          this.$store.dispatch('cart/updateProductToCart', data).then(value => {
+            this.$store.dispatch('cart/getCartList');
+          });
+        } else {
+          this.$store.dispatch('cart/addProductToCart', data).then(value => {
+            this.$store.dispatch('cart/getCartList');
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        this.$toast('操作失败');
       }
     },
     showSelectNum() {

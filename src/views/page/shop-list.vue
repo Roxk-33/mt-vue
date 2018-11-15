@@ -104,6 +104,7 @@ export default {
           this.shopList = this.shopList.concat(resp.data);
         })
         .catch(err => {
+          this.$toast(err);
           console.log(err);
         });
     },

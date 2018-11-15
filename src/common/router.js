@@ -10,6 +10,7 @@ import userAddressInfo from '@/views/page/user-address-info';
 import shopList from '@/views/page/shop-list';
 import shopDetail from '@/views/page/shop-detail';
 import orderCreate from '@/views/page/order-create';
+import orderPay from '@/views/page/order-pay';
 import userOrderList from '@/views/page/user-order-list';
 import userCart from '@/views/page/user-cart';
 import userOrderDetail from '@/views/page/user-order-detail';
@@ -59,6 +60,21 @@ export const constantRouterMap = [
         component: userCart,
         name: 'userCart',
       },
+      {
+        path: 'order/list',
+        component: userOrderList,
+        name: 'userOrderList',
+      },
+      {
+        path: 'order/detail',
+        component: userOrderDetail,
+        name: 'userOrderDetail',
+      },
+      {
+        path: 'order/evaluation',
+        component: userOrderEvaluation,
+        name: 'userOrderEvaluation',
+      },
     ],
   },
 
@@ -86,24 +102,14 @@ export const constantRouterMap = [
     component: Layout,
     children: [
       {
-        path: 'list',
-        component: userOrderList,
-        name: 'userOrderList',
-      },
-      {
-        path: 'detail',
-        component: userOrderDetail,
-        name: 'userOrderDetail',
-      },
-      {
-        path: 'evaluation',
-        component: userOrderEvaluation,
-        name: 'userOrderEvaluation',
-      },
-      {
         path: 'create',
         name: 'orderCreate',
         component: orderCreate,
+      },
+      {
+        path: 'pay',
+        name: 'orderPay',
+        component: orderPay,
       },
     ],
   },

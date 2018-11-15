@@ -69,10 +69,18 @@ export default {
   },
   methods: {
     save() {
-      if (this.isAdd) {
-        this.$store.dispatch('user/addAddress', this.data).then(data => {});
-      } else {
-        this.$store.dispatch('user/editAddress', this.data).then(data => {});
+      try {
+        if (this.isAdd) {
+          this.$store.dispatch('user/addAddress', this.data).then(data => {
+            this.$router.push({ name: 'userAddressList' });
+          });
+        } else {
+          this.$store.dispatch('user/editAddress', this.data).then(data => {
+            this.$router.push({ name: 'userAddressList' });
+          });
+        }
+      } catch (error) {
+        this.$toast(error);
       }
     },
   },

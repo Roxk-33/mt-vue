@@ -26,4 +26,8 @@ export default {
     ORDER_LIST: '/user/order',
     ORDER_DETAIL: '/user/order/:id',
   },
+  BASE_URL: {
+    PRO: 'http://lococo.site:3000/api/v1/',
+    DEV: 'http://localhost:7001/api/v1/',
+  },
 };

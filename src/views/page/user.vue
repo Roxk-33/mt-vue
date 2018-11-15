@@ -68,9 +68,7 @@ export default {
 </script>
 <style rel="stylesheet/scss" lang="scss">
 @import '~css/common';
-a {
-  color: #000;
-}
+
 .user-index-header {
   height: 3rem;
   background-color: $mt-color;

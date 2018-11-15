@@ -38,13 +38,10 @@ export default {
         .then(() => {
           this.loading = false;
           this.$store.dispatch('cart/getCartList');
-          this.$router.push({ path: '/user/index' });
+          this.$router.push({ name: 'userIndex' });
         })
         .catch(e => {
-          console.log(e);
-          this.$dialog.alert({
-            message: e,
-          });
+          this.$toast(e);
           this.loading = false;
         });
     },

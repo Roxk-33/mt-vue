@@ -1,9 +1,12 @@
 <template>
-  <div class="order-list">
+  <div class="user-order-list">
     <order-list-header></order-list-header>
-    <div class="order-list-content">
-      <order-list-item v-for="item in orderList" :key="item.id" :orderInfo="item" :foodList="item.food_list"></order-list-item>
-    </div>
+    <van-list v-model="loading" :finished="finished" @load="onPullingUp">
+      <div class="order-list-content">
+        <order-list-item v-for="item in orderList" :key="item.id" :orderInfo="item" :foodList="item.food_list"></order-list-item>
+      </div>
+    </van-list>
+
     <footer-nav active='1'></footer-nav>
   </div>
 </template>
@@ -14,11 +17,14 @@ import orderListItem from '@/views/smart/order-list-item';
 import footerNav from '@/views/dumb/footer-nav';
 
 export default {
-  name: 'order-list',
+  name: 'user-order-list',
 
   data() {
     return {
       orderList: [],
+      loading: false,
+      finished: false,
+      page: 0,
     };
   },
   components: {
@@ -27,11 +33,27 @@ export default {
     footerNav,
   },
   created() {
-    this.$store.dispatch('order/getOrderList', 0).then(resp => {
-      this.orderList = resp.data;
-    });
+    this.getList();
   },
-  methods: {},
+  methods: {
+    onPullingUp() {
+      this.loading = true;
+      this.getList();
+    },
+    getList() {
+      this.$store
+        .dispatch('order/getOrderList', this.page)
+        .then(resp => {
+          this.loading = false;
+          this.page++;
+          this.orderList = resp.data;
+        })
+        .catch(err => {
+          this.$toast(err);
+          this.loading = false;
+        });
+    },
+  },
 };
 </script>
 

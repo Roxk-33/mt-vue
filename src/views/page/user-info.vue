@@ -20,16 +20,13 @@
         <span class='info-box_title'>账户密码</span>
         <span class='info-box_content'>
           <van-icon name="arrow" />
-
         </span>
-
       </li>
       <li>
         <span class='info-box_title'>手机号</span>
         <span class='info-box_content'>
           {{userTel | filterTel}}
           <van-icon name="arrow" />
-
         </span>
       </li>
     </ul>
@@ -69,10 +66,10 @@ export default {
       this.$store
         .dispatch('user/LogOut')
         .then(() => {
-          this.$router.push({ path: '/user/index' });
+          this.$router.push({ name: 'userIndex' });
           window.location.reload();
         })
-        .catch(message => {});
+        .catch(this.$toast);
     },
   },
   filters: {
