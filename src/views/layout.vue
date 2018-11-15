@@ -12,9 +12,12 @@
 export default {
   name: 'layout',
   created() {
-    this.$store.dispatch('user/getUserInfo').then(() => {
-      this.$store.dispatch('cart/getCartList');
-    });
+    this.$store
+      .dispatch('user/getUserInfo')
+      .then(() => {
+        this.$store.dispatch('cart/getCartList');
+      })
+      .catch(console.log);
   },
   computed: {
     cachedViews() {

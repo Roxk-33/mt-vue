@@ -1,6 +1,6 @@
 import axios from 'axios';
 import store from '@/store';
-import { Toast } from 'vant'
+import { Toast } from 'vant';
 // create an axios instance
 const baseURL =
   process.env.NODE_ENV === 'production'
@@ -15,7 +15,6 @@ const service = axios.create({
 /* eslint-disable */
 service.interceptors.request.use(
   config => {
-    console.log(store);
     // Do something before request is sent
     if (store.getters['user/token']) {
       config.headers.Authorization = `token ${store.getters['user/token']}`;
@@ -36,7 +35,7 @@ service.interceptors.response.use(
       if (data.code === 4001 || data.code === 4002 || data.code === 4001) {
         Toast('请登录！');
         store.dispatch('user/FedLogOut').then(() => {
-          location.reload();// 为了重新实例化vue-router对象 避免bug
+          location.reload(); // 为了重新实例化vue-router对象 避免bug
         });
       } else if (data.code === 1003) {
         // store.dispatch('FedLogOut').then(() => {

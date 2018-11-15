@@ -4,12 +4,13 @@ import { getToken, setToken, removeToken } from '@/common/auth';
 import ajax from '@/common/request';
 import config from '@/common/config';
 const API = config.API;
+// const src = require('../../assets/images/default.jpg');
 const state = {
   userStatus: false,
   code: '',
   userId: null,
   userName: '',
-  userAvatar: '../assets/images/default.jpg',
+  userAvatar: 'https://i.loli.net/2018/11/14/5bec27346a028.jpg',
   userTel: '',
   introduction: '',
   token: getToken(),
@@ -95,19 +96,22 @@ const actions = {
     });
   },
   getUserInfo({ commit, state }, userInfo) {
-    const token = state.token;
-    if (!token) return;
     return new Promise((resolve, reject) => {
-      ajax
-        .get(API.USER_INFO)
-        .then(resp => {
-          resolve(resp);
-          commit(types.SET_NAME, resp.data.user_name);
-          commit(types.SET_AVATAR, resp.data.avatar);
-          commit(types.SET_USERID, resp.data.id);
-          commit(types.SET_TEL, resp.data.tel);
-        })
-        .catch(reject);
+      const token = state.token;
+      if (!token) {
+        reject('未登录');
+      } else {
+        ajax
+          .get(API.USER_INFO)
+          .then(resp => {
+            resolve(resp);
+            commit(types.SET_NAME, resp.data.user_name);
+            commit(types.SET_AVATAR, resp.data.avatar);
+            commit(types.SET_USERID, resp.data.id);
+            commit(types.SET_TEL, resp.data.tel);
+          })
+          .catch(reject);
+      }
     });
   },
   addAddress({ commit, state }, payload) {
@@ -180,7 +184,7 @@ const actions = {
 
   // 前端 登出
   FedLogOut({ commit }) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       commit('REMOVE_TOKEN');
       resolve();
     });

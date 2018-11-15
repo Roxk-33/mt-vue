@@ -21,7 +21,6 @@ export default {
   mounted() {
     this.selectIcon = this.iconClasses[0];
     this.notIcon = this.iconClasses[1];
-    console.log(this.selectIcon);
   },
   props: {
     isShowText: {
@@ -73,8 +72,9 @@ export default {
       };
     },
     list() {
-      console.log(Array.apply(null, { length: this.max }).map((value, index) => index < this.value));
-      return Array.apply(null, { length: this.max }).map((value, index) => index < this.value);
+      return Array.apply(null, { length: this.max }).map(
+        (value, index) => index < this.value
+      );
     },
   },
   components: {},
