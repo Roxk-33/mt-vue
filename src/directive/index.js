@@ -33,11 +33,16 @@ function createDocumentHandler(el, binding, vnode) {
       el.contains(mousedown.target) ||
       el === mouseup.target ||
       (vnode.context.focusElment &&
-        (vnode.context.focusElment.contains(mouseup.target) || vnode.context.focusElment.contains(mousedown.target)))
+        (vnode.context.focusElment.contains(mouseup.target) ||
+          vnode.context.focusElment.contains(mousedown.target)))
     ) {
       return;
     }
-    if (binding.expression && el[ctx].methodName && vnode.context[el[ctx].methodName]) {
+    if (
+      binding.expression &&
+      el[ctx].methodName &&
+      vnode.context[el[ctx].methodName]
+    ) {
       vnode.context[el[ctx].methodName]();
     } else {
       el[ctx].bindingFn && el[ctx].bindingFn();
@@ -55,9 +60,7 @@ if (!isServer) {
 
 Vue.directive('click-outside', {
   // 当被绑定的元素插入到dom时……
-  inserted(el) {
-    console.log(el);
-  },
+  inserted(el) {},
   // 只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置
   // 把绑定的元素扔到nodeList里面，并给绑定元素设置属性
   // documentHandler属性在nodeList.forEach的时候执行并得到一个function

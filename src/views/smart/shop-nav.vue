@@ -53,7 +53,7 @@ export default {
     font-size: 20px;
     margin: 5px;
     &.icon-sousuo {
-      font-size: 17px;
+      font-size: 20px;
     }
   }
 
@@ -67,8 +67,7 @@ export default {
     opacity: 0;
     z-index: -1;
   }
-  a {
-  }
+
   .shop-nav_right {
     color: white;
 

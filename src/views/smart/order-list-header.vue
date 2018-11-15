@@ -24,6 +24,8 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
+@import '~css/common';
+
 .order-list-header {
   background-color: #fff;
   position: fixed;
@@ -31,6 +33,7 @@ export default {
   right: 0;
   left: 0;
   border-bottom: 1px solid #cccccc;
+  z-index: $zindex-header;
   .header-top p {
     text-align: center;
     font-size: 18px;

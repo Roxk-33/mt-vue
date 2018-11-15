@@ -4,7 +4,7 @@
     <shop-list-header :sortTarget="sortTarget" @change="changeFilter" @showMask="showMask"></shop-list-header>
     <div class="shop-list">
       <mt-mask v-model="show"></mt-mask>
-      <van-list v-model="loading" :finished="finished" @load="onPullingUp">
+      <van-list v-model="loading" :finished="finished" @load="onPullingUp" :immediate-check="false">
         <van-cell v-for="(shop,index) in shopList" :key='index' style="padding:10px">
           <router-link class='shop-item' :to="{ name: 'shopDetail', params: { shopId: shop.id }}">
             <div class='shop-item_left'>
@@ -47,6 +47,9 @@
               </div>
             </div>
           </router-link>
+        </van-cell>
+        <van-cell v-if="shopList.length === 0" class="list-empty">
+          <p>没有数据</p>
         </van-cell>
       </van-list>
     </div>
@@ -101,7 +104,7 @@ export default {
         })
         .then(resp => {
           this.loading = false;
-          this.shopList = this.shopList.concat(resp.data);
+          // this.shopList = this.shopList.concat(resp.data);
         })
         .catch(err => {
           this.$toast(err);
@@ -109,7 +112,7 @@ export default {
         });
     },
     onPullingUp() {
-      this.loading = true;
+      // this.loading = true;
       this.getList();
     },
     changeFilter(type) {
@@ -123,9 +126,15 @@ export default {
 </script>
 
 <style  rel="stylesheet/scss" lang="scss">
+@import '~css/common';
+.shop-catalog {
+  height: 100%;
+  min-height: 100%;
+}
 .shop-list {
   background-color: white;
-  min-height: 42rem;
+  // min-height: 42rem;
+  height: 100%;
   position: relative;
 
   .mt-modal {

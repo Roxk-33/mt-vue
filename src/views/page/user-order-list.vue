@@ -1,10 +1,14 @@
 <template>
   <div class="user-order-list">
     <order-list-header></order-list-header>
-    <van-list v-model="loading" :finished="finished">
+    <van-list v-model="loading" :finished="finished" :immediate-check="false" @load="onPullingUp">
       <div class="order-list-content">
         <order-list-item v-for="item in orderList" :key="item.id" :orderInfo="item" :foodList="item.food_list"></order-list-item>
       </div>
+
+      <van-cell v-if="orderList.length === 0" class="list-empty">
+        <p>没有数据</p>
+      </van-cell>
     </van-list>
 
     <footer-nav active='1'></footer-nav>
@@ -36,7 +40,6 @@ export default {
     this.getList();
   },
   methods: {
-    // bug:若接口报错，会反复请求
     onPullingUp() {
       this.loading = true;
       this.getList();
