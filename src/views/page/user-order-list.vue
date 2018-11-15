@@ -2,8 +2,7 @@
   <div class="order-list">
     <order-list-header></order-list-header>
     <div class="order-list-content">
-      <order-list-item></order-list-item>
-      <order-list-item></order-list-item>
+      <order-list-item v-for="item in orderList" :key="item.id" :orderInfo="item" :foodList="item.food_list"></order-list-item>
     </div>
     <footer-nav active='1'></footer-nav>
   </div>
@@ -18,12 +17,19 @@ export default {
   name: 'order-list',
 
   data() {
-    return {};
+    return {
+      orderList: [],
+    };
   },
   components: {
     orderListHeader,
     orderListItem,
     footerNav,
+  },
+  created() {
+    this.$store.dispatch('order/getOrderList', 0).then(resp => {
+      this.orderList = resp.data;
+    });
   },
   methods: {},
 };

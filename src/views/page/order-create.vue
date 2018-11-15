@@ -237,6 +237,10 @@ export default {
       cancel('remarks');
     },
     sumbitOrder() {
+      if (!this.orderInfo.address.address) {
+        return this.$toast('请选择地址');
+      }
+      this.orderInfo.cartIdArr = this.foodIdArr;
       this.orderInfo.shopId = this.shopId;
       this.$store.dispatch('order/sumbitOrder', this.orderInfo).then(value => {
         // 重新获取购物车

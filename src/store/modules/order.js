@@ -25,6 +25,23 @@ const actions = {
         .catch(reject);
     });
   },
+  getOrderList({ commit }, payload = 1) {
+    return new Promise((resolve, reject) => {
+      ajax
+        .get(API.ORDER_LIST, {
+          params: {
+            page: payload,
+          },
+        })
+        .then(resp => {
+          resolve(resp);
+        })
+        .catch(reject);
+    });
+  },
+  getOrderDetail({ commit }, payload) {
+    return ajax.get(formatURL(API.ORDER_DETAIL, { id: payload }));
+  },
 };
 
 export default {

@@ -2,9 +2,9 @@
   <div class="order-list-item">
     <div class="item-header mt-flex-space-between">
       <div class="item-header-left">
-        <img src="https://via.placeholder.com/80x80" alt="">
+        <img :src="shopInfo.photo" alt="">
         <div class="item-header-shop-info">
-          <span class="shop-info-name">李功夫中华鸡排</span>
+          <span class="shop-info-name">{{shopInfo.shop_title}}</span>
           <i class='iconfont icon-xiangyou'></i>
         </div>
       </div>
@@ -12,10 +12,10 @@
         <p>订单已完成</p>
       </div>
     </div>
-    <div class="item-content" @click="gotoDetail">
+    <router-link class="item-content" :to="{name:'userOrderDetail',params:{orderId:this.orderId}}">
       <div class="item-content-info">
-        <span class="info-name">原香鸡排</span>
-        <span class="info-num">等<i>2</i>件商品</span>
+        <span class="info-name">{{foodList[0].food_name}}</span>
+        <span class="info-num">等<i>{{foodList.length}}</i>件商品</span>
         <p class="order-price">￥15</p>
       </div>
       <div class="item-content-btn-box">
@@ -23,14 +23,17 @@
         <span class="item-content-btn">再来一单</span>
         <span class="item-content-btn evaluation-btn" @click.stop="gotoEva">评价</span>
       </div>
-    </div>
+    </router-link>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 export default {
   name: 'order-list-item',
-
+  props: {
+    orderInfo: Object,
+    foodList: Array,
+  },
   data() {
     return {};
   },
@@ -41,6 +44,16 @@ export default {
     },
     gotoEva() {
       this.$router.push('/order/evaluation');
+    },
+  },
+  computed: {
+    shopInfo() {
+      console.log(this.orderInfo.shop_info);
+      if (!this.orderInfo) return {};
+      return this.orderInfo.shop_info;
+    },
+    orderId() {
+      return this.orderInfo.id;
     },
   },
 };

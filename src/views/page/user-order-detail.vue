@@ -21,7 +21,7 @@
     </div>
     <div class="detail-box good-box">
       <div class="detail-box-title">
-        <span>李功夫中华鸡排</span>
+        <span>{{shopInfo.shop_title}}</span>
         <i class='iconfont icon-xiangyou'></i>
 
         <div class="shop-info-contact">
@@ -36,30 +36,20 @@
       </div>
 
       <div class="detail-box-item detail-content">
-        <div class="detail-content-item">
-          <img class="good-img" src="https://via.placeholder.com/80x80" alt="">
+        <div class="detail-content-item" v-for="item in foodList" :key="item.id">
+          <img class="good-img" :src="item.food_picture" alt="">
           <div class="good-info">
             <div class="good-info-header mt-flex-space-between">
-              <span class="good-info-name">原香鸡排 </span>
-              <span class="good-info-price">￥5</span>
+              <span class="good-info-name">{{item.food_name}}</span>
+              <span class="good-info-price">￥{{item.price}}</span>
             </div>
-            <p class="good-info-num">x1</p>
-          </div>
-        </div>
-        <div class="detail-content-item">
-          <img class="good-img" src="https://via.placeholder.com/80x80" alt="">
-          <div class="good-info">
-            <div class="good-info-header mt-flex-space-between">
-              <span class="good-info-name">原香鸡排 </span>
-              <span class="good-info-price">￥5</span>
-            </div>
-            <p class="good-info-num">x1</p>
+            <p class="good-info-num">x{{item.num}}</p>
           </div>
         </div>
       </div>
       <div class="detail-box-item mt-flex-space-between detail-distribution">
         <span>配送费</span>
-        <span>￥0</span>
+        <span>￥{{shopInfo.freight}}</span>
       </div>
       <div class="detail-box-item detail-price-total">
         <span>合计</span>
@@ -88,7 +78,7 @@
         </li>
         <li class="mt-flex-space-between">
           <span class="info-box-title">下单时间</span>
-          <span class="info-box-content">2018-10-10 12:12</span>
+          <span class="info-box-content">{{orderInfo.created_at}}</span>
         </li>
         <li class="mt-flex-space-between">
           <span class="info-box-title">支付方式</span>
@@ -104,13 +94,34 @@ export default {
   name: 'user-order-detail',
 
   data() {
-    return {};
+    return {
+      orderInfo: {},
+    };
   },
   components: {},
   methods: {
-    getDate() {},
+    getData() {
+      this.$store.dispatch('order/getOrderDetail', this.orderId).then(resp => {
+        this.orderInfo = resp.data;
+      });
+    },
   },
-  created() {},
+  created() {
+    this.getData();
+  },
+  computed: {
+    orderId() {
+      return this.$route.params.orderId || 1;
+    },
+    shopInfo() {
+      if (!this.orderInfo) return {};
+      return this.orderInfo.shop_info;
+    },
+    foodList() {
+      if (!this.orderInfo) return {};
+      return this.orderInfo.food_list;
+    },
+  },
 };
 </script>
 

@@ -23,5 +23,7 @@ export default {
 
     // 订单
     ORDER_CREATE: '/order',
+    ORDER_LIST: '/user/order',
+    ORDER_DETAIL: '/user/order/:id',
   },
 };
