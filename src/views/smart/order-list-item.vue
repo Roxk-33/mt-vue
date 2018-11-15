@@ -12,9 +12,9 @@
         <p>订单已完成</p>
       </div>
     </div>
-    <router-link class="item-content" :to="{name:'userOrderDetail',params:{orderId:this.orderId}}">
+    <router-link class="item-content" :to="{  path: '/user/order/detail',query:{orderId:this.orderId}}">
       <div class="item-content-info">
-        <span class="info-name">{{foodList[0].food_name}}</span>
+        <span class="info-name">{{foodList[0] && foodList[0].food_name}}</span>
         <span class="info-num">等<i>{{foodList.length}}</i>件商品</span>
         <p class="order-price">￥15</p>
       </div>
@@ -39,19 +39,12 @@ export default {
   },
   components: {},
   methods: {
-    gotoDetail() {
-      this.$router.push({
-        path: '/user/order/detail',
-        query: { orderId: this.orderId },
-      });
-    },
     gotoEva() {
       this.$router.push('/user/order/evaluation');
     },
   },
   computed: {
     shopInfo() {
-      console.log(this.orderInfo.shop_info);
       if (!this.orderInfo) return {};
       return this.orderInfo.shop_info;
     },
@@ -101,6 +94,7 @@ export default {
     padding: 10px 0;
     .item-content-info {
       text-align: left;
+      margin-left: 44px;
       span {
         font-size: 14px;
         color: #5d5b5b;

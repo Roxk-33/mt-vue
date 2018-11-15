@@ -2,7 +2,7 @@
   <div class="user-order-detail">
     <div class="detail-top">
       <div class="icons">
-        <router-link to="/order/list">
+        <router-link to="/user/order/list">
           <i class="iconfont icon-xiangzuo"></i>
         </router-link>
       </div>
@@ -95,7 +95,7 @@ export default {
 
   data() {
     return {
-      orderInfo: {},
+      orderInfo: {shop_title:''},
     };
   },
   components: {},

@@ -1,7 +1,7 @@
 <template>
   <div class="user-order-list">
     <order-list-header></order-list-header>
-    <van-list v-model="loading" :finished="finished" @load="onPullingUp">
+    <van-list v-model="loading" :finished="finished">
       <div class="order-list-content">
         <order-list-item v-for="item in orderList" :key="item.id" :orderInfo="item" :foodList="item.food_list"></order-list-item>
       </div>

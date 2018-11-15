@@ -23,7 +23,6 @@ export default {
       Object.assign(modal, {
         showMtLoading: true,
       });
-      console.log(this.targetNode);
     },
     closeMtLoading() {
       modal.showMtLoading = false;
