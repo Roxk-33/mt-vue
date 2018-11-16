@@ -126,16 +126,7 @@ export default {
         });
     },
     cancelOrder() {
-      this.$store
-        .dispatch('order/cancelOrder', this.orderId)
-        .then(resp => {
-          this.$toast('取消成功');
-          this.getData();
-        })
-        .catch(err => {
-          this.$toast(err);
-          this.$router.back(-1);
-        });
+      this.$emit('cancelOrder',this.orderId)
     },
   },
   created() {

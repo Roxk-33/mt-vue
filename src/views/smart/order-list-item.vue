@@ -9,7 +9,7 @@
         </div>
       </div>
       <div class="item-header-right">
-        <p>订单已完成</p>
+        <p>{{ORDER_STATUS[orderInfo.status]}}</p>
       </div>
     </div>
     <router-link class="item-content" :to="{  path: '/user/order/detail',query:{orderId:this.orderId}}">
@@ -19,15 +19,21 @@
         <p class="order-price">￥15</p>
       </div>
       <div class="item-content-btn-box">
-        <span class="item-content-btn">再来一单</span>
-        <span class="item-content-btn">再来一单</span>
-        <span class="item-content-btn evaluation-btn" @click.stop="gotoEva">评价</span>
+
+        <span v-if="orderInfo.status === 0" class="item-content-btn" @click="cancelOrder">取消订单</span>
+        <router-link class="item-content-btn mt-color" :to="{ name: 'orderPay', params: { orderId: this.orderId }}" v-if="orderInfo.status === 0">立即支付</router-link>
+        <router-link class="again item-content-btn" :to="{ name: 'shopDetail', params: { orderId: this.orderId }}" v-if="orderInfo.status === 4 ||orderInfo.status === 6">再来一单</router-link>
+        <router-link class="after-sale item-content-btn" to="/order/evaluation" v-if="orderInfo.status === 4">申请售后</router-link>
+        <router-link class="item-content-btn" v-if="orderInfo.status === 4" :to="{path: '/user/order/evaluation', query: { orderId: this.orderId }}">评价</router-link>
+
       </div>
     </router-link>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+import CONSTANT from '@/common/constant';
+
 export default {
   name: 'order-list-item',
   props: {
@@ -35,12 +41,23 @@ export default {
     foodList: Array,
   },
   data() {
-    return {};
+    return {
+      ORDER_STATUS: CONSTANT.ORDER_STATUS,
+    };
   },
   components: {},
   methods: {
-    gotoEva() {
-      this.$router.push('/user/order/evaluation');
+    cancelOrder() {
+      this.$store
+        .dispatch('order/cancelOrder', this.orderId)
+        .then(resp => {
+          this.$toast('取消成功');
+          this.getData();
+        })
+        .catch(err => {
+          this.$toast(err);
+          this.$router.back(-1);
+        });
     },
   },
   computed: {
@@ -64,7 +81,9 @@ export default {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   padding: 10px;
   .item-header {
-    margin-bottom: 10px;
+    border-bottom: 1px solid $mt-boder-color;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
     .item-header-left {
       text-align: left;
       img {
@@ -122,7 +141,7 @@ export default {
         box-sizing: border-box;
         padding: 5px;
         border: 1px solid #cccccc;
-        &.evaluation-btn {
+        &.mt-color {
           background-color: $mt-color;
           border-color: $mt-color;
         }

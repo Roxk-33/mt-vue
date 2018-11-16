@@ -1,13 +1,23 @@
 <template>
   <div class='footerNav'>
-    <div class="grid-content bg-purple" @click="toPage('/shop/list')">
-      <i class='iconfont icon-index' :class='{"active" : routeName === "home" }'></i>
+    <div class="grid-content bg-purple" @click="toPage('/shop/list')" :class='{"active" : routeName === "home" }'>
+      <i class='iconfont icon-index'></i>
+      <p>
+        商店
+      </p>
     </div>
-    <div class="grid-content bg-purple" @click="toPage('/user/order/list')">
-      <i class='iconfont icon-order-list' :class='{"active" : routeName === "userOrderList" }'></i>
+    <div class="grid-content bg-purple" @click="toPage('/user/order/list')" :class='{"active" : routeName === "userOrderList" }'>
+      <i class='iconfont icon-order-list'></i>
+      <p>
+        订单
+      </p>
     </div>
-    <div class="grid-content bg-purple" @click="toPage('/user/index')">
-      <i class='iconfont icon-person' :class='{"active" : routeName === "userIndex" }'></i>
+    <div class="grid-content bg-purple" @click="toPage('/user/index')" :class='{"active" : routeName === "userIndex" }'>
+      <i class='iconfont icon-person'></i>
+      <p>
+        我的
+      </p>
+
     </div>
   </div>
 
@@ -32,23 +42,28 @@ export default {
 };
 </script>
 <style scoped rel="stylesheet/scss" lang="scss">
+@import '~css/common';
+
 .footerNav {
   width: 100%;
   height: 1.5rem;
-  line-height: 1.9rem;
   position: fixed;
   bottom: 0;
-  background-color: whitesmoke;
+  background-color: #fff;
   border-bottom: 1px solid rgba(128, 128, 128, 0.51);
   display: flex;
   justify-content: space-around;
   align-items: center;
+  color: #bfbfbf;
+  text-align: center;
+  p {
+    margin-top: 3px;
+  }
+  .grid-content.active {
+    color: $mt-color;
+  }
   i {
-    color: #bfbfbf;
-    font-size: 30px;
-    &.active {
-      color: #ffd161;
-    }
+    font-size: 25px;
   }
 }
 </style>
