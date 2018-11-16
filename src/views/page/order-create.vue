@@ -2,17 +2,17 @@
   <div class="order-pay">
     <header-nav :title="headerTitle" :onLeft="true" @click-left="$router.back(-1);"></header-nav>
     <div class='order-pay-header'>
-      <div class='header-address box-right-arrow' @click="showAddress = true">
+      <div class='header-address box-right-arrow ' @click="showAddress = true">
         <p class='address-content' v-if="orderInfo.address.address">{{orderInfo.address.address}}</p>
         <span class='address-person' v-if="orderInfo.address.user_name">{{orderInfo.address.user_name}} {{orderInfo.address.tel}}</span>
         <p v-else class="address-select">请选择地址</p>
-        <i class='iconfont icon-xiangyou'></i>
+        <i class='iconfont icon-xiangyou right'></i>
       </div>
       <div class='header-shipping-time box-right-arrow mt-flex-space-between'>
         <span class='shipping-type'>立即送出</span>
-        <span class='shipping-time'>23:20</span>
-        <i class='iconfont icon-xiangyou'></i>
-
+        <!-- 送达时间暂时定为当前时间后15分钟 -->
+        <span class='shipping-time'>大约{{orderInfo.arrivalTime.substr(-5)}}送达</span>
+        <i class='iconfont icon-xiangyou right'></i>
       </div>
     </div>
     <div class='order-pay-main'>
@@ -63,16 +63,20 @@
 
     </div>
     <div class='order-pay-note'>
-      <div class='order-pay-note-item box-right-arrow' @click="showRemarks = true;tempRemarks = orderInfo.remarks;">
+      <div class='order-pay-note-item box-right-arrow mt-flex-space-between' @click="showRemarks = true;tempRemarks = orderInfo.remarks;">
         <span class='note-item-left'>备注</span>
-        <span class='note-item-right'></span>
-        <i class='iconfont icon-xiangyou'></i>
+        <div>
+          <span class='note-item-right'>{{orderInfo.remarks}}</span>
+          <i class='iconfont icon-xiangyou'></i>
+        </div>
 
       </div>
       <div class='order-pay-note-item box-right-arrow mt-flex-space-between'>
         <span class='note-item-left'>餐具数量</span>
-        <span class='note-item-right'></span>
-        <i class='iconfont icon-xiangyou'></i>
+        <div>
+          <span class='note-item-right'>1人</span>
+          <i class='iconfont icon-xiangyou'></i>
+        </div>
 
       </div>
       <div class='order-pay-note-item box-right-arrow mt-flex-space-between'>
@@ -81,10 +85,10 @@
         <i class='iconfont icon-xiangyou'></i>
 
       </div>
-      <div class='order-pay-note-item box-right-arrow mt-flex-space-between' @click="showPay = true">
+      <div class='order-pay-note-item box-right-arrow mt-flex-space-between'>
         <span class='note-item-left'>支付方式</span>
-        <span class='note-item-right'></span>
-        <i class='iconfont icon-xiangyou'></i>
+        <span class='note-item-right'>在线支付</span>
+        <!-- <i class='iconfont icon-xiangyou'></i> -->
       </div>
     </div>
 
@@ -153,7 +157,7 @@
 import popUp from '@/views/dumb/pop-up';
 import CONSTANT from '@/common/constant';
 import headerNav from '@/views/dumb/header-nav';
-
+import { getTime } from '@/common/utils';
 export default {
   name: 'order-pay',
 
@@ -174,6 +178,7 @@ export default {
         address: {},
         remarks: '',
         shopId: this.shopId,
+        arrivalTime: getTime(),
       },
     };
   },
@@ -285,7 +290,7 @@ export default {
       );
     },
     shopId() {
-      return this.$route.params.shopId;
+      return this.$route.params.shopId || 1;
     },
     isAll() {
       return this.$route.params.isAll || false;
@@ -451,6 +456,9 @@ export default {
     position: relative;
     font-size: 15px;
     padding: 10px 0;
+    .note-item-right {
+      margin-right: 5px;
+    }
   }
 }
 .footer-box {
@@ -483,13 +491,16 @@ export default {
   position: relative;
   padding-right: 30px;
   .icon-xiangyou {
-    position: absolute;
-    top: 50%;
     font-size: 13px;
     font-weight: 700;
-    transform: translateY(-50%);
-    right: 10px;
+
     color: #d4d4d4;
+    &.right {
+      transform: translateY(-50%);
+      right: 10px;
+      position: absolute;
+      top: 50%;
+    }
   }
 }
 .pay-way-box {

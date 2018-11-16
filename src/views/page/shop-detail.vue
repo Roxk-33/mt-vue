@@ -38,7 +38,6 @@ import cartList from '@/views/smart/cart-list';
 import foodItem from '@/views/smart/food-item';
 import shopHeader from '@/views/smart/shop-header';
 import shopNav from '@/views/smart/shop-nav';
-import { deepClone } from '@/common/utils';
 import foodIsRepeat from '@/mixins/food-is-repeat';
 export default {
   name: 'shop-detail',

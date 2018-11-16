@@ -50,10 +50,9 @@ export default {
         .dispatch('order/getOrderList', this.page)
         .then(resp => {
           this.mtLoading = false;
-
           this.loading = false;
           this.page++;
-          this.orderList = resp.data;
+          this.orderList = this.orderList.concat(resp.data);
         })
         .catch(err => {
           this.mtLoading = false;

@@ -35,6 +35,9 @@ const actions = {
   getOrderDetail({ commit }, payload) {
     return ajax.get(formatURL(API.ORDER_DETAIL, { id: payload }));
   },
+  cancelOrder({ commit }, payload) {
+    return ajax.put(formatURL(API.ORDER_DELETE, { id: payload }));
+  },
 };
 
 export default {

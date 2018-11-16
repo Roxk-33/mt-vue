@@ -104,7 +104,7 @@ export default {
         })
         .then(resp => {
           this.loading = false;
-          // this.shopList = this.shopList.concat(resp.data);
+          this.shopList = this.shopList.concat(resp.data);
         })
         .catch(err => {
           this.$toast(err);

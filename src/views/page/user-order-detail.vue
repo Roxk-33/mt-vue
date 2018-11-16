@@ -7,21 +7,28 @@
         </router-link>
       </div>
       <p class="order-progress">
-        订单完成
+        {{ORDER_STATUS[orderInfo.status]}}
         <i class='iconfont icon-xiangyou'></i>
       </p>
     </div>
+    <!-- 当订单未支付时显示 -->
+    <div class="detail-box detail-other" v-if="orderInfo.status === 0">
+      <i class="iconfont icon-bell"></i>{{ORDER_STATUS_MSG[orderInfo.status]}}
+    </div>
     <div class="detail-box detail-other">
-      <p>感谢您对美团外卖的信任，期待再次光临</p>
+      <p v-if="orderInfo.status !== 0">{{ORDER_STATUS_MSG[orderInfo.status]}}</p>
+      <p v-else>预计<span class="arrival-time">{{orderInfo.arrival_time.substr(-5)}}</span>送达</p>
       <div class="detail-top-btn">
-        <router-link class="again" to="/order/evaluation">再来一单</router-link>
-        <router-link class="after-sale" to="/order/evaluation">申请售后</router-link>
-        <router-link class="evaluation" to="/order/evaluation">评价</router-link>
+        <span v-if="orderInfo.status === 0" @click="cancelOrder">取消订单</span>
+        <router-link class="mt-color" :to="{ name: 'orderPay', params: { orderId: this.orderId }}" v-if="orderInfo.status === 0">立即支付</router-link>
+        <router-link class="again" :to="{ name: 'shopDetail', params: { orderId: this.orderId }}" v-if="orderInfo.status === 4 ||orderInfo.status === 6">再来一单</router-link>
+        <router-link class="after-sale" to="/order/evaluation" v-if="orderInfo.status === 4">申请售后</router-link>
+        <router-link class="mt-color" v-if="orderInfo.status === 4" :to="{path: '/user/order/evaluation', query: { orderId: this.orderId }}">评价</router-link>
       </div>
     </div>
     <div class="detail-box good-box">
       <div class="detail-box-title">
-        <span>{{shopInfo.shop_title}}</span>
+        <span class="shop-title">{{shopInfo.shop_title}}</span>
         <i class='iconfont icon-xiangyou'></i>
 
         <div class="shop-info-contact">
@@ -78,7 +85,7 @@
         </li>
         <li class="mt-flex-space-between">
           <span class="info-box-title">下单时间</span>
-          <span class="info-box-content">{{orderInfo.created_at}}</span>
+          <span class="info-box-content">{{orderInfo.created_at | parseTime }}</span>
         </li>
         <li class="mt-flex-space-between">
           <span class="info-box-title">支付方式</span>
@@ -90,21 +97,40 @@
 </template>
 
 <script type="text/ecmascript-6">
+import { parseTime } from '@/common/utils';
+import CONSTANT from '@/common/constant';
 export default {
   name: 'user-order-detail',
 
   data() {
     return {
-      orderInfo: {shop_title:''},
+      orderInfo: {},
+      ORDER_STATUS: CONSTANT.ORDER_STATUS,
+      ORDER_STATUS_MSG: CONSTANT.ORDER_STATUS_MSG,
     };
   },
   components: {},
   methods: {
     getData() {
+      this.mtLoading = true;
       this.$store
         .dispatch('order/getOrderDetail', this.orderId)
         .then(resp => {
+          this.mtLoading = false;
           this.orderInfo = resp.data;
+        })
+        .catch(err => {
+          this.mtLoading = false;
+          this.$toast(err);
+          this.$router.back(-1);
+        });
+    },
+    cancelOrder() {
+      this.$store
+        .dispatch('order/cancelOrder', this.orderId)
+        .then(resp => {
+          this.$toast('取消成功');
+          this.getData();
         })
         .catch(err => {
           this.$toast(err);
@@ -120,12 +146,17 @@ export default {
       return this.$route.query.orderId;
     },
     shopInfo() {
-      if (!this.orderInfo) return {};
+      if (!this.orderInfo.shop_info) return { shop_title: '' };
       return this.orderInfo.shop_info;
     },
     foodList() {
       if (!this.orderInfo) return {};
       return this.orderInfo.food_list;
+    },
+  },
+  filters: {
+    parseTime(val) {
+      return parseTime(val);
     },
   },
 };
@@ -183,33 +214,52 @@ export default {
       font-size: 18px;
       padding-bottom: 5px;
       height: 28px;
-      border-bottom: 1px solid #cccccc;
+      border-bottom: 1px solid $mt-boder-color;
+      .shop-title {
+        font-weight: 600;
+      }
     }
   }
   .detail-other {
+    padding: 12px 8px;
     p {
       font-size: 15px;
       margin-bottom: 15px;
     }
+    .arrival-time {
+      color: #5353fb;
+      font-weight: 600;
+    }
+    .icon-bell {
+      vertical-align: middle;
+      background-color: #e8e5e5;
+      border-radius: 50%;
+      color: #c0bfbf;
+      padding: 1px;
+      margin-right: 5px;
+    }
     .detail-top-btn {
-      > a {
+      > a,
+      > span {
         height: 20px;
         line-height: 20px;
         padding: 2px 10px;
         display: inline-block;
         border: 1px solid #cccccc;
       }
-      .again,
-      .evaluation {
+      .mt-color {
         background-color: $mt-color;
         border-color: $mt-color;
+      }
+      .again,
+      .evaluation {
       }
     }
   }
   .good-box {
     .detail-box-item {
       padding: 15px 0 10px 0;
-      border-bottom: 1px solid #cccccc;
+      border-bottom: 1px solid $mt-boder-color;
     }
     .detail-box-title {
       .icon-xiangyou {
@@ -235,7 +285,7 @@ export default {
       }
     }
     .detail-distribution {
-      font-size: 18px;
+      font-size: 14px;
     }
     .detail-price-total {
       text-align: right;
@@ -285,7 +335,7 @@ export default {
   .order-box-info-box li,
   .distribution-info-box li {
     margin: 5px 0;
-    font-size: 16px;
+    font-size: 14px;
     .info-box-title {
       color: #797979;
     }

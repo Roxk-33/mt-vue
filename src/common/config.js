@@ -25,6 +25,7 @@ export default {
     ORDER_CREATE: '/order',
     ORDER_LIST: '/user/order',
     ORDER_DETAIL: '/user/order/:id',
+    ORDER_DELETE: '/user/order/:id',
   },
   BASE_URL: {
     PRO: 'http://lococo.site:3000/api/v1/',
