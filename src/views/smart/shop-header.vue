@@ -17,7 +17,7 @@ export default {
     announcement: String,
     photo: {
       type: String,
-      default: 'https://via.placeholder.com/150x150',
+      default: 'https://via.placeholder.com/250x250',
     },
   },
   data() {
