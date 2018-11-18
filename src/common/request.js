@@ -40,8 +40,7 @@ service.interceptors.response.use(
           location.reload(); // 为了重新实例化vue-router对象 避免bug
         });
       } else {
-        Toast(data.message);
-        return Promise.reject(data);
+        return Promise.reject(data.message, data);
       }
     }
     return Promise.resolve(data);

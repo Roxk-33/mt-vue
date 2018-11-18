@@ -77,3 +77,68 @@ export function getTime(delay = 15) {
   });
   return time_str;
 }
+// 检验新用户名
+export function testUserName(name) {
+  const len = name.length;
+  const reg = /^[a-zA-Z\u4e00-\u9fa5]+$/;
+  const minLen = 4,
+    maxLen = 16;
+  let result = {
+    status: false,
+    msg: '',
+  };
+  if (len < minLen || len > maxLen) {
+    result.msg = '长度不符合要求';
+    return result;
+  }
+  if (!reg.test(name)) {
+    result.msg = '内容不符合要求';
+    return result;
+  }
+  result.status = true;
+  return result;
+}
+// 检验密码
+export function testPsw(psw, pswRe) {
+  const len = psw.length;
+  const minLen = 8,
+    maxLen = 32;
+  const reg = /(\d+(a-zA-Z)+)/;
+
+  let result = {
+    status: false,
+    msg: '',
+  };
+  if (len < minLen || len > maxLen) {
+    result.msg = '长度不符合要求';
+    return result;
+  }
+  if (psw !== pswRe) {
+    result.msg = '密码不一样';
+    return result;
+  }
+  if (!reg.test(name)) {
+    result.msg = '密码须包含数字、字母、符号至少两种或以上的元素';
+    return result;
+  }
+  result = true;
+  return result;
+}
+// 手机号
+export function testTel(tel) {
+  // 消除空格
+  tel = tel.replace(/\s+/g, '');
+  const reg = /^1(3|4|5|7|8)\d{9}$/;
+  return { status: reg.test(tel), tel };
+}
+export function formatTel(tel) {
+  // 消除空格
+  const reg1 = /\s+/g;
+
+  // TODO:表现效果不佳，空格应该从左到右出现
+  const reg2 = /(\d)(?=(\d{3})+(\.|$))/g;
+  tel = tel.replace(reg1, '');
+  return tel.replace(reg2, function($1) {
+    return $1 + ' ';
+  });
+}

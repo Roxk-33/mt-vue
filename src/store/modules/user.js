@@ -116,6 +116,23 @@ const actions = {
       }
     });
   },
+  updateUserInfo({ commit, state }, userInfo) {
+    return new Promise((resolve, reject) => {
+      ajax
+        .put(API.USER_INFO_UPDATE, userInfo)
+        .then(resp => {
+          const { action, data } = userInfo;
+          if (action === 'changeName') {
+            commit(types.SET_NAME, data);
+          }
+          if (action === 'changeTel') {
+            commit(types.SET_TEL, data);
+          }
+          resolve(resp);
+        })
+        .catch(reject);
+    });
+  },
   addAddress({ commit, state }, payload) {
     return new Promise((resolve, reject) => {
       ajax

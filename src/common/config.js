@@ -6,6 +6,7 @@ export default {
     USER_LOGIN: `${APIPREFIX}/user/login`,
     USER_LOGOUT: `${APIPREFIX}/user/logout`,
     USER_INFO: `${APIPREFIX}/user`,
+    USER_INFO_UPDATE: `${APIPREFIX}/user`,
     USER_REGISTER: `${APIPREFIX}/user/register`,
     // 送货地址
     USER_ADDRESS_LIST: `${APIPREFIX}/user/address`, // 地址列表
