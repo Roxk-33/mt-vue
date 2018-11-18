@@ -3,6 +3,8 @@ import * as types from '../mutation-types';
 import { getToken, setToken, removeToken } from '@/common/auth';
 import ajax from '@/common/request';
 import config from '@/common/config';
+import { formatURL } from '@/common/utils';
+
 const API = config.API;
 // const src = require('../../assets/images/default.jpg');
 const state = {
@@ -134,11 +136,50 @@ const actions = {
         .catch(reject);
     });
   },
+  delAddress({ commit, state }, payload) {
+    return new Promise((resolve, reject) => {
+      ajax
+        .delete(formatURL(API.USER_ADDRESS_DELETE, { id: payload }))
+        .then(resp => {
+          resolve(resp);
+        })
+        .catch(reject);
+    });
+  },
   getAddressList({ commit }) {
     return new Promise((resolve, reject) => {
       ajax
         .get(API.USER_ADDRESS_LIST)
         .then(resp => {
+          resolve(resp);
+        })
+        .catch(reject);
+    });
+  },
+  getAddressInfo({ commit }, id) {
+    return new Promise((resolve, reject) => {
+      ajax
+        .get(formatURL(API.USER_ADDRESS_INFO, { id }))
+        .then(resp => {
+          resolve(resp);
+        })
+        .catch(reject);
+    });
+  },
+  getMapInfo({ commit }, payload) {
+    const { location } = payload;
+    return new Promise((resolve, reject) => {
+      ajax
+        .get(API.BAIDU_MAP_INFO, {
+          params: {
+            location,
+            pois: 1,
+            output: 'json',
+            ak: 'gql7G3189x9UnKhoAya6yCfdxZz7CsQX',
+          },
+        })
+        .then(resp => {
+          console.log(resp);
           resolve(resp);
         })
         .catch(reject);

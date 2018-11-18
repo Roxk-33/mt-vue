@@ -1,21 +1,21 @@
 <template>
   <div class="user-address-info">
     <header-nav :title="title"></header-nav>
-    <form-item label="联系人" :isRequired="true" v-model="data.user_name" placeholder="请填写收货人的姓名"></form-item>
+    <form-item label="联系人" :isRequired="true" v-model="addressInfo.user_name" placeholder="请填写收货人的姓名"></form-item>
     <div class="user-address-info-sex">
-      <van-radio :name="SEX['male']" :value="SEX['male']" v-model="data.user_sex">先生</van-radio>
-      <van-radio :name="SEX['female']" :value="SEX['female']" v-model="data.user_sex">女士</van-radio>
+      <van-radio :name="SEX['male']" :value="SEX['male']" v-model="addressInfo.user_sex">先生</van-radio>
+      <van-radio :name="SEX['female']" :value="SEX['female']" v-model="addressInfo.user_sex">女士</van-radio>
     </div>
-    <form-item label="手机号" :isRequired="true" v-model="data.tel" placeholder="请填写收货人手机号码"></form-item>
-    <form-item label="送货地址" :isRequired="true" v-model="data.address"></form-item>
-    <form-item label="标签" :isRequired="false" v-model="data.tag" :showSlot="true">
+    <form-item label="手机号" :isRequired="true" v-model="addressInfo.tel" placeholder="请填写收货人手机号码"></form-item>
+    <form-item label="送货地址" :isRequired="true" v-model="addressInfo.address"></form-item>
+    <form-item label="标签" :isRequired="false" v-model="addressInfo.tag" :showSlot="true">
       <div class="tag-box">
-        <span class="tag" @click="data.tag = tag.value" :class="{'active' :data.tag === tag.value }" v-for="tag in tags" :key="tag.value">
+        <span class="tag" @click="addressInfo.tag = tag.value" :class="{'active' :addressInfo.tag === tag.value }" v-for="tag in tags" :key="tag.value">
           {{tag.label}}
         </span>
       </div>
     </form-item>
-    <!-- <form-item label="门牌号" :isRequired="true" v-model="data.stress"></form-item> -->
+    <!-- <form-item label="门牌号" :isRequired="true" v-model="addressInfo.stress"></form-item> -->
     <div class="footer-box">
       <p class="save" @click="save">保存地址</p>
     </div>
@@ -26,6 +26,7 @@
 import headerNav from '@/views/dumb/header-nav';
 import formItem from '@/views/dumb/form-item';
 import CONSTANT from '@/common/constant';
+import { getLocation } from '@/common/map';
 export default {
   name: 'user-address-info',
   data() {
@@ -33,7 +34,7 @@ export default {
       text: '1231',
       SEX: CONSTANT.TYPE.SEX_EN,
       sex: 1,
-      data: {
+      addressInfo: {
         user_name: '',
         user_sex: 0,
         tel: '',
@@ -62,22 +63,43 @@ export default {
   },
   created() {
     if (!this.isAdd) {
-      this.$store.dispatch('getAddress').then(data => {
-        this.data = data;
+      this.$store.dispatch('user/getAddressInfo', this.addressId).then(resp => {
+        this.addressInfo = Object.assign({}, resp.data);
       });
+    } else {
+      this.getAddress();
     }
   },
   methods: {
+    getAddress() {
+      getLocation().then(data => {
+        this.$store
+          .dispatch('user/getMapInfo', {
+            location: data,
+          })
+          .then(resp => {
+            this.addressInfo.address = resp.result.formatted_address;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      });
+    },
     save() {
       try {
         if (this.isAdd) {
-          this.$store.dispatch('user/addAddress', this.data).then(data => {
-            this.$router.push({ name: 'userAddressList' });
-          });
+          this.$store
+            .dispatch('user/addAddress', this.addressInfo)
+            .then(data => {
+              this.$router.push({ name: 'userAddressList' });
+            });
         } else {
-          this.$store.dispatch('user/editAddress', this.data).then(data => {
-            this.$router.push({ name: 'userAddressList' });
-          });
+          console.log(this.addressInfo);
+          this.$store
+            .dispatch('user/editAddress', this.addressInfo)
+            .then(data => {
+              this.$router.push({ name: 'userAddressList' });
+            });
         }
       } catch (error) {
         this.$toast(error);
