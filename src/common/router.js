@@ -15,6 +15,7 @@ import userOrderList from '@/views/page/user-order-list';
 import userCart from '@/views/page/user-cart';
 import userOrderDetail from '@/views/page/user-order-detail';
 import userOrderEvaluation from '@/views/page/user-order-evaluation';
+import addressMap from '@/views/page/address-map';
 
 Vue.use(Router);
 
@@ -44,6 +45,11 @@ export const constantRouterMap = [
         path: 'address/info',
         component: userAddressInfo,
         name: 'userAddressInfo',
+      },
+      {
+        path: 'address/map',
+        component: addressMap,
+        name: 'addressMap',
       },
       {
         path: 'register',
