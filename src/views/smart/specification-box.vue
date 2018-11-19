@@ -47,6 +47,7 @@ export default {
     return {
       totalSpec: [],
       totalPrice: 0,
+      specInfo: {},
       isExist: -1,
       specArr: [],
       specText: [],
@@ -71,6 +72,9 @@ export default {
      * @param typeIndex 所选规格数值下标
      */
     chooseType(specInfo, index, typeIndex) {
+      // 库存不足
+      if (specInfo.stock === 0) return;
+      this.specInfo = specInfo;
       // 前一个规格的价钱
       let price = this.totalSpec[index].spec_arr.find(
         item => item.id == this.specArr[index]
@@ -146,6 +150,7 @@ export default {
         });
         if (item.is_default) {
           temp[_type].spec_default = temp[_type].spec_arr.length - 1;
+          this.specInfo = temp[_type].spec_arr[temp[_type].spec_default];
           this.specArr.push(item.id);
           this.specText.push(item.label);
         }
@@ -168,6 +173,8 @@ export default {
     },
     adjustNum(type) {
       if (type === 1) {
+        console.log(this.specInfo);
+        if (this.specInfo.stock - 1 < this.num) return this.$toast('库存不足');
         console.log('增加');
         this.num++;
         this.$emit(

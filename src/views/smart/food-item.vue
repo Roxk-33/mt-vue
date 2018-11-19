@@ -15,7 +15,7 @@
       <div class="good-content_buy" v-if="foodInfo.spec_arr.length">
         <button @click="getSpecInfo" class="btn-sepc">
           选规格
-          <div class="food-select-num">{{selectNum}}</div>
+          <div class="food-select-num" v-if="selectNum">{{selectNum}}</div>
         </button>
       </div>
       <div class="good-content_buy good-content_buy_nontype" v-else>

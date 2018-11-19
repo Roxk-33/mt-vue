@@ -276,8 +276,7 @@ export default {
         })
         .catch(err => {
           console.log(err);
-          this.$toast('提交订单失败！');
-          this.$router.back(-1);
+          this.$toast(err);
         });
     },
   },

@@ -192,7 +192,7 @@ export default {
       // 购物车中已有该商品
       if (indexCart !== -1) {
         data = {
-          foodId: foodInfo.id,
+          foodId: foodCartInfo.food_id,
           id: foodCartInfo.id, // 此id为购物车内商品的购物车自增ID
           type: type === 1 ? 1 : -1,
         };
