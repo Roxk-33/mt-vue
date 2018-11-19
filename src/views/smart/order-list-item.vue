@@ -48,7 +48,7 @@ export default {
       this.$emit('cancelOrder', this.orderId);
     },
     gotoDetail() {
-      this.$route.push({
+      this.$router.push({
         path: '/user/order/detail',
         query: { orderId: this.orderId },
       });

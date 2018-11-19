@@ -242,9 +242,6 @@ export default {
         background-color: $mt-color;
         border-color: $mt-color;
       }
-      .again,
-      .evaluation {
-      }
     }
   }
   .good-box {

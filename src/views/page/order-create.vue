@@ -207,7 +207,10 @@ export default {
           this.addressList = this.addressList.concat(resp.data);
           this.getDefaultAddress();
         })
-        .catch(this.$toast);
+        .catch(e => {
+          this.router.push('/error');
+          this.$toast(e);
+        });
 
       this.$store
         .dispatch('cart/getCartListByShop', { shopId: this.shopId })
@@ -223,7 +226,10 @@ export default {
           }
           this.shopInfo = this.foodList[0].shop_info;
         })
-        .catch(this.$toast);
+        .catch(e => {
+          this.router.push('/error');
+          this.$toast(e);
+        });
     },
     // 获取默认地址
     getDefaultAddress() {
