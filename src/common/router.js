@@ -16,6 +16,7 @@ import userCart from '@/views/page/user-cart';
 import userOrderDetail from '@/views/page/user-order-detail';
 import userOrderEvaluation from '@/views/page/user-order-evaluation';
 import addressMap from '@/views/page/address-map';
+import error from '@/views/page/error';
 
 Vue.use(Router);
 
@@ -120,7 +121,7 @@ export const constantRouterMap = [
     ],
   },
   { path: '/', redirect: '/user/index' },
-  // { path: '/404', component: _import('errorPage/404'),  },
+  { path: '/error', component: error },
   // { path: '/401', component: _import('errorPage/401'),  },
   // {
   //     path: '',
