@@ -1,7 +1,9 @@
 <template>
   <div class="good-list-item">
-    <div class="good-image">
+    <div class="good-image" :class="{'good-sold-out':foodInfo.stock==0}">
       <img :src="foodInfo.picture">
+      <div v-if="foodInfo.stock == 0" class="sold-out-slogan">已售罄</div>
+      <div v-if="foodInfo.stock == 0" class="sold-out-mask"></div>
     </div>
     <div class="good-content mt-flex-space-between">
       <div class="good-content_info">
@@ -11,10 +13,13 @@
         <p class="good-content_info_price">{{foodInfo.price}}</p>
       </div>
       <div class="good-content_buy" v-if="foodInfo.spec_arr.length">
-        <van-button size="small" @click="getSpecInfo">选规格</van-button>
+        <button @click="getSpecInfo" class="btn-sepc">
+          选规格
+          <div class="food-select-num">{{selectNum}}</div>
+        </button>
       </div>
       <div class="good-content_buy good-content_buy_nontype" v-else>
-        <div class="good-content_buy_nontype_box">
+        <div class="good-content_buy_nontype_box" v-if="foodInfo.stock>0">
           <i class="iconfont icon-jian" @click="adjustNum(0)" v-if="selectNum > 0"></i>
           <span v-if="selectNum > 0">{{selectNum}}</span>
           <i class="iconfont icon-jia" @click="adjustNum(1)"></i>
@@ -45,7 +50,6 @@ export default {
       default: 0,
     },
   },
-  computed: {},
   components: {},
   methods: {
     getSpecInfo() {
@@ -70,9 +74,33 @@ export default {
   .good-image {
     width: 30%;
     height: 100%;
+    position: relative;
     img {
       width: 100%;
       height: 100%;
+    }
+    .sold-out-slogan {
+      width: 100%;
+      text-align: center;
+      line-height: 20px;
+      height: 20px;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      z-index: 1;
+      background-color: #000;
+      color: #fff;
+      transform: translateX(-50%);
+      opacity: 0.6;
+    }
+    .sold-out-mask {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      background-color: #fff;
+      opacity: 0.3;
     }
   }
   .good-content {
@@ -132,12 +160,27 @@ export default {
           margin: 0 5px;
         }
       }
-      .van-button {
+      .btn-sepc {
+        width: 55px;
+        height: 22px;
+        line-height: 22px;
+        border: 0;
         position: absolute;
         bottom: 0;
         right: 0;
         border-radius: 15px;
         background-color: $mt-color;
+        .food-select-num {
+          width: 15px;
+          height: 15px;
+          line-height: 17px;
+          color: #fff;
+          position: absolute;
+          right: -1px;
+          top: -8px;
+          border-radius: 50%;
+          background-color: red;
+        }
       }
     }
   }

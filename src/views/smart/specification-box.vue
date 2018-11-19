@@ -10,7 +10,7 @@
           <div class='box-item' v-for="(typeItem,index) in totalSpec" :key="typeItem.value">
             <p class='box-item_title'>{{typeItem.spec_name}}</p>
             <ul class='box-item-specification'>
-              <li @click="chooseType(item,index,type_index)" v-for="(item,type_index) in typeItem.spec_arr" :key="type_index" :class="{'box-item_selected' :specArr[index] == item.id}">
+              <li @click="chooseType(item,index,type_index)" v-for="(item,type_index) in typeItem.spec_arr" :key="type_index" :class="{'box-item_selected' :specArr[index] == item.id,'slod-out':item.stock == 0}">
                 {{item.label}}
               </li>
             </ul>
@@ -152,6 +152,7 @@ export default {
       });
 
       Object.keys(temp).forEach(key => this.totalSpec.push(temp[key]));
+      console.log(this.totalSpec);
     },
 
     pushCart() {
@@ -304,6 +305,10 @@ export default {
       &.box-item_selected {
         color: $mt-color;
         border-color: $mt-color;
+      }
+      &.slod-out {
+        color: lightgray;
+        border-color: lightgray;
       }
     }
   }

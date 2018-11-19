@@ -24,8 +24,8 @@
         </div>
       </div>
     </div>
-    <cart-list :threshold="shopInfo.threshold" :freight="shopInfo.freight" :cartList="list" @adjustNum="adjustNum" @toSettle="toSettle"></cart-list>
-    <specificationBox @pushCart="getSelectGoood" v-model="showSpecBox" :center="true" width="90%" :foodInfo="foodSelected" :cartList="list">
+    <cart-list :threshold="shopInfo.threshold" :freight="shopInfo.freight" :cartList="cartList" @adjustNum="adjustNum" @toSettle="toSettle"></cart-list>
+    <specificationBox @pushCart="getSelectGoood" v-model="showSpecBox" :center="true" width="90%" :foodInfo="foodSelected" :cartList="cartList">
     </specificationBox>
   </div>
 </template>
@@ -66,6 +66,7 @@ export default {
       foodList: [],
       scrollDisabel: false,
       foodSelected: {},
+      specIndex: 0, // 规格商品的index
       trackSize: 0, // 商品列表高度
       trackTop: 0, // 商品列表Top
       trackOpacity: 0, // 顶部状态栏opacity
@@ -132,9 +133,11 @@ export default {
       console.log('上拉');
       this.scrollDisabel = false;
     },
+    // 规格选项的商品放入购物车
     getSelectGoood(isExist, specArr, specText, totalPrice, type) {
+      // 若已存在在购物车中，不需要format数据
       if (isExist !== -1) {
-        this.adjustNum(type, isExist);
+        this.adjustNum(type, isExist, this.specIndex);
         return;
       }
       const data = {
@@ -156,56 +159,78 @@ export default {
         params: { shopId: this.shopID, isAll: true },
       });
     },
+    // 获取要选规格的商品信息
     getSpecInfo(index) {
+      this.specIndex = index;
       this.foodSelected = this.foodList[index];
       this.showSpecBox = true;
     },
     /**
      * @description 删除/增加 已选商品
-     * @augments type:0为删除1个，1为增加1个；index:下标,indexCart为在购物车中的下标，indexMenu表示在foodList的下标
+     * @augments type:0为删除1个，1为增加1个；
+     * @augments indexCart为在购物车中的下标;
+     * @augments indexMenu表示在foodList的下标，若为-1，则表示商品是从购物车中添加（表明购物车中已有该商品）
+     * indexCart和indexMenu不可能同时为-1
      */
     adjustNum(type, indexCart = -1, indexMenu = -1) {
       let foodInfo = null;
+      let data = {};
+
+      // 获取商品信息
       if (indexMenu !== -1) {
         foodInfo = this.foodList[indexMenu];
-        // 因为从目录中添加商品，无法得知购物车中是否已有
-        let index = this.list.findIndex(item => item.food_id === foodInfo.id);
-
-        // 为新增商品
-        if (index === -1) {
-          const data = {
-            specArr: [],
-            foodName: foodInfo.food_name,
-            specText: [],
-            foodId: foodInfo.id,
-            totalPrice: foodInfo.price,
-            shop_id: this.shopID,
-            picture: foodInfo.picture,
-          };
-          return this.pushCart(data);
-        } else {
-          indexCart = index;
-        }
       }
 
+      // 因为从目录中添加商品，无法得知购物车中商品对应的下标
+      if (indexCart === -1) {
+        indexCart = this.cartList.findIndex(
+          item => item.food_id === foodInfo.id
+        );
+      }
+      let foodCartInfo = this.cartList[indexCart];
+
+      // 购物车中已有该商品
       if (indexCart !== -1) {
-        foodInfo = this.list[indexCart];
+        data = {
+          foodId: foodInfo.id,
+          id: foodCartInfo.id, // 此id为购物车内商品的购物车自增ID
+          type: type === 1 ? 1 : -1,
+        };
+      } else {
+        // 为新增商品
+        data = {
+          specArr: [],
+          foodName: foodInfo.food_name,
+          specText: [],
+          foodId: foodInfo.id,
+          totalPrice: foodInfo.price,
+          shop_id: this.shopID,
+          picture: foodInfo.picture,
+        };
       }
-      const data = {
-        id: foodInfo.id, // 此id为购物车内商品的购物车自增ID
-        type: type === 1 ? 1 : -1,
-      };
-      this.pushCart(data, indexCart);
+
+      this.pushCart(data, indexCart, indexMenu);
     },
-    pushCart(data, isExist = -1) {
+    // 发送新增商品到购物车的请求
+    //
+    pushCart(data, isExist = -1, indexMenu = -1) {
+      if (indexMenu === -1) {
+        indexMenu = this.foodList.findIndex(item => item.id === data.foodId);
+      }
       try {
         if (isExist !== -1) {
           this.$store.dispatch('cart/updateProductToCart', data).then(value => {
             this.$store.dispatch('cart/getCartList');
+            if (data.type === 1) {
+              this.foodList[indexMenu].selectNum++;
+            } else {
+              this.foodList[indexMenu].selectNum--;
+            }
           });
         } else {
           this.$store.dispatch('cart/addProductToCart', data).then(value => {
             this.$store.dispatch('cart/getCartList');
+            this.foodList[indexMenu].selectNum++;
           });
         }
       } catch (error) {
@@ -215,14 +240,11 @@ export default {
     },
     showSelectNum() {
       this.foodList.forEach(item => {
-        // 非规格商品需要在目录上显示已选数量
-        if (item.spec_arr.length === 0) {
-          let index = this.list.findIndex(food => food.food_id == item.id);
-          if (index !== -1) {
-            item.selectNum = this.list[index].num;
-          } else {
-            item.selectNum = 0;
-          }
+        let index = this.cartList.findIndex(food => food.food_id == item.id);
+        if (index !== -1) {
+          item.selectNum = this.cartList[index].num;
+        } else {
+          item.selectNum = 0;
         }
       });
     },
@@ -235,13 +257,13 @@ export default {
     this.getShopData();
   },
   watch: {
-    list(val) {
+    cartList(val) {
       this.showSelectNum();
     },
   },
   computed: {
     // 获取特定商店的购物车详情
-    list() {
+    cartList() {
       let arr = this.$store.getters['cart/listArr'];
       let target = arr.find(item => item.shop_info.id == this.shopID);
       if (!target) return [];
