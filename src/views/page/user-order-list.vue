@@ -3,7 +3,7 @@
     <order-list-header></order-list-header>
     <van-list v-model="loading" :finished="finished" :immediate-check="false" @load="onPullingUp">
       <div class="order-list-content">
-        <order-list-item v-for="item in orderList" :key="item.id" :orderInfo="item" :foodList="item.food_list" :cancelOrder="cancelOrder"></order-list-item>
+        <order-list-item v-for="(item,index) in orderList" :key="index" :orderInfo="item" :foodList="item.food_list" @cancelOrder="cancelOrder"></order-list-item>
       </div>
 
       <van-cell v-if="orderList.length === 0" class="list-empty">
@@ -41,15 +41,18 @@ export default {
   },
   methods: {
     cancelOrder(id) {
+      console.log(123);
+
       this.$store
         .dispatch('order/cancelOrder', id)
         .then(resp => {
-          this.$toast('取消成功');
+          this.page = 0;
+          this.orderList = [];
           this.getList();
         })
         .catch(err => {
+          console.log(err);
           this.$toast(err);
-          this.$router.back(-1);
         });
     },
     onPullingUp() {
@@ -74,6 +77,7 @@ export default {
           }
         })
         .catch(err => {
+          console.log(err);
           this.mtLoading = false;
           this.$toast(err);
           this.loading = false;
