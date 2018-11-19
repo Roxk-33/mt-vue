@@ -52,7 +52,7 @@ service.interceptors.response.use(
     if (resp && resp.data && resp.data.message) {
       return Promise.reject(error.response.data.message);
     }
-    return Promise.reject('系统出错');
+    return Promise.reject('系统错误');
   }
 );
 
