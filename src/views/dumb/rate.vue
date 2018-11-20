@@ -19,8 +19,7 @@ export default {
     };
   },
   mounted() {
-    this.selectIcon = this.iconClasses[0];
-    this.notIcon = this.iconClasses[1];
+    [this.selectIcon, this.notIcon] = this.iconClasses;
   },
   props: {
     isShowText: {
@@ -73,7 +72,7 @@ export default {
     },
     list() {
       return Array(...{ length: this.max }).map(
-        (value, index) => index < this.value,
+        (value, index) => index < this.value
       );
     },
   },

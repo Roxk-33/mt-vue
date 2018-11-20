@@ -7,10 +7,11 @@ export default {
       if (list.length > 0) {
         list.some((item, index) => {
           if (item.food_id === target.id) {
-            const _specArr = item.spec_arr;
-            const specArr = target.specArr;
+            const specArrList = item.spec_arr;
+            const { specArr } = target;
             // 若规格ID不相同，返回true
-            const result = specArr.some((id, index) => id != _specArr[index]);
+            /* eslint-disable */
+            const result = specArr.some((id, specIndex) => id != specArrList[specIndex]);
             if (!result) {
               indexRepeat = index;
               return true;

@@ -34,10 +34,11 @@ export default {
         if (!context.lockCount) {
           document.body.classList.add('mt-overflow-hidden');
         }
-        context.lockCount++;
+        context.lockCount += 1;
       }
     },
     close() {
+      /* eslint-disable */
       manager.close(this._popupId);
       this.$emit('input', false);
     },
@@ -48,6 +49,7 @@ export default {
     }
   },
   created() {
+    /* eslint-disable */
     this._popupId = `popup-${context.plusKey('id')}`;
   },
   watch: {
