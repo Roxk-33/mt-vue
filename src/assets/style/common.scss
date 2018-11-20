@@ -9,7 +9,7 @@ $mt-address-school-bg: #0080003b;
 $mt-address-company: #0000ff;
 $mt-address-company-bg: #0000ff36;
 
-$mt-boder-color:#f7f5f5;
+$mt-boder-color: #f7f5f5;
 // base
 $zindex-first: 10;
 $zindex-second: 20;
@@ -56,22 +56,6 @@ $zindex-navbar-main: 1002;
 
   50% {
     opacity: 1;
-  }
-}
-
-@-webkit-keyframes zoomOut {
-  from {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0;
-    -webkit-transform: scale3d(0.3, 0.3, 0.3);
-    transform: scale3d(0.3, 0.3, 0.3);
-  }
-
-  to {
-    opacity: 0;
   }
 }
 

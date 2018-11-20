@@ -37,7 +37,7 @@
     <van-popup v-model="show" position="right">
 
       <div class="username-box user-info-pop-box" v-if="boxType === 'username'">
-        <header-nav title="修改用户名" @click-left="show=false">
+        <header-nav title="修改用户名" @click-left="show=false" :onLeft="true">
           <span @click="changeName">确定</span>
         </header-nav>
         <div class="content">
