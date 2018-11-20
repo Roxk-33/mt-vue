@@ -1,7 +1,7 @@
+import ajax from 'src/common/request';
+import config from 'src/common/config';
+import { formatURL } from 'src/common/utils';
 import * as types from '../mutation-types';
-import ajax from '@/common/request';
-import config from '@/common/config';
-import { formatURL } from '@/common/utils';
 
 const API = config.API;
 // state
@@ -15,38 +15,32 @@ const state = {
 const getters = {
   list: state => state.list,
   listArr: state => state.listArr,
-  cartProducts: (state, getters, rootState) => {
-    return state.list.map(({ id, quantity }) => {
-      const product = rootState.products.all.find(product => product.id === id);
-      return {
-        title: product.title,
-        price: product.price,
-        quantity,
-      };
-    });
-  },
+  cartProducts: (state, getters, rootState) => state.list.map(({ id, quantity }) => {
+    const product = rootState.products.all.find(product => product.id === id);
+    return {
+      title: product.title,
+      price: product.price,
+      quantity,
+    };
+  }),
 
-  cartTotalPrice: (state, getters) => {
-    return getters.cartProducts.reduce((total, product) => {
-      return total + product.price * product.quantity;
-    }, 0);
-  },
+  cartTotalPrice: (state, getters) => getters.cartProducts.reduce((total, product) => total + product.price * product.quantity, 0),
 };
 
 // mutations
 const mutations = {
   [types.CART_INIT_LIST](state, list) {
-    let temp = [];
-    list.forEach(item => {
-      let index = temp.findIndex(_item => _item.shop_info.id == item.shop_id);
+    const temp = [];
+    list.forEach((item) => {
+      const index = temp.findIndex(_item => _item.shop_info.id == item.shop_id);
 
       if (index === -1) {
-        let obj = Object.assign(
+        const obj = Object.assign(
           {},
           {
             shop_info: item.shop_info,
             foodList: [],
-          }
+          },
         );
         obj.foodList.push(item);
         temp.push(obj);
@@ -79,7 +73,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       ajax
         .get(API.CART_LIST)
-        .then(resp => {
+        .then((resp) => {
           commit(types.CART_INIT_LIST, resp.data);
           resolve(resp);
         })

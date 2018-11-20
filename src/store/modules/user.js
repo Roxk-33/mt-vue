@@ -1,9 +1,9 @@
 import md5 from 'js-md5';
+import { getToken, setToken, removeToken } from 'src/common/auth';
+import ajax from 'src/common/request';
+import config from 'src/common/config';
+import { formatURL } from 'src/common/utils';
 import * as types from '../mutation-types';
-import { getToken, setToken, removeToken } from '@/common/auth';
-import ajax from '@/common/request';
-import config from '@/common/config';
-import { formatURL } from '@/common/utils';
 
 const API = config.API;
 // const src = require('../../assets/images/default.jpg');
@@ -65,7 +65,7 @@ const actions = {
           account,
           password,
         })
-        .then(resp => {
+        .then((resp) => {
           resolve(resp);
           commit(types.SET_TOKEN, resp.data.token);
           commit(types.SET_NAME, resp.data.user.user_name);
@@ -86,7 +86,7 @@ const actions = {
           account,
           password,
         })
-        .then(resp => {
+        .then((resp) => {
           resolve(resp);
           commit(types.SET_TOKEN, resp.data.token);
           commit(types.SET_NAME, resp.data.user.user_name);
@@ -105,14 +105,14 @@ const actions = {
       } else {
         ajax
           .get(API.USER_INFO)
-          .then(resp => {
+          .then((resp) => {
             resolve(resp);
             commit(types.SET_NAME, resp.data.user_name);
             commit(types.SET_AVATAR, resp.data.avatar);
             commit(types.SET_USERID, resp.data.id);
             commit(types.SET_TEL, resp.data.tel);
           })
-          .catch(err => {
+          .catch((err) => {
             // commit('REMOVE_TOKEN');
             // commit('SET_NAME', '');
             // commit('SET_TEL', '');
@@ -127,7 +127,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       ajax
         .put(API.USER_INFO_UPDATE, userInfo)
-        .then(resp => {
+        .then((resp) => {
           const { action, data } = userInfo;
           if (action === 'changeName') {
             commit(types.SET_NAME, data);
@@ -144,7 +144,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       ajax
         .post(API.USER_ADDRESS_ADD, payload)
-        .then(resp => {
+        .then((resp) => {
           resolve(resp);
         })
         .catch(reject);
@@ -154,7 +154,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       ajax
         .put(API.USER_ADDRESS_EDIT, payload)
-        .then(resp => {
+        .then((resp) => {
           resolve(resp);
         })
         .catch(reject);
@@ -164,7 +164,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       ajax
         .delete(formatURL(API.USER_ADDRESS_DELETE, { id: payload }))
-        .then(resp => {
+        .then((resp) => {
           resolve(resp);
         })
         .catch(reject);
@@ -174,7 +174,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       ajax
         .get(API.USER_ADDRESS_LIST)
-        .then(resp => {
+        .then((resp) => {
           resolve(resp);
         })
         .catch(reject);
@@ -184,7 +184,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       ajax
         .get(formatURL(API.USER_ADDRESS_INFO, { id }))
-        .then(resp => {
+        .then((resp) => {
           resolve(resp);
         })
         .catch(reject);
@@ -202,7 +202,7 @@ const actions = {
             ak: 'gql7G3189x9UnKhoAya6yCfdxZz7CsQX',
           },
         })
-        .then(resp => {
+        .then((resp) => {
           console.log(resp);
           resolve(resp);
         })
@@ -236,7 +236,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       ajax
         .get(API.USER_LOGOUT)
-        .then(resp => {
+        .then((resp) => {
           commit('REMOVE_TOKEN');
           commit('SET_NAME', '');
           commit('SET_TEL', '');
@@ -249,7 +249,7 @@ const actions = {
 
   // 前端 登出
   FedLogOut({ commit }) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       commit('REMOVE_TOKEN');
       resolve();
     });

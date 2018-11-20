@@ -154,10 +154,11 @@
 </template>
 
 <script type="text/ecmascript-6">
-import popUp from '@/views/dumb/pop-up';
-import CONSTANT from '@/common/constant';
-import headerNav from '@/views/dumb/header-nav';
-import { getTime } from '@/common/utils';
+import popUp from 'src/views/dumb/pop-up';
+import CONSTANT from 'src/common/constant';
+import headerNav from 'src/views/dumb/header-nav';
+import { getTime } from 'src/common/utils';
+
 export default {
   name: 'order-pay',
 
@@ -202,38 +203,38 @@ export default {
 
       this.$store
         .dispatch('user/getAddressList')
-        .then(resp => {
+        .then((resp) => {
           this.mtLoading = false;
           this.addressList = this.addressList.concat(resp.data);
           this.getDefaultAddress();
         })
-        .catch(e => {
+        .catch((e) => {
           this.router.push('/error');
           this.$toast(e);
         });
 
       this.$store
         .dispatch('cart/getCartListByShop', { shopId: this.shopId })
-        .then(resp => {
+        .then((resp) => {
           this.mtLoading = false;
 
           if (this.foodIdArr.length) {
             this.foodList = resp.data.filter(
-              item => this.foodIdArr.indexOf(item.id) !== -1
+              item => this.foodIdArr.indexOf(item.id) !== -1,
             );
           } else {
             this.foodList = resp.data;
           }
           this.shopInfo = this.foodList[0].shop_info;
         })
-        .catch(e => {
+        .catch((e) => {
           this.router.push('/error');
           this.$toast(e);
         });
     },
     // 获取默认地址
     getDefaultAddress() {
-      this.addressList.forEach(item => {
+      this.addressList.forEach((item) => {
         item = Object.assign({}, item, { select: false });
         if (item.is_default) {
           item.selected = true;
@@ -262,7 +263,7 @@ export default {
     },
     saveRemarks() {
       this.orderInfo.remarks = this.tempRemarks;
-      cancel('remarks');
+      this.cancel('remarks');
     },
     sumbitOrder() {
       if (!this.orderInfo.address.address) {
@@ -272,7 +273,7 @@ export default {
       this.orderInfo.shopId = this.shopId;
       this.$store
         .dispatch('order/sumbitOrder', this.orderInfo)
-        .then(resp => {
+        .then((resp) => {
           this.$router.push({
             name: 'orderPay',
             params: { orderId: resp.data.id },
@@ -280,7 +281,7 @@ export default {
           // 重新获取购物车
           this.$store.dispatch('cart/getCartList');
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           this.$toast(err);
         });
@@ -291,7 +292,7 @@ export default {
       if (this.foodList.length === 0) return 0;
       return this.foodList.reduce(
         (previous, current) => (previous += current.price * current.num),
-        0
+        0,
       );
     },
     shopId() {

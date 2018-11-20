@@ -23,10 +23,11 @@
 </template>
 
 <script type="text/ecmascript-6">
-import headerNav from '@/views/dumb/header-nav';
-import formItem from '@/views/dumb/form-item';
-import CONSTANT from '@/common/constant';
-import { getLocation } from '@/common/map';
+import headerNav from 'src/views/dumb/header-nav';
+import formItem from 'src/views/dumb/form-item';
+import CONSTANT from 'src/common/constant';
+import { getLocation } from 'src/common/map';
+
 export default {
   name: 'user-address-info',
   data() {
@@ -63,7 +64,7 @@ export default {
   },
   created() {
     if (!this.isAdd) {
-      this.$store.dispatch('user/getAddressInfo', this.addressId).then(resp => {
+      this.$store.dispatch('user/getAddressInfo', this.addressId).then((resp) => {
         this.addressInfo = Object.assign({}, resp.data);
       });
     } else {
@@ -72,15 +73,15 @@ export default {
   },
   methods: {
     getAddress() {
-      getLocation().then(data => {
+      getLocation().then((data) => {
         this.$store
           .dispatch('user/getMapInfo', {
             location: data,
           })
-          .then(resp => {
+          .then((resp) => {
             this.addressInfo.address = resp.result.formatted_address;
           })
-          .catch(err => {
+          .catch((err) => {
             console.log(err);
           });
       });
@@ -90,14 +91,14 @@ export default {
         if (this.isAdd) {
           this.$store
             .dispatch('user/addAddress', this.addressInfo)
-            .then(data => {
+            .then((data) => {
               this.$router.push({ name: 'userAddressList' });
             });
         } else {
           console.log(this.addressInfo);
           this.$store
             .dispatch('user/editAddress', this.addressInfo)
-            .then(data => {
+            .then((data) => {
               this.$router.push({ name: 'userAddressList' });
             });
         }

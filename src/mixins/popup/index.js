@@ -1,5 +1,6 @@
 import manager from './manager';
 import context from './context';
+
 export default {
   props: {
     value: Boolean,
@@ -47,7 +48,7 @@ export default {
     }
   },
   created() {
-    this._popupId = 'popup-' + context.plusKey('id');
+    this._popupId = `popup-${context.plusKey('id')}`;
   },
   watch: {
     value(val) {

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import MtLoading from './mt-loading';
+
 let modal = null;
 export default {
   data() {
@@ -12,10 +13,9 @@ export default {
     openMtLoading() {
       const vm = this;
       const el = vm.$el;
-      this.targetNode =
-        el && el.parentNode && el.parentNode.nodeType !== 11
-          ? el.parentNode
-          : document.body;
+      this.targetNode = el && el.parentNode && el.parentNode.nodeType !== 11
+        ? el.parentNode
+        : document.body;
       modal = new (Vue.extend(MtLoading))({
         el: document.createElement('div'),
       });

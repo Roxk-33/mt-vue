@@ -97,8 +97,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { parseTime } from '@/common/utils';
-import CONSTANT from '@/common/constant';
+import { parseTime } from 'src/common/utils';
+import CONSTANT from 'src/common/constant';
+
 export default {
   name: 'user-order-detail',
 
@@ -115,18 +116,18 @@ export default {
       this.mtLoading = true;
       this.$store
         .dispatch('order/getOrderDetail', this.orderId)
-        .then(resp => {
+        .then((resp) => {
           this.mtLoading = false;
           this.orderInfo = resp.data;
         })
-        .catch(err => {
+        .catch((err) => {
           this.mtLoading = false;
           this.$toast(err);
           this.$router.back(-1);
         });
     },
     cancelOrder() {
-      this.$emit('cancelOrder',this.orderId)
+      this.$emit('cancelOrder', this.orderId);
     },
   },
   created() {

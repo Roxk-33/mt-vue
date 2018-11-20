@@ -77,8 +77,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import Rate from '@/views/dumb/rate';
-import headerNav from '@/views/dumb/header-nav';
+import Rate from 'src/views/dumb/rate';
+import headerNav from 'src/views/dumb/header-nav';
 
 export default {
   name: 'order-evaluation',
@@ -134,7 +134,7 @@ export default {
   },
   methods: {
     evaPerson(target) {
-      let index = this.evaPersonSelect.indexOf(target.value);
+      const index = this.evaPersonSelect.indexOf(target.value);
       console.log(index);
       if (index === -1) this.evaPersonSelect.push(target.value);
       else this.evaPersonSelect.splice(index, 1);
@@ -145,13 +145,13 @@ export default {
       this.isSatisfied = type;
       this.evaPersonSelect = [];
     },
-    close(){
+    close() {
       const oThis = this;
-       this.$dialog.alert({
+      this.$dialog.alert({
         message: '确定关闭评价？',
-        showCancelButton:true,
-        cancelButtonText:'关闭评价',
-        confirmButtonText:'再想想',
+        showCancelButton: true,
+        cancelButtonText: '关闭评价',
+        confirmButtonText: '再想想',
         beforeClose(action, done) {
           if (action === 'confirm') {
             done();
@@ -159,9 +159,9 @@ export default {
             oThis.$router.go(-1);
             done();
           }
-        }
-    });
-    }
+        },
+      });
+    },
   },
   computed: {
     evaluationTitle() {

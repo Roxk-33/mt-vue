@@ -24,7 +24,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import headerNav from '@/views/dumb/header-nav';
+import headerNav from 'src/views/dumb/header-nav';
 
 export default {
   name: 'user-address-list',
@@ -44,7 +44,7 @@ export default {
     delAddress(id) {
       this.$store
         .dispatch('user/delAddress', id)
-        .then(resp => {
+        .then((resp) => {
           this.$toast(resp.message);
           this.getData();
         })
@@ -53,7 +53,7 @@ export default {
     getData() {
       this.$store
         .dispatch('user/getAddressList')
-        .then(resp => {
+        .then((resp) => {
           this.list = resp.data;
         })
         .catch(this.$toast);

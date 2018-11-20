@@ -16,7 +16,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import headerNav from '@/views/dumb/header-nav';
+import headerNav from 'src/views/dumb/header-nav';
 
 export default {
   name: 'user-register',
@@ -43,7 +43,7 @@ export default {
           this.loading = false;
           this.$router.push({ name: '/userIndex' });
         })
-        .catch(e => {
+        .catch((e) => {
           this.$toast(e);
           this.loading = false;
         });

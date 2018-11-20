@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     clickLeft() {
-      if (!!this.onLeft) {
+      if (this.onLeft) {
         this.$emit('click-left');
       } else {
         this.$router.go(-1);

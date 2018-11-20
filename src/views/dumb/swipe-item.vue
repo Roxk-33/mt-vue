@@ -17,8 +17,8 @@ export default {
       const { vertical, width, height } = this.$parent;
       console.log(this.$parent);
       return {
-        width: 120 + 'px',
-        marginRight: 10 + 'px',
+        width: `${120}px`,
+        marginRight: `${10}px`,
         // height: vertical ? height + 'px' : '100%',
         // transform: `translate${vertical ? 'Y' : 'X'}(${this.offset}px)`
       };

@@ -47,8 +47,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import clickoutside from '@/directive/clickoutside';
-import mtMask from '@/views/dumb/mt-mask';
+import clickoutside from 'src/directive/clickoutside';
+import mtMask from 'src/views/dumb/mt-mask';
 
 export default {
   name: 'cart-list',
@@ -84,7 +84,7 @@ export default {
       if (this.cartList.length === 0) return 0;
       return this.cartList.reduce(
         (previous, current) => (previous += current.price * current.num),
-        0
+        0,
       );
     },
   },

@@ -17,7 +17,7 @@ export default {
   components: {},
   methods: {},
   mounted() {
-    var map = new BMap.Map('baidu-map');
+    const map = new BMap.Map('baidu-map');
 
     // function myFun(result) {
     //   var cityName = result.name;

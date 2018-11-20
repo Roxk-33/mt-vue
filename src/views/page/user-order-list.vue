@@ -21,9 +21,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-import orderListHeader from '@/views/smart/order-list-header';
-import orderListItem from '@/views/smart/order-list-item';
-import footerNav from '@/views/dumb/footer-nav';
+import orderListHeader from 'src/views/smart/order-list-header';
+import orderListItem from 'src/views/smart/order-list-item';
+import footerNav from 'src/views/dumb/footer-nav';
 
 export default {
   name: 'user-order-list',
@@ -49,12 +49,12 @@ export default {
     cancelOrder(id) {
       this.$store
         .dispatch('order/cancelOrder', id)
-        .then(resp => {
+        .then((resp) => {
           this.page = 0;
           this.orderList = [];
           this.getList();
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           this.$toast(err);
         });
@@ -75,7 +75,7 @@ export default {
       }
       this.$store
         .dispatch('order/getOrderList', this.page)
-        .then(resp => {
+        .then((resp) => {
           this.mtLoading = false;
           this.pullingDownLoading = false;
           this.loading = false;
@@ -86,7 +86,7 @@ export default {
             this.orderList = this.orderList.concat(resp.data);
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           this.mtLoading = false;
           this.pullingDownLoading = false;

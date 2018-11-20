@@ -1,15 +1,13 @@
 import axios from 'axios';
-import store from '@/store';
+import store from 'src/store';
 import { Toast } from 'vant';
 import CONFIG from './config';
-import router from '@/common/router';
 
-const baseURL =
-  process.env.NODE_ENV === 'production'
-    ? CONFIG.BASE_URL.PRO
-    : CONFIG.BASE_URL.DEV;
+const baseURL = process.env.VUE_APP_ENV === 'production'
+  ? CONFIG.BASE_URL.PRO
+  : CONFIG.BASE_URL.DEV;
 const service = axios.create({
-  baseURL: baseURL,
+  baseURL,
   timeout: 50000,
 });
 
@@ -35,15 +33,10 @@ service.interceptors.response.use(
     const data = response.data;
     if (!data.status) {
       console.log('出错！');
-      if (
-        data.status_code === 4001 ||
-        data.status_code === 4002 ||
-        data.status_code === 401
-      ) {
-        Toast(data.message);
+      if (data.code === 4001 || data.code === 4002) {
+        Toast('请登录！');
         store.dispatch('user/FedLogOut').then(() => {
           location.reload(); // 为了重新实例化vue-router对象 避免bug
-          router.push('/user/login');
         });
       } else {
         return Promise.reject(data.message, data);

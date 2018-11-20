@@ -1,7 +1,7 @@
+import ajax from 'src/common/request';
+import config from 'src/common/config';
+import { formatURL } from 'src/common/utils';
 import * as types from '../mutation-types';
-import ajax from '@/common/request';
-import config from '@/common/config';
-import { formatURL } from '@/common/utils';
 
 const API = config.API;
 // state
@@ -26,7 +26,7 @@ const actions = {
             page: payload,
           },
         })
-        .then(resp => {
+        .then((resp) => {
           resolve(resp);
         })
         .catch(reject);

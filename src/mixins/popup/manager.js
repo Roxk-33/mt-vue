@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Modal from './modal';
 import context from './context';
+
 const defaultConfig = {
   className: '',
   customStyle: {},

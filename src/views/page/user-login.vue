@@ -13,7 +13,7 @@
   </div>
 </template>
 <script>
-import headerNav from '@/views/dumb/header-nav';
+import headerNav from 'src/views/dumb/header-nav';
 
 export default {
   name: 'user-login',
@@ -40,7 +40,7 @@ export default {
           this.$store.dispatch('cart/getCartList');
           this.$router.push({ name: 'userIndex' });
         })
-        .catch(e => {
+        .catch((e) => {
           this.$toast(e);
           this.loading = false;
         });

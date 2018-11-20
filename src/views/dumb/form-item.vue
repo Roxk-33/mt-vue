@@ -56,10 +56,9 @@ export default {
       if (this.type === 'number') {
         const { keyCode } = event;
         const allowPoint = String(this.value).indexOf('.') === -1;
-        const isValidKey =
-          (keyCode >= 48 && keyCode <= 57) ||
-          (keyCode === 46 && allowPoint) ||
-          keyCode === 45;
+        const isValidKey = (keyCode >= 48 && keyCode <= 57)
+          || (keyCode === 46 && allowPoint)
+          || keyCode === 45;
         if (!isValidKey) {
           event.preventDefault();
         }

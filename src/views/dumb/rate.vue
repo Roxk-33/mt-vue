@@ -67,13 +67,13 @@ export default {
     },
     style() {
       return {
-        fontSize: this.size + 'px',
-        marginLeft: this.marginLeft + 'px',
+        fontSize: `${this.size}px`,
+        marginLeft: `${this.marginLeft}px`,
       };
     },
     list() {
-      return Array.apply(null, { length: this.max }).map(
-        (value, index) => index < this.value
+      return Array(...{ length: this.max }).map(
+        (value, index) => index < this.value,
       );
     },
   },

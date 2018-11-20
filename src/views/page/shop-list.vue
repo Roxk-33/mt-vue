@@ -58,12 +58,12 @@
 </template>
 
 <script >
-import Scroll from '@/views/dumb/scroll';
-import Rate from '@/views/dumb/rate';
-import headerNav from '@/views/dumb/header-nav';
-import shopListHeader from '@/views/smart/shop-list-header';
-import toCartList from '@/views/smart/to-cart-list';
-import mtMask from '@/views/dumb/mt-mask';
+import Scroll from 'src/views/dumb/scroll';
+import Rate from 'src/views/dumb/rate';
+import headerNav from 'src/views/dumb/header-nav';
+import shopListHeader from 'src/views/smart/shop-list-header';
+import toCartList from 'src/views/smart/to-cart-list';
+import mtMask from 'src/views/dumb/mt-mask';
 
 export default {
   name: 'shopList',
@@ -103,7 +103,7 @@ export default {
           page: this.page,
           type: this.sortTarget,
         })
-        .then(resp => {
+        .then((resp) => {
           this.loading = false;
           this.mtLoading = false;
 
@@ -113,7 +113,7 @@ export default {
             this.shopList = this.shopList.concat(resp.data);
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.$toast(err);
           console.log(err);
         });

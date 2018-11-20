@@ -37,7 +37,7 @@
     <van-popup v-model="show" position="right">
 
       <div class="username-box user-info-pop-box" v-if="boxType === 'username'">
-        <header-nav title="修改用户名" @click-left="show=false" :onLeft="true">
+        <header-nav title="修改用户名" @click-left="show=false">
           <span @click="changeName">确定</span>
         </header-nav>
         <div class="content">
@@ -73,8 +73,10 @@
   </div>
 </template>
 <script>
-import headerNav from '@/views/dumb/header-nav';
-import { testUserName, testPsw, testTel, formatTel } from '@/common/utils';
+import headerNav from 'src/views/dumb/header-nav';
+import {
+  testUserName, testPsw, testTel, formatTel,
+} from 'src/common/utils';
 
 export default {
   name: 'user-info',
@@ -127,7 +129,7 @@ export default {
           action: 'changeName',
           data: this.nameNew,
         })
-        .then(resp => {
+        .then((resp) => {
           this.show = false;
           this.$toast(resp.message);
         })
@@ -141,7 +143,7 @@ export default {
           action: 'changePsw',
           data: this.psw,
         })
-        .then(resp => {
+        .then((resp) => {
           this.$toast(resp.message);
           this.$router.back(-1);
         })
@@ -155,7 +157,7 @@ export default {
           action: 'changeTel',
           data: tel,
         })
-        .then(resp => {
+        .then((resp) => {
           this.$toast(resp.message);
           this.$router.back(-1);
         })
@@ -169,7 +171,7 @@ export default {
           action: 'changeTel',
           data: tel,
         })
-        .then(resp => {
+        .then((resp) => {
           this.$toast(resp.message);
           this.$router.back(-1);
         })
@@ -180,7 +182,7 @@ export default {
       this.tel = formatTel(this.tel);
     },
     onDeleteTel(ev) {
-      let temp = this.tel.substring(0, this.tel.length - 1);
+      const temp = this.tel.substring(0, this.tel.length - 1);
       this.tel = formatTel(temp);
     },
     showKey() {

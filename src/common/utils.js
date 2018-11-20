@@ -3,7 +3,7 @@ export function deepClone(source) {
     throw new Error('error arguments', 'shallowClone');
   }
   const targetObj = source.constructor === Array ? [] : {};
-  Object.keys(source).forEach(keys => {
+  Object.keys(source).forEach((keys) => {
     if (source[keys] && typeof source[keys] === 'object') {
       targetObj[keys] = source[keys].constructor === Array ? [] : {};
       targetObj[keys] = deepClone(source[keys]);
@@ -14,8 +14,8 @@ export function deepClone(source) {
   return targetObj;
 }
 export function formatURL(url, target) {
-  Object.keys(target).forEach(key => {
-    url = url.replace(':' + key, target[key]);
+  Object.keys(target).forEach((key) => {
+    url = url.replace(`:${key}`, target[key]);
   });
   return url;
 }
@@ -42,8 +42,7 @@ export function parseTime(time, cFormat) {
   };
   const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
     let value = formatObj[key];
-    if (key === 'a')
-      return ['一', '二', '三', '四', '五', '六', '日'][value - 1];
+    if (key === 'a') { return ['一', '二', '三', '四', '五', '六', '日'][value - 1]; }
     if (result.length > 0 && value < 10) {
       value = `0${value}`;
     }
@@ -53,7 +52,7 @@ export function parseTime(time, cFormat) {
 }
 
 export function getTime(delay = 15) {
-  let date = new Date();
+  const date = new Date();
   const format = '{y}-{m}-{d} {h}:{i}';
   const formatObj = {
     y: date.getFullYear(),
@@ -68,8 +67,7 @@ export function getTime(delay = 15) {
   }
   const time_str = format.replace(/{(y|m|d|h|i)+}/g, (result, key) => {
     let value = formatObj[key];
-    if (key === 'a')
-      return ['一', '二', '三', '四', '五', '六', '日'][value - 1];
+    if (key === 'a') { return ['一', '二', '三', '四', '五', '六', '日'][value - 1]; }
     if (result.length > 0 && value < 10) {
       value = `0${value}`;
     }
@@ -81,9 +79,11 @@ export function getTime(delay = 15) {
 export function testUserName(name) {
   const len = name.length;
   const reg = /^[a-zA-Z\u4e00-\u9fa5]+$/;
-  const minLen = 4,
-    maxLen = 16;
-  let result = {
+  const minLen = 4;
+
+
+  const maxLen = 16;
+  const result = {
     status: false,
     msg: '',
   };
@@ -101,8 +101,10 @@ export function testUserName(name) {
 // 检验密码
 export function testPsw(psw, pswRe) {
   const len = psw.length;
-  const minLen = 8,
-    maxLen = 32;
+  const minLen = 8;
+
+
+  const maxLen = 32;
   const reg = /(\d+(a-zA-Z)+)/;
 
   let result = {
@@ -138,7 +140,5 @@ export function formatTel(tel) {
   // TODO:表现效果不佳，空格应该从左到右出现
   const reg2 = /(\d)(?=(\d{3})+(\.|$))/g;
   tel = tel.replace(reg1, '');
-  return tel.replace(reg2, function($1) {
-    return $1 + ' ';
-  });
+  return tel.replace(reg2, $1 => `${$1} `);
 }

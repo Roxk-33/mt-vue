@@ -31,14 +31,15 @@
 </template>
 
 <script>
-import { getRect } from '@/common/dom';
-import BetterScroll from '@/views/dumb/scroll';
-import specificationBox from '@/views/smart/specification-box';
-import cartList from '@/views/smart/cart-list';
-import foodItem from '@/views/smart/food-item';
-import shopHeader from '@/views/smart/shop-header';
-import shopNav from '@/views/smart/shop-nav';
-import foodIsRepeat from '@/mixins/food-is-repeat';
+import { getRect } from 'src/common/dom';
+import BetterScroll from 'src/views/dumb/scroll';
+import specificationBox from 'src/views/smart/specification-box';
+import cartList from 'src/views/smart/cart-list';
+import foodItem from 'src/views/smart/food-item';
+import shopHeader from 'src/views/smart/shop-header';
+import shopNav from 'src/views/smart/shop-nav';
+import foodIsRepeat from 'src/mixins/food-is-repeat';
+
 export default {
   name: 'shop-detail',
   data() {
@@ -86,21 +87,21 @@ export default {
       this.mtLoading = true;
       this.$store
         .dispatch('shop/getShopDetail', { id: this.shopID })
-        .then(resp => {
+        .then((resp) => {
           this.shopInfo = resp.data;
           this.mtLoading = false;
           this.foodList = this.shopInfo.food_list;
         })
-        .catch(err => {
+        .catch((err) => {
           this.mtLoading = false;
           this.$toast(err);
           this.$router.back(-1);
         });
     },
     scroll() {
-      document.addEventListener('scroll', e => {
+      document.addEventListener('scroll', (e) => {
         const scorllY = Math.abs(
-          document.documentElement.scrollTop || window.pageYOffset
+          document.documentElement.scrollTop || window.pageYOffset,
         );
         if (!this.scrollDisabel) {
           // 为了兼容Safari
@@ -184,10 +185,10 @@ export default {
       // 因为从目录中添加商品，无法得知购物车中商品对应的下标
       if (indexCart === -1) {
         indexCart = this.cartList.findIndex(
-          item => item.food_id === foodInfo.id
+          item => item.food_id === foodInfo.id,
         );
       }
-      let foodCartInfo = this.cartList[indexCart];
+      const foodCartInfo = this.cartList[indexCart];
 
       // 购物车中已有该商品
       if (indexCart !== -1) {
@@ -219,7 +220,7 @@ export default {
       }
       try {
         if (isExist !== -1) {
-          this.$store.dispatch('cart/updateProductToCart', data).then(value => {
+          this.$store.dispatch('cart/updateProductToCart', data).then((value) => {
             this.$store.dispatch('cart/getCartList');
             if (data.type === 1) {
               this.foodList[indexMenu].selectNum++;
@@ -228,7 +229,7 @@ export default {
             }
           });
         } else {
-          this.$store.dispatch('cart/addProductToCart', data).then(value => {
+          this.$store.dispatch('cart/addProductToCart', data).then((value) => {
             this.$store.dispatch('cart/getCartList');
             this.foodList[indexMenu].selectNum++;
           });
@@ -239,8 +240,8 @@ export default {
       }
     },
     showSelectNum() {
-      this.foodList.forEach(item => {
-        let index = this.cartList.findIndex(food => food.food_id == item.id);
+      this.foodList.forEach((item) => {
+        const index = this.cartList.findIndex(food => food.food_id == item.id);
         if (index !== -1) {
           item.selectNum = this.cartList[index].num;
         } else {
@@ -264,10 +265,10 @@ export default {
   computed: {
     // 获取特定商店的购物车详情
     cartList() {
-      let arr = this.$store.getters['cart/listArr'];
-      let target = arr.find(item => item.shop_info.id == this.shopID);
+      const arr = this.$store.getters['cart/listArr'];
+      const target = arr.find(item => item.shop_info.id == this.shopID);
       if (!target) return [];
-      else return target.foodList;
+      return target.foodList;
     },
 
     shopID() {

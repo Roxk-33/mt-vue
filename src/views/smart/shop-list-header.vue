@@ -22,7 +22,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import CONSTANT from '@/common/constant';
+import CONSTANT from 'src/common/constant';
+
 export default {
   name: 'shop-list-header',
 

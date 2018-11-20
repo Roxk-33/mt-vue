@@ -10,5 +10,5 @@ export default {
 
   get top() {
     return this.stack[this.stack.length - 1];
-  }
+  },
 };

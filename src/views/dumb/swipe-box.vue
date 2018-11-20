@@ -10,8 +10,9 @@
 </template>
 
 <script>
-// import create from '@/utils/create';
-import Touch from '@/mixins/touch';
+// import create from 'src/utils/create';
+import Touch from 'src/mixins/touch';
+
 export default {
   name: 'swipe',
   mixins: [Touch],
@@ -121,7 +122,7 @@ export default {
     },
     onTouchMove(event) {
       this.touchMove(event);
-      //判断往哪个方向滑动
+      // 判断往哪个方向滑动
 
       event.preventDefault();
       event.stopPropagation();

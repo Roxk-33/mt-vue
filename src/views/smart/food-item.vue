@@ -20,10 +20,8 @@
       </div>
       <div class="good-content_buy good-content_buy_nontype" v-else>
         <div class="good-content_buy_nontype_box" v-if="foodInfo.stock>0">
-          <transition name="adjust-num">
-            <div class="iconfont icon-jian" @click="adjustNum(0)" v-show="selectNum > 0"></div>
-          </transition>
-          <span v-show="selectNum > 0" class="num">{{selectNum}}</span>
+          <i class="iconfont icon-jian" @click="adjustNum(0)" v-if="selectNum > 0"></i>
+          <span v-if="selectNum > 0">{{selectNum}}</span>
           <i class="iconfont icon-jia" @click="adjustNum(1)"></i>
         </div>
       </div>
@@ -149,19 +147,15 @@ export default {
           text-align: right;
         }
         .icon-jia {
-          display: inline-block;
           color: $mt-color;
           font-size: 18px;
         }
         .icon-jian {
-          display: inline-block;
-          transform: translateX(0);
           font-size: 18px;
+
           color: $mt-gray;
         }
-        .num {
-          display: inline-block;
-          width: 12px;
+        span {
           font-size: 17px;
           margin: 0 5px;
         }
@@ -190,39 +184,5 @@ export default {
       }
     }
   }
-}
-
-@keyframes show-num {
-  from {
-    transform: translateX(25px) rotate(-180deg);
-  }
-
-  to {
-    transform: translateX(0) rotate(0deg);
-  }
-}
-@keyframes hide-num {
-  from {
-    transform: translateX(-12px);
-  }
-
-  to {
-    transform: translateX(21px) rotate(-180deg);
-  }
-}
-
-.adjust-num-enter-active,
-.adjust-num-leave-active {
-  transition: all 1s ease;
-}
-
-.adjust-num-enter-active {
-  animation-duration: 1s;
-  animation-name: show-num;
-}
-
-.adjust-num-leave-active {
-  animation-duration: 1s;
-  animation-name: hide-num;
 }
 </style>

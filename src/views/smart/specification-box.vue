@@ -36,9 +36,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-import Popup from '@/mixins/popup';
-import { deepClone } from '@/common/utils';
-import foodIsRepeat from '@/mixins/food-is-repeat';
+import Popup from 'src/mixins/popup';
+import { deepClone } from 'src/common/utils';
+import foodIsRepeat from 'src/mixins/food-is-repeat';
 
 export default {
   name: 'specification-box',
@@ -76,8 +76,8 @@ export default {
       if (specInfo.stock === 0) return;
       this.specInfo = specInfo;
       // 前一个规格的价钱
-      let price = this.totalSpec[index].spec_arr.find(
-        item => item.id == this.specArr[index]
+      const price = this.totalSpec[index].spec_arr.find(
+        item => item.id == this.specArr[index],
       ).price;
       this.specArr.splice(index, 1, specInfo.id);
       this.specText.splice(index, 1, specInfo.label);
@@ -120,7 +120,7 @@ export default {
         // 购物车中未有该商品
         // 计算默认规格的价钱
         this.totalPrice = this.foodInfo.price;
-        this.totalSpec.forEach(item => {
+        this.totalSpec.forEach((item) => {
           const content = item.spec_arr[item.spec_default];
           this.totalPrice += parseFloat(content.price);
         });
@@ -128,11 +128,11 @@ export default {
     },
     // 将后端传来的规格数据格式转换成前端展示需要的格式
     formatSpec(data) {
-      let temp = {};
+      const temp = {};
       this.specArr.splice(0, this.specArr.length);
       this.specText.splice(0, this.specText.length);
       data.forEach((item, index) => {
-        let _type = item.spec_type;
+        const _type = item.spec_type;
         if (!temp[_type]) {
           temp[_type] = {};
           temp[_type] = {
@@ -168,7 +168,7 @@ export default {
         this.specArr,
         this.specText,
         this.totalPrice,
-        1
+        1,
       );
     },
     adjustNum(type) {
@@ -183,7 +183,7 @@ export default {
           this.specArr,
           this.specText,
           this.totalPrice,
-          type
+          type,
         );
       } else if (this.num > 0) {
         this.num--;

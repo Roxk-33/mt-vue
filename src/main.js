@@ -2,9 +2,9 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import Vant from 'vant';
+import App from './App.vue';
 import 'lib-flexible';
 import 'vant/lib/vant-css/index.css';
-import App from './App';
 import router from './common/router';
 import store from './store/index';
 
@@ -14,7 +14,7 @@ import { Dialog } from 'vant';
 import './assets/style/common.scss';
 import './assets/style/rest.scss';
 
-import MtLoadingMixin from '@/mixins/loading';
+import MtLoadingMixin from 'src/mixins/loading';
 
 Vue.mixin(MtLoadingMixin);
 
@@ -23,10 +23,9 @@ Vue.use(Dialog);
 Vue.config.productionTip = false;
 Vue.use(Vant);
 /* eslint-disable no-new */
+
 new Vue({
-  el: '#app',
+  render: h => h(App),
   router,
   store,
-  components: { App },
-  template: '<App/>',
-});
+}).$mount('#app');

@@ -20,7 +20,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import headerNav from '@/views/dumb/header-nav';
+import headerNav from 'src/views/dumb/header-nav';
+
 export default {
   name: 'order-pay',
 

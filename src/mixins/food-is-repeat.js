@@ -7,7 +7,7 @@ export default {
       if (list.length > 0) {
         list.some((item, index) => {
           if (item.food_id === target.id) {
-            let _specArr = item.spec_arr;
+            const _specArr = item.spec_arr;
             const specArr = target.specArr;
             // 若规格ID不相同，返回true
             const result = specArr.some((id, index) => id != _specArr[index]);

@@ -62,10 +62,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-import headerNav from '@/views/dumb/header-nav';
-import checkBox from '@/views/dumb/check-box';
+import headerNav from 'src/views/dumb/header-nav';
+import checkBox from 'src/views/dumb/check-box';
 import { mapGetters } from 'vuex';
-import { deepClone } from '@/common/utils';
+import { deepClone } from 'src/common/utils';
 
 export default {
   name: 'user-cart',
@@ -89,22 +89,22 @@ export default {
       const len = target.selArr.length;
       target.selArr.splice(0, target.selArr.length);
       if (len !== target.foodList.length) {
-        target.foodList.forEach(item => {
+        target.foodList.forEach((item) => {
           target.selArr.push(item.id);
         });
       }
     },
     // 无法直接更store
     getCart() {
-      let temp = deepClone(this.list);
-      temp.forEach(item => {
-        let selArr = [];
+      const temp = deepClone(this.list);
+      temp.forEach((item) => {
+        const selArr = [];
         let totalPrice = 0;
-        item.foodList.forEach(item => {
+        item.foodList.forEach((item) => {
           totalPrice += item.num * item.price;
           selArr.push(item.id);
         });
-        let obj = Object.assign({}, item, {
+        const obj = Object.assign({}, item, {
           selArr,
           totalPrice,
           selectAll: true,
@@ -132,10 +132,10 @@ export default {
   },
   filters: {
     getTotalPrice(item) {
-      let price = item.shop_info.freight;
+      const price = item.shop_info.freight;
       return item.foodList.reduce(
         (totalPrice, item) => (totalPrice += item.num * item.price),
-        price
+        price,
       );
     },
   },
