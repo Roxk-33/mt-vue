@@ -13,6 +13,7 @@ import './directive';
 import { Dialog } from 'vant';
 import './assets/style/common.scss';
 import './assets/style/rest.scss';
+
 import MtLoadingMixin from '@/mixins/loading';
 
 Vue.mixin(MtLoadingMixin);

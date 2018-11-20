@@ -112,7 +112,14 @@ const actions = {
             commit(types.SET_USERID, resp.data.id);
             commit(types.SET_TEL, resp.data.tel);
           })
-          .catch(reject);
+          .catch(err => {
+            // commit('REMOVE_TOKEN');
+            // commit('SET_NAME', '');
+            // commit('SET_TEL', '');
+            // commit('SET_AVATAR', '');
+            console.log(err);
+            reject(err);
+          });
       }
     });
   },

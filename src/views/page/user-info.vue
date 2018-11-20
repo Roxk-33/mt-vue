@@ -267,6 +267,7 @@ export default {
 .username-box .content {
   display: flex;
   justify-content: flex-start;
+  align-items: center;
   .content-input {
     flex: 1;
   }

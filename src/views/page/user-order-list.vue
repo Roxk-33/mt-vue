@@ -1,15 +1,20 @@
 <template>
   <div class="user-order-list">
     <order-list-header></order-list-header>
-    <van-list v-model="loading" :finished="finished" :immediate-check="false" @load="onPullingUp">
-      <div class="order-list-content">
-        <order-list-item v-for="(item,index) in orderList" :key="index" :orderInfo="item" :foodList="item.food_list" @cancelOrder="cancelOrder"></order-list-item>
-      </div>
 
-      <van-cell v-if="orderList.length === 0" class="list-empty">
-        <p>没有数据</p>
-      </van-cell>
-    </van-list>
+    <van-pull-refresh v-model="pullingDownLoading" @refresh="onPullingDown">
+
+      <van-list v-model="loading" :finished="finished" :immediate-check="false" @load="onPullingUp">
+        <div class="order-list-content">
+          <order-list-item v-for="(item,index) in orderList" :key="index" :orderInfo="item" :foodList="item.food_list" @cancelOrder="cancelOrder"></order-list-item>
+        </div>
+
+        <van-cell v-if="orderList.length === 0" class="list-empty">
+          <p>没有数据</p>
+        </van-cell>
+      </van-list>
+
+    </van-pull-refresh>
 
     <footer-nav active='1'></footer-nav>
   </div>
@@ -28,6 +33,7 @@ export default {
       orderList: [],
       loading: false,
       finished: false,
+      pullingDownLoading: false,
       page: 0,
     };
   },
@@ -41,8 +47,6 @@ export default {
   },
   methods: {
     cancelOrder(id) {
-      console.log(123);
-
       this.$store
         .dispatch('order/cancelOrder', id)
         .then(resp => {
@@ -55,23 +59,29 @@ export default {
           this.$toast(err);
         });
     },
+    onPullingDown() {
+      this.pullingDownLoading = true;
+      this.orderList = [];
+      this.getList();
+    },
     onPullingUp() {
       this.loading = true;
       this.getList();
     },
     getList() {
       // 初次进入页面展示loadnig
-      if (this.orderList.length === 0) {
+      if (this.orderList.length === 0 && !this.pullingDownLoading) {
         this.mtLoading = true;
       }
       this.$store
         .dispatch('order/getOrderList', this.page)
         .then(resp => {
           this.mtLoading = false;
+          this.pullingDownLoading = false;
+          this.loading = false;
           if (resp.data.length === 0) {
             this.finished = true;
           } else {
-            this.loading = false;
             this.page++;
             this.orderList = this.orderList.concat(resp.data);
           }
@@ -79,8 +89,10 @@ export default {
         .catch(err => {
           console.log(err);
           this.mtLoading = false;
-          this.$toast(err);
+          this.pullingDownLoading = false;
+          this.finished = true;
           this.loading = false;
+          this.$toast(err);
         });
     },
   },

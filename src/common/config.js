@@ -32,6 +32,6 @@ export default {
   },
   BASE_URL: {
     PRO: 'https://api.lococo.site/',
-    DEV: 'http://localhost:7001/',
+    DEV: 'http://192.168.191.1:7001/',
   },
 };

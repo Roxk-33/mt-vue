@@ -17,7 +17,12 @@ export default {
       .then(() => {
         this.$store.dispatch('cart/getCartList');
       })
-      .catch(console.log);
+      .catch(err => {
+        this.$toast({
+          duration: 3000, // 持续展示 toast
+          message: err,
+        });
+      });
   },
   computed: {
     cachedViews() {

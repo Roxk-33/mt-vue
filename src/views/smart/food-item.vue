@@ -161,7 +161,7 @@ export default {
         }
       }
       .btn-sepc {
-        width: 55px;
+        width: 65px;
         height: 22px;
         line-height: 22px;
         border: 0;
