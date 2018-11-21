@@ -197,7 +197,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import '~css/common';
+
 
 .info-box {
   background-color: white;

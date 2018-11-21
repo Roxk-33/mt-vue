@@ -214,7 +214,7 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '~css/common';
+
 
 .user-order-detail {
   padding: 80px 10px 0;

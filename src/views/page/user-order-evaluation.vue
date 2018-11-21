@@ -216,7 +216,7 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '~css/common';
+
 .evaluation {
   .evaluation-box {
     background-color: white;

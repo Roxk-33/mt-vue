@@ -31,7 +31,7 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '~css/common';
+
 
 .mt-modal {
   position: fixed;

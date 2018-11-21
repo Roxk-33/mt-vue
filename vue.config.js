@@ -6,6 +6,7 @@ function resolve(dir) {
 }
 module.exports = {
   lintOnSave: process.env.NODE_ENV !== 'production',
+
   chainWebpack: config => {
     config.resolve.alias.set('css', resolve('src/assets/style'));
   },
@@ -19,4 +20,11 @@ module.exports = {
       }),
     ],
   },
+
+  pluginOptions: {
+    'style-resources-loader': {
+      preProcessor: 'scss',
+      patterns: [resolve('src/assets/style/common.scss'),]
+    }
+  }
 };

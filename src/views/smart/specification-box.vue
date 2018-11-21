@@ -238,7 +238,7 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '~css/common';
+
 // 弹窗
 
 .specification-box-container {

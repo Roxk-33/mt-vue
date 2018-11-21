@@ -178,7 +178,7 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '~css/common';
+
 .cart-list-item {
   margin-bottom: 10px;
   background-color: #fff;

@@ -158,7 +158,7 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '~css/common';
+
 .user-address-info-sex {
   padding: 10px 10px 10px 90px;
   display: flex;

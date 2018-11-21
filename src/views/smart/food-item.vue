@@ -68,7 +68,6 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '~css/common';
 
 .good-list-item {
   justify-content: flex-start;

@@ -24,7 +24,7 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '~css/common';
+
 
 .order-list-header {
   background-color: #fff;

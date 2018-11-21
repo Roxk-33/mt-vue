@@ -78,7 +78,7 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '~css/common';
+
 .order-list-item {
   background-color: #fff;
   margin: 0 auto 10px;

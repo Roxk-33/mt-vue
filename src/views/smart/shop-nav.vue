@@ -40,7 +40,7 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '~css/common';
+
 
 .shop-nav {
   padding: 0.1rem;

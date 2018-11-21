@@ -74,7 +74,7 @@ export default {
 };
 </script>
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '~css/common';
+
 
 .header-nav {
   width: 100%;

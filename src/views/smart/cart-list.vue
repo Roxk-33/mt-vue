@@ -137,7 +137,7 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '~css/common';
+
 
 .cart-list {
   position: fixed;

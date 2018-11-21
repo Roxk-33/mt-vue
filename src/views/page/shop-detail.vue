@@ -334,7 +334,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-@import '~css/common';
+
 .shop-detail {
   background-color: #fff;
 }
@@ -432,7 +432,7 @@ export default {
 }
 </style>
 <style lang="scss">
-@import '~css/common';
+
 
 .shop-detail {
   .van-ellipsis {

@@ -32,7 +32,7 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-@import '~css/common';
+
 
 .shop-header {
   background: url('https://via.placeholder.com/350x150') no-repeat;

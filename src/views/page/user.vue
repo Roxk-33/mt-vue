@@ -88,7 +88,6 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss">
-@import '~css/common';
 
 .user-index-header {
   height: 3rem;

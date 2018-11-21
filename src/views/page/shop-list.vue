@@ -162,7 +162,7 @@ export default {
 </script>
 
 <style  rel="stylesheet/scss" lang="scss">
-@import '~css/common';
+
 .shop-catalog {
   height: 100%;
   min-height: 100%;
