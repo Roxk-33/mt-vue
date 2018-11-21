@@ -344,7 +344,6 @@ export default {
     padding-top: 2rem;
     height: 4rem;
     box-sizing: border-box;
-    background: url('../../assets/images/banner.jpg') no-repeat;
     background-size: 100% 100%;
     text-align: left;
     padding-left: 1rem;

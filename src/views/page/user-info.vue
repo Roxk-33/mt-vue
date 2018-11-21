@@ -38,8 +38,8 @@
 
       <div class="username-box user-info-pop-box" v-if="boxType === 'username'">
 
-        <header-nav title="修改用户名" @click-left="show=false" :on-left="true>
-          <span @click=" changeName">确定</span>
+        <header-nav title="修改用户名" @click-left="show=false" :on-left="true">
+          <span @click="changeName">确定</span>
         </header-nav>
         <div class="content">
           <span class="content-label">用户名:</span>

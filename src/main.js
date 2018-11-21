@@ -5,14 +5,14 @@ import Vant from 'vant';
 import App from './App.vue';
 import 'lib-flexible';
 import 'vant/lib/vant-css/index.css';
-import router from './common/router';
-import store from './store/index';
+import router from '@/common/router';
+import store from '@/store/index';
 
-import './assets/style/normalize.css';
-import './directive';
+import '@/style/normalize.css';
+import '@/directive';
 import { Dialog } from 'vant';
-import './assets/style/common.scss';
-import './assets/style/rest.scss';
+import '@/style/common.scss';
+import '@/style/rest.scss';
 
 import MtLoadingMixin from '@/mixins/loading';
 

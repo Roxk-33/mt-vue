@@ -5,10 +5,8 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 module.exports = {
-  lintOnSave: process.env.NODE_ENV !== 'production',
-
   chainWebpack: config => {
-    config.resolve.alias.set('css', resolve('src/assets/style'));
+    config.resolve.alias.set('css', resolve('src/style'));
   },
 
   configureWebpack: {
@@ -24,7 +22,7 @@ module.exports = {
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'scss',
-      patterns: [resolve('src/assets/style/common.scss'),]
+      patterns: [resolve('src/style/common.scss'),]
     }
   }
 };

@@ -1,6 +1,6 @@
 <template>
   <div class="mf-loading-container">
-    <img src="../../assets/images/loading.gif">
+    <img src="loading.gif">
   </div>
 </template>
 <script type="text/ecmascript-6">

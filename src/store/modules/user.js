@@ -1,4 +1,3 @@
-import md5 from 'js-md5';
 import { getToken, setToken, removeToken } from '@/common/auth';
 import ajax from '@/common/request';
 import config from '@/common/config';
@@ -6,7 +5,6 @@ import { formatURL } from '@/common/utils';
 import * as types from '../mutation-types';
 
 const API = config.API;
-// const src = require('../../assets/images/default.jpg');
 const state = {
   userStatus: false,
   code: '',
