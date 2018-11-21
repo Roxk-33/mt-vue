@@ -1,27 +1,11 @@
 <template>
   <div class="order-pay">
-    <header-nav
-      :title="headerTitle"
-      :on-left="true"
-      @click-left="$router.back(-1);"
-    />
+    <header-nav :title="headerTitle" :on-left="true" @click-left="$router.back(-1);" />
     <div class='order-pay-header'>
-      <div
-        class='header-address box-right-arrow '
-        @click="showAddress = true"
-      >
-        <p
-          class='address-content'
-          v-if="orderInfo.address.address"
-        >{{ orderInfo.address.address }}</p>
-        <span
-          class='address-person'
-          v-if="orderInfo.address.user_name"
-        >{{ orderInfo.address.user_name }} {{ orderInfo.address.tel }}</span>
-        <p
-          v-else
-          class="address-select"
-        >请选择地址</p>
+      <div class='header-address box-right-arrow ' @click="showAddress = true">
+        <p class='address-content' v-if="orderInfo.address.address">{{ orderInfo.address.address }}</p>
+        <span class='address-person' v-if="orderInfo.address.user_name">{{ orderInfo.address.user_name }} {{ orderInfo.address.tel }}</span>
+        <p v-else class="address-select">请选择地址</p>
         <i class='iconfont icon-xiangyou right' />
       </div>
       <div class='header-shipping-time box-right-arrow mt-flex-space-between'>
@@ -36,11 +20,7 @@
         <span>{{ shopInfo.shop_title }}</span>
       </div>
       <ul class='main-food-list order-pay-main-item'>
-        <li
-          class='food-list-item'
-          v-for="item in foodList"
-          :key="item.id"
-        >
+        <li class='food-list-item' v-for="item in foodList" :key="item.id">
           <div class='food-pic'>
             <img :src="item.picture">
           </div>
@@ -83,12 +63,9 @@
 
     </div>
     <div class='order-pay-note'>
-      <div
-        class='order-pay-note-item box-right-arrow mt-flex-space-between'
-        @click="showRemarks = true;tempRemarks = orderInfo.remarks;"
-      >
+      <div class='order-pay-note-item box-right-arrow mt-flex-space-between' @click="showRemarks = true;tempRemarks = orderInfo.remarks;">
         <span class='note-item-left'>备注</span>
-        <div>
+        <div >
           <span class='note-item-right'>{{ orderInfo.remarks }}</span>
           <i class='iconfont icon-xiangyou' />
         </div>
@@ -120,24 +97,17 @@
         <!-- <span class='footer-left_discount'>
           已优惠￥40.4
         </span> -->
+        合计￥
         <span class='footer-left_total'>
-          合计￥
-          <i>{{ totalPrice }}</i>
+          {{ totalPrice }}
         </span>
       </div>
-      <div
-        class='footer-box-right'
-        @click="sumbitOrder"
-      >
+      <div class='footer-box-right' @click="sumbitOrder">
         <span>提交订单</span>
       </div>
     </div>
 
-    <van-popup
-      v-model="showPay"
-      position="bottom"
-      :overlay="true"
-    >
+    <van-popup v-model="showPay" position="bottom" :overlay="true">
       <pop-up @cancel="cancel('pay')">
         <div class="pay-way-box">
           <p @click="cancel('pay')">在线支付</p>
@@ -146,41 +116,15 @@
       </pop-up>
     </van-popup>
     <!-- 收货地址 -->
-    <van-popup
-      v-model="showAddress"
-      position="bottom"
-      :overlay="true"
-    >
-      <pop-up
-        class="address-list"
-        @cancel="cancel('address')"
-        @clickHeaderLeft="cancel('address')"
-        header-title="选择收货地址"
-        header-left="取消"
-        bottom-text="新增收货地址"
-        bottom-text-icon="icon-add_icon"
-      >
+    <van-popup v-model="showAddress" position="bottom" :overlay="true">
+      <pop-up class="address-list" @cancel="cancel('address')" @clickHeaderLeft="cancel('address')" header-title="选择收货地址" header-left="取消" bottom-text="新增收货地址" bottom-text-icon="icon-add_icon">
         <div class="address-list-box">
           <ul class="list-box">
-            <li
-              class="list-box-item"
-              v-for="(item,index) in addressList"
-              :key="item.id"
-              @click="selAddress(index)"
-            >
-              <van-radio
-                :name="true"
-                v-model="item.selected"
-                @click="selAddress(index)"
-                :checked-color="mtColor"
-              />
+            <li class="list-box-item" v-for="(item,index) in addressList" :key="item.id" @click="selAddress(index)">
+              <van-radio :name="true" v-model="item.selected" @click="selAddress(index)" :checked-color="mtColor" />
               <div class="content">
                 <div class="address">{{ item.address }}
-                  <div
-                    class="tag"
-                    v-if="item.tag !== ''"
-                    :class="{'school':item.tag == 0,'company':item.tag == 1,'home' :item.tag == 2}"
-                  >
+                  <div class="tag" v-if="item.tag !== ''" :class="{'school':item.tag == 0,'company':item.tag == 1,'home' :item.tag == 2}">
                     {{ TAGS[item.tag] }}
                   </div>
                 </div>
@@ -195,28 +139,13 @@
       </pop-up>
     </van-popup>
     <!-- 备注 -->
-    <van-popup
-      v-model="showRemarks"
-      position="right"
-      :overlay="false"
-    >
+    <van-popup v-model="showRemarks" position="right" :overlay="false">
       <div class="remark-box">
-        <div class="remark-box-header mt-flex-space-between">
-          <i
-            class="iconfont icon-xiangzuo"
-            @click="showRemarks = false"
-          />
-          <span class="title">添加备注</span>
-          <span
-            @click="saveRemarks"
-            class="save-btn"
-          >完成</span>
+        <header-nav title="添加备注" @click-left="showRemarks = false" :on-left="true">
+          <span @click="saveRemarks" class="save-btn">完成</span>
+        </header-nav>
+        <van-field v-model="tempRemarks" type="textarea" class="content" :placeholder="remaskPlaceholder" rows="1" :autosize="remaskField" />
         </div>
-        <textarea
-          class="content"
-          v-model="tempRemarks"
-        />
-      </div>
     </van-popup>
   </div>
 </template>
@@ -236,6 +165,8 @@ export default {
       SEX: CONSTANT.TYPE.SEX_EN,
       TAGS: CONSTANT.TYPE.TAGS,
       mtColor: CONSTANT.COLOR.MT,
+      remaskPlaceholder: '请输入口味、偏好等要求，不支持额外代沟其他物品哦~',
+      remaskField: { maxHeight: 100, minHeight: 50 },
       showPay: false,
       showRemarks: false,
       showAddress: false,
@@ -247,7 +178,7 @@ export default {
         address: {},
         remarks: '',
         shopId: this.shopId,
-        arrivalTime: getTime(),
+        arrivalTime: getTime(3),
       },
     };
   },
@@ -271,38 +202,38 @@ export default {
 
       this.$store
         .dispatch('user/getAddressList')
-        .then((resp) => {
+        .then(resp => {
           this.mtLoading = false;
           this.addressList = this.addressList.concat(resp.data);
           this.getDefaultAddress();
         })
-        .catch((e) => {
+        .catch(e => {
           this.router.push('/error');
           this.$toast(e);
         });
 
       this.$store
         .dispatch('cart/getCartListByShop', { shopId: this.shopId })
-        .then((resp) => {
+        .then(resp => {
           this.mtLoading = false;
 
           if (this.foodIdArr.length) {
             this.foodList = resp.data.filter(
-              item => this.foodIdArr.indexOf(item.id) !== -1,
+              item => this.foodIdArr.indexOf(item.id) !== -1
             );
           } else {
             this.foodList = resp.data;
           }
           this.shopInfo = this.foodList[0].shop_info;
         })
-        .catch((e) => {
+        .catch(e => {
           this.router.push('/error');
           this.$toast(e);
         });
     },
     // 获取默认地址
     getDefaultAddress() {
-      this.addressList.forEach((item) => {
+      this.addressList.forEach(item => {
         item = Object.assign({}, item, { select: false });
         if (item.is_default) {
           item.selected = true;
@@ -341,7 +272,7 @@ export default {
       this.orderInfo.shopId = this.shopId;
       this.$store
         .dispatch('order/sumbitOrder', this.orderInfo)
-        .then((resp) => {
+        .then(resp => {
           this.$router.push({
             name: 'orderPay',
             params: { orderId: resp.data.id },
@@ -349,7 +280,7 @@ export default {
           // 重新获取购物车
           this.$store.dispatch('cart/getCartList');
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
           this.$toast(err);
         });
@@ -360,7 +291,7 @@ export default {
       if (this.foodList.length === 0) return 0;
       return this.foodList.reduce(
         (previous, current) => (previous += current.price * current.num),
-        0,
+        0
       );
     },
     shopId() {
@@ -532,6 +463,11 @@ export default {
     padding: 10px 0;
     .note-item-right {
       margin-right: 5px;
+      overflow: hidden;
+      max-width: 250px;
+      text-align: right;
+      text-overflow:ellipsis;
+      white-space: nowrap;
     }
   }
 }
@@ -543,13 +479,13 @@ export default {
   height: 1.2rem;
   .footer-box-left {
     width: 70%;
-    background-color: #fff;
+    background-color: #000;
     padding: 0 30px;
     align-items: center;
-    > span {
-      line-height: 1.2rem;
-    }
-    .footer-left_total i {
+    justify-content: flex-end;
+    color: #fff;
+
+    .footer-left_total {
       font-size: 20px;
       font-style: normal;
     }
@@ -589,23 +525,16 @@ export default {
 }
 .remark-box {
   text-align: center;
-  .remark-box-header {
-    margin-bottom: 10px;
-    padding: 0 5px;
-    line-height: 30px;
-    .title {
-      font-size: 18px;
-    }
-    .save-btn {
-      color: $mt-color;
-      font-size: 16px;
-    }
+
+  .save-btn {
+    color: $mt-color;
+    font-size: 16px;
   }
   .content {
     width: 90%;
-    height: 80px;
     margin: 10px auto;
-    background-color: #d1cece3d;
+    background-color: #fdfafa;
+    border: 1px solid $mt-light-gray;
   }
 }
 .address-list-box {
