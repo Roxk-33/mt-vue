@@ -1,6 +1,6 @@
-import ajax from 'src/common/request';
-import config from 'src/common/config';
-import { formatURL } from 'src/common/utils';
+import ajax from '@/common/request';
+import config from '@/common/config';
+import { formatURL } from '@/common/utils';
 import * as types from '../mutation-types';
 
 const API = config.API;

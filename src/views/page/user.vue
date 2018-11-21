@@ -65,7 +65,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import footerNav from 'src/views/dumb/footer-nav';
+import footerNav from '@/views/dumb/footer-nav';
 
 export default {
   name: 'UserIndex',

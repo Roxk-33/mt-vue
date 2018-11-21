@@ -1,7 +1,15 @@
 <template>
   <div class="rate">
-    <span v-for="(item,index) in list" :key="index" @click="onSelect(index)">
-      <i class="iconfont" :class="item ? selectIcon : notIcon" :style="style" />
+    <span
+      v-for="(item,index) in list"
+      :key="index"
+      @click="onSelect(index)"
+    >
+      <i
+        class="iconfont"
+        :class="item ? selectIcon : notIcon"
+        :style="style"
+      />
     </span>
     <span v-if="isShowText">{{ value }}</span>
   </div>
@@ -72,7 +80,7 @@ export default {
     },
     list() {
       return Array.from({ length: this.max }).map(
-        (value, index) => index < this.value
+        (value, index) => index < this.value,
       );
     },
   },

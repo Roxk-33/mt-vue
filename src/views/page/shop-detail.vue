@@ -79,14 +79,14 @@
 </template>
 
 <script>
-import { getRect } from 'src/common/dom';
-import BetterScroll from 'src/views/dumb/scroll';
-import specificationBox from 'src/views/smart/specification-box';
-import cartList from 'src/views/smart/cart-list';
-import foodItem from 'src/views/smart/food-item';
-import shopHeader from 'src/views/smart/shop-header';
-import shopNav from 'src/views/smart/shop-nav';
-import foodIsRepeat from 'src/mixins/food-is-repeat';
+import { getRect } from '@/common/dom';
+import BetterScroll from '@/views/dumb/scroll';
+import specificationBox from '@/views/smart/specification-box';
+import cartList from '@/views/smart/cart-list';
+import foodItem from '@/views/smart/food-item';
+import shopHeader from '@/views/smart/shop-header';
+import shopNav from '@/views/smart/shop-nav';
+import foodIsRepeat from '@/mixins/food-is-repeat';
 
 export default {
   name: 'ShopDetail',

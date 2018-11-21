@@ -222,10 +222,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-import popUp from 'src/views/dumb/pop-up';
-import CONSTANT from 'src/common/constant';
-import headerNav from 'src/views/dumb/header-nav';
-import { getTime } from 'src/common/utils';
+import popUp from '@/views/dumb/pop-up';
+import CONSTANT from '@/common/constant';
+import headerNav from '@/views/dumb/header-nav';
+import { getTime } from '@/common/utils';
 
 export default {
   name: 'OrderPay',

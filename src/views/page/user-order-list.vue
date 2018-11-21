@@ -38,9 +38,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-import orderListHeader from 'src/views/smart/order-list-header';
-import orderListItem from 'src/views/smart/order-list-item';
-import footerNav from 'src/views/dumb/footer-nav';
+import orderListHeader from '@/views/smart/order-list-header';
+import orderListItem from '@/views/smart/order-list-item';
+import footerNav from '@/views/dumb/footer-nav';
 
 export default {
   name: 'UserOrderList',

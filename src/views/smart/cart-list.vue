@@ -73,8 +73,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import clickoutside from 'src/directive/clickoutside';
-import mtMask from 'src/views/dumb/mt-mask';
+import clickoutside from '@/directive/clickoutside';
+import mtMask from '@/views/dumb/mt-mask';
 
 export default {
   name: 'CartList',

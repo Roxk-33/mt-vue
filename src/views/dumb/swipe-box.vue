@@ -16,8 +16,8 @@
 </template>
 
 <script>
-// import create from 'src/utils/create';
-import Touch from 'src/mixins/touch';
+// import create from '@/utils/create';
+import Touch from '@/mixins/touch';
 
 export default {
   name: 'Swipe',

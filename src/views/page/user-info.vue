@@ -136,10 +136,10 @@
   </div>
 </template>
 <script>
-import headerNav from 'src/views/dumb/header-nav';
+import headerNav from '@/views/dumb/header-nav';
 import {
   testUserName, testPsw, testTel, formatTel,
-} from 'src/common/utils';
+} from '@/common/utils';
 
 export default {
   name: 'UserInfo',

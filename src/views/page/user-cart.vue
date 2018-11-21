@@ -92,10 +92,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-import headerNav from 'src/views/dumb/header-nav';
-import checkBox from 'src/views/dumb/check-box';
+import headerNav from '@/views/dumb/header-nav';
+import checkBox from '@/views/dumb/check-box';
 import { mapGetters } from 'vuex';
-import { deepClone } from 'src/common/utils';
+import { deepClone } from '@/common/utils';
 
 export default {
   name: 'UserCart',

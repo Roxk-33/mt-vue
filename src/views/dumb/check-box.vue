@@ -14,7 +14,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import CONSTANT from 'src/common/constant';
+import CONSTANT from '@/common/constant';
 
 export default {
   name: 'CheckBox',

@@ -127,8 +127,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { parseTime } from 'src/common/utils';
-import CONSTANT from 'src/common/constant';
+import { parseTime } from '@/common/utils';
+import CONSTANT from '@/common/constant';
 
 export default {
   name: 'UserOrderDetail',

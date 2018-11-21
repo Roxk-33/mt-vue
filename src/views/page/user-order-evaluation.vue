@@ -1,10 +1,20 @@
 <template>
   <div class="evaluation">
-    <header-nav :on-left="true" headerbg-color="whitesmoke" :border="false" :is-back="false" :is-close="true" @click-left="close" />
+    <header-nav
+      :on-left="true"
+      headerbg-color="whitesmoke"
+      :border="false"
+      :is-back="false"
+      :is-close="true"
+      @click-left="close"
+    />
     <div class="evaluation-person evaluation-box">
       <div class="top">
         <div class="info">
-          <img class="info-avatar" src="https://via.placeholder.com/40x40">
+          <img
+            class="info-avatar"
+            src="https://via.placeholder.com/40x40"
+          >
           <div class="info-detail">
             <p>美团专送</p>
             <p>美团专送</p>
@@ -13,13 +23,33 @@
       </div>
       <div class="evaluation-select">
         <div class="select-box mt-flex-space-around">
-          <div class="select-box-btn" @click="selectSatisfied('not')" :class="{'selected' : isSatisfied === 'not' }">不满意</div>
-          <div class="select-box-btn" @click="selectSatisfied('satisfied')" :class="{'selected' : isSatisfied === 'satisfied' }">满意</div>
+          <div
+            class="select-box-btn"
+            @click="selectSatisfied('not')"
+            :class="{'selected' : isSatisfied === 'not' }"
+          >不满意</div>
+          <div
+            class="select-box-btn"
+            @click="selectSatisfied('satisfied')"
+            :class="{'selected' : isSatisfied === 'satisfied' }"
+          >满意</div>
         </div>
-        <div class="evaluation-detail" :class="{'show':isSatisfied === 'not','show-1':isSatisfied === 'satisfied'}">
-          <p class="evaluation-not-satisfied" v-if="isSatisfied === 'not'">请选择不满意的原因(必选)</p>
+        <div
+          class="evaluation-detail"
+          :class="{'show':isSatisfied === 'not','show-1':isSatisfied === 'satisfied'}"
+        >
+          <p
+            class="evaluation-not-satisfied"
+            v-if="isSatisfied === 'not'"
+          >请选择不满意的原因(必选)</p>
           <ul class="evaluation-detail-list">
-            <li class="evaluation-detail-item" v-for="item in evaPersonList[isSatisfied]" :key="item.text" @click="evaPerson(item)" :class="{'selected':evaPersonSelect.indexOf(item.value) !== -1}">
+            <li
+              class="evaluation-detail-item"
+              v-for="item in evaPersonList[isSatisfied]"
+              :key="item.text"
+              @click="evaPerson(item)"
+              :class="{'selected':evaPersonSelect.indexOf(item.value) !== -1}"
+            >
               {{ item.text }}
             </li>
           </ul>
@@ -29,17 +59,31 @@
     <div class="evaluation-shop evaluation-box">
       <div class="top">
         <div class="info">
-          <img class="info-avatar" src="https://via.placeholder.com/40x40">
+          <img
+            class="info-avatar"
+            src="https://via.placeholder.com/40x40"
+          >
           <div class="info-detail">
             <p>店铺名字</p>
           </div>
         </div>
       </div>
       <div class="evaluation-star">
-        <p class="evaluation-title" v-if="evaShopStar > 0">"{{ evaluationTitle }}"</p>
-        <rate v-model="evaShopStar" :size="30" :is-show-text="false" />
+        <p
+          class="evaluation-title"
+          v-if="evaShopStar > 0"
+        >"{{ evaluationTitle }}"</p>
+        <rate
+          v-model="evaShopStar"
+          :size="30"
+          :is-show-text="false"
+        />
       </div>
-      <textarea class="evaluation-content" rows="8" cols="40" />
+      <textarea
+        class="evaluation-content"
+        rows="8"
+        cols="40"
+      />
       <ul class="evaluation-good">
 
         <li class="evaluation-good-item mt-flex-space-between">
@@ -77,8 +121,8 @@
 </template>
 
 <script type="text/ecmascript-6">
-import Rate from 'src/views/dumb/rate';
-import headerNav from 'src/views/dumb/header-nav';
+import Rate from '@/views/dumb/rate';
+import headerNav from '@/views/dumb/header-nav';
 
 export default {
   name: 'OrderEvaluation',

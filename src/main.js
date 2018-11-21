@@ -14,7 +14,7 @@ import { Dialog } from 'vant';
 import './assets/style/common.scss';
 import './assets/style/rest.scss';
 
-import MtLoadingMixin from 'src/mixins/loading';
+import MtLoadingMixin from '@/mixins/loading';
 
 Vue.mixin(MtLoadingMixin);
 

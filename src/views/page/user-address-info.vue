@@ -59,10 +59,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-import headerNav from 'src/views/dumb/header-nav';
-import formItem from 'src/views/dumb/form-item';
-import CONSTANT from 'src/common/constant';
-import { getLocation } from 'src/common/map';
+import headerNav from '@/views/dumb/header-nav';
+import formItem from '@/views/dumb/form-item';
+import CONSTANT from '@/common/constant';
+import { getLocation } from '@/common/map';
 
 export default {
   name: 'UserAddressInfo',

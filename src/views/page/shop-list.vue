@@ -1,13 +1,34 @@
 <template>
   <div class='shop-catalog'>
-    <header-nav :is-back="true" :title="headerTitle" :on-left="true" @click-left="$router.push('/user/index');" />
-    <shop-list-header :sort-target="sortTarget" @change="changeFilter" @showMask="showMask" />
+    <header-nav
+      :is-back="true"
+      :title="headerTitle"
+      :on-left="true"
+      @click-left="$router.push('/user/index');"
+    />
+    <shop-list-header
+      :sort-target="sortTarget"
+      @change="changeFilter"
+      @showMask="showMask"
+    />
 
     <div class="shop-list">
       <mt-mask v-model="show" />
-      <van-list v-model="loading" :finished="finished" @load="onPullingUp" :immediate-check="false">
-        <van-cell v-for="(shop,index) in shopList" :key='index' style="padding:10px">
-          <router-link class='shop-item' :to="{ name: 'shopDetail', params: { shopId: shop.id }}">
+      <van-list
+        v-model="loading"
+        :finished="finished"
+        @load="onPullingUp"
+        :immediate-check="false"
+      >
+        <van-cell
+          v-for="(shop,index) in shopList"
+          :key='index'
+          style="padding:10px"
+        >
+          <router-link
+            class='shop-item'
+            :to="{ name: 'shopDetail', params: { shopId: shop.id }}"
+          >
             <div class='shop-item_left'>
               <img :src='shop.photo'>
             </div>
@@ -16,7 +37,11 @@
               <div class='shop-basedata'>
                 <div class='mt-flex-space-between'>
                   <div class='sale-data-stars'>
-                    <rate v-model="shop.rate" :size="10" :margin-left="2" />
+                    <rate
+                      v-model="shop.rate"
+                      :size="10"
+                      :margin-left="2"
+                    />
                   </div>
                   <div class='sale-data-volume'>
                     月售
@@ -49,7 +74,10 @@
             </div>
           </router-link>
         </van-cell>
-        <van-cell v-if="shopList.length === 0" class="list-empty">
+        <van-cell
+          v-if="shopList.length === 0"
+          class="list-empty"
+        >
           <p>没有数据</p>
         </van-cell>
       </van-list>
@@ -59,12 +87,12 @@
 </template>
 
 <script >
-import Scroll from 'src/views/dumb/scroll';
-import Rate from 'src/views/dumb/rate';
-import headerNav from 'src/views/dumb/header-nav';
-import shopListHeader from 'src/views/smart/shop-list-header';
-import toCartList from 'src/views/smart/to-cart-list';
-import mtMask from 'src/views/dumb/mt-mask';
+import Scroll from '@/views/dumb/scroll';
+import Rate from '@/views/dumb/rate';
+import headerNav from '@/views/dumb/header-nav';
+import shopListHeader from '@/views/smart/shop-list-header';
+import toCartList from '@/views/smart/to-cart-list';
+import mtMask from '@/views/dumb/mt-mask';
 
 export default {
   name: 'ShopList',
@@ -104,7 +132,7 @@ export default {
           page: this.page,
           type: this.sortTarget,
         })
-        .then(resp => {
+        .then((resp) => {
           this.loading = false;
           this.mtLoading = false;
 
@@ -114,7 +142,7 @@ export default {
             this.shopList = this.shopList.concat(resp.data);
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.$toast(err);
           console.log(err);
         });

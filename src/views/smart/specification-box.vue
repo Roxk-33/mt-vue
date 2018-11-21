@@ -61,9 +61,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-import Popup from 'src/mixins/popup';
-import { deepClone } from 'src/common/utils';
-import foodIsRepeat from 'src/mixins/food-is-repeat';
+import Popup from '@/mixins/popup';
+import { deepClone } from '@/common/utils';
+import foodIsRepeat from '@/mixins/food-is-repeat';
 
 export default {
   name: 'SpecificationBox',

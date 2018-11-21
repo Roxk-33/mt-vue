@@ -1,7 +1,8 @@
 import axios from 'axios';
-import store from 'src/store';
+import store from '@/store';
 import { Toast } from 'vant';
 import CONFIG from './config';
+import router from './router';
 
 const baseURL = process.env.VUE_APP_ENV === 'production'
   ? CONFIG.BASE_URL.PRO
@@ -33,10 +34,11 @@ service.interceptors.response.use(
     const data = response.data;
     if (!data.status) {
       console.log('出错！');
-      if (data.code === 4001 || data.code === 4002) {
+      if (data.code === 4001 || data.code === 4002|| data.code === 401) {
         Toast('请登录！');
         store.dispatch('user/FedLogOut').then(() => {
           location.reload(); // 为了重新实例化vue-router对象 避免bug
+          router.push('/user/login')
         });
       } else {
         return Promise.reject(data.message, data);
