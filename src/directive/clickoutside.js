@@ -7,34 +7,34 @@ let seed = 0;
 let startClick;
 
 // 用来绑定事件的方法，它是一个自执行的函数，会根据是否运行于服务器和是否支持addEventListener来返回一个function
-const on = (function() {
+const on = (function () {
   if (!isServer && document.addEventListener) {
-    return function(element, event, handler) {
+    return function (element, event, handler) {
       if (element && event && handler) {
         element.addEventListener(event, handler, false);
       }
     };
   }
-  return function(element, event, handler) {
+  return function (element, event, handler) {
     if (element && event && handler) {
       element.attachEvent(`on${event}`, handler);
     }
   };
-})();
+}());
 // 返回一个方法用来在点击的时候触发函数（触发之前会判断该元素是不是el，是不是focusElment以及他们的后代元素，如果是则不会执行函数）
 function createDocumentHandler(el, binding, vnode) {
-  return function(mouseup = {}, mousedown = {}) {
+  return function (mouseup = {}, mousedown = {}) {
     if (
-      !vnode ||
-      !vnode.context ||
-      !mouseup.target ||
-      !mousedown.target ||
-      el.contains(mouseup.target) ||
-      el.contains(mousedown.target) ||
-      el === mouseup.target ||
-      (vnode.context.focusElment &&
-        (vnode.context.focusElment.contains(mouseup.target) ||
-          vnode.context.focusElment.contains(mousedown.target)))
+      !vnode
+      || !vnode.context
+      || !mouseup.target
+      || !mousedown.target
+      || el.contains(mouseup.target)
+      || el.contains(mousedown.target)
+      || el === mouseup.target
+      || (vnode.context.focusElment
+        && (vnode.context.focusElment.contains(mouseup.target)
+          || vnode.context.focusElment.contains(mousedown.target)))
     ) {
       return;
     }
@@ -56,7 +56,7 @@ function createDocumentHandler(el, binding, vnode) {
 
 if (!isServer) {
   on(document, 'mousedown', e => (startClick = e));
-  on(document, 'mouseup', e => {
+  on(document, 'mouseup', (e) => {
     // 循环所有的绑定节点，把它们的documentHandler属性所绑定的函数执行一次（这个时候得到的刚好是上面的那个判断执行的函数）
     nodeList.forEach(node => node[ctx].documentHandler(e, startClick));
   });

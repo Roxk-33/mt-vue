@@ -1,9 +1,10 @@
 <template>
   <div class='shop-catalog'>
-    <header-nav :is-back="true" :title="headerTitle" :onLeft="true" @click-left="$router.push('/user/index');"></header-nav>
-    <shop-list-header :sortTarget="sortTarget" @change="changeFilter" @showMask="showMask"></shop-list-header>
+    <header-nav :is-back="true" :title="headerTitle" :on-left="true" @click-left="$router.push('/user/index');" />
+    <shop-list-header :sort-target="sortTarget" @change="changeFilter" @showMask="showMask" />
+
     <div class="shop-list">
-      <mt-mask v-model="show"></mt-mask>
+      <mt-mask v-model="show" />
       <van-list v-model="loading" :finished="finished" @load="onPullingUp" :immediate-check="false">
         <van-cell v-for="(shop,index) in shopList" :key='index' style="padding:10px">
           <router-link class='shop-item' :to="{ name: 'shopDetail', params: { shopId: shop.id }}">
@@ -11,37 +12,37 @@
               <img :src='shop.photo'>
             </div>
             <div class='shop-item_right'>
-              <p class='shop-title'>{{shop.shop_title}}</p>
+              <p class='shop-title'>{{ shop.shop_title }}</p>
               <div class='shop-basedata'>
                 <div class='mt-flex-space-between'>
                   <div class='sale-data-stars'>
-                    <rate v-model="shop.rate" :size="10" :marginLeft="2"></rate>
+                    <rate v-model="shop.rate" :size="10" :margin-left="2" />
                   </div>
                   <div class='sale-data-volume'>
                     月售
-                    <i>{{shop.total_sales}}</i>
+                    <i>{{ shop.total_sales }}</i>
                   </div>
                   <div class='logistics-data'>
                     <span class='logistics-data-item'>
-                      <i>{{shop.transportTime}}</i>分钟
+                      <i>{{ shop.transportTime }}</i>分钟
                     </span>
                     <span class='logistics-data-item'>
-                      <i>{{shop.distance}}</i>Km
+                      <i>{{ shop.distance }}</i>Km
                     </span>
                   </div>
                 </div>
                 <div class='price-data'>
                   <span class='price-data-item'>
                     起送￥
-                    <i>{{shop.threshold}}</i>
+                    <i>{{ shop.threshold }}</i>
                   </span>
                   <span class='price-data-item'>
                     配送￥
-                    <i>{{shop.freight}}</i>
+                    <i>{{ shop.freight }}</i>
                   </span>
                   <span class='price-data-item'>
                     人均￥
-                    <i>{{shop.perCapita}}</i>
+                    <i>{{ shop.perCapita }}</i>
                   </span>
                 </div>
               </div>
@@ -53,7 +54,7 @@
         </van-cell>
       </van-list>
     </div>
-    <to-cart-list></to-cart-list>
+    <to-cart-list />
   </div>
 </template>
 
@@ -66,7 +67,7 @@ import toCartList from 'src/views/smart/to-cart-list';
 import mtMask from 'src/views/dumb/mt-mask';
 
 export default {
-  name: 'shopList',
+  name: 'ShopList',
   data() {
     return {
       loading: false,
@@ -103,7 +104,7 @@ export default {
           page: this.page,
           type: this.sortTarget,
         })
-        .then((resp) => {
+        .then(resp => {
           this.loading = false;
           this.mtLoading = false;
 
@@ -113,7 +114,7 @@ export default {
             this.shopList = this.shopList.concat(resp.data);
           }
         })
-        .catch((err) => {
+        .catch(err => {
           this.$toast(err);
           console.log(err);
         });

@@ -1,10 +1,17 @@
 <template>
   <div class="container">
     <div class='filter-box mt-flex-space-between'>
-      <div class="filter-box-content" v-click-outside="closeEvent">
-        <span class='sort-target' @click="showBox" :class="{ 'sort-target_bold' : (sortTarget !== 'sale' &&  sortTarget !== 'distance')}">
-          {{fliterList[sortTarget]}}
-          <i :class="{'fa fa-angle-down' : !show,'fa fa-angle-up' : show}"></i>
+      <div
+        class="filter-box-content"
+        v-click-outside="closeEvent"
+      >
+        <span
+          class='sort-target'
+          @click="showBox"
+          :class="{ 'sort-target_bold' : (sortTarget !== 'sale' && sortTarget !== 'distance')}"
+        >
+          {{ fliterList[sortTarget] }}
+          <i :class="{'fa fa-angle-down' : !show,'fa fa-angle-up' : show}" />
         </span>
         <!-- <span class='sort-target sort-target_small' @click="selectSortType('sale')" :class="{ 'sort-target_bold' : sortTarget === 'sale' }">销量</span> -->
         <!-- <span class='sort-target sort-target_small' @click="selectSortType('distance')" :class="{ 'sort-target_bold' : sortTarget === 'distance' }">距离</span> -->
@@ -12,11 +19,22 @@
       </div>
       <div class="filter-box-content filter-box-content_right">
         筛选
-        <i class='fa fa-bars' style="margin-left:5px;"></i>
+        <i
+          class='fa fa-bars'
+          style="margin-left:5px;"
+        />
       </div>
     </div>
-    <div class='sort-box' :class="show?'show-box':''">
-      <p @click="selectSortType(index)" :class="{ 'sort-target_selected' : sortTarget === index }" v-for="(item,index) in fliterList" :key="index">{{item}}</p>
+    <div
+      class='sort-box'
+      :class="show?'show-box':''"
+    >
+      <p
+        @click="selectSortType(index)"
+        :class="{ 'sort-target_selected' : sortTarget === index }"
+        v-for="(item,index) in fliterList"
+        :key="index"
+      >{{ item }}</p>
     </div>
   </div>
 </template>
@@ -25,7 +43,7 @@
 import CONSTANT from 'src/common/constant';
 
 export default {
-  name: 'shop-list-header',
+  name: 'ShopListHeader',
 
   data() {
     return {

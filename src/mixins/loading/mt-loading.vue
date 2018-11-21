@@ -1,5 +1,8 @@
 <template>
-  <div class="mt-loading" v-if="showMtLoading">
+  <div
+    class="mt-loading"
+    v-if="showMtLoading"
+  >
     <img :src="imgSrc">
     <p>努力加载中...</p>
   </div>
@@ -7,7 +10,7 @@
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'mt-loading',
+  name: 'MtLoading',
   props: {
     showMtLoading: {
       type: Boolean,

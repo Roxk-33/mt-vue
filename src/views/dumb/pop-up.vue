@@ -1,22 +1,36 @@
 <template>
   <div class="mt-pop-up">
     <div class="pop-up-header mt-flex-space-between">
-      <span class="header-left" @click="emitEvent('clickHeaderLeft')">{{headerLeft}}</span>
+      <span
+        class="header-left"
+        @click="emitEvent('clickHeaderLeft')"
+      >{{ headerLeft }}</span>
       <span class="header-title">
-        {{headerTitle}}
+        {{ headerTitle }}
       </span>
-      <span class="header-right" @click="emitEvent('clickHeaderRight')">{{headerRight}}</span>
+      <span
+        class="header-right"
+        @click="emitEvent('clickHeaderRight')"
+      >{{ headerRight }}</span>
     </div>
-    <slot></slot>
-    <div class="pop-up-bottom" @click="cancel" v-if="showBottomText">
-      <i class="iconfont" v-if="bottomTextIcon" :class="bottomTextIcon"></i>{{bottomText}}
+    <slot />
+    <div
+      class="pop-up-bottom"
+      @click="cancel"
+      v-if="showBottomText"
+    >
+      <i
+        class="iconfont"
+        v-if="bottomTextIcon"
+        :class="bottomTextIcon"
+      />{{ bottomText }}
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'mt-popUp',
+  name: 'MtPopUp',
   props: {
     headerLeft: {
       type: String,

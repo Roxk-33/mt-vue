@@ -13,7 +13,7 @@
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'order-list-header',
+  name: 'OrderListHeader',
 
   data() {
     return {};

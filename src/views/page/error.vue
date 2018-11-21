@@ -1,13 +1,16 @@
 <template>
   <div class="error">
     <p class="slogan">哎呀系统出错了</p>
-    <router-link class="btn" to="/user/index">返回首页</router-link>
+    <router-link
+      class="btn"
+      to="/user/index"
+    >返回首页</router-link>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'mt-error',
+  name: 'MtError',
   data() {
     return {};
   },

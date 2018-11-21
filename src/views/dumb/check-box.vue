@@ -1,7 +1,15 @@
 <template>
-  <div class="check-box" @click="totggle" :class="value ? 'checked' : ''">
-    <i class="iconfont" :class="value ? iconFont : 'icon-xuanze1'" :style="style"></i>
-    <slot></slot>
+  <div
+    class="check-box"
+    @click="totggle"
+    :class="value ? 'checked' : ''"
+  >
+    <i
+      class="iconfont"
+      :class="value ? iconFont : 'icon-xuanze1'"
+      :style="style"
+    />
+    <slot />
   </div>
 </template>
 
@@ -9,7 +17,7 @@
 import CONSTANT from 'src/common/constant';
 
 export default {
-  name: 'check-box',
+  name: 'CheckBox',
   props: {
     name: [String, Number],
     value: [String, Number, Boolean],

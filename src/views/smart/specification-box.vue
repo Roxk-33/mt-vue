@@ -1,33 +1,58 @@
 <template>
   <transition name='box-scale'>
-    <div class="specification-box-container" v-show="value">
+    <div
+      class="specification-box-container"
+      v-show="value"
+    >
       <div class='specification-box'>
         <div class='specification-box_header'>
-          <span class='specification-box_title'>{{foodInfo.food_name}}</span>
-          <i class='specification-box_close fa fa-close'></i>
+          <span class='specification-box_title'>{{ foodInfo.food_name }}</span>
+          <i class='specification-box_close fa fa-close' />
         </div>
         <div class='specification-box_content'>
-          <div class='box-item' v-for="(typeItem,index) in totalSpec" :key="typeItem.value">
-            <p class='box-item_title'>{{typeItem.spec_name}}</p>
+          <div
+            class='box-item'
+            v-for="(typeItem,index) in totalSpec"
+            :key="typeItem.value"
+          >
+            <p class='box-item_title'>{{ typeItem.spec_name }}</p>
             <ul class='box-item-specification'>
-              <li @click="chooseType(item,index,type_index)" v-for="(item,type_index) in typeItem.spec_arr" :key="type_index" :class="{'box-item_selected' :specArr[index] == item.id,'slod-out':item.stock == 0}">
-                {{item.label}}
+              <li
+                @click="chooseType(item,index,type_index)"
+                v-for="(item,type_index) in typeItem.spec_arr"
+                :key="type_index"
+                :class="{'box-item_selected' :specArr[index] == item.id,'slod-out':item.stock == 0}"
+              >
+                {{ item.label }}
               </li>
             </ul>
           </div>
         </div>
         <div class='specification-box_footer mt-flex-space-between'>
           <div class='footer-info'>
-            <span class='footer-info_price'>￥{{totalPrice}}</span>
-            <span class='footer-info_specification'>({{slogan}})</span>
+            <span class='footer-info_price'>￥{{ totalPrice }}</span>
+            <span class='footer-info_specification'>({{ slogan }})</span>
           </div>
-          <van-button size="small" @click="pushCart" v-if="isExist == -1 || num == 0">
-            <i class='fa fa-plus'></i>加入购物车
+          <van-button
+            size="small"
+            @click="pushCart"
+            v-if="isExist == -1 || num == 0"
+          >
+            <i class='fa fa-plus' />加入购物车
           </van-button>
-          <div class='specification-box-num-btn' v-else>
-            <span class='num-cut-round' @click="adjustNum(0)">-</span>
-            <span class='food-num'>{{num}}</span>
-            <span class='num-add-round' @click="adjustNum(1)">+</span>
+          <div
+            class='specification-box-num-btn'
+            v-else
+          >
+            <span
+              class='num-cut-round'
+              @click="adjustNum(0)"
+            >-</span>
+            <span class='food-num'>{{ num }}</span>
+            <span
+              class='num-add-round'
+              @click="adjustNum(1)"
+            >+</span>
           </div>
         </div>
       </div>
@@ -41,7 +66,7 @@ import { deepClone } from 'src/common/utils';
 import foodIsRepeat from 'src/mixins/food-is-repeat';
 
 export default {
-  name: 'specification-box',
+  name: 'SpecificationBox',
   mixins: [Popup, foodIsRepeat],
   data() {
     return {

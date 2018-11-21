@@ -1,19 +1,31 @@
 <template>
   <div class='footerNav'>
-    <div class="grid-content bg-purple" @click="toPage('/shop/list')" :class='{"active" : routeName === "home" }'>
-      <i class='iconfont icon-index'></i>
+    <div
+      class="grid-content bg-purple"
+      @click="toPage('/shop/list')"
+      :class='{"active" : routeName === "home" }'
+    >
+      <i class='iconfont icon-index' />
       <p>
         商店
       </p>
     </div>
-    <div class="grid-content bg-purple" @click="toPage('/user/order/list')" :class='{"active" : routeName === "userOrderList" }'>
-      <i class='iconfont icon-order-list'></i>
+    <div
+      class="grid-content bg-purple"
+      @click="toPage('/user/order/list')"
+      :class='{"active" : routeName === "userOrderList" }'
+    >
+      <i class='iconfont icon-order-list' />
       <p>
         订单
       </p>
     </div>
-    <div class="grid-content bg-purple" @click="toPage('/user/index')" :class='{"active" : routeName === "userIndex" }'>
-      <i class='iconfont icon-person'></i>
+    <div
+      class="grid-content bg-purple"
+      @click="toPage('/user/index')"
+      :class='{"active" : routeName === "userIndex" }'
+    >
+      <i class='iconfont icon-person' />
       <p>
         我的
       </p>
@@ -24,7 +36,7 @@
 </template>
 <script>
 export default {
-  name: 'footer-nav',
+  name: 'FooterNav',
   computed: {
     routeName() {
       return this.$route.name;

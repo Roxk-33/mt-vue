@@ -1,5 +1,8 @@
 <template>
-  <div ref="wrapper" class="list-wrapper">
+  <div
+    ref="wrapper"
+    class="list-wrapper"
+  >
     <div class="scroll-content">
       <div ref="listWrapper">
         <slot>
@@ -8,28 +11,62 @@
           </ul> -->
         </slot>
       </div>
-      <slot name="pullup" :pullUpLoad="pullUpLoad" :isPullUpLoad="isPullUpLoad">
-        <div class="pullup-wrapper" v-if="pullUpLoad">
-          <div class="before-trigger" v-if="!isPullUpLoad">
-            <span>{{pullUpTxt}}</span>
+      <slot
+        name="pullup"
+        :pullUpLoad="pullUpLoad"
+        :isPullUpLoad="isPullUpLoad"
+      >
+        <div
+          class="pullup-wrapper"
+          v-if="pullUpLoad"
+        >
+          <div
+            class="before-trigger"
+            v-if="!isPullUpLoad"
+          >
+            <span>{{ pullUpTxt }}</span>
           </div>
-          <div class="after-trigger" v-else>
-            <loading></loading>
+          <div
+            class="after-trigger"
+            v-else
+          >
+            <loading />
           </div>
         </div>
       </slot>
     </div>
-    <slot name="pulldown" :pullDownRefresh="pullDownRefresh" :pullDownStyle="pullDownStyle" :beforePullDown="beforePullDown" :isPullingDown="isPullingDown" :bubbleY="bubbleY">
-      <div ref="pulldown" class="pulldown-wrapper" :style="pullDownStyle" v-if="pullDownRefresh">
-        <div class="before-trigger" v-if="beforePullDown">
-          <bubble :y="bubbleY"></bubble>
+    <slot
+      name="pulldown"
+      :pullDownRefresh="pullDownRefresh"
+      :pullDownStyle="pullDownStyle"
+      :beforePullDown="beforePullDown"
+      :isPullingDown="isPullingDown"
+      :bubbleY="bubbleY"
+    >
+      <div
+        ref="pulldown"
+        class="pulldown-wrapper"
+        :style="pullDownStyle"
+        v-if="pullDownRefresh"
+      >
+        <div
+          class="before-trigger"
+          v-if="beforePullDown"
+        >
+          <bubble :y="bubbleY" />
         </div>
-        <div class="after-trigger" v-else>
-          <div v-if="isPullingDown" class="loading">
-            <loading></loading>
+        <div
+          class="after-trigger"
+          v-else
+        >
+          <div
+            v-if="isPullingDown"
+            class="loading"
+          >
+            <loading />
           </div>
           <div v-else>
-            <span>{{refreshTxt}}</span>
+            <span>{{ refreshTxt }}</span>
           </div>
         </div>
       </div>

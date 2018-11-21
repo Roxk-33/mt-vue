@@ -1,16 +1,33 @@
 <template>
   <div class="user-cart">
-    <header-nav :is-back="true" :title="headerTitle" @click-left="$router.back(-1);">
+    <header-nav
+      :is-back="true"
+      :title="headerTitle"
+      @click-left="$router.back(-1);"
+    >
       <span>编辑</span>
     </header-nav>
     <div class="cart-list">
-      <div class="cart-list-item" v-for="item in cartList" :key="item.shop_info.shop_id">
+      <div
+        class="cart-list-item"
+        v-for="item in cartList"
+        :key="item.shop_info.shop_id"
+      >
         <div class="item-title">
-          <check-box v-model="item.selectAll" @click="selectAll(item)"></check-box>
-          <router-link class="content" :to="{ name: 'shopDetail', params: { shopId: item.shop_info.id }}">
-            <img class="shop-avatar" :src="item.shop_info.photo">
-            <span class="shop-title">{{item.shop_info.shop_title}}</span>
-            <i class='iconfont icon-xiangyou'></i>
+          <check-box
+            v-model="item.selectAll"
+            @click="selectAll(item)"
+          />
+          <router-link
+            class="content"
+            :to="{ name: 'shopDetail', params: { shopId: item.shop_info.id }}"
+          >
+            <img
+              class="shop-avatar"
+              :src="item.shop_info.photo"
+            >
+            <span class="shop-title">{{ item.shop_info.shop_title }}</span>
+            <i class='iconfont icon-xiangyou' />
             <!-- TODO:二期实现促销功能 -->
             <!-- <div class="shop-discount">
               <div class="discount-icon">促销</div>
@@ -20,17 +37,24 @@
         </div>
         <div class="food-list">
           <van-checkbox-group v-model="item.selArr">
-            <div class="food-list-item" v-for="foodInfo in item.foodList" :key="foodInfo.id">
-              <van-checkbox :name="foodInfo.id"></van-checkbox>
+            <div
+              class="food-list-item"
+              v-for="foodInfo in item.foodList"
+              :key="foodInfo.id"
+            >
+              <van-checkbox :name="foodInfo.id" />
               <div class="content">
                 <div class="food-info-box">
-                  <img class="food-img" :src="foodInfo.picture">
+                  <img
+                    class="food-img"
+                    :src="foodInfo.picture"
+                  >
                   <div class="food-info">
-                    <p class="food-info-title">{{foodInfo.food_name}}</p>
-                    <p class="food-info-spec">规格：{{foodInfo.spec_text.join(',')}}</p>
+                    <p class="food-info-title">{{ foodInfo.food_name }}</p>
+                    <p class="food-info-spec">规格：{{ foodInfo.spec_text.join(',') }}</p>
                     <div class="food-info-num">
-                      <span class="num">x{{foodInfo.num}}</span>
-                      <span class="price">￥{{foodInfo.num * foodInfo.price}}</span>
+                      <span class="num">x{{ foodInfo.num }}</span>
+                      <span class="price">￥{{ foodInfo.num * foodInfo.price }}</span>
                     </div>
                   </div>
                 </div>
@@ -41,18 +65,24 @@
           <div class="fee-info">
             <div class="mt-flex-space-between fee-info-item">
               <span>运费</span>
-              <span>￥{{item.shop_info.freight}}</span>
+              <span>￥{{ item.shop_info.freight }}</span>
             </div>
           </div>
         </div>
         <div class="settle-info mt-flex-space-between">
-          <span class="other-info"></span>
+          <span class="other-info" />
           <!-- <span class="other-info">已优惠2元</span> -->
           <div class="right">
-            <span class="total-price">{{item.totalPrice}}元</span>
-            <button class="settle-btn" :class="{'not' : (item.shop_info.threshold - item.totalPrice > 0)} ">
-              <span v-if="item.shop_info.threshold - item.totalPrice > 0">差￥{{item.shop_info.threshold - item.totalPrice}}起送</span>
-              <span v-else @click="toPay(item)">去结算</span>
+            <span class="total-price">{{ item.totalPrice }}元</span>
+            <button
+              class="settle-btn"
+              :class="{'not' : (item.shop_info.threshold - item.totalPrice > 0)} "
+            >
+              <span v-if="item.shop_info.threshold - item.totalPrice > 0">差￥{{ item.shop_info.threshold - item.totalPrice }}起送</span>
+              <span
+                v-else
+                @click="toPay(item)"
+              >去结算</span>
             </button>
           </div>
         </div>
@@ -68,7 +98,7 @@ import { mapGetters } from 'vuex';
 import { deepClone } from 'src/common/utils';
 
 export default {
-  name: 'user-cart',
+  name: 'UserCart',
 
   data() {
     return {

@@ -2,28 +2,54 @@
   <div class="order-list-item">
     <div class="item-header mt-flex-space-between">
       <div class="item-header-left">
-        <img :src="shopInfo.photo" alt="">
+        <img
+          :src="shopInfo.photo"
+          alt=""
+        >
         <div class="item-header-shop-info">
-          <span class="shop-info-name">{{shopInfo.shop_title}}</span>
-          <i class='iconfont icon-xiangyou'></i>
+          <span class="shop-info-name">{{ shopInfo.shop_title }}</span>
+          <i class='iconfont icon-xiangyou' />
         </div>
       </div>
       <div class="item-header-right">
-        <p>{{ORDER_STATUS[orderInfo.status]}}</p>
+        <p>{{ ORDER_STATUS[orderInfo.status] }}</p>
       </div>
     </div>
-    <div class="item-content" @click="gotoDetail">
+    <div
+      class="item-content"
+      @click="gotoDetail"
+    >
       <div class="item-content-info">
-        <span class="info-name">{{foodList[0] && foodList[0].food_name}}</span>
-        <span class="info-num">等<i>{{foodList.length}}</i>件商品</span>
+        <span class="info-name">{{ foodList[0] && foodList[0].food_name }}</span>
+        <span class="info-num">等<i>{{ foodList.length }}</i>件商品</span>
         <p class="order-price">￥15</p>
       </div>
       <div class="item-content-btn-box">
-        <span v-if="orderInfo.status === 0" class="item-content-btn" @click.stop="cancel">取消订单</span>
-        <router-link class="item-content-btn mt-color" :to="{ name: 'orderPay', params: { orderId: this.orderId }}" v-if="orderInfo.status === 0">立即支付</router-link>
-        <router-link class="again item-content-btn" :to="{ name: 'shopDetail', params: { orderId: this.orderId }}" v-if="orderInfo.status === 4 ||orderInfo.status === 6">再来一单</router-link>
-        <router-link class="after-sale item-content-btn" to="/order/evaluation" v-if="orderInfo.status === 4">申请售后</router-link>
-        <router-link class="item-content-btn" v-if="orderInfo.status === 4" :to="{path: '/user/order/evaluation', query: { orderId: this.orderId }}">评价</router-link>
+        <span
+          v-if="orderInfo.status === 0"
+          class="item-content-btn"
+          @click.stop="cancel"
+        >取消订单</span>
+        <router-link
+          class="item-content-btn mt-color"
+          :to="{ name: 'orderPay', params: { orderId: this.orderId }}"
+          v-if="orderInfo.status === 0"
+        >立即支付</router-link>
+        <router-link
+          class="again item-content-btn"
+          :to="{ name: 'shopDetail', params: { orderId: this.orderId }}"
+          v-if="orderInfo.status === 4 ||orderInfo.status === 6"
+        >再来一单</router-link>
+        <router-link
+          class="after-sale item-content-btn"
+          to="/order/evaluation"
+          v-if="orderInfo.status === 4"
+        >申请售后</router-link>
+        <router-link
+          class="item-content-btn"
+          v-if="orderInfo.status === 4"
+          :to="{path: '/user/order/evaluation', query: { orderId: this.orderId }}"
+        >评价</router-link>
       </div>
     </div>
   </div>
@@ -33,7 +59,7 @@
 import CONSTANT from 'src/common/constant';
 
 export default {
-  name: 'order-list-item',
+  name: 'OrderListItem',
   props: {
     orderInfo: Object,
     foodList: Array,

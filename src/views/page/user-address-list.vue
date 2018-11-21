@@ -4,20 +4,31 @@
       <router-link :to="{ name:'userAddressInfo', query: { type:'add'} }">新增地址</router-link>
     </header-nav>
     <div class="address-list-box">
-      <van-swipe-cell :right-width="65" v-for="item in list" :key="item.id">
+      <van-swipe-cell
+        :right-width="65"
+        v-for="item in list"
+        :key="item.id"
+      >
         <van-cell-group>
           <van-cell>
             <slot name="title">
-              <p class="address-content">{{item.address}}</p>
+              <p class="address-content">{{ item.address }}</p>
             </slot>
             <slot name="label">
-              <span class="address-user">{{item.user_name}}</span>
-              <span class="address-sex">{{item.user_sex == 0 ? '先生':'女士'}}</span>
+              <span class="address-user">{{ item.user_name }}</span>
+              <span class="address-sex">{{ item.user_sex == 0 ? '先生':'女士' }}</span>
             </slot>
-            <i slot="right-icon" class="iconfont icon-xiugai" @click="go('edit',item.id)"></i>
+            <i
+              slot="right-icon"
+              class="iconfont icon-xiugai"
+              @click="go('edit',item.id)"
+            />
           </van-cell>
         </van-cell-group>
-        <span slot="right" @click="delAddress(item.id)">删除</span>
+        <span
+          slot="right"
+          @click="delAddress(item.id)"
+        >删除</span>
       </van-swipe-cell>
     </div>
   </div>
@@ -27,7 +38,7 @@
 import headerNav from 'src/views/dumb/header-nav';
 
 export default {
-  name: 'user-address-list',
+  name: 'UserAddressList',
 
   data() {
     return {

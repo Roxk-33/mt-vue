@@ -1,22 +1,39 @@
 <template>
   <div class="user-order-list">
-    <order-list-header></order-list-header>
+    <order-list-header />
 
-    <van-pull-refresh v-model="pullingDownLoading" @refresh="onPullingDown">
+    <van-pull-refresh
+      v-model="pullingDownLoading"
+      @refresh="onPullingDown"
+    >
 
-      <van-list v-model="loading" :finished="finished" :immediate-check="false" @load="onPullingUp">
+      <van-list
+        v-model="loading"
+        :finished="finished"
+        :immediate-check="false"
+        @load="onPullingUp"
+      >
         <div class="order-list-content">
-          <order-list-item v-for="(item,index) in orderList" :key="index" :orderInfo="item" :foodList="item.food_list" @cancelOrder="cancelOrder"></order-list-item>
+          <order-list-item
+            v-for="(item,index) in orderList"
+            :key="index"
+            :order-info="item"
+            :food-list="item.food_list"
+            @cancelOrder="cancelOrder"
+          />
         </div>
 
-        <van-cell v-if="orderList.length === 0" class="list-empty">
+        <van-cell
+          v-if="orderList.length === 0"
+          class="list-empty"
+        >
           <p>没有数据</p>
         </van-cell>
       </van-list>
 
     </van-pull-refresh>
 
-    <footer-nav active='1'></footer-nav>
+    <footer-nav active='1' />
   </div>
 </template>
 
@@ -26,7 +43,7 @@ import orderListItem from 'src/views/smart/order-list-item';
 import footerNav from 'src/views/dumb/footer-nav';
 
 export default {
-  name: 'user-order-list',
+  name: 'UserOrderList',
 
   data() {
     return {

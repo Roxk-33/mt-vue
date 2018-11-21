@@ -1,6 +1,6 @@
 <template>
   <div class="evaluation">
-    <header-nav :is-back="true"  :onLeft="true" headerbgColor="whitesmoke" :border="false" :isBack="false" :isClose="true"  @click-left="close"></header-nav>
+    <header-nav :on-left="true" headerbg-color="whitesmoke" :border="false" :is-back="false" :is-close="true" @click-left="close" />
     <div class="evaluation-person evaluation-box">
       <div class="top">
         <div class="info">
@@ -20,7 +20,7 @@
           <p class="evaluation-not-satisfied" v-if="isSatisfied === 'not'">请选择不满意的原因(必选)</p>
           <ul class="evaluation-detail-list">
             <li class="evaluation-detail-item" v-for="item in evaPersonList[isSatisfied]" :key="item.text" @click="evaPerson(item)" :class="{'selected':evaPersonSelect.indexOf(item.value) !== -1}">
-              {{item.text}}
+              {{ item.text }}
             </li>
           </ul>
         </div>
@@ -36,38 +36,38 @@
         </div>
       </div>
       <div class="evaluation-star">
-        <p class="evaluation-title" v-if="evaShopStar > 0">"{{evaluationTitle}}"</p>
-        <rate v-model="evaShopStar" :size="30" :isShowText="false" />
+        <p class="evaluation-title" v-if="evaShopStar > 0">"{{ evaluationTitle }}"</p>
+        <rate v-model="evaShopStar" :size="30" :is-show-text="false" />
       </div>
-      <textarea class="evaluation-content" rows="8" cols="40"></textarea>
+      <textarea class="evaluation-content" rows="8" cols="40" />
       <ul class="evaluation-good">
 
         <li class="evaluation-good-item mt-flex-space-between">
           <span class="good-name">撒尿牛丸</span>
           <div class="good-review">
-            <span class="good-like"><i class="iconfont icon-dianzan_xianxing"></i> 赞</span>
-            <span class="good-dislike"><i class="iconfont icon-cai"></i> 踩</span>
+            <span class="good-like"><i class="iconfont icon-dianzan_xianxing" /> 赞</span>
+            <span class="good-dislike"><i class="iconfont icon-cai" /> 踩</span>
           </div>
         </li>
         <li class="evaluation-good-item mt-flex-space-between">
           <span class="good-name">撒尿牛丸</span>
           <div class="good-review">
-            <span class="good-like"><i class="iconfont icon-dianzan_xianxing"></i> 赞</span>
-            <span class="good-dislike"><i class="iconfont icon-cai"></i> 踩</span>
+            <span class="good-like"><i class="iconfont icon-dianzan_xianxing" /> 赞</span>
+            <span class="good-dislike"><i class="iconfont icon-cai" /> 踩</span>
           </div>
         </li>
         <li class="evaluation-good-item mt-flex-space-between">
           <span class="good-name">撒尿牛丸</span>
           <div class="good-review">
-            <span class="good-like"><i class="iconfont icon-dianzan_xianxing"></i> 赞</span>
-            <span class="good-dislike"><i class="iconfont icon-cai"></i> 踩</span>
+            <span class="good-like"><i class="iconfont icon-dianzan_xianxing" /> 赞</span>
+            <span class="good-dislike"><i class="iconfont icon-cai" /> 踩</span>
           </div>
         </li>
         <li class="evaluation-good-item mt-flex-space-between">
           <span class="good-name">撒尿牛丸</span>
           <div class="good-review">
-            <span class="good-like"><i class="iconfont icon-dianzan_xianxing"></i> 赞</span>
-            <span class="good-dislike"><i class="iconfont icon-cai"></i> 踩</span>
+            <span class="good-like"><i class="iconfont icon-dianzan_xianxing" /> 赞</span>
+            <span class="good-dislike"><i class="iconfont icon-cai" /> 踩</span>
           </div>
         </li>
       </ul>
@@ -81,7 +81,7 @@ import Rate from 'src/views/dumb/rate';
 import headerNav from 'src/views/dumb/header-nav';
 
 export default {
-  name: 'order-evaluation',
+  name: 'OrderEvaluation',
 
   data() {
     return {

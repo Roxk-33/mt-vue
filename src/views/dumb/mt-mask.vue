@@ -1,12 +1,19 @@
 <template>
   <transition name="van-fade">
-    <div v-show="value" class="mt-modal" :class="className" :style="style" @touchmove.prevent.stop @click="onClick($event)" />
+    <div
+      v-show="value"
+      class="mt-modal"
+      :class="className"
+      :style="style"
+      @touchmove.prevent.stop
+      @click="onClick($event)"
+    />
   </transition>
 </template>
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'mt-mask',
+  name: 'MtMask',
 
   props: {
     value: Boolean,

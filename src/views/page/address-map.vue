@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <div id="baidu-map"></div>
+    <div id="baidu-map" />
   </div>
 </template>
 

@@ -5,7 +5,8 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 module.exports = {
-  chainWebpack: (config) => {
+  lintOnSave: process.env.NODE_ENV !== 'production',
+  chainWebpack: config => {
     config.resolve.alias.set('css', resolve('src/assets/style'));
     config.resolve.alias.set('src', resolve('src'));
   },
@@ -19,6 +20,4 @@ module.exports = {
       }),
     ],
   },
-
-  lintOnSave: undefined
 };

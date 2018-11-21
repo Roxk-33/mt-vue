@@ -1,12 +1,15 @@
 <template>
-  <router-link class="to-cart-list" to="/user/cart">
-    <i class="iconfont icon-gouwuche"></i>
+  <router-link
+    class="to-cart-list"
+    to="/user/cart"
+  >
+    <i class="iconfont icon-gouwuche" />
   </router-link>
 </template>
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'to-cart-list',
+  name: 'ToCartList',
 
   data() {
     return {};

@@ -3,60 +3,90 @@
     <div class="detail-top">
       <div class="icons">
         <router-link to="/user/order/list">
-          <i class="iconfont icon-xiangzuo"></i>
+          <i class="iconfont icon-xiangzuo" />
         </router-link>
       </div>
       <p class="order-progress">
-        {{ORDER_STATUS[orderInfo.status]}}
-        <i class='iconfont icon-xiangyou'></i>
+        {{ ORDER_STATUS[orderInfo.status] }}
+        <i class='iconfont icon-xiangyou' />
       </p>
     </div>
     <!-- 当订单未支付时显示 -->
-    <div class="detail-box detail-other" v-if="orderInfo.status === 0">
-      <i class="iconfont icon-bell"></i>{{ORDER_STATUS_MSG[orderInfo.status]}}
+    <div
+      class="detail-box detail-other"
+      v-if="orderInfo.status === 0"
+    >
+      <i class="iconfont icon-bell" />{{ ORDER_STATUS_MSG[orderInfo.status] }}
     </div>
     <div class="detail-box detail-other">
-      <p v-if="orderInfo.status !== 0">{{ORDER_STATUS_MSG[orderInfo.status]}}</p>
-      <p v-else>预计<span class="arrival-time">{{orderInfo.arrival_time.substr(-5)}}</span>送达</p>
+      <p v-if="orderInfo.status !== 0">{{ ORDER_STATUS_MSG[orderInfo.status] }}</p>
+      <p v-else>预计<span class="arrival-time">{{ orderInfo.arrival_time.substr(-5) }}</span>送达</p>
       <div class="detail-top-btn">
-        <span v-if="orderInfo.status === 0" @click="cancelOrder">取消订单</span>
-        <router-link class="mt-color" :to="{ name: 'orderPay', params: { orderId: this.orderId }}" v-if="orderInfo.status === 0">立即支付</router-link>
-        <router-link class="again" :to="{ name: 'shopDetail', params: { orderId: this.orderId }}" v-if="orderInfo.status === 4 ||orderInfo.status === 6">再来一单</router-link>
-        <router-link class="after-sale" to="/order/evaluation" v-if="orderInfo.status === 4">申请售后</router-link>
-        <router-link class="mt-color" v-if="orderInfo.status === 4" :to="{path: '/user/order/evaluation', query: { orderId: this.orderId }}">评价</router-link>
+        <span
+          v-if="orderInfo.status === 0"
+          @click="cancelOrder"
+        >取消订单</span>
+        <router-link
+          class="mt-color"
+          :to="{ name: 'orderPay', params: { orderId: this.orderId }}"
+          v-if="orderInfo.status === 0"
+        >立即支付</router-link>
+        <router-link
+          class="again"
+          :to="{ name: 'shopDetail', params: { orderId: this.orderId }}"
+          v-if="orderInfo.status === 4 ||orderInfo.status === 6"
+        >再来一单</router-link>
+        <router-link
+          class="after-sale"
+          to="/order/evaluation"
+          v-if="orderInfo.status === 4"
+        >申请售后</router-link>
+        <router-link
+          class="mt-color"
+          v-if="orderInfo.status === 4"
+          :to="{path: '/user/order/evaluation', query: { orderId: this.orderId }}"
+        >评价</router-link>
       </div>
     </div>
     <div class="detail-box good-box">
       <div class="detail-box-title">
-        <span class="shop-title">{{shopInfo.shop_title}}</span>
-        <i class='iconfont icon-xiangyou'></i>
+        <span class="shop-title">{{ shopInfo.shop_title }}</span>
+        <i class='iconfont icon-xiangyou' />
 
         <div class="shop-info-contact">
           <span>
-            <i class='iconfont icon-dianhua'></i>
+            <i class='iconfont icon-dianhua' />
           </span>
           <span>
-            <i class='iconfont icon-duanxin'></i>
+            <i class='iconfont icon-duanxin' />
           </span>
         </div>
 
       </div>
 
       <div class="detail-box-item detail-content">
-        <div class="detail-content-item" v-for="item in foodList" :key="item.id">
-          <img class="good-img" :src="item.food_picture" alt="">
+        <div
+          class="detail-content-item"
+          v-for="item in foodList"
+          :key="item.id"
+        >
+          <img
+            class="good-img"
+            :src="item.food_picture"
+            alt=""
+          >
           <div class="good-info">
             <div class="good-info-header mt-flex-space-between">
-              <span class="good-info-name">{{item.food_name}}</span>
-              <span class="good-info-price">￥{{item.price}}</span>
+              <span class="good-info-name">{{ item.food_name }}</span>
+              <span class="good-info-price">￥{{ item.price }}</span>
             </div>
-            <p class="good-info-num">x{{item.num}}</p>
+            <p class="good-info-num">x{{ item.num }}</p>
           </div>
         </div>
       </div>
       <div class="detail-box-item mt-flex-space-between detail-distribution">
         <span>配送费</span>
-        <span>￥{{shopInfo.freight}}</span>
+        <span>￥{{ shopInfo.freight }}</span>
       </div>
       <div class="detail-box-item detail-price-total">
         <span>合计</span>
@@ -81,11 +111,11 @@
       <ul class="order-box-info-box">
         <li class="mt-flex-space-between">
           <span class="info-box-title">订单号码</span>
-          <span class="info-box-content">{{orderInfo.id}}</span>
+          <span class="info-box-content">{{ orderInfo.id }}</span>
         </li>
         <li class="mt-flex-space-between">
           <span class="info-box-title">下单时间</span>
-          <span class="info-box-content">{{orderInfo.created_at | parseTime }}</span>
+          <span class="info-box-content">{{ orderInfo.created_at | parseTime }}</span>
         </li>
         <li class="mt-flex-space-between">
           <span class="info-box-title">支付方式</span>
@@ -101,7 +131,7 @@ import { parseTime } from 'src/common/utils';
 import CONSTANT from 'src/common/constant';
 
 export default {
-  name: 'user-order-detail',
+  name: 'UserOrderDetail',
 
   data() {
     return {

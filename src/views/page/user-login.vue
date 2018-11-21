@@ -1,14 +1,38 @@
 <template>
   <div class='login-container'>
-    <header-nav :is-back="true" :title="headerTitle" :onLeft="true" @click-left="$router.back(-1);">
-      <router-link to="/user/register" class="register">注册</router-link>
+    <header-nav
+      :is-back="true"
+      :title="headerTitle"
+      :on-left="true"
+      @click-left="$router.back(-1);"
+    >
+      <router-link
+        to="/user/register"
+        class="register"
+      >注册</router-link>
     </header-nav>
     <div class='container-box'>
       <van-cell-group>
-        <van-field v-model="loginForm.account" label="用户名" placeholder="请输入用户名" />
-        <van-field v-model="loginForm.password" label="密码" type='password' placeholder="请输入密码" required clearable />
+        <van-field
+          v-model="loginForm.account"
+          label="用户名"
+          placeholder="请输入用户名"
+        />
+        <van-field
+          v-model="loginForm.password"
+          label="密码"
+          type='password'
+          placeholder="请输入密码"
+          required
+          clearable
+        />
       </van-cell-group>
-      <van-button type="default" round @click="handleLogin" :loading='loading'>登录</van-button>
+      <van-button
+        type="default"
+        round
+        @click="handleLogin"
+        :loading='loading'
+      >登录</van-button>
     </div>
   </div>
 </template>
@@ -16,7 +40,7 @@
 import headerNav from 'src/views/dumb/header-nav';
 
 export default {
-  name: 'user-login',
+  name: 'UserLogin',
   data() {
     return {
       headerTitle: '登录美团',

@@ -1,17 +1,20 @@
 <template>
   <div class="shop-header">
     <div class="box">
-      <h3 class="title">{{title}}</h3>
+      <h3 class="title">{{ title }}</h3>
       <p class="fee">配送约32分钟</p>
-      <p class="announcement">公告：{{announcement}}</p>
-      <img class="pic" :src="photo">
+      <p class="announcement">公告：{{ announcement }}</p>
+      <img
+        class="pic"
+        :src="photo"
+      >
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'shop-header',
+  name: 'ShopHeader',
   props: {
     title: String,
     announcement: String,

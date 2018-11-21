@@ -1,23 +1,59 @@
 <template>
   <div class="user-address-info">
-    <header-nav :title="title"></header-nav>
-    <form-item label="联系人" :isRequired="true" v-model="addressInfo.user_name" placeholder="请填写收货人的姓名"></form-item>
+    <header-nav :title="title" />
+    <form-item
+      label="联系人"
+      :is-required="true"
+      v-model="addressInfo.user_name"
+      placeholder="请填写收货人的姓名"
+    />
     <div class="user-address-info-sex">
-      <van-radio :name="SEX['male']" :value="SEX['male']" v-model="addressInfo.user_sex">先生</van-radio>
-      <van-radio :name="SEX['female']" :value="SEX['female']" v-model="addressInfo.user_sex">女士</van-radio>
+      <van-radio
+        :name="SEX['male']"
+        :value="SEX['male']"
+        v-model="addressInfo.user_sex"
+      >先生</van-radio>
+      <van-radio
+        :name="SEX['female']"
+        :value="SEX['female']"
+        v-model="addressInfo.user_sex"
+      >女士</van-radio>
     </div>
-    <form-item label="手机号" :isRequired="true" v-model="addressInfo.tel" placeholder="请填写收货人手机号码"></form-item>
-    <form-item label="送货地址" :isRequired="true" v-model="addressInfo.address"></form-item>
-    <form-item label="标签" :isRequired="false" v-model="addressInfo.tag" :showSlot="true">
+    <form-item
+      label="手机号"
+      :is-required="true"
+      v-model="addressInfo.tel"
+      placeholder="请填写收货人手机号码"
+    />
+    <form-item
+      label="送货地址"
+      :is-required="true"
+      v-model="addressInfo.address"
+    />
+    <form-item
+      label="标签"
+      :is-required="false"
+      v-model="addressInfo.tag"
+      :show-slot="true"
+    >
       <div class="tag-box">
-        <span class="tag" @click="addressInfo.tag = tag.value" :class="{'active' :addressInfo.tag === tag.value }" v-for="tag in tags" :key="tag.value">
-          {{tag.label}}
+        <span
+          class="tag"
+          @click="addressInfo.tag = tag.value"
+          :class="{'active' :addressInfo.tag === tag.value }"
+          v-for="tag in tags"
+          :key="tag.value"
+        >
+          {{ tag.label }}
         </span>
       </div>
     </form-item>
     <!-- <form-item label="门牌号" :isRequired="true" v-model="addressInfo.stress"></form-item> -->
     <div class="footer-box">
-      <p class="save" @click="save">保存地址</p>
+      <p
+        class="save"
+        @click="save"
+      >保存地址</p>
     </div>
   </div>
 </template>
@@ -29,7 +65,7 @@ import CONSTANT from 'src/common/constant';
 import { getLocation } from 'src/common/map';
 
 export default {
-  name: 'user-address-info',
+  name: 'UserAddressInfo',
   data() {
     return {
       text: '1231',

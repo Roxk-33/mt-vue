@@ -1,20 +1,31 @@
 <template>
-  <div class='header-nav' :style="style">
+  <div
+    class='header-nav'
+    :style="style"
+  >
     <div class='header-nav-left'>
-      <i class='iconfont icon-xiangzuo' v-if='isBack' @click="clickLeft"></i>
-      <i class='iconfont icon-guanbi1' v-if="isClose" @click="clickLeft"></i>
+      <i
+        class='iconfont icon-xiangzuo'
+        v-if='isBack'
+        @click="clickLeft"
+      />
+      <i
+        class='iconfont icon-guanbi1'
+        v-if="isClose"
+        @click="clickLeft"
+      />
     </div>
     <div class='header-nav-main'>
-      <span class='headerNav-title'>{{title}}</span>
+      <span class='headerNav-title'>{{ title }}</span>
     </div>
     <div class='header-nav-right'>
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: 'headerNav',
+  name: 'HeaderNav',
 
   props: {
     headerbgColor: {

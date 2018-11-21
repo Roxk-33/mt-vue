@@ -1,6 +1,10 @@
 <template>
   <div class="order-pay">
-    <header-nav :title="headerTitle" :onLeft="true" @click-left="back"></header-nav>
+    <header-nav
+      :title="headerTitle"
+      :on-left="true"
+      @click-left="back"
+    />
     <div class="order-pay-info">
       <div class="residual-time">
         剩余时间15:40
@@ -23,7 +27,7 @@
 import headerNav from 'src/views/dumb/header-nav';
 
 export default {
-  name: 'order-pay',
+  name: 'OrderPay',
 
   data() {
     return {

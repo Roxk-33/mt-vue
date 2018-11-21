@@ -1,12 +1,15 @@
 <template>
-  <div :style="style" class='swipe-item'>
+  <div
+    :style="style"
+    class='swipe-item'
+  >
     <slot />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'swipe-item',
+  name: 'SwipeItem',
   data() {
     return {
       offset: 0,

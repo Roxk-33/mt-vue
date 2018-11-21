@@ -1,26 +1,46 @@
 <template>
   <div class="order-pay">
-    <header-nav :title="headerTitle" :onLeft="true" @click-left="$router.back(-1);"></header-nav>
+    <header-nav
+      :title="headerTitle"
+      :on-left="true"
+      @click-left="$router.back(-1);"
+    />
     <div class='order-pay-header'>
-      <div class='header-address box-right-arrow ' @click="showAddress = true">
-        <p class='address-content' v-if="orderInfo.address.address">{{orderInfo.address.address}}</p>
-        <span class='address-person' v-if="orderInfo.address.user_name">{{orderInfo.address.user_name}} {{orderInfo.address.tel}}</span>
-        <p v-else class="address-select">请选择地址</p>
-        <i class='iconfont icon-xiangyou right'></i>
+      <div
+        class='header-address box-right-arrow '
+        @click="showAddress = true"
+      >
+        <p
+          class='address-content'
+          v-if="orderInfo.address.address"
+        >{{ orderInfo.address.address }}</p>
+        <span
+          class='address-person'
+          v-if="orderInfo.address.user_name"
+        >{{ orderInfo.address.user_name }} {{ orderInfo.address.tel }}</span>
+        <p
+          v-else
+          class="address-select"
+        >请选择地址</p>
+        <i class='iconfont icon-xiangyou right' />
       </div>
       <div class='header-shipping-time box-right-arrow mt-flex-space-between'>
         <span class='shipping-type'>立即送出</span>
         <!-- 送达时间暂时定为当前时间后15分钟 -->
-        <span class='shipping-time'>大约{{orderInfo.arrivalTime.substr(-5)}}送达</span>
-        <i class='iconfont icon-xiangyou right'></i>
+        <span class='shipping-time'>大约{{ orderInfo.arrivalTime.substr(-5) }}送达</span>
+        <i class='iconfont icon-xiangyou right' />
       </div>
     </div>
     <div class='order-pay-main'>
       <div class='main-header order-pay-main-item'>
-        <span>{{shopInfo.shop_title}}</span>
+        <span>{{ shopInfo.shop_title }}</span>
       </div>
       <ul class='main-food-list order-pay-main-item'>
-        <li class='food-list-item' v-for="item in foodList" :key="item.id">
+        <li
+          class='food-list-item'
+          v-for="item in foodList"
+          :key="item.id"
+        >
           <div class='food-pic'>
             <img :src="item.picture">
           </div>
@@ -28,17 +48,17 @@
           <div class='food-info'>
             <div class='food-info-main mt-flex-space-between'>
               <div class='food-info-name'>
-                {{item.food_name}}
+                {{ item.food_name }}
                 <!-- <span class='food-info-discount'>折</span> -->
               </div>
               <div class='food-info-price'>
                 <!-- <span class='food-info-price_original'>￥64</span> -->
-                ￥{{item.price}}
+                ￥{{ item.price }}
               </div>
             </div>
             <!-- 规格 -->
-            <p class='food-info-type'>{{item.spec_text.join(',')}}</p>
-            <p class='food-info-num'>x{{item.num}}</p>
+            <p class='food-info-type'>{{ item.spec_text.join(',') }}</p>
+            <p class='food-info-num'>x{{ item.num }}</p>
           </div>
         </li>
       </ul>
@@ -49,7 +69,7 @@
         </div>
         <div>
           <span class='food-fee-title'>配送费</span>
-          <span class='food-fee-price'>￥{{shopInfo.freight}}</span>
+          <span class='food-fee-price'>￥{{ shopInfo.freight }}</span>
         </div>
       </div>
       <div class='food-pay'>
@@ -57,17 +77,20 @@
           <i class='food-pay-discount'>￥21.2</i>
         </span> -->
         <span>小计
-          <i class='food-pay-total'>￥{{totalPrice}}</i>
+          <i class='food-pay-total'>￥{{ totalPrice }}</i>
         </span>
       </div>
 
     </div>
     <div class='order-pay-note'>
-      <div class='order-pay-note-item box-right-arrow mt-flex-space-between' @click="showRemarks = true;tempRemarks = orderInfo.remarks;">
+      <div
+        class='order-pay-note-item box-right-arrow mt-flex-space-between'
+        @click="showRemarks = true;tempRemarks = orderInfo.remarks;"
+      >
         <span class='note-item-left'>备注</span>
         <div>
-          <span class='note-item-right'>{{orderInfo.remarks}}</span>
-          <i class='iconfont icon-xiangyou'></i>
+          <span class='note-item-right'>{{ orderInfo.remarks }}</span>
+          <i class='iconfont icon-xiangyou' />
         </div>
 
       </div>
@@ -75,14 +98,14 @@
         <span class='note-item-left'>餐具数量</span>
         <div>
           <span class='note-item-right'>1人</span>
-          <i class='iconfont icon-xiangyou'></i>
+          <i class='iconfont icon-xiangyou' />
         </div>
 
       </div>
       <div class='order-pay-note-item box-right-arrow mt-flex-space-between'>
         <span class='note-item-left'>发票</span>
-        <span class='note-item-right'></span>
-        <i class='iconfont icon-xiangyou'></i>
+        <span class='note-item-right' />
+        <i class='iconfont icon-xiangyou' />
 
       </div>
       <div class='order-pay-note-item box-right-arrow mt-flex-space-between'>
@@ -99,15 +122,22 @@
         </span> -->
         <span class='footer-left_total'>
           合计￥
-          <i>{{totalPrice}}</i>
+          <i>{{ totalPrice }}</i>
         </span>
       </div>
-      <div class='footer-box-right' @click="sumbitOrder">
+      <div
+        class='footer-box-right'
+        @click="sumbitOrder"
+      >
         <span>提交订单</span>
       </div>
     </div>
 
-    <van-popup v-model="showPay" position="bottom" :overlay="true">
+    <van-popup
+      v-model="showPay"
+      position="bottom"
+      :overlay="true"
+    >
       <pop-up @cancel="cancel('pay')">
         <div class="pay-way-box">
           <p @click="cancel('pay')">在线支付</p>
@@ -116,22 +146,48 @@
       </pop-up>
     </van-popup>
     <!-- 收货地址 -->
-    <van-popup v-model="showAddress" position="bottom" :overlay="true">
-      <pop-up class="address-list" @cancel="cancel('address')" @clickHeaderLeft="cancel('address')" headerTitle="选择收货地址" header-left="取消" bottomText="新增收货地址" bottomTextIcon="icon-add_icon">
+    <van-popup
+      v-model="showAddress"
+      position="bottom"
+      :overlay="true"
+    >
+      <pop-up
+        class="address-list"
+        @cancel="cancel('address')"
+        @clickHeaderLeft="cancel('address')"
+        header-title="选择收货地址"
+        header-left="取消"
+        bottom-text="新增收货地址"
+        bottom-text-icon="icon-add_icon"
+      >
         <div class="address-list-box">
           <ul class="list-box">
-            <li class="list-box-item" v-for="(item,index) in addressList" :key="item.id" @click="selAddress(index)">
-              <van-radio :name="true" v-model="item.selected" @click="selAddress(index)" :checkedColor="mtColor"></van-radio>
+            <li
+              class="list-box-item"
+              v-for="(item,index) in addressList"
+              :key="item.id"
+              @click="selAddress(index)"
+            >
+              <van-radio
+                :name="true"
+                v-model="item.selected"
+                @click="selAddress(index)"
+                :checked-color="mtColor"
+              />
               <div class="content">
-                <div class="address">{{item.address}}
-                  <div class="tag" v-if="item.tag !== ''" :class="{'school':item.tag == 0,'company':item.tag == 1,'home' :item.tag == 2}">
-                    {{TAGS[item.tag]}}
+                <div class="address">{{ item.address }}
+                  <div
+                    class="tag"
+                    v-if="item.tag !== ''"
+                    :class="{'school':item.tag == 0,'company':item.tag == 1,'home' :item.tag == 2}"
+                  >
+                    {{ TAGS[item.tag] }}
                   </div>
                 </div>
-                <p class="person"><span class="name">{{item.user_name}}</span><span>{{item.tel}}</span></p>
+                <p class="person"><span class="name">{{ item.user_name }}</span><span>{{ item.tel }}</span></p>
               </div>
               <div class="edit-icon">
-                <i class="iconfont icon-xiugai1"></i>
+                <i class="iconfont icon-xiugai1" />
               </div>
             </li>
           </ul>
@@ -139,15 +195,27 @@
       </pop-up>
     </van-popup>
     <!-- 备注 -->
-    <van-popup v-model="showRemarks" position="right" :overlay="false">
+    <van-popup
+      v-model="showRemarks"
+      position="right"
+      :overlay="false"
+    >
       <div class="remark-box">
         <div class="remark-box-header mt-flex-space-between">
-          <i class="iconfont icon-xiangzuo" @click="showRemarks = false"></i>
+          <i
+            class="iconfont icon-xiangzuo"
+            @click="showRemarks = false"
+          />
           <span class="title">添加备注</span>
-          <span @click="saveRemarks" class="save-btn">完成</span>
+          <span
+            @click="saveRemarks"
+            class="save-btn"
+          >完成</span>
         </div>
-        <textarea class="content" v-model="tempRemarks">
-        </textarea>
+        <textarea
+          class="content"
+          v-model="tempRemarks"
+        />
       </div>
     </van-popup>
   </div>
@@ -160,7 +228,7 @@ import headerNav from 'src/views/dumb/header-nav';
 import { getTime } from 'src/common/utils';
 
 export default {
-  name: 'order-pay',
+  name: 'OrderPay',
 
   data() {
     return {

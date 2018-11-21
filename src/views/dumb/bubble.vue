@@ -1,5 +1,10 @@
 <template>
-  <canvas ref="bubble" :width="width" :height="height" :style="style"></canvas>
+  <canvas
+    ref="bubble"
+    :width="width"
+    :height="height"
+    :style="style"
+  />
 </template>
 
 <script type="text/ecmascript-6">
@@ -21,8 +26,8 @@ export default {
       return Math.max(0, Math.min(this.y * this.ratio, this.maxDistance));
     },
     style() {
-      return `width:${this.width / this.ratio}px;height:${this.height /
-        this.ratio}px`;
+      return `width:${this.width / this.ratio}px;height:${this.height
+        / this.ratio}px`;
     },
   },
   created() {
@@ -58,10 +63,8 @@ export default {
       ctx.save();
       ctx.beginPath();
       const rate = this.distance / this.maxDistance;
-      const headRadius =
-        this.initRadius - (this.initRadius - this.minHeadRadius) * rate;
-      this.headCenter.y =
-        this.initCenterY - (this.initRadius - this.minHeadRadius) * rate;
+      const headRadius = this.initRadius - (this.initRadius - this.minHeadRadius) * rate;
+      this.headCenter.y = this.initCenterY - (this.initRadius - this.minHeadRadius) * rate;
       // 画上半弧线
       ctx.arc(
         this.headCenter.x,
@@ -69,11 +72,10 @@ export default {
         headRadius,
         0,
         Math.PI,
-        true
+        true,
       );
       // 画左侧贝塞尔
-      const tailRadius =
-        this.initRadius - (this.initRadius - this.minTailRadius) * rate;
+      const tailRadius = this.initRadius - (this.initRadius - this.minTailRadius) * rate;
       const tailCenter = {
         x: this.headCenter.x,
         y: this.headCenter.y + this.distance,
@@ -90,7 +92,7 @@ export default {
         controlPointL.x,
         controlPointL.y,
         tailPointL.x,
-        tailPointL.y
+        tailPointL.y,
       );
       // 画下半弧线
       ctx.arc(tailCenter.x, tailCenter.y, tailRadius, Math.PI, 0, true);
@@ -107,7 +109,7 @@ export default {
         controlPointR.x,
         controlPointR.y,
         headPointR.x,
-        headPointR.y
+        headPointR.y,
       );
       ctx.fillStyle = 'rgb(170,170,170)';
       ctx.fill();
@@ -119,9 +121,8 @@ export default {
       ctx.save();
       ctx.beginPath();
       const rate = this.distance / this.maxDistance;
-      const arrowRadius =
-        this.initArrowRadius -
-        (this.initArrowRadius - this.minArrowRadius) * rate;
+      const arrowRadius = this.initArrowRadius
+        - (this.initArrowRadius - this.minArrowRadius) * rate;
       // 画内圆
       ctx.arc(
         this.headCenter.x,
@@ -129,7 +130,7 @@ export default {
         arrowRadius - (this.arrowWidth - rate),
         -Math.PI / 2,
         0,
-        true
+        true,
       );
       // 画外圆
       ctx.arc(
@@ -138,19 +139,19 @@ export default {
         arrowRadius,
         0,
         (Math.PI * 3) / 2,
-        false
+        false,
       );
       ctx.lineTo(
         this.headCenter.x,
-        this.headCenter.y - arrowRadius - this.arrowWidth / 2 + rate
+        this.headCenter.y - arrowRadius - this.arrowWidth / 2 + rate,
       );
       ctx.lineTo(
         this.headCenter.x + this.arrowWidth * 2 - rate * 2,
-        this.headCenter.y - arrowRadius + this.arrowWidth / 2
+        this.headCenter.y - arrowRadius + this.arrowWidth / 2,
       );
       ctx.lineTo(
         this.headCenter.x,
-        this.headCenter.y - arrowRadius + (this.arrowWidth * 3) / 2 - rate
+        this.headCenter.y - arrowRadius + (this.arrowWidth * 3) / 2 - rate,
       );
 
       ctx.fillStyle = 'rgb(255,255,255)';

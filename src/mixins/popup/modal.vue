@@ -1,12 +1,19 @@
 <template>
   <transition name="van-fade">
-    <div v-show="visible" class="mt-modal" :class="className" :style="style" @touchmove.prevent.stop @click="$emit('click', $event)" />
+    <div
+      v-show="visible"
+      class="mt-modal"
+      :class="className"
+      :style="style"
+      @touchmove.prevent.stop
+      @click="$emit('click', $event)"
+    />
   </transition>
 </template>
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'modal',
+  name: 'Modal',
 
   props: {
     visible: Boolean,

@@ -1,11 +1,17 @@
 
 <template>
   <div class="swipe">
-    <div :style="trackStyle" @touchstart="onTouchStart" @touchmove="onTouchMove" @touchend="onTouchEnd" @touchcancel="onTouchEnd" class="swipe-track">
+    <div
+      :style="trackStyle"
+      @touchstart="onTouchStart"
+      @touchmove="onTouchMove"
+      @touchend="onTouchEnd"
+      @touchcancel="onTouchEnd"
+      class="swipe-track"
+    >
       <slot />
     </div>
-    <div v-if="showIndicators && count > 1">
-    </div>
+    <div v-if="showIndicators && count > 1" />
   </div>
 </template>
 
@@ -14,7 +20,7 @@
 import Touch from 'src/mixins/touch';
 
 export default {
-  name: 'swipe',
+  name: 'Swipe',
   mixins: [Touch],
   props: {
     autoplay: Number,

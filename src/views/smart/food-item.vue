@@ -1,28 +1,59 @@
 <template>
   <div class="good-list-item">
-    <div class="good-image" :class="{'good-sold-out':foodInfo.stock==0}">
+    <div
+      class="good-image"
+      :class="{'good-sold-out':foodInfo.stock==0}"
+    >
       <img :src="foodInfo.picture">
-      <div v-if="foodInfo.stock == 0" class="sold-out-slogan">已售罄</div>
-      <div v-if="foodInfo.stock == 0" class="sold-out-mask"></div>
+      <div
+        v-if="foodInfo.stock == 0"
+        class="sold-out-slogan"
+      >已售罄</div>
+      <div
+        v-if="foodInfo.stock == 0"
+        class="sold-out-mask"
+      />
     </div>
     <div class="good-content mt-flex-space-between">
       <div class="good-content_info">
-        <h4 class="good-content_info_title">{{foodInfo.food_name}}</h4>
-        <span class="good-content_info_sale">月售 {{foodInfo.month_sale}}</span>
-        <span class="good-content_info_lick">赞{{foodInfo.food_like}}</span>
-        <p class="good-content_info_price">{{foodInfo.price}}</p>
+        <h4 class="good-content_info_title">{{ foodInfo.food_name }}</h4>
+        <span class="good-content_info_sale">月售 {{ foodInfo.month_sale }}</span>
+        <span class="good-content_info_lick">赞{{ foodInfo.food_like }}</span>
+        <p class="good-content_info_price">{{ foodInfo.price }}</p>
       </div>
-      <div class="good-content_buy" v-if="foodInfo.spec_arr.length">
-        <button @click="getSpecInfo" class="btn-sepc">
+      <div
+        class="good-content_buy"
+        v-if="foodInfo.spec_arr.length"
+      >
+        <button
+          @click="getSpecInfo"
+          class="btn-sepc"
+        >
           选规格
-          <div class="food-select-num" v-if="selectNum">{{selectNum}}</div>
+          <div
+            class="food-select-num"
+            v-if="selectNum"
+          >{{ selectNum }}</div>
         </button>
       </div>
-      <div class="good-content_buy good-content_buy_nontype" v-else>
-        <div class="good-content_buy_nontype_box" v-if="foodInfo.stock>0">
-          <i class="iconfont icon-jian" @click="adjustNum(0)" v-if="selectNum > 0"></i>
-          <span v-if="selectNum > 0">{{selectNum}}</span>
-          <i class="iconfont icon-jia" @click="adjustNum(1)"></i>
+      <div
+        class="good-content_buy good-content_buy_nontype"
+        v-else
+      >
+        <div
+          class="good-content_buy_nontype_box"
+          v-if="foodInfo.stock>0"
+        >
+          <i
+            class="iconfont icon-jian"
+            @click="adjustNum(0)"
+            v-if="selectNum > 0"
+          />
+          <span v-if="selectNum > 0">{{ selectNum }}</span>
+          <i
+            class="iconfont icon-jia"
+            @click="adjustNum(1)"
+          />
         </div>
       </div>
     </div>
@@ -31,7 +62,7 @@
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'food-item',
+  name: 'FoodItem',
 
   data() {
     return {};

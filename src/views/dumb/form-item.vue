@@ -1,18 +1,28 @@
 <template>
   <div class="form-item">
     <div class="form-item-label">
-      <p v-if="label">{{label}}:</p>
+      <p v-if="label">{{ label }}:</p>
     </div>
-    <div class="form-item-input" v-if="!showSlot">
-      <input :type="type" :value="value" :readonly="readonly" ref="input" v-on="listeners" :placeholder="placeholder">
+    <div
+      class="form-item-input"
+      v-if="!showSlot"
+    >
+      <input
+        :type="type"
+        :value="value"
+        :readonly="readonly"
+        ref="input"
+        v-on="listeners"
+        :placeholder="placeholder"
+      >
     </div>
-    <slot></slot>
+    <slot />
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'form-item',
+  name: 'FormItem',
   props: {
     value: [String, Number],
     type: {

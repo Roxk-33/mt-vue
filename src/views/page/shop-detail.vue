@@ -1,32 +1,80 @@
 
 <template>
   <div class="shop-detail">
-    <shop-nav :trackOpacity="trackOpacity" :isTop="isTop"></shop-nav>
-    <div ref="shopBanner" class="shop-header-box">
-      <shop-header :title="shopInfo.shop_title" :announcement="shopInfo.announcement" :photo="shopInfo.photo"></shop-header>
+    <shop-nav
+      :track-opacity="trackOpacity"
+      :is-top="isTop"
+    />
+    <div
+      ref="shopBanner"
+      class="shop-header-box"
+    >
+      <shop-header
+        :title="shopInfo.shop_title"
+        :announcement="shopInfo.announcement"
+        :photo="shopInfo.photo"
+      />
     </div>
-    <div class="shop-good" ref="shopGood" :style="shopGoodStyle">
+    <div
+      class="shop-good"
+      ref="shopGood"
+      :style="shopGoodStyle"
+    >
       <div class="shop-good-tab">
         <van-tabs v-model="tabActive">
-          <van-tab v-for="(tab,index) in tabs" :title="tab.label" :key="index"></van-tab>
+          <van-tab
+            v-for="(tab,index) in tabs"
+            :title="tab.label"
+            :key="index"
+          />
         </van-tabs>
       </div>
       <div class="shop-good-content">
         <div class="shop-good-menu">
-          <better-scroll :isDisable="scrollDisabel">
-            <div class="menu-item" v-for="catalog in shopInfo.shop_catalog" :key="catalog.value">{{catalog.title}}</div>
+          <better-scroll :is-disable="scrollDisabel">
+            <div
+              class="menu-item"
+              v-for="catalog in shopInfo.shop_catalog"
+              :key="catalog.value"
+            >{{ catalog.title }}</div>
           </better-scroll>
         </div>
         <div class="shop-good-list">
-          <better-scroll :listenScroll="true" :probeType="probeType" @scroll="onScroll" :isDisable="scrollDisabel" @pullingDown="pullingDown">
-            <foodItem v-for="(foodInfo,index) in foodList" :key="foodInfo.food_id" :foodInfo="foodInfo" :foodIndex="index" :selectNum="foodInfo.selectNum" @showSpec="getSpecInfo" @adjustNum="adjustNum" />
+          <better-scroll
+            :listen-scroll="true"
+            :probe-type="probeType"
+            @scroll="onScroll"
+            :is-disable="scrollDisabel"
+            @pullingDown="pullingDown"
+          >
+            <foodItem
+              v-for="(foodInfo,index) in foodList"
+              :key="foodInfo.food_id"
+              :food-info="foodInfo"
+              :food-index="index"
+              :select-num="foodInfo.selectNum"
+              @showSpec="getSpecInfo"
+              @adjustNum="adjustNum"
+            />
           </better-scroll>
         </div>
       </div>
     </div>
-    <cart-list :threshold="shopInfo.threshold" :freight="shopInfo.freight" :cartList="cartList" @adjustNum="adjustNum" @toSettle="toSettle"></cart-list>
-    <specificationBox @pushCart="getSelectGoood" v-model="showSpecBox" :center="true" width="90%" :foodInfo="foodSelected" :cartList="cartList">
-    </specificationBox>
+    <cart-list
+      :threshold="shopInfo.threshold"
+      :freight="shopInfo.freight"
+      :cart-list="cartList"
+      @adjustNum="adjustNum"
+      @toSettle="toSettle"
+    />
+    <specificationBox
+      @pushCart="getSelectGoood"
+      v-model="showSpecBox"
+      :center="true"
+      width="90%"
+      :food-info="foodSelected"
+      :cart-list="cartList"
+    />
   </div>
 </template>
 
@@ -41,7 +89,7 @@ import shopNav from 'src/views/smart/shop-nav';
 import foodIsRepeat from 'src/mixins/food-is-repeat';
 
 export default {
-  name: 'shop-detail',
+  name: 'ShopDetail',
   data() {
     return {
       tabs: [
