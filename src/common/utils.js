@@ -53,18 +53,15 @@ export function parseTime(time, cFormat) {
 
 export function getTime(delay = 15) {
   const date = new Date();
+  date.setMinutes(date.getMinutes() + delay);
   const format = '{y}-{m}-{d} {h}:{i}';
   const formatObj = {
     y: date.getFullYear(),
     m: date.getMonth() + 1,
     d: date.getDate(),
     h: date.getHours(),
-    i: date.getMinutes() + delay,
+    i: date.getMinutes() ,
   };
-  if (formatObj.i >= 60) {
-    formatObj.i %= 60;
-    formatObj.h++;
-  }
   const time_str = format.replace(/{(y|m|d|h|i)+}/g, (result, key) => {
     let value = formatObj[key];
     if (key === 'a') { return ['一', '二', '三', '四', '五', '六', '日'][value - 1]; }

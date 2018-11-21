@@ -7,43 +7,45 @@
         </router-link>
       </div>
       <p class="order-progress">
-        {{ ORDER_STATUS[orderInfo.status] }}
+        {{ ORDER_STATUS[orderStatus] }}
         <i class='iconfont icon-xiangyou' />
       </p>
     </div>
     <!-- 当订单未支付时显示 -->
     <div
       class="detail-box detail-other"
-      v-if="orderInfo.status === 0"
+      v-if="orderStatus === 'UNPAY'"
     >
-      <i class="iconfont icon-bell" />{{ ORDER_STATUS_MSG[orderInfo.status] }}
+      <i class="iconfont icon-bell" />
+      请在{{this.coutMin | formatTime}}:{{this.coutSec | formatTime}}分钟内完成支付，超时将自动取消
+
     </div>
     <div class="detail-box detail-other">
-      <p v-if="orderInfo.status !== 0">{{ ORDER_STATUS_MSG[orderInfo.status] }}</p>
+      <p v-if="orderStatus !== 'UNPAY'">{{ ORDER_STATUS_MSG[orderStatus] }}</p>
       <p v-else>预计<span class="arrival-time">{{ orderInfo.arrival_time.substr(-5) }}</span>送达</p>
       <div class="detail-top-btn">
         <span
-          v-if="orderInfo.status === 0"
+          v-if="orderStatus === 'UNPAY'"
           @click="cancelOrder"
         >取消订单</span>
         <router-link
           class="mt-color"
           :to="{ name: 'orderPay', params: { orderId: this.orderId }}"
-          v-if="orderInfo.status === 0"
+          v-if="orderStatus === 'UNPAY'"
         >立即支付</router-link>
         <router-link
           class="again"
           :to="{ name: 'shopDetail', params: { orderId: this.orderId }}"
-          v-if="orderInfo.status === 4 ||orderInfo.status === 6"
+          v-if="orderStatus === 'ORDER_SUCCESS' ||orderStatus === 'ORDER_CANCEL'"
         >再来一单</router-link>
         <router-link
           class="after-sale"
           to="/order/evaluation"
-          v-if="orderInfo.status === 4"
+          v-if="orderStatus === 'ORDER_SUCCESS'"
         >申请售后</router-link>
         <router-link
           class="mt-color"
-          v-if="orderInfo.status === 4"
+          v-if="orderStatus === 'ORDER_SUCCESS'"
           :to="{path: '/user/order/evaluation', query: { orderId: this.orderId }}"
         >评价</router-link>
       </div>
@@ -129,15 +131,18 @@
 <script type="text/ecmascript-6">
 import { parseTime } from '@/common/utils';
 import CONSTANT from '@/common/constant';
+import timer from '@/mixins/timer';
 
 export default {
   name: 'UserOrderDetail',
-
+  mixins: [timer],
   data() {
     return {
       orderInfo: {},
       ORDER_STATUS: CONSTANT.ORDER_STATUS,
       ORDER_STATUS_MSG: CONSTANT.ORDER_STATUS_MSG,
+      coutMin:0,
+      coutSec:0,
     };
   },
   components: {},
@@ -149,6 +154,9 @@ export default {
         .then((resp) => {
           this.mtLoading = false;
           this.orderInfo = resp.data;
+          if(this.orderStatus === 'UNPAY'){
+            this.initCount(this.orderInfo.deadline_pay_time,this.cancelOrder.bind(this,'timeout'));
+          }
         })
         .catch((err) => {
           this.mtLoading = false;
@@ -156,8 +164,16 @@ export default {
           this.$router.back(-1);
         });
     },
-    cancelOrder() {
-      this.$emit('cancelOrder', this.orderId);
+    cancelOrder(action = 'normal') {
+      this.$store
+        .dispatch('order/cancelOrder', {id : this.orderId, action})
+        .then((resp) => {
+          this.getData();
+        })
+        .catch((err) => {
+          console.log(err);
+          this.$toast(err);
+        });
     },
   },
   created() {
@@ -175,12 +191,25 @@ export default {
       if (!this.orderInfo) return {};
       return this.orderInfo.food_list;
     },
+    orderStatus(){
+      return this.orderInfo.status;
+    }
+
   },
   filters: {
     parseTime(val) {
       return parseTime(val);
     },
+    formatTime(time){
+      return time < 10 ? '0'+ time : time;
+    }
   },
+  watch:{
+    countTime(val){
+      this.coutMin = Math.floor(val/60);
+      this.coutSec = Math.floor(val - this.coutMin*60);
+    }
+  }
 };
 </script>
 

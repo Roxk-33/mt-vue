@@ -2,10 +2,7 @@
   <div class="order-list-item">
     <div class="item-header mt-flex-space-between">
       <div class="item-header-left">
-        <img
-          :src="shopInfo.photo"
-          alt=""
-        >
+        <img :src="shopInfo.photo" alt="">
         <div class="item-header-shop-info">
           <span class="shop-info-name">{{ shopInfo.shop_title }}</span>
           <i class='iconfont icon-xiangyou' />
@@ -15,41 +12,18 @@
         <p>{{ ORDER_STATUS[orderInfo.status] }}</p>
       </div>
     </div>
-    <div
-      class="item-content"
-      @click="gotoDetail"
-    >
+    <div class="item-content" @click="gotoDetail">
       <div class="item-content-info">
         <span class="info-name">{{ foodList[0] && foodList[0].food_name }}</span>
         <span class="info-num">等<i>{{ foodList.length }}</i>件商品</span>
         <p class="order-price">￥15</p>
       </div>
       <div class="item-content-btn-box">
-        <span
-          v-if="orderInfo.status === 0"
-          class="item-content-btn"
-          @click.stop="cancel"
-        >取消订单</span>
-        <router-link
-          class="item-content-btn mt-color"
-          :to="{ name: 'orderPay', params: { orderId: this.orderId }}"
-          v-if="orderInfo.status === 0"
-        >立即支付</router-link>
-        <router-link
-          class="again item-content-btn"
-          :to="{ name: 'shopDetail', params: { orderId: this.orderId }}"
-          v-if="orderInfo.status === 4 ||orderInfo.status === 6"
-        >再来一单</router-link>
-        <router-link
-          class="after-sale item-content-btn"
-          to="/order/evaluation"
-          v-if="orderInfo.status === 4"
-        >申请售后</router-link>
-        <router-link
-          class="item-content-btn"
-          v-if="orderInfo.status === 4"
-          :to="{path: '/user/order/evaluation', query: { orderId: this.orderId }}"
-        >评价</router-link>
+        <span v-if="orderInfo.status === 0" class="item-content-btn" @click.stop="cancel">取消订单</span>
+        <router-link class="item-content-btn mt-color" :to="{ name: 'orderPay', params: { orderId: this.orderId }}" v-if="orderInfo.status === 0">立即支付</router-link>
+        <router-link class="again item-content-btn" :to="{ name: 'shopDetail', params: { orderId: this.orderId }}" v-if="orderInfo.status === 4 ||orderInfo.status === 6">再来一单</router-link>
+        <router-link class="after-sale item-content-btn" to="/order/evaluation" v-if="orderInfo.status === 4">申请售后</router-link>
+        <router-link class="item-content-btn" v-if="orderInfo.status === 4" :to="{path: '/user/order/evaluation', query: { orderId: this.orderId }}">评价</router-link>
       </div>
     </div>
   </div>
@@ -57,6 +31,7 @@
 
 <script type="text/ecmascript-6">
 import CONSTANT from '@/common/constant';
+import timer from '@/mixins/timer';
 
 export default {
   name: 'OrderListItem',
@@ -64,14 +39,15 @@ export default {
     orderInfo: Object,
     foodList: Array,
   },
+  mixins: [timer],
   data() {
     return {
       ORDER_STATUS: CONSTANT.ORDER_STATUS,
     };
   },
   methods: {
-    cancel() {
-      this.$emit('cancelOrder', this.orderId);
+    cancel(action) {
+      this.$emit('cancelOrder', {id:this.orderId,action});
     },
     gotoDetail() {
       this.$router.push({
@@ -79,6 +55,11 @@ export default {
         query: { orderId: this.orderId },
       });
     },
+  },
+  created(){
+    if(this.orderStatus === 'UNPAY'){
+      this.initCount(this.orderInfo.deadline_pay_time,this.cancel.bind(this,'timeout'));
+    }
   },
   computed: {
     shopInfo() {
@@ -88,7 +69,11 @@ export default {
     orderId() {
       return this.orderInfo.id;
     },
+    orderStatus(){
+      return this.orderInfo.status;
+    }
   },
+
 };
 </script>
 
@@ -160,7 +145,11 @@ export default {
         width: 60px;
         box-sizing: border-box;
         padding: 5px;
+        margin-right: 5px;
         border: 1px solid #cccccc;
+        &:last-child {
+          margin-right: 0;
+        }
         &.mt-color {
           background-color: $mt-color;
           border-color: $mt-color;

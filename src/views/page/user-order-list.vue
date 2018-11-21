@@ -63,9 +63,9 @@ export default {
     this.getList();
   },
   methods: {
-    cancelOrder(id) {
+    cancelOrder(data) {
       this.$store
-        .dispatch('order/cancelOrder', id)
+        .dispatch('order/cancelOrder', data)
         .then((resp) => {
           this.page = 0;
           this.orderList = [];
@@ -119,5 +119,6 @@ export default {
 <style scoped rel="stylesheet/scss" lang="scss">
 .order-list-content {
   margin-top: 85px;
+  padding-bottom: 50px;
 }
 </style>

@@ -28,7 +28,7 @@ export default {
     ORDER_CREATE: `${APIPREFIX}/order`,
     ORDER_LIST: `${APIPREFIX}/user/order`,
     ORDER_DETAIL: `${APIPREFIX}/user/order/:id`,
-    ORDER_DELETE: `${APIPREFIX}/user/order/:id`,
+    ORDER_DELETE: `${APIPREFIX}/user/order/`,
   },
   BASE_URL: {
     PRO: 'https://api.lococo.site/',

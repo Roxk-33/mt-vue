@@ -36,7 +36,8 @@ const actions = {
     return ajax.get(formatURL(API.ORDER_DETAIL, { id: payload }));
   },
   cancelOrder({ commit }, payload) {
-    return ajax.put(formatURL(API.ORDER_DELETE, { id: payload }));
+    payload.id = Number(payload.id);
+    return ajax.put(API.ORDER_DELETE,payload);
   },
 };
 
