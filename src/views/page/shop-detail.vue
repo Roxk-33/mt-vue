@@ -39,6 +39,7 @@
             >{{ catalog.title }}</div>
           </better-scroll>
         </div>
+
         <div class="shop-good-list">
           <better-scroll
             :listen-scroll="true"
@@ -243,7 +244,7 @@ export default {
         data = {
           foodId: foodCartInfo.food_id,
           id: foodCartInfo.id, // 此id为购物车内商品的购物车自增ID
-          type: type === 1 ? 1 : -1,
+          type
         };
       } else {
         // 为新增商品

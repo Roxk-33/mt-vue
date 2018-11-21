@@ -58,7 +58,7 @@
           <div class='food-list_item-num'>
             <span
               class='num-cut-round'
-              @click="adjustNum(0,index)"
+              @click="adjustNum(-1,index)"
             >-</span>
             <span class='food-list_item-num_content'>{{ foodInfo.num }}</span>
             <span
@@ -240,6 +240,9 @@ export default {
         }
         .num-add-round {
           background-color: $mt-color;
+        }
+        .food-list_item-num_content{
+          margin:0 3px;
         }
       }
     }

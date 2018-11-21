@@ -46,7 +46,7 @@
           >
             <span
               class='num-cut-round'
-              @click="adjustNum(0)"
+              @click="adjustNum(-1)"
             >-</span>
             <span class='food-num'>{{ num }}</span>
             <span
@@ -198,8 +198,7 @@ export default {
     },
     adjustNum(type) {
       if (type === 1) {
-        console.log(this.specInfo);
-        if (this.specInfo.stock - 1 < this.num) return this.$toast('库存不足');
+        if (this.specInfo.stock  < this.num) return this.$toast('库存不足');
         console.log('增加');
         this.num++;
         this.$emit(
