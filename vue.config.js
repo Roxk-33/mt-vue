@@ -8,6 +8,7 @@ function resolve(dir) {
 module.exports = {
   chainWebpack: config => {
     config.resolve.alias.set('css', resolve('src/style'));
+    config.resolve.alias.set('vendors', resolve('src/vendors'));
   },
 
   configureWebpack: {
@@ -17,7 +18,7 @@ module.exports = {
         threshold: 10240,
         deleteOriginalAssets: false,
       }),
-      new webpack.HashedModuleIdsPlugin()
+      new webpack.HashedModuleIdsPlugin(),
     ],
     optimization: {
       /*
@@ -34,20 +35,20 @@ module.exports = {
         因为我们使用了 html-webpack-plugin 来动态插入 <script> 标签，entry 被拆成多个 chunk 也能自动被插入到 html 中，
         所以我们可以配置成 all, 把 entry chunk 也拆分了
         */
-        chunks: 'all'
-      }
+        chunks: 'all',
+      },
     },
     output: {
       path: path.join(__dirname, 'dist'),
       filename: '[name].[hash].js',
-      chunkFilename: '[name].[chunkhash:5].chunk.js'
+      chunkFilename: '[name].[chunkhash:5].chunk.js',
     },
   },
 
   pluginOptions: {
     'style-resources-loader': {
       preProcessor: 'scss',
-      patterns: [resolve('src/style/common.scss'),]
-    }
-  }
+      patterns: [resolve('src/style/common.scss')],
+    },
+  },
 };

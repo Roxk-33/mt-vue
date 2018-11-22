@@ -20,11 +20,11 @@
       </div>
       <div class="good-content_buy good-content_buy_nontype" v-else>
         <div class="good-content_buy_nontype_box" v-if="foodInfo.stock>0">
-          <transition name="adjust-num">
-            <div class="iconfont icon-jian" @click="adjustNum(-1)" v-show="selectNum > 0"></div>
-          </transition>
+          <!-- <transition name="adjust-num"> -->
+          <div class="iconfont icon-jian" @click="adjustNum(-1)" v-show="selectNum > 0"></div>
+          <!-- </transition> -->
           <span v-show="selectNum > 0" class="num">{{selectNum}}</span>
-          <i class="iconfont icon-jia" @click="adjustNum(1)"></i>
+          <i class="iconfont icon-jia" @click="adjustNum(1,$event)"></i>
         </div>
       </div>
     </div>
@@ -57,18 +57,18 @@ export default {
     getSpecInfo() {
       this.$emit('showSpec', this.foodIndex);
     },
-    adjustNum(type) {
-      if(type === 1 && this.selectNum > this.foodInfo.stock){
+    adjustNum(type, ev) {
+      if (type === 1 && this.selectNum > this.foodInfo.stock) {
         return this.$toast('库存不足');
       }
-      this.$emit('adjustNum', type, -1, this.foodIndex);
+
+      this.$emit('adjustNum', type, -1, this.foodIndex, ev);
     },
   },
 };
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-
 .good-list-item {
   justify-content: flex-start;
   display: flex;
@@ -164,9 +164,10 @@ export default {
         }
         .num {
           display: inline-block;
-          width: 12px;
+          width: 17px;
           font-size: 17px;
           margin: 0 5px;
+          text-align: center;
         }
       }
       .btn-sepc {

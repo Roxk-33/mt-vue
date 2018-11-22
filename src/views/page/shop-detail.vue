@@ -1,87 +1,40 @@
 
 <template>
   <div class="shop-detail">
-    <shop-nav
-      :track-opacity="trackOpacity"
-      :is-top="isTop"
-    />
-    <div
-      ref="shopBanner"
-      class="shop-header-box"
-    >
-      <shop-header
-        :title="shopInfo.shop_title"
-        :announcement="shopInfo.announcement"
-        :photo="shopInfo.photo"
-      />
+    <shop-nav :track-opacity="trackOpacity" :is-top="isTop" />
+    <div ref="shopBanner" class="shop-header-box">
+      <shop-header :title="shopInfo.shop_title" :announcement="shopInfo.announcement" :photo="shopInfo.photo" />
     </div>
-    <div
-      class="shop-good"
-      ref="shopGood"
-      :style="shopGoodStyle"
-    >
+    <div class="shop-good" ref="shopGood" :style="shopGoodStyle">
       <div class="shop-good-tab">
         <van-tabs v-model="tabActive">
-          <van-tab
-            v-for="(tab,index) in tabs"
-            :title="tab.label"
-            :key="index"
-          />
+          <van-tab v-for="(tab,index) in tabs" :title="tab.label" :key="index" />
         </van-tabs>
       </div>
       <div class="shop-good-content">
         <div class="shop-good-menu">
           <better-scroll :is-disable="scrollDisabel">
-            <div
-              class="menu-item"
-              v-for="catalog in shopInfo.shop_catalog"
-              :key="catalog.value"
-            >{{ catalog.title }}</div>
+            <div class="menu-item" v-for="catalog in shopInfo.shop_catalog" :key="catalog.value">{{ catalog.title }}</div>
           </better-scroll>
         </div>
 
         <div class="shop-good-list">
-          <better-scroll
-            :listen-scroll="true"
-            :probe-type="probeType"
-            @scroll="onScroll"
-            :is-disable="scrollDisabel"
-            @pullingDown="pullingDown"
-          >
-            <foodItem
-              v-for="(foodInfo,index) in foodList"
-              :key="foodInfo.food_id"
-              :food-info="foodInfo"
-              :food-index="index"
-              :select-num="foodInfo.selectNum"
-              @showSpec="getSpecInfo"
-              @adjustNum="adjustNum"
-            />
+          <better-scroll :listen-scroll="true" :probe-type="probeType" @scroll="onScroll" :is-disable="scrollDisabel" @pullingDown="pullingDown">
+            <foodItem v-for="(foodInfo,index) in foodList" :key="foodInfo.food_id" :food-info="foodInfo" :food-index="index" :select-num="foodInfo.selectNum" @showSpec="getSpecInfo" @adjustNum="adjustNum" />
           </better-scroll>
         </div>
       </div>
     </div>
-    <cart-list
-      :threshold="shopInfo.threshold"
-      :freight="shopInfo.freight"
-      :cart-list="cartList"
-      @adjustNum="adjustNum"
-      @toSettle="toSettle"
-    />
-    <specificationBox
-      @pushCart="getSelectGoood"
-      v-model="showSpecBox"
-      :center="true"
-      width="90%"
-      :food-info="foodSelected"
-      :cart-list="cartList"
-    />
+    <parabola-ani :isStart="isStartBallAni" :ballAniPoi="ballAniPoi" @ani-end="isStartBallAni=false"></parabola-ani>
+    <cart-list :threshold="shopInfo.threshold" :freight="shopInfo.freight" :cart-list="cartList" @adjustNum="adjustNum" @toSettle="toSettle" />
+    <specificationBox @pushCart="getSelectGoood" v-model="showSpecBox" :center="true" width="90%" :food-info="foodSelected" :cart-list="cartList" />
   </div>
 </template>
 
 <script>
 import { getRect } from '@/common/dom';
 import BetterScroll from '@/views/dumb/scroll';
+import parabolaAni from '@/views/dumb/parabola-ani';
 import specificationBox from '@/views/smart/specification-box';
 import cartList from '@/views/smart/cart-list';
 import foodItem from '@/views/smart/food-item';
@@ -120,6 +73,17 @@ export default {
       trackSize: 0, // 商品列表高度
       trackTop: 0, // 商品列表Top
       trackOpacity: 0, // 顶部状态栏opacity
+      isStartBallAni: false, // 是否开启小球抛物线动画
+      ballAniPoi: {
+        start: {
+          left: 0,
+          top: 0,
+        },
+        end: {
+          left: 100,
+          top: 620,
+        },
+      },
     };
   },
   components: {
@@ -129,6 +93,7 @@ export default {
     foodItem,
     shopHeader,
     shopNav,
+    parabolaAni,
   },
   mixins: [foodIsRepeat],
   methods: {
@@ -136,21 +101,21 @@ export default {
       this.mtLoading = true;
       this.$store
         .dispatch('shop/getShopDetail', { id: this.shopID })
-        .then((resp) => {
+        .then(resp => {
           this.shopInfo = resp.data;
           this.mtLoading = false;
           this.foodList = this.shopInfo.food_list;
         })
-        .catch((err) => {
+        .catch(err => {
           this.mtLoading = false;
           this.$toast(err);
           this.$router.back(-1);
         });
     },
     scroll() {
-      document.addEventListener('scroll', (e) => {
+      document.addEventListener('scroll', e => {
         const scorllY = Math.abs(
-          document.documentElement.scrollTop || window.pageYOffset,
+          document.documentElement.scrollTop || window.pageYOffset
         );
         if (!this.scrollDisabel) {
           // 为了兼容Safari
@@ -172,6 +137,8 @@ export default {
       // 45为 shop-good-tab的高度
       this.bannerHeight = getRect(this.$refs.shopBanner).height - 35;
       this.trackSize = window.innerHeight - 45 - 35 + 1;
+      this.ballAniPoi.end.left = 60;
+      this.ballAniPoi.end.top = window.innerHeight - 60;
     },
     onScroll(op) {
       if (op.y > 1) {
@@ -222,7 +189,7 @@ export default {
      * @augments indexMenu表示在foodList的下标，若为-1，则表示商品是从购物车中添加（表明购物车中已有该商品）
      * indexCart和indexMenu不可能同时为-1
      */
-    adjustNum(type, indexCart = -1, indexMenu = -1) {
+    adjustNum(type, indexCart = -1, indexMenu = -1, ev) {
       let foodInfo = null;
       let data = {};
 
@@ -234,7 +201,7 @@ export default {
       // 因为从目录中添加商品，无法得知购物车中商品对应的下标
       if (indexCart === -1) {
         indexCart = this.cartList.findIndex(
-          item => item.food_id === foodInfo.id,
+          item => item.food_id === foodInfo.id
         );
       }
       const foodCartInfo = this.cartList[indexCart];
@@ -244,7 +211,7 @@ export default {
         data = {
           foodId: foodCartInfo.food_id,
           id: foodCartInfo.id, // 此id为购物车内商品的购物车自增ID
-          type
+          type,
         };
       } else {
         // 为新增商品
@@ -259,28 +226,39 @@ export default {
         };
       }
 
-      this.pushCart(data, indexCart, indexMenu);
+      this.pushCart(data, indexCart, indexMenu, ev);
+    },
+    startBallAni(ev) {
+      this.ballAniPoi.start.left = ev.screenX;
+      this.ballAniPoi.start.top = ev.screenY;
+      // 补偿位差
+      if (this.scrollDisabel) {
+        this.ballAniPoi.start.top -= 200;
+      }
+      this.isStartBallAni = true;
     },
     // 发送新增商品到购物车的请求
     //
-    pushCart(data, isExist = -1, indexMenu = -1) {
+    pushCart(data, isExist = -1, indexMenu = -1, ev) {
       if (indexMenu === -1) {
         indexMenu = this.foodList.findIndex(item => item.id === data.foodId);
       }
       try {
         if (isExist !== -1) {
-          this.$store.dispatch('cart/updateProductToCart', data).then((value) => {
+          this.$store.dispatch('cart/updateProductToCart', data).then(value => {
             this.$store.dispatch('cart/getCartList');
             if (data.type === 1) {
               this.foodList[indexMenu].selectNum++;
+              this.startBallAni(ev);
             } else {
               this.foodList[indexMenu].selectNum--;
             }
           });
         } else {
-          this.$store.dispatch('cart/addProductToCart', data).then((value) => {
+          this.$store.dispatch('cart/addProductToCart', data).then(value => {
             this.$store.dispatch('cart/getCartList');
             this.foodList[indexMenu].selectNum++;
+            this.startBallAni(ev);
           });
         }
       } catch (error) {
@@ -289,7 +267,7 @@ export default {
       }
     },
     showSelectNum() {
-      this.foodList.forEach((item) => {
+      this.foodList.forEach(item => {
         const index = this.cartList.findIndex(food => food.food_id == item.id);
         if (index !== -1) {
           item.selectNum = this.cartList[index].num;
@@ -334,7 +312,6 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-
 .shop-detail {
   background-color: #fff;
 }
@@ -431,8 +408,6 @@ export default {
 }
 </style>
 <style lang="scss">
-
-
 .shop-detail {
   .van-ellipsis {
   }
