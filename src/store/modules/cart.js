@@ -15,23 +15,25 @@ const state = {
 const getters = {
   list: state => state.list,
   listArr: state => state.listArr,
-  cartProducts: (state, getters, rootState) => state.list.map(({ id, quantity }) => {
-    const product = rootState.products.all.find(product => product.id === id);
-    return {
-      title: product.title,
-      price: product.price,
-      quantity,
-    };
-  }),
+  cartProducts: (state, getters, rootState) =>
+    state.list.map(({ id, quantity }) => {
+      const product = rootState.products.all.find(product => product.id === id);
+      return {
+        title: product.title,
+        price: product.price,
+        quantity,
+      };
+    }),
 
-  cartTotalPrice: (state, getters) => getters.cartProducts.reduce((total, product) => total + product.price * product.quantity, 0),
+  cartTotalPrice: (state, getters) =>
+    getters.cartProducts.reduce((total, product) => total + product.price * product.quantity, 0),
 };
 
 // mutations
 const mutations = {
   [types.CART_INIT_LIST](state, list) {
     const temp = [];
-    list.forEach((item) => {
+    list.forEach(item => {
       const index = temp.findIndex(_item => _item.shop_info.id == item.shop_id);
 
       if (index === -1) {
@@ -40,7 +42,7 @@ const mutations = {
           {
             shop_info: item.shop_info,
             foodList: [],
-          },
+          }
         );
         obj.foodList.push(item);
         temp.push(obj);
@@ -73,7 +75,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       ajax
         .get(API.CART_LIST)
-        .then((resp) => {
+        .then(resp => {
           commit(types.CART_INIT_LIST, resp.data);
           resolve(resp);
         })
@@ -92,6 +94,10 @@ const actions = {
   // 购物车中已有该商品，可以直接通过购物车自增id判断
   updateProductToCart({ state, commit }, payload) {
     return ajax.put(API.CART_UPDATE, payload);
+  },
+  // 购物车中已有该商品，可以直接通过购物车自增id判断
+  emptyCart({ state, commit }, payload) {
+    return ajax.delete(formatURL(API.CART_DELETE, { shopId: payload }));
   },
 };
 

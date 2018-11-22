@@ -26,7 +26,7 @@
       </div>
     </div>
     <parabola-ani :isStart="isStartBallAni" :ballAniPoi="ballAniPoi" @ani-end="isStartBallAni=false"></parabola-ani>
-    <cart-list :threshold="shopInfo.threshold" :freight="shopInfo.freight" :cart-list="cartList" @adjustNum="adjustNum" @toSettle="toSettle" />
+    <cart-list :threshold="shopInfo.threshold" :freight="shopInfo.freight" :cart-list="cartList" @adjustNum="adjustNum" @toSettle="toSettle" @emptyCart="emptyCart" />
     <specificationBox @pushCart="getSelectGoood" v-model="showSpecBox" :center="true" width="90%" :food-info="foodSelected" :cart-list="cartList" />
   </div>
 </template>
@@ -100,7 +100,7 @@ export default {
     getShopData() {
       this.mtLoading = true;
       this.$store
-        .dispatch('shop/getShopDetail', { id: this.shopID })
+        .dispatch('shop/getShopDetail', { id: this.shopId })
         .then(resp => {
           this.shopInfo = resp.data;
           this.mtLoading = false;
@@ -163,17 +163,22 @@ export default {
         specText,
         foodId: this.foodSelected.id,
         totalPrice,
-        shop_id: this.shopID,
+        shop_id: this.shopId,
         picture: this.foodSelected.picture,
       };
       this.pushCart(data, isExist);
     },
-
+    // 清空购物车
+    emptyCart() {
+      this.$store.dispatch('cart/emptyCart', this.shopId).then(value => {
+        this.$store.dispatch('cart/getCartList');
+      });
+    },
     // 去结算
     toSettle() {
       this.$router.push({
         name: 'orderCreate',
-        params: { shopId: this.shopID, isAll: true },
+        params: { shopId: this.shopId, isAll: true },
       });
     },
     // 获取要选规格的商品信息
@@ -221,7 +226,7 @@ export default {
           specText: [],
           foodId: foodInfo.id,
           totalPrice: foodInfo.price,
-          shop_id: this.shopID,
+          shop_id: this.shopId,
           picture: foodInfo.picture,
         };
       }
@@ -293,12 +298,12 @@ export default {
     // 获取特定商店的购物车详情
     cartList() {
       const arr = this.$store.getters['cart/listArr'];
-      const target = arr.find(item => item.shop_info.id == this.shopID);
+      const target = arr.find(item => item.shop_info.id == this.shopId);
       if (!target) return [];
       return target.foodList;
     },
 
-    shopID() {
+    shopId() {
       return this.$route.params.shopId || 1;
     },
     shopGoodStyle() {

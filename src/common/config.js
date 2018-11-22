@@ -23,6 +23,7 @@ export default {
     CART_SHOP_LIST: `${APIPREFIX}/user/cart/settle/:shopId`,
     CART_ADD: `${APIPREFIX}/user/cart`,
     CART_UPDATE: `${APIPREFIX}/user/cart`,
+    CART_DELETE: `${APIPREFIX}/user/cart/:shopId`,
 
     // 订单
     ORDER_CREATE: `${APIPREFIX}/order`,
