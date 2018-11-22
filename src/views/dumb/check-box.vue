@@ -1,14 +1,6 @@
 <template>
-  <div
-    class="check-box"
-    @click="totggle"
-    :class="value ? 'checked' : ''"
-  >
-    <i
-      class="iconfont"
-      :class="value ? iconFont : 'icon-xuanze1'"
-      :style="style"
-    />
+  <div class="check-box" @click="totggle" :class="value ? 'checked' : ''">
+    <i class="iconfont" :class="value ? iconFont : 'icon-xuanze1'" :style="style" />
     <slot />
   </div>
 </template>
@@ -30,26 +22,16 @@ export default {
       default: CONSTANT.COLOR.MT,
     },
   },
-  data() {
-    return {};
-  },
   methods: {
     totggle() {
-      if (this.value) {
-        this.$emit('input', false);
-      } else this.$emit('input', true);
+      this.$emit('input', !this.value);
       this.$emit('click');
     },
-  },
-  computed: {
-    style() {},
   },
 };
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-
-
 .check-box {
   display: inline-flex;
   align-items: center;

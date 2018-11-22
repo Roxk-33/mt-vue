@@ -1,59 +1,24 @@
 <template>
   <div class="user-address-info">
     <header-nav :title="title" />
-    <form-item
-      label="联系人"
-      :is-required="true"
-      v-model="addressInfo.user_name"
-      placeholder="请填写收货人的姓名"
-    />
+    <form-item label="联系人" :is-required="true" v-model="addressInfo.user_name" placeholder="请填写收货人的姓名" />
+
     <div class="user-address-info-sex">
-      <van-radio
-        :name="SEX['male']"
-        :value="SEX['male']"
-        v-model="addressInfo.user_sex"
-      >先生</van-radio>
-      <van-radio
-        :name="SEX['female']"
-        :value="SEX['female']"
-        v-model="addressInfo.user_sex"
-      >女士</van-radio>
+      <van-radio :name="SEX_EN['male']" :value="SEX_EN['male']" v-model="addressInfo.user_sex">先生</van-radio>
+      <van-radio :name="SEX_EN['female']" :value="SEX_EN['female']" v-model="addressInfo.user_sex">女士</van-radio>
     </div>
-    <form-item
-      label="手机号"
-      :is-required="true"
-      v-model="addressInfo.tel"
-      placeholder="请填写收货人手机号码"
-    />
-    <form-item
-      label="送货地址"
-      :is-required="true"
-      v-model="addressInfo.address"
-    />
-    <form-item
-      label="标签"
-      :is-required="false"
-      v-model="addressInfo.tag"
-      :show-slot="true"
-    >
+    <form-item label="手机号" :is-required="true" v-model="addressInfo.tel" placeholder="请填写收货人手机号码" />
+    <form-item label="送货地址" :is-required="true" v-model="addressInfo.address" />
+    <form-item label="标签" :is-required="false" v-model="addressInfo.tag" :show-slot="true">
       <div class="tag-box">
-        <span
-          class="tag"
-          @click="addressInfo.tag = tag.value"
-          :class="{'active' :addressInfo.tag === tag.value }"
-          v-for="tag in tags"
-          :key="tag.value"
-        >
+        <span class="tag" @click="addressInfo.tag = tag.value" :class="{'active' :addressInfo.tag === tag.value }" v-for="tag in tags" :key="tag.value">
           {{ tag.label }}
         </span>
       </div>
     </form-item>
     <!-- <form-item label="门牌号" :isRequired="true" v-model="addressInfo.stress"></form-item> -->
     <div class="footer-box">
-      <p
-        class="save"
-        @click="save"
-      >保存地址</p>
+      <p class="save" @click="save">保存地址</p>
     </div>
   </div>
 </template>
@@ -69,7 +34,7 @@ export default {
   data() {
     return {
       text: '1231',
-      SEX: CONSTANT.TYPE.SEX_EN,
+      SEX_EN: CONSTANT.TYPE.SEX_EN,
       sex: 1,
       addressInfo: {
         user_name: '',
@@ -100,7 +65,7 @@ export default {
   },
   created() {
     if (!this.isAdd) {
-      this.$store.dispatch('user/getAddressInfo', this.addressId).then((resp) => {
+      this.$store.dispatch('user/getAddressInfo', this.addressId).then(resp => {
         this.addressInfo = Object.assign({}, resp.data);
       });
     } else {
@@ -109,15 +74,15 @@ export default {
   },
   methods: {
     getAddress() {
-      getLocation().then((data) => {
+      getLocation().then(data => {
         this.$store
           .dispatch('user/getMapInfo', {
             location: data,
           })
-          .then((resp) => {
+          .then(resp => {
             this.addressInfo.address = resp.result.formatted_address;
           })
-          .catch((err) => {
+          .catch(err => {
             console.log(err);
           });
       });
@@ -127,14 +92,14 @@ export default {
         if (this.isAdd) {
           this.$store
             .dispatch('user/addAddress', this.addressInfo)
-            .then((data) => {
+            .then(data => {
               this.$router.push({ name: 'userAddressList' });
             });
         } else {
           console.log(this.addressInfo);
           this.$store
             .dispatch('user/editAddress', this.addressInfo)
-            .then((data) => {
+            .then(data => {
               this.$router.push({ name: 'userAddressList' });
             });
         }
@@ -158,7 +123,6 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-
 .user-address-info-sex {
   padding: 10px 10px 10px 90px;
   display: flex;

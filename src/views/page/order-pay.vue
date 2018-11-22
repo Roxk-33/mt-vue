@@ -1,34 +1,30 @@
 <template>
   <div class="order-pay">
-    <header-nav
-      :title="headerTitle"
-      :on-left="true"
-      @click-left="back"
-    />
+    <header-nav :title="headerTitle" :on-left="true" @click-left="back" />
     <div class="order-pay-info">
       <div class="residual-time">
-        剩余时间15:40
+        剩余时间{{this.coutMin | formatTime}}:{{this.coutSec | formatTime}}
       </div>
       <div class="pay-price">
-        ￥<span class="content">15.8</span>
+        ￥<span class="content">{{price}}</span>
       </div>
       <div class="order-info">
-        木桶饭
+        {{shopTitle}}
       </div>
     </div>
-
     <div class='footer-box'>
-      <span>确认支付￥</span><span class="content">15.8</span>
+      <span>确认支付￥</span><span class="content">{{price}}</span>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import headerNav from '@/views/dumb/header-nav';
+import timer from '@/mixins/timer';
 
 export default {
   name: 'OrderPay',
-
+  mixins: [timer],
   data() {
     return {
       headerTitle: '支付订单',
@@ -44,18 +40,47 @@ export default {
         query: { orderId: this.orderId },
       });
     },
+    cancelOrder() {
+      this.$store
+        .dispatch('order/cancelOrder', { id: this.orderId, action: 'timeout' })
+        .then(resp => {
+          return this.$toast(resp.data.message);
+          this.$router.push({
+            path: '/user/index',
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          this.$toast(err);
+        });
+    },
+  },
+  created() {
+    this.initCount(this.deadLineTime, this.cancelOrder.bind(this));
   },
   computed: {
     orderId() {
       return this.$route.params.orderId;
+    },
+    deadLineTime() {
+      return this.$route.params.deadLineTime;
+    },
+    price() {
+      return this.$route.params.price;
+    },
+    shopTitle() {
+      return this.$route.params.shopTitle;
+    },
+  },
+  filters: {
+    formatTime(time) {
+      return time < 10 ? '0' + time : time;
     },
   },
 };
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-
-
 .order-pay-info {
   text-align: center;
   margin-top: 20px;

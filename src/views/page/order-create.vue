@@ -65,29 +65,29 @@
     <div class='order-pay-note'>
       <div class='order-pay-note-item box-right-arrow mt-flex-space-between' @click="showRemarks = true;tempRemarks = orderInfo.remarks;">
         <span class='note-item-left'>备注</span>
-        <div >
+        <div class="note-item-right-box">
           <span class='note-item-right'>{{ orderInfo.remarks }}</span>
           <i class='iconfont icon-xiangyou' />
         </div>
 
       </div>
-      <div class='order-pay-note-item box-right-arrow mt-flex-space-between'>
+      <div class='order-pay-note-item box-right-arrow mt-flex-space-between' @click="showTableware = true;">
         <span class='note-item-left'>餐具数量</span>
-        <div>
-          <span class='note-item-right'>1人</span>
+        <div class="note-item-right-box">
+          <span class='note-item-right'>{{orderInfo.tableware !== null ? orderInfo.tableware +'人' :'未选择'}}</span>
           <i class='iconfont icon-xiangyou' />
         </div>
-
       </div>
-      <div class='order-pay-note-item box-right-arrow mt-flex-space-between'>
+      <!-- <div class='order-pay-note-item box-right-arrow mt-flex-space-between'>
         <span class='note-item-left'>发票</span>
         <span class='note-item-right' />
         <i class='iconfont icon-xiangyou' />
-
-      </div>
+      </div> -->
       <div class='order-pay-note-item box-right-arrow mt-flex-space-between'>
         <span class='note-item-left'>支付方式</span>
-        <span class='note-item-right'>在线支付</span>
+        <div class="note-item-right-box">
+          <span class='note-item-right'>在线支付</span>
+        </div>
         <!-- <i class='iconfont icon-xiangyou'></i> -->
       </div>
     </div>
@@ -115,6 +115,9 @@
         </div>
       </pop-up>
     </van-popup>
+    <van-actionsheet v-model="showTableware" :actions="tablewareList" cancel-text="取消" @select="onSelectTableware" @cancel="showTableware=false">
+
+    </van-actionsheet>
     <!-- 收货地址 -->
     <van-popup v-model="showAddress" position="bottom" :overlay="true">
       <pop-up class="address-list" @cancel="cancel('address')" @clickHeaderLeft="cancel('address')" header-title="选择收货地址" header-left="取消" bottom-text="新增收货地址" bottom-text-icon="icon-add_icon">
@@ -145,7 +148,7 @@
           <span @click="saveRemarks" class="save-btn">完成</span>
         </header-nav>
         <van-field v-model="tempRemarks" type="textarea" class="content" :placeholder="remaskPlaceholder" rows="1" :autosize="remaskField" />
-        </div>
+      </div>
     </van-popup>
   </div>
 </template>
@@ -170,6 +173,7 @@ export default {
       showPay: false,
       showRemarks: false,
       showAddress: false,
+      showTableware: false, // 餐具数量
       foodList: [],
       addressList: [],
       shopInfo: {},
@@ -179,7 +183,30 @@ export default {
         remarks: '',
         shopId: this.shopId,
         arrivalTime: getTime(3),
+        tableware: null,
       },
+      tablewareList: [
+        {
+          name: '不需要餐具',
+          value: 0,
+        },
+        {
+          name: '1人',
+          value: 1,
+        },
+        {
+          name: '2人',
+          value: 2,
+        },
+        {
+          name: '3人',
+          value: 3,
+        },
+        {
+          name: '4人',
+          value: 4,
+        },
+      ],
     };
   },
   components: {
@@ -231,6 +258,11 @@ export default {
           this.$toast(e);
         });
     },
+    // 选择餐具数量
+    onSelectTableware(data) {
+      this.orderInfo.tableware = data.value;
+      this.cancel('tableware');
+    },
     // 获取默认地址
     getDefaultAddress() {
       this.addressList.forEach(item => {
@@ -258,6 +290,9 @@ export default {
         case 'remarks':
           this.showRemarks = false;
           break;
+        case 'tableware':
+          this.showTableware = false;
+          break;
       }
     },
     saveRemarks() {
@@ -275,7 +310,12 @@ export default {
         .then(resp => {
           this.$router.push({
             name: 'orderPay',
-            params: { orderId: resp.data.id },
+            params: {
+              orderId: resp.data.order_info.id,
+              price: resp.data.order_info.total_price,
+              shopTitle: this.shopInfo.shop_title,
+              deadLineTime: resp.data.order_info.deadline_pay_time,
+            },
           });
           // 重新获取购物车
           this.$store.dispatch('cart/getCartList');
@@ -308,8 +348,6 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-
-
 .order-pay {
   padding: 0 5px 50px;
 }
@@ -461,13 +499,19 @@ export default {
     position: relative;
     font-size: 15px;
     padding: 10px 0;
-    .note-item-right {
-      margin-right: 5px;
-      overflow: hidden;
-      max-width: 250px;
-      text-align: right;
-      text-overflow:ellipsis;
-      white-space: nowrap;
+    .note-item-right-box {
+      padding-right: 25px;
+      i {
+        position: absolute;
+        right: 5px;
+      }
+      .note-item-right {
+        overflow: hidden;
+        max-width: 250px;
+        text-align: right;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
   }
 }
@@ -582,8 +626,6 @@ export default {
 }
 </style>
 <style rel="stylesheet/scss" lang="scss">
-
-
 .order-pay .van-popup--right {
   width: 100%;
   height: 100%;

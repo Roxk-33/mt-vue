@@ -2,8 +2,8 @@
 export default {
   TYPE: {
     SEX: {
-      0: '男',
-      1: '女',
+      0: '先生',
+      1: '女士',
     },
     SEX_ZN: {
       男: 0,

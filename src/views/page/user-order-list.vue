@@ -1,38 +1,18 @@
 <template>
   <div class="user-order-list">
     <order-list-header />
-
-    <van-pull-refresh
-      v-model="pullingDownLoading"
-      @refresh="onPullingDown"
-    >
-
-      <van-list
-        v-model="loading"
-        :finished="finished"
-        :immediate-check="false"
-        @load="onPullingUp"
-      >
+    <van-pull-refresh v-model="pullingDownLoading" @refresh="onPullingDown">
+      <van-list v-model="loading" :finished="finished" :immediate-check="false" @load="onPullingUp">
         <div class="order-list-content">
-          <order-list-item
-            v-for="(item,index) in orderList"
-            :key="index"
-            :order-info="item"
-            :food-list="item.food_list"
-            @cancelOrder="cancelOrder"
-          />
+          <order-list-item v-for="(item,index) in orderList" :key="index" :order-info="item" :food-list="item.food_list" @cancelOrder="cancelOrder" />
         </div>
 
-        <van-cell
-          v-if="orderList.length === 0"
-          class="list-empty"
-        >
-          <p>没有数据</p>
-        </van-cell>
       </van-list>
 
     </van-pull-refresh>
-
+    <div v-if="orderList.length === 0" class="list-empty">
+      <p>没有数据</p>
+    </div>
     <footer-nav active='1' />
   </div>
 </template>
@@ -66,12 +46,12 @@ export default {
     cancelOrder(data) {
       this.$store
         .dispatch('order/cancelOrder', data)
-        .then((resp) => {
+        .then(resp => {
           this.page = 0;
           this.orderList = [];
           this.getList();
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
           this.$toast(err);
         });
@@ -92,7 +72,7 @@ export default {
       }
       this.$store
         .dispatch('order/getOrderList', this.page)
-        .then((resp) => {
+        .then(resp => {
           this.mtLoading = false;
           this.pullingDownLoading = false;
           this.loading = false;
@@ -103,7 +83,7 @@ export default {
             this.orderList = this.orderList.concat(resp.data);
           }
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
           this.mtLoading = false;
           this.pullingDownLoading = false;
@@ -117,6 +97,9 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
+.user-order-list {
+  height: 100%;
+}
 .order-list-content {
   margin-top: 85px;
   padding-bottom: 50px;

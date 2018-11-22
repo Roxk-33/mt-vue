@@ -4,10 +4,7 @@
       <h3 class="title">{{ title }}</h3>
       <p class="fee">配送约32分钟</p>
       <p class="announcement">公告：{{ announcement }}</p>
-      <img
-        class="pic"
-        :src="photo"
-      >
+      <img class="pic" :src="photo">
     </div>
   </div>
 </template>
@@ -32,8 +29,6 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-
-
 .shop-header {
   background: url('https://via.placeholder.com/350x150') no-repeat;
   background-clip: content-box;

@@ -1,20 +1,25 @@
-<template>
-  <div class="parabola-ani" ref="ball"></div>
-</template>
-
-<script type="text/ecmascript-6">
 import parabolaAnimation from 'vendors/parabola-animation';
+
 export default {
-  name: 'parabola-ani',
   data() {
-    return {};
+    return {
+      ballAniPoi: {
+        start: {
+          left: 0,
+          top: 0,
+        },
+        end: {
+          left: 100,
+          top: 620,
+        },
+      },
+      ballAniCb: null,
+    };
   },
-  props: {
-    isStart: Boolean,
-    ballAniPoi: Object,
-  },
+
   methods: {
-    parabolaAnimation(el, options) {
+    _startBallAni() {
+      console.log(12312);
       let oThis = this;
       // TODO:优化：复用第一次生成的小球
       let p = new parabolaAnimation('<div></div>', {
@@ -30,25 +35,9 @@ export default {
         },
         endFunc: function() {
           p.destroy(); //结束时的callback
-          oThis.$emit('ani-end');
+          oThis.ballAniCb && oThis.ballAniCb();
         },
       });
     },
   },
-  watch: {
-    isStart(val) {
-      val && this.parabolaAnimation();
-    },
-  },
 };
-</script>
-
-<style rel="stylesheet/scss" lang="scss">
-.parabola-ani {
-  background-color: $mt-color;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  z-index: $zindex-modal;
-}
-</style>

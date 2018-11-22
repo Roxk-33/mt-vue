@@ -1,38 +1,14 @@
 <template>
   <div class='login-container'>
-    <header-nav
-      :is-back="true"
-      :title="headerTitle"
-      :on-left="true"
-      @click-left="$router.back(-1);"
-    >
-      <router-link
-        to="/user/register"
-        class="register"
-      >注册</router-link>
+    <header-nav :is-back="true" :title="headerTitle" :on-left="true" @click-left="$router.back(-1);">
+      <router-link to="/user/register" class="register">注册</router-link>
     </header-nav>
     <div class='container-box'>
       <van-cell-group>
-        <van-field
-          v-model="loginForm.account"
-          label="用户名"
-          placeholder="请输入用户名"
-        />
-        <van-field
-          v-model="loginForm.password"
-          label="密码"
-          type='password'
-          placeholder="请输入密码"
-          required
-          clearable
-        />
+        <van-field v-model="loginForm.account" label="用户名" placeholder="请输入用户名" />
+        <van-field v-model="loginForm.password" label="密码" type='password' placeholder="请输入密码" clearable />
       </van-cell-group>
-      <van-button
-        type="default"
-        round
-        @click="handleLogin"
-        :loading='loading'
-      >登录</van-button>
+      <van-button type="default" round @click="handleLogin" :loading='loading'>登录</van-button>
 
     </div>
   </div>
@@ -65,7 +41,7 @@ export default {
           this.$store.dispatch('cart/getCartList');
           this.$router.push({ name: 'userIndex' });
         })
-        .catch((e) => {
+        .catch(e => {
           this.$toast(e);
           this.loading = false;
         });

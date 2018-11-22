@@ -4,11 +4,7 @@
       <router-link :to="{ name:'userAddressInfo', query: { type:'add'} }">新增地址</router-link>
     </header-nav>
     <div class="address-list-box">
-      <van-swipe-cell
-        :right-width="65"
-        v-for="item in list"
-        :key="item.id"
-      >
+      <van-swipe-cell :right-width="65" v-for="item in list" :key="item.id">
         <van-cell-group>
           <van-cell>
             <slot name="title">
@@ -16,19 +12,12 @@
             </slot>
             <slot name="label">
               <span class="address-user">{{ item.user_name }}</span>
-              <span class="address-sex">{{ item.user_sex == 0 ? '先生':'女士' }}</span>
+              <span class="address-sex">{{SEX[item.user_sex]}}</span>
             </slot>
-            <i
-              slot="right-icon"
-              class="iconfont icon-xiugai"
-              @click="go('edit',item.id)"
-            />
+            <i slot="right-icon" class="iconfont icon-xiugai" @click="go('edit',item.id)" />
           </van-cell>
         </van-cell-group>
-        <span
-          slot="right"
-          @click="delAddress(item.id)"
-        >删除</span>
+        <span slot="right" @click="delAddress(item.id)">删除</span>
       </van-swipe-cell>
     </div>
   </div>
@@ -36,6 +25,7 @@
 
 <script type="text/ecmascript-6">
 import headerNav from '@/views/dumb/header-nav';
+import CONSTANT from '@/common/constant';
 
 export default {
   name: 'UserAddressList',
@@ -43,6 +33,7 @@ export default {
   data() {
     return {
       list: [],
+      SEX: CONSTANT.TYPE.SEX,
     };
   },
   components: {
@@ -55,7 +46,7 @@ export default {
     delAddress(id) {
       this.$store
         .dispatch('user/delAddress', id)
-        .then((resp) => {
+        .then(resp => {
           this.$toast(resp.message);
           this.getData();
         })
@@ -64,7 +55,7 @@ export default {
     getData() {
       this.$store
         .dispatch('user/getAddressList')
-        .then((resp) => {
+        .then(resp => {
           this.list = resp.data;
         })
         .catch(this.$toast);

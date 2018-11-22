@@ -25,7 +25,6 @@
         </div>
       </div>
     </div>
-    <parabola-ani :isStart="isStartBallAni" :ballAniPoi="ballAniPoi" @ani-end="isStartBallAni=false"></parabola-ani>
     <cart-list :threshold="shopInfo.threshold" :freight="shopInfo.freight" :cart-list="cartList" @adjustNum="adjustNum" @toSettle="toSettle" @emptyCart="emptyCart" />
     <specificationBox @pushSpecToCart="getSelectGoood" v-model="showSpecBox" :center="true" width="90%" :food-info="foodSelected" :cart-list="cartList" />
   </div>
@@ -34,7 +33,7 @@
 <script>
 import { getRect } from '@/common/dom';
 import BetterScroll from '@/views/dumb/scroll';
-import parabolaAni from '@/views/dumb/parabola-ani';
+import parabolaAni from '@/mixins/parabola-ani';
 import specificationBox from '@/views/smart/specification-box';
 import cartList from '@/views/smart/cart-list';
 import foodItem from '@/views/smart/food-item';
@@ -73,17 +72,6 @@ export default {
       trackSize: 0, // 商品列表高度
       trackTop: 0, // 商品列表Top
       trackOpacity: 0, // 顶部状态栏opacity
-      isStartBallAni: false, // 是否开启小球抛物线动画
-      ballAniPoi: {
-        start: {
-          left: 0,
-          top: 0,
-        },
-        end: {
-          left: 100,
-          top: 620,
-        },
-      },
     };
   },
   components: {
@@ -93,9 +81,8 @@ export default {
     foodItem,
     shopHeader,
     shopNav,
-    parabolaAni,
   },
-  mixins: [foodIsRepeat],
+  mixins: [foodIsRepeat, parabolaAni],
   methods: {
     getShopData() {
       this.mtLoading = true;
@@ -240,7 +227,7 @@ export default {
       if (this.scrollDisabel) {
         this.ballAniPoi.start.top -= 200;
       }
-      this.isStartBallAni = true;
+      this._startBallAni();
     },
     // 发送新增商品到购物车的请求
     //
@@ -427,5 +414,12 @@ export default {
   .van-tab--active {
     color: #000;
   }
+}
+.parabola-ani {
+  background-color: $mt-color;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  z-index: $zindex-modal;
 }
 </style>

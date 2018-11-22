@@ -12,7 +12,7 @@ import shopDetail from '@/views/page/shop-detail';
 import orderCreate from '@/views/page/order-create';
 import orderPay from '@/views/page/order-pay';
 import userOrderList from '@/views/page/user-order-list';
-import userCart from '@/views/page/user-cart';
+import userCartList from '@/views/page/user-cart-list';
 import userOrderDetail from '@/views/page/user-order-detail';
 import userOrderEvaluation from '@/views/page/user-order-evaluation';
 import addressMap from '@/views/page/address-map';
@@ -64,8 +64,8 @@ export const constantRouterMap = [
       },
       {
         path: 'cart',
-        component: userCart,
-        name: 'userCart',
+        component: userCartList,
+        name: 'userCartList',
       },
       {
         path: 'order/list',
@@ -120,7 +120,7 @@ export const constantRouterMap = [
       },
     ],
   },
-  { path: '/', redirect: '/user/index' },
+  { path: '/', component: user },
   { path: '/error', component: error },
   // { path: '/401', component: _import('errorPage/401'),  },
   // {
@@ -136,7 +136,7 @@ export const constantRouterMap = [
   // },
 ];
 export default new Router({
-  mode: 'history',
-  base: process.env.BASE_URL,
+  // mode: 'history',
+  // base: process.env.BASE_URL,
   routes: constantRouterMap,
 });

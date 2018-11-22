@@ -1,15 +1,9 @@
 <template>
   <div class="container">
     <div class='filter-box mt-flex-space-between'>
-      <div
-        class="filter-box-content"
-        v-click-outside="closeEvent"
-      >
-        <span
-          class='sort-target'
-          @click="showBox"
-          :class="{ 'sort-target_bold' : (sortTarget !== 'sale' && sortTarget !== 'distance')}"
-        >
+      <div class="filter-box-content" v-click-outside="closeEvent">
+        <span class='sort-target' @click="showBox" :class="{ 'sort-target_bold' : (sortTarget !== 'sale' && sortTarget !== 'distance')}">
+
           {{ fliterList[sortTarget] }}
           <i :class="{'fa fa-angle-down' : !show,'fa fa-angle-up' : show}" />
         </span>
@@ -19,22 +13,11 @@
       </div>
       <div class="filter-box-content filter-box-content_right">
         筛选
-        <i
-          class='fa fa-bars'
-          style="margin-left:5px;"
-        />
+        <i class='fa fa-bars' style="margin-left:5px;" />
       </div>
     </div>
-    <div
-      class='sort-box'
-      :class="show?'show-box':''"
-    >
-      <p
-        @click="selectSortType(index)"
-        :class="{ 'sort-target_selected' : sortTarget === index }"
-        v-for="(item,index) in fliterList"
-        :key="index"
-      >{{ item }}</p>
+    <div class='sort-box' :class="show?'show-box':''">
+      <p @click="selectSortType(index)" :class="{ 'sort-target_selected' : sortTarget === index }" v-for="(item,index) in fliterList" :key="index">{{ item }}</p>
     </div>
   </div>
 </template>

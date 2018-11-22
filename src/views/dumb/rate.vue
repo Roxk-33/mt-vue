@@ -1,17 +1,10 @@
 <template>
   <div class="rate">
-    <span
-      v-for="(item,index) in list"
-      :key="index"
-      @click="onSelect(index)"
-    >
-      <i
-        class="iconfont"
-        :class="item ? selectIcon : notIcon"
-        :style="style"
-      />
+    <span v-for="(item,index) in list" :key="index" @click="onSelect(index)">
+
+      <i class="iconfont" :class="item ? iconSelected : iconUnSel" :style="style" />
     </span>
-    <span v-if="isShowText">{{ value }}</span>
+    <span v-if="isShowText" class="score">{{ value }}</span>
   </div>
 </template>
 
@@ -22,12 +15,12 @@ export default {
   data() {
     return {
       hoverIndex: -1,
-      selectIcon: '',
-      notIcon: '',
+      iconSelected: '',
+      iconUnSel: '',
     };
   },
   mounted() {
-    [this.selectIcon, this.notIcon] = this.iconClasses;
+    [this.iconSelected, this.iconUnSel] = this.iconArr;
   },
   props: {
     isShowText: {
@@ -43,7 +36,7 @@ export default {
       type: Number,
       default: 5,
     },
-    iconClasses: {
+    iconArr: {
       type: Array,
       default() {
         return ['icon-star', 'icon-empty-star'];
@@ -64,13 +57,13 @@ export default {
   },
   computed: {
     activeClass() {
-      return this.iconClasses[0];
+      return this.iconArr[0];
     },
     voidClass() {
-      return this.iconClasses[2];
+      return this.iconArr[2];
     },
     halfClass() {
-      return this.iconClasses[1];
+      return this.iconArr[1];
     },
     style() {
       return {
@@ -80,11 +73,10 @@ export default {
     },
     list() {
       return Array.from({ length: this.max }).map(
-        (value, index) => index < this.value,
+        (value, index) => index < this.value
       );
     },
   },
-  components: {},
   methods: {
     onSelect(index) {
       if (!this.disabled) {
@@ -102,5 +94,8 @@ export default {
 }
 .icon-star {
   color: #ffd161;
+}
+.score {
+  margin-left: 5px;
 }
 </style>

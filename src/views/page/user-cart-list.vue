@@ -1,31 +1,15 @@
 <template>
   <div class="user-cart">
-    <header-nav
-      :is-back="true"
-      :title="headerTitle"
-      @click-left="$router.back(-1);"
-    >
+    <header-nav :is-back="true" :title="headerTitle" @click-left="$router.back(-1);">
       <span>编辑</span>
     </header-nav>
     <div class="cart-list">
-      <div
-        class="cart-list-item"
-        v-for="item in cartList"
-        :key="item.shop_info.shop_id"
-      >
+      <div class="cart-list-item" v-for="item in cartList" :key="item.shop_info.shop_id">
         <div class="item-title">
-          <check-box
-            v-model="item.selectAll"
-            @click="selectAll(item)"
-          />
-          <router-link
-            class="content"
-            :to="{ name: 'shopDetail', params: { shopId: item.shop_info.id }}"
-          >
-            <img
-              class="shop-avatar"
-              :src="item.shop_info.photo"
-            >
+          <check-box v-model="item.selectAll" @click="selectAll(item)" />
+          <router-link class="content" :to="{ name: 'shopDetail', params: { shopId: item.shop_info.id }}">
+            <img class="shop-avatar" :src="item.shop_info.photo">
+
             <span class="shop-title">{{ item.shop_info.shop_title }}</span>
             <i class='iconfont icon-xiangyou' />
             <!-- TODO:二期实现促销功能 -->
@@ -37,18 +21,11 @@
         </div>
         <div class="food-list">
           <van-checkbox-group v-model="item.selArr">
-            <div
-              class="food-list-item"
-              v-for="foodInfo in item.foodList"
-              :key="foodInfo.id"
-            >
+            <div class="food-list-item" v-for="foodInfo in item.foodList" :key="foodInfo.id">
               <van-checkbox :name="foodInfo.id" />
               <div class="content">
                 <div class="food-info-box">
-                  <img
-                    class="food-img"
-                    :src="foodInfo.picture"
-                  >
+                  <img class="food-img" :src="foodInfo.picture">
                   <div class="food-info">
                     <p class="food-info-title">{{ foodInfo.food_name }}</p>
                     <p class="food-info-spec">规格：{{ foodInfo.spec_text.join(',') }}</p>
@@ -74,15 +51,9 @@
           <!-- <span class="other-info">已优惠2元</span> -->
           <div class="right">
             <span class="total-price">{{ item.totalPrice }}元</span>
-            <button
-              class="settle-btn"
-              :class="{'not' : (item.shop_info.threshold - item.totalPrice > 0)} "
-            >
+            <button class="settle-btn" :class="{'not' : (item.shop_info.threshold - item.totalPrice > 0)} ">
               <span v-if="item.shop_info.threshold - item.totalPrice > 0">差￥{{ item.shop_info.threshold - item.totalPrice }}起送</span>
-              <span
-                v-else
-                @click="toPay(item)"
-              >去结算</span>
+              <span v-else @click="toPay(item)">去结算</span>
             </button>
           </div>
         </div>
@@ -94,11 +65,10 @@
 <script type="text/ecmascript-6">
 import headerNav from '@/views/dumb/header-nav';
 import checkBox from '@/views/dumb/check-box';
-import { mapGetters } from 'vuex';
 import { deepClone } from '@/common/utils';
 
 export default {
-  name: 'UserCart',
+  name: 'userCartList',
 
   data() {
     return {
@@ -119,7 +89,7 @@ export default {
       const len = target.selArr.length;
       target.selArr.splice(0, target.selArr.length);
       if (len !== target.foodList.length) {
-        target.foodList.forEach((item) => {
+        target.foodList.forEach(item => {
           target.selArr.push(item.id);
         });
       }
@@ -127,10 +97,10 @@ export default {
     // 无法直接更store
     getCart() {
       const temp = deepClone(this.list);
-      temp.forEach((item) => {
+      temp.forEach(item => {
         const selArr = [];
         let totalPrice = 0;
-        item.foodList.forEach((item) => {
+        item.foodList.forEach(item => {
           totalPrice += item.num * item.price;
           selArr.push(item.id);
         });
@@ -165,7 +135,7 @@ export default {
       const price = item.shop_info.freight;
       return item.foodList.reduce(
         (totalPrice, item) => (totalPrice += item.num * item.price),
-        price,
+        price
       );
     },
   },
@@ -178,7 +148,6 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-
 .cart-list-item {
   margin-bottom: 10px;
   background-color: #fff;

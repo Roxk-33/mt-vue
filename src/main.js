@@ -13,9 +13,10 @@ import '@/directive';
 import { Dialog } from 'vant';
 import '@/style/common.scss';
 import '@/style/rest.scss';
-
+import { Lazyload } from 'vant';
 import MtLoadingMixin from '@/mixins/loading';
-
+// 图片懒加载
+Vue.use(Lazyload);
 Vue.mixin(MtLoadingMixin);
 
 Vue.use(Dialog);

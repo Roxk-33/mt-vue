@@ -1,7 +1,7 @@
 <template>
   <div class="good-list-item">
     <div class="good-image" :class="{'good-sold-out':foodInfo.stock==0}">
-      <img :src="foodInfo.picture">
+      <img v-lazy="foodInfo.picture">
       <div v-if="foodInfo.stock == 0" class="sold-out-slogan">已售罄</div>
       <div v-if="foodInfo.stock == 0" class="sold-out-mask"></div>
     </div>
