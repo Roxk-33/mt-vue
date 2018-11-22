@@ -27,7 +27,7 @@
     </div>
     <parabola-ani :isStart="isStartBallAni" :ballAniPoi="ballAniPoi" @ani-end="isStartBallAni=false"></parabola-ani>
     <cart-list :threshold="shopInfo.threshold" :freight="shopInfo.freight" :cart-list="cartList" @adjustNum="adjustNum" @toSettle="toSettle" @emptyCart="emptyCart" />
-    <specificationBox @pushCart="getSelectGoood" v-model="showSpecBox" :center="true" width="90%" :food-info="foodSelected" :cart-list="cartList" />
+    <specificationBox @pushSpecToCart="getSelectGoood" v-model="showSpecBox" :center="true" width="90%" :food-info="foodSelected" :cart-list="cartList" />
   </div>
 </template>
 
@@ -151,10 +151,10 @@ export default {
       this.scrollDisabel = false;
     },
     // 规格选项的商品放入购物车
-    getSelectGoood(isExist, specArr, specText, totalPrice, type) {
+    getSelectGoood(isExist, specArr, specText, totalPrice, type, ev = null) {
       // 若已存在在购物车中，不需要format数据
       if (isExist !== -1) {
-        this.adjustNum(type, isExist, this.specIndex);
+        this.adjustNum(type, isExist, this.specIndex, ev);
         return;
       }
       const data = {
@@ -166,7 +166,7 @@ export default {
         shop_id: this.shopId,
         picture: this.foodSelected.picture,
       };
-      this.pushCart(data, isExist);
+      this.pushCart(data, isExist, null, ev);
     },
     // 清空购物车
     emptyCart() {

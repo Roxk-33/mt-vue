@@ -1,28 +1,16 @@
 <template>
   <transition name='box-scale'>
-    <div
-      class="specification-box-container"
-      v-show="value"
-    >
+    <div class="specification-box-container" v-show="value">
       <div class='specification-box'>
         <div class='specification-box_header'>
           <span class='specification-box_title'>{{ foodInfo.food_name }}</span>
           <i class='specification-box_close fa fa-close' />
         </div>
         <div class='specification-box_content'>
-          <div
-            class='box-item'
-            v-for="(typeItem,index) in totalSpec"
-            :key="typeItem.value"
-          >
+          <div class='box-item' v-for="(typeItem,index) in totalSpec" :key="typeItem.value">
             <p class='box-item_title'>{{ typeItem.spec_name }}</p>
             <ul class='box-item-specification'>
-              <li
-                @click="chooseType(item,index,type_index)"
-                v-for="(item,type_index) in typeItem.spec_arr"
-                :key="type_index"
-                :class="{'box-item_selected' :specArr[index] == item.id,'slod-out':item.stock == 0}"
-              >
+              <li @click="chooseType(item,index,type_index)" v-for="(item,type_index) in typeItem.spec_arr" :key="type_index" :class="{'box-item_selected' :specArr[index] == item.id,'slod-out':item.stock == 0}">
                 {{ item.label }}
               </li>
             </ul>
@@ -33,26 +21,13 @@
             <span class='footer-info_price'>￥{{ totalPrice }}</span>
             <span class='footer-info_specification'>({{ slogan }})</span>
           </div>
-          <van-button
-            size="small"
-            @click="pushCart"
-            v-if="isExist == -1 || num == 0"
-          >
+          <van-button size="small" @click="pushCart" v-if="isExist == -1 || num == 0">
             <i class='fa fa-plus' />加入购物车
           </van-button>
-          <div
-            class='specification-box-num-btn'
-            v-else
-          >
-            <span
-              class='num-cut-round'
-              @click="adjustNum(-1)"
-            >-</span>
+          <div class='specification-box-num-btn' v-else>
+            <span class='num-cut-round' @click="adjustNum(-1)">-</span>
             <span class='food-num'>{{ num }}</span>
-            <span
-              class='num-add-round'
-              @click="adjustNum(1)"
-            >+</span>
+            <span class='num-add-round' @click="adjustNum(1,$event)">+</span>
           </div>
         </div>
       </div>
@@ -102,7 +77,7 @@ export default {
       this.specInfo = specInfo;
       // 前一个规格的价钱
       const price = this.totalSpec[index].spec_arr.find(
-        item => item.id == this.specArr[index],
+        item => item.id == this.specArr[index]
       ).price;
       this.specArr.splice(index, 1, specInfo.id);
       this.specText.splice(index, 1, specInfo.label);
@@ -145,7 +120,7 @@ export default {
         // 购物车中未有该商品
         // 计算默认规格的价钱
         this.totalPrice = this.foodInfo.price;
-        this.totalSpec.forEach((item) => {
+        this.totalSpec.forEach(item => {
           const content = item.spec_arr[item.spec_default];
           this.totalPrice += parseFloat(content.price);
         });
@@ -180,38 +155,43 @@ export default {
           this.specText.push(item.label);
         }
       });
-
       Object.keys(temp).forEach(key => this.totalSpec.push(temp[key]));
-      console.log(this.totalSpec);
     },
 
     pushCart() {
       this.num++;
       this.$emit(
-        'pushCart',
+        'pushSpecToCart',
         this.isExist,
         this.specArr,
         this.specText,
         this.totalPrice,
-        1,
+        1
       );
     },
-    adjustNum(type) {
+    adjustNum(type, ev) {
       if (type === 1) {
-        if (this.specInfo.stock  < this.num) return this.$toast('库存不足');
+        if (this.specInfo.stock < this.num) return this.$toast('库存不足');
         console.log('增加');
         this.num++;
         this.$emit(
-          'pushCart',
+          'pushSpecToCart',
           this.isExist,
           this.specArr,
           this.specText,
           this.totalPrice,
           type,
+          ev
         );
       } else if (this.num > 0) {
         this.num--;
-        this.$emit('pushCart', this.isExist, this.specArr, this.specText, type);
+        this.$emit(
+          'pushSpecToCart',
+          this.isExist,
+          this.specArr,
+          this.specText,
+          type
+        );
       }
     },
   },
@@ -238,7 +218,6 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-
 // 弹窗
 
 .specification-box-container {

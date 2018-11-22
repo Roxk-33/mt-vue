@@ -188,6 +188,7 @@ export default {
     }
     .exist-left-info {
       font-size: 12px;
+      padding-left: 5px;
     }
   }
   .cart-list-right {
