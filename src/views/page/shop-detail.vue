@@ -17,7 +17,6 @@
             <div class="menu-item" v-for="catalog in shopInfo.shop_catalog" :key="catalog.value">{{ catalog.title }}</div>
           </better-scroll>
         </div>
-
         <div class="shop-good-list">
           <better-scroll :listen-scroll="true" :probe-type="probeType" @scroll="onScroll" :is-disable="scrollDisabel" @pullingDown="pullingDown">
             <foodItem v-for="(foodInfo,index) in foodList" :key="foodInfo.food_id" :food-info="foodInfo" :food-index="index" :select-num="foodInfo.selectNum" @showSpec="getSpecInfo" @adjustNum="adjustNum" />
@@ -31,8 +30,6 @@
 </template>
 
 <script>
-import { getRect } from '@/common/dom';
-import BetterScroll from '@/views/dumb/scroll';
 import parabolaAni from '@/mixins/parabola-ani';
 import specificationBox from '@/views/smart/specification-box';
 import cartList from '@/views/smart/cart-list';
@@ -40,6 +37,7 @@ import foodItem from '@/views/smart/food-item';
 import shopHeader from '@/views/smart/shop-header';
 import shopNav from '@/views/smart/shop-nav';
 import foodIsRepeat from '@/mixins/food-is-repeat';
+import shopDetailScroll from '@/mixins/shop-detail-scroll';
 
 export default {
   name: 'ShopDetail',
@@ -60,29 +58,21 @@ export default {
         },
       ],
       tabActive: 0,
-      probeType: 3,
-      bannerHeight: 0,
-      isTop: false,
       showSpecBox: false,
       shopInfo: {},
       foodList: [],
-      scrollDisabel: false,
       foodSelected: {},
       specIndex: 0, // 规格商品的index
-      trackSize: 0, // 商品列表高度
-      trackTop: 0, // 商品列表Top
-      trackOpacity: 0, // 顶部状态栏opacity
     };
   },
   components: {
-    BetterScroll,
     specificationBox,
     cartList,
     foodItem,
     shopHeader,
     shopNav,
   },
-  mixins: [foodIsRepeat, parabolaAni],
+  mixins: [foodIsRepeat, parabolaAni, shopDetailScroll],
   methods: {
     getShopData() {
       this.mtLoading = true;
@@ -98,40 +88,6 @@ export default {
           this.$toast(err);
           this.$router.back(-1);
         });
-    },
-    scroll() {
-      document.addEventListener('scroll', e => {
-        const scorllY = Math.abs(
-          document.documentElement.scrollTop || window.pageYOffset
-        );
-        if (!this.scrollDisabel) {
-          // 为了兼容Safari
-          this.isTop = false;
-          if (this.bannerHeight > scorllY) {
-            this.trackOpacity = scorllY / this.bannerHeight;
-          } else {
-            this.scrollDisabel = true;
-            this.trackOpacity = '1';
-            this.isTop = true;
-          }
-        } else if (this.bannerHeight > scorllY) {
-          this.scrollDisabel = false;
-        }
-      });
-    },
-    initMenu() {
-      // 35为 header-nav的高度
-      // 45为 shop-good-tab的高度
-      this.bannerHeight = getRect(this.$refs.shopBanner).height - 35;
-      this.trackSize = window.innerHeight - 45 - 35 + 1;
-      this.ballAniPoi.end.left = 60;
-      this.ballAniPoi.end.top = window.innerHeight - 60;
-    },
-    onScroll(op) {
-      if (op.y > 1) {
-        console.log('菜单到顶');
-        this.scrollDisabel = false;
-      }
     },
     pullingDown() {
       console.log('上拉');
