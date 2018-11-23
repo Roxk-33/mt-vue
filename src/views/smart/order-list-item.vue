@@ -19,7 +19,7 @@
         <p class="order-price">￥15</p>
       </div>
       <div class="item-content-btn-box">
-        <span v-if="['UNPAY','PAY','ONTHEWAY'].includes(orderInfo.status)" class="item-content-btn" @click.stop="cancel('normal')">取消订单</span>
+        <span v-if="['UNPAY','PAY','ONTHEWAY'].includes(orderInfo.status)" class="item-content-btn" @click.stop="cancel">取消订单</span>
         <router-link class="item-content-btn mt-color" :to="{ name: 'orderPay', params: { orderId: this.orderId }}" v-if="orderInfo.status === 0">立即支付</router-link>
         <router-link class="again item-content-btn" :to="{ name: 'shopDetail', params: { orderId: this.orderId }}" v-if="['ORDER_CANCEL','ORDER_CANCEL_TIMEOUT','ORDER_SUCCESS'].includes(orderInfo.status) ">再来一单</router-link>
         <router-link class="after-sale item-content-btn" to="/order/evaluation" v-if="orderInfo.status === 'ACCEPT'">申请售后</router-link>
@@ -31,7 +31,6 @@
 
 <script type="text/ecmascript-6">
 import CONSTANT from '@/common/constant';
-import timer from '@/mixins/timer';
 
 export default {
   name: 'OrderListItem',
@@ -39,15 +38,14 @@ export default {
     orderInfo: Object,
     foodList: Array,
   },
-  mixins: [timer],
   data() {
     return {
       ORDER_STATUS: CONSTANT.ORDER_STATUS,
     };
   },
   methods: {
-    cancel(action = 'normal') {
-      this.$emit('cancelOrder', { id: this.orderId, action });
+    cancel() {
+      this.$emit('cancelOrder', this.orderId);
     },
     gotoDetail() {
       this.$router.push({
@@ -56,14 +54,7 @@ export default {
       });
     },
   },
-  created() {
-    if (this.orderStatus === 'UNPAY') {
-      this.initCount(
-        this.orderInfo.deadline_pay_time,
-        this.cancel.bind(this, 'timeout')
-      );
-    }
-  },
+
   computed: {
     shopInfo() {
       if (!this.orderInfo) return {};
@@ -111,6 +102,9 @@ export default {
     }
     .item-header-right {
       line-height: 30px;
+      p {
+        color: $mt-gray;
+      }
     }
   }
   .item-content {

@@ -27,9 +27,10 @@ export default {
 
     // 订单
     ORDER_CREATE: `${APIPREFIX}/order`,
+    ORDER_PAY: `${APIPREFIX}/order`,
     ORDER_LIST: `${APIPREFIX}/user/order`,
     ORDER_DETAIL: `${APIPREFIX}/user/order/:id`,
-    ORDER_DELETE: `${APIPREFIX}/user/order/`,
+    ORDER_DELETE: `${APIPREFIX}/user/order/:id`,
   },
   BASE_URL: {
     PRO: 'https://api.lococo.site/',

@@ -15,14 +15,13 @@
     <div class="detail-box detail-other" v-if="orderStatus === 'UNPAY'">
       <i class="iconfont icon-bell" />
       请在{{this.coutMin | formatTime}}:{{this.coutSec | formatTime}}分钟内完成支付，超时将自动取消
-
     </div>
     <div class="detail-box detail-other">
       <p v-if="orderStatus !== 'UNPAY'">{{ ORDER_STATUS_MSG[orderStatus] }}</p>
       <p v-else>预计<span class="arrival-time">{{ orderInfo.arrival_time.substr(-5) }}</span>送达</p>
       <div class="detail-top-btn">
         <span v-if="orderStatus === 'UNPAY'" @click="cancelOrder">取消订单</span>
-        <router-link class="mt-color" :to="{ name: 'orderPay', params: { orderId: this.orderId }}" v-if="orderStatus === 'UNPAY'">立即支付</router-link>
+        <span class="mt-color" v-if="orderStatus === 'UNPAY'" @click="goPay">立即支付</span>
         <router-link class="again" :to="{ name: 'shopDetail', params: { orderId: this.orderId }}" v-if="orderStatus === 'ORDER_SUCCESS' ||orderStatus === 'ORDER_CANCEL'">再来一单</router-link>
         <router-link class="after-sale" to="/order/evaluation" v-if="orderStatus === 'ORDER_SUCCESS'">申请售后</router-link>
         <router-link class="mt-color" v-if="orderStatus === 'ORDER_SUCCESS'" :to="{path: '/user/order/evaluation', query: { orderId: this.orderId }}">评价</router-link>
@@ -122,10 +121,7 @@ export default {
           this.mtLoading = false;
           this.orderInfo = resp.data;
           if (this.orderStatus === 'UNPAY') {
-            this.initCount(
-              this.orderInfo.deadline_pay_time,
-              this.cancelOrder.bind(this, 'timeout')
-            );
+            this.initCount(this.orderInfo.deadline_pay_time, null);
           }
         })
         .catch(err => {
@@ -134,9 +130,9 @@ export default {
           this.$router.back(-1);
         });
     },
-    cancelOrder(action = 'normal') {
+    cancelOrder() {
       this.$store
-        .dispatch('order/cancelOrder', { id: this.orderId, action })
+        .dispatch('order/cancelOrder', this.orderId)
         .then(resp => {
           this.getData();
         })
@@ -144,6 +140,17 @@ export default {
           console.log(err);
           this.$toast(err);
         });
+    },
+    goPay() {
+      this.$router.push({
+        name: 'orderPay',
+        params: {
+          orderId: this.orderInfo.id,
+          price: this.orderInfo.total_price,
+          shopTitle: this.shopInfo.shop_title,
+          deadLineTime: this.orderInfo.deadline_pay_time,
+        },
+      });
     },
   },
   created() {

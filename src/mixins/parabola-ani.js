@@ -19,7 +19,6 @@ export default {
 
   methods: {
     _startBallAni() {
-      console.log(12312);
       let oThis = this;
       // TODO:优化：复用第一次生成的小球
       let p = new parabolaAnimation('<div></div>', {

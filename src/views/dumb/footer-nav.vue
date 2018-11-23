@@ -48,17 +48,20 @@ export default {
     },
   },
   created() {
-    console.log(this.routeName);
     if (this.routeName === 'userIndex') this.active = 2;
     if (this.routeName === 'userOrderList') this.active = 1;
-    // if(this.routeName === '')
   },
 };
 </script>
 <style scoped rel="stylesheet/scss" lang="scss">
-
-i {
-  font-size: 25px;
+.van-tabbar {
+  padding-top: 5px;
+}
+.van-tabbar-item {
+  color: $mt-gray;
+  i {
+    font-size: 25px;
+  }
 }
 .van-tabbar-item--active {
   color: $mt-color;

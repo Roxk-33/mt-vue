@@ -6,9 +6,7 @@
         <div class="order-list-content">
           <order-list-item v-for="(item,index) in orderList" :key="index" :order-info="item" :food-list="item.food_list" @cancelOrder="cancelOrder" />
         </div>
-
       </van-list>
-
     </van-pull-refresh>
     <div v-if="orderList.length === 0" class="list-empty">
       <p>没有数据</p>
@@ -43,9 +41,9 @@ export default {
     this.getList();
   },
   methods: {
-    cancelOrder(data) {
+    cancelOrder(id) {
       this.$store
-        .dispatch('order/cancelOrder', data)
+        .dispatch('order/cancelOrder', id)
         .then(resp => {
           this.page = 0;
           this.orderList = [];

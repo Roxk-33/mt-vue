@@ -12,7 +12,7 @@
         {{shopTitle}}
       </div>
     </div>
-    <div class='footer-box'>
+    <div class='footer-box' @click="pay">
       <span>确认支付￥</span><span class="content">{{price}}</span>
     </div>
   </div>
@@ -41,12 +41,20 @@ export default {
       });
     },
     cancelOrder() {
+      this.$router.push({
+        path: '/user/index',
+      });
+    },
+    pay() {
       this.$store
-        .dispatch('order/cancelOrder', { id: this.orderId, action: 'timeout' })
+        .dispatch('order/payOrder', { id: this.orderId })
         .then(resp => {
-          return this.$toast(resp.data.message);
+          console.log(resp.data);
+
+          this.$toast(resp.data.message);
           this.$router.push({
-            path: '/user/index',
+            path: '/user/order/detail',
+            query: { orderId: this.orderId },
           });
         })
         .catch(err => {
@@ -55,7 +63,12 @@ export default {
         });
     },
   },
-  created() {
+  mounted() {
+    if (!this.orderId) {
+      this.$toast('非法访问');
+      this.$router.push('/user/order/list');
+      return;
+    }
     this.initCount(this.deadLineTime, this.cancelOrder.bind(this));
   },
   computed: {
