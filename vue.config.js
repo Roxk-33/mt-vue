@@ -1,5 +1,6 @@
 const path = require('path');
 const CompressionPlugin = require('compression-webpack-plugin');
+const SkeletonWebpackPlugin = require('vue-skeleton-webpack-plugin');
 const webpack = require('webpack');
 
 function resolve(dir) {
@@ -19,6 +20,24 @@ module.exports = {
         deleteOriginalAssets: false,
       }),
       new webpack.HashedModuleIdsPlugin(),
+      new SkeletonWebpackPlugin({
+        webpackConfig: {
+          entry: {
+            app: resolve('./src/skeleton/entry-skeleton.js'),
+          },
+        },
+        quiet: true,
+        minimize: true,
+        router: {
+          mode: 'hash',
+          routes: [
+            {
+              path: '/shop/list',
+              skeletonId: 'skeleton-shop-list',
+            },
+          ],
+        },
+      }),
     ],
     optimization: {
       /*

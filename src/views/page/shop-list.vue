@@ -57,7 +57,6 @@ export default {
       this.show = result;
     },
     getList() {
-      this.shopList.length === 0 && (this.mtLoading = true);
       this.$store
         .dispatch('shop/getShopList', {
           page: this.page,
@@ -65,14 +64,13 @@ export default {
         })
         .then(resp => {
           this.loading = false;
-          this.mtLoading = false;
-
           if (resp.data.length === 0) {
             this.finished = true;
           } else {
             this.shopList = this.shopList.concat(resp.data);
           }
         })
+
         .catch(err => {
           this.$toast(err);
           console.log(err);

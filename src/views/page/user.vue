@@ -3,40 +3,23 @@
     <div class='user-index-header'>
       <div class='header_setting'>
         <i class='fa fa-cog' />
-        <i
-          class='fa fa-commenting-o'
-          style="vertical-align: top;"
-        />
+
+        <i class='fa fa-commenting-o' style="vertical-align: top;" />
       </div>
       <div class='header_content'>
-        <router-link
-          class='content-avatar'
-          to="/user/info"
-        >
+        <router-link class='content-avatar' to="/user/info">
           <img :src='userAvatar'>
         </router-link>
-        <router-link
-          v-if="userName"
-          class='content-info_body'
-          to="/user/info"
-        >
+        <router-link v-if="userName" class='content-info_body' to="/user/info">
           {{ userName }}
         </router-link>
-        <router-link
-          v-else
-          class='content-info_login'
-          to="/user/login"
-        >
+        <router-link v-else class='content-info_login' to="/user/login">
           登录/注册
         </router-link>
       </div>
     </div>
     <div class='user-index-body'>
-      <van-row
-        class='fn-list'
-        type="flex"
-        justify="space-around"
-      >
+      <van-row class='fn-list' type="flex" justify="space-around">
         <van-col :span="8">
           <div class='fn-list-item'>
             <i class='iconfont icon-gouwudai' />
@@ -50,10 +33,8 @@
           </div>
         </van-col>
         <van-col :span="8">
-          <router-link
-            class='fn-list-item'
-            to="/user/address/list"
-          >
+          <router-link class='fn-list-item' to="/user/address/list">
+
             <i class='iconfont icon-dizhi' />
             <p>我的地址</p>
           </router-link>
@@ -88,7 +69,6 @@ export default {
 };
 </script>
 <style rel="stylesheet/scss" lang="scss">
-
 .user-index-header {
   height: 3rem;
   background-color: $mt-color;
