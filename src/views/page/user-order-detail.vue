@@ -158,7 +158,7 @@ export default {
   },
   computed: {
     orderId() {
-      return this.$route.query.orderId;
+      return this.$route.params.id;
     },
     shopInfo() {
       if (!this.orderInfo.shop_info) return { shop_title: '' };

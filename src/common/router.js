@@ -73,7 +73,7 @@ export const constantRouterMap = [
         name: 'userOrderList',
       },
       {
-        path: 'order/detail',
+        path: 'order/detail/:id',
         component: userOrderDetail,
         name: 'userOrderDetail',
       },
@@ -96,7 +96,7 @@ export const constantRouterMap = [
         name: 'shopList',
       },
       {
-        path: 'detail',
+        path: 'detail/:id',
         component: shopDetail,
         name: 'shopDetail',
       },

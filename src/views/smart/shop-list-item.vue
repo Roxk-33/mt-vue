@@ -1,5 +1,5 @@
 <template>
-  <router-link class='shop-item' :to="{ name: 'shopDetail', params: { shopId: shopInfo.id }}">
+  <router-link class='shop-item' :to="{ name: 'shopDetail',params:{id:shopInfo.id}}">
     <div class='shop-item_left'>
       <img v-lazy='shopInfo.photo'>
     </div>

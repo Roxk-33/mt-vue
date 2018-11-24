@@ -243,7 +243,10 @@ export default {
         .dispatch('cart/getCartListByShop', { shopId: this.shopId })
         .then(resp => {
           this.mtLoading = false;
-
+          if (resp.data.length === 0) {
+            this.$toast('未选购商品');
+            return this.router.push('/user/cart');
+          }
           if (this.foodIdArr.length) {
             this.foodList = resp.data.filter(
               item => this.foodIdArr.indexOf(item.id) !== -1

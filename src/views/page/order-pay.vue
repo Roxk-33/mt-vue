@@ -53,8 +53,8 @@ export default {
 
           this.$toast(resp.data.message);
           this.$router.push({
-            path: '/user/order/detail',
-            query: { orderId: this.orderId },
+            name: 'userOrderDetail',
+            params: { id: this.orderId },
           });
         })
         .catch(err => {

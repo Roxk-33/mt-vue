@@ -49,8 +49,8 @@ export default {
     },
     gotoDetail() {
       this.$router.push({
-        path: '/user/order/detail',
-        query: { orderId: this.orderId },
+        name: 'userOrderDetail',
+        params: { id: this.orderId },
       });
     },
   },
