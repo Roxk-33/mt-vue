@@ -3,7 +3,7 @@ export function deepClone(source) {
     throw new Error('error arguments', 'shallowClone');
   }
   const targetObj = source.constructor === Array ? [] : {};
-  Object.keys(source).forEach((keys) => {
+  Object.keys(source).forEach(keys => {
     if (source[keys] && typeof source[keys] === 'object') {
       targetObj[keys] = source[keys].constructor === Array ? [] : {};
       targetObj[keys] = deepClone(source[keys]);
@@ -14,7 +14,7 @@ export function deepClone(source) {
   return targetObj;
 }
 export function formatURL(url, target) {
-  Object.keys(target).forEach((key) => {
+  Object.keys(target).forEach(key => {
     url = url.replace(`:${key}`, target[key]);
   });
   return url;
@@ -42,7 +42,9 @@ export function parseTime(time, cFormat) {
   };
   const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
     let value = formatObj[key];
-    if (key === 'a') { return ['一', '二', '三', '四', '五', '六', '日'][value - 1]; }
+    if (key === 'a') {
+      return ['一', '二', '三', '四', '五', '六', '日'][value - 1];
+    }
     if (result.length > 0 && value < 10) {
       value = `0${value}`;
     }
@@ -60,11 +62,13 @@ export function getTime(delay = 15) {
     m: date.getMonth() + 1,
     d: date.getDate(),
     h: date.getHours(),
-    i: date.getMinutes() ,
+    i: date.getMinutes(),
   };
   const time_str = format.replace(/{(y|m|d|h|i)+}/g, (result, key) => {
     let value = formatObj[key];
-    if (key === 'a') { return ['一', '二', '三', '四', '五', '六', '日'][value - 1]; }
+    if (key === 'a') {
+      return ['一', '二', '三', '四', '五', '六', '日'][value - 1];
+    }
     if (result.length > 0 && value < 10) {
       value = `0${value}`;
     }
@@ -77,7 +81,6 @@ export function testUserName(name) {
   const len = name.length;
   const reg = /^[a-zA-Z\u4e00-\u9fa5]+$/;
   const minLen = 4;
-
 
   const maxLen = 16;
   const result = {
@@ -99,7 +102,6 @@ export function testUserName(name) {
 export function testPsw(psw, pswRe) {
   const len = psw.length;
   const minLen = 8;
-
 
   const maxLen = 32;
   const reg = /(\d+(a-zA-Z)+)/;
@@ -138,4 +140,34 @@ export function formatTel(tel) {
   const reg2 = /(\d)(?=(\d{3})+(\.|$))/g;
   tel = tel.replace(reg1, '');
   return tel.replace(reg2, $1 => `${$1} `);
+}
+export function getRect(el) {
+  if (el instanceof window.SVGElement) {
+    const rect = el.getBoundingClientRect();
+    return {
+      top: rect.top,
+      left: rect.left,
+      width: rect.width,
+      height: rect.height,
+    };
+  }
+  return {
+    top: el.offsetTop,
+    left: el.offsetLeft,
+    width: el.offsetWidth,
+    height: el.offsetHeight,
+  };
+}
+const TokenKey = 'Mt-Token';
+
+export function getToken() {
+  return localStorage.getItem(TokenKey);
+}
+
+export function setToken(token) {
+  return localStorage.setItem(TokenKey, token);
+}
+
+export function removeToken() {
+  return localStorage.removeItem(TokenKey);
 }

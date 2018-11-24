@@ -1,8 +1,5 @@
 <template>
-  <div
-    ref="wrapper"
-    class="list-wrapper"
-  >
+  <div ref="wrapper" class="list-wrapper">
     <div class="scroll-content">
       <div ref="listWrapper">
         <slot>
@@ -11,58 +8,24 @@
           </ul> -->
         </slot>
       </div>
-      <slot
-        name="pullup"
-        :pullUpLoad="pullUpLoad"
-        :isPullUpLoad="isPullUpLoad"
-      >
-        <div
-          class="pullup-wrapper"
-          v-if="pullUpLoad"
-        >
-          <div
-            class="before-trigger"
-            v-if="!isPullUpLoad"
-          >
+      <slot name="pullup" :pullUpLoad="pullUpLoad" :isPullUpLoad="isPullUpLoad">
+        <div class="pullup-wrapper" v-if="pullUpLoad">
+          <div class="before-trigger" v-if="!isPullUpLoad">
             <span>{{ pullUpTxt }}</span>
           </div>
-          <div
-            class="after-trigger"
-            v-else
-          >
+          <div class="after-trigger" v-else>
             <loading />
           </div>
         </div>
       </slot>
     </div>
-    <slot
-      name="pulldown"
-      :pullDownRefresh="pullDownRefresh"
-      :pullDownStyle="pullDownStyle"
-      :beforePullDown="beforePullDown"
-      :isPullingDown="isPullingDown"
-      :bubbleY="bubbleY"
-    >
-      <div
-        ref="pulldown"
-        class="pulldown-wrapper"
-        :style="pullDownStyle"
-        v-if="pullDownRefresh"
-      >
-        <div
-          class="before-trigger"
-          v-if="beforePullDown"
-        >
+    <slot name="pulldown" :pullDownRefresh="pullDownRefresh" :pullDownStyle="pullDownStyle" :beforePullDown="beforePullDown" :isPullingDown="isPullingDown" :bubbleY="bubbleY">
+      <div ref="pulldown" class="pulldown-wrapper" :style="pullDownStyle" v-if="pullDownRefresh">
+        <div class="before-trigger" v-if="beforePullDown">
           <bubble :y="bubbleY" />
         </div>
-        <div
-          class="after-trigger"
-          v-else
-        >
-          <div
-            v-if="isPullingDown"
-            class="loading"
-          >
+        <div class="after-trigger" v-else>
+          <div v-if="isPullingDown" class="loading">
             <loading />
           </div>
           <div v-else>
@@ -78,7 +41,7 @@
 import BScroll from 'better-scroll';
 import Loading from '@/views/dumb/loading';
 import Bubble from '@/views/dumb/bubble.vue';
-import { getRect } from '@/common/dom';
+import { getRect } from '@/common/utils';
 
 const COMPONENT_NAME = 'scroll';
 const DIRECTION_H = 'horizontal';
@@ -166,8 +129,8 @@ export default {
   computed: {
     refreshTxt() {
       return (
-        (this.pullDownRefresh && this.pullDownRefresh.txt)
-        || this.$i18n.t('scrollComponent.defaultRefreshTxt')
+        (this.pullDownRefresh && this.pullDownRefresh.txt) ||
+        this.$i18n.t('scrollComponent.defaultRefreshTxt')
       );
     },
   },
@@ -204,7 +167,7 @@ export default {
 
       this.scroll = new BScroll(this.$refs.wrapper, options);
       if (this.listenScroll) {
-        this.scroll.on('scroll', (pos) => {
+        this.scroll.on('scroll', pos => {
           this.$emit('scroll', pos);
         });
       }
@@ -266,7 +229,7 @@ export default {
         this.isPullingDown = true;
         this.$emit('pullingDown');
       });
-      this.scroll.on('scroll', (pos) => {
+      this.scroll.on('scroll', pos => {
         if (!this.pullDownRefresh) {
           return;
         }
@@ -274,14 +237,14 @@ export default {
           this.bubbleY = Math.max(0, pos.y + this.pullDownInitTop);
           this.pullDownStyle = `top:${Math.min(
             pos.y + this.pullDownInitTop,
-            10,
+            10
           )}px`;
         } else {
           this.bubbleY = 0;
         }
         if (this.isRebounding) {
-          this.pullDownStyle = `top:${10
-            - (this.pullDownRefresh.stop - pos.y)}px`;
+          this.pullDownStyle = `top:${10 -
+            (this.pullDownRefresh.stop - pos.y)}px`;
         }
       });
     },
@@ -294,7 +257,7 @@ export default {
     },
     _reboundPullDown() {
       const { stopTime = 600 } = this.pullDownRefresh;
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         setTimeout(() => {
           this.isRebounding = true;
           this.scroll.finishPullDown();
