@@ -27,10 +27,10 @@
           </div>
         </van-col>
         <van-col :span="8">
-          <div class='fn-list-item'>
+          <router-link class='fn-list-item' to="/user/evaluation/list">
             <i class='iconfont icon-pingjia' />
             <p>我的评价</p>
-          </div>
+          </router-link>
         </van-col>
         <van-col :span="8">
           <router-link class='fn-list-item' to="/user/address/list">

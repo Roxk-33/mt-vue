@@ -1,0 +1,275 @@
+<template>
+  <div class="user-evaluation-list">
+    <header-nav :is-back="true" :on-left="true" @click-left="$router.push('/user/index');" headerbgColor="transparent" :border="false" />
+    <div class="header">
+      <img :src='userAvatar' class="user-avatar">
+      <p class="user-name">
+        {{ userName }}
+      </p>
+      <span>
+        已共享3条评价
+      </span>
+    </div>
+    <van-pull-refresh v-model="pullingDownLoading" @refresh="onPullingDown">
+      <van-list v-model="loading" :finished="finished" :immediate-check="false" @load="onPullingUp">
+        <div class="list-box">
+          <div class="list-item" v-for="item in evalList" :key="item.id">
+            <div class="shop-info mt-flex-space-between">
+              <router-link :to="{ name: 'shopDetail',params:{ id: item.shop_info.id}}">
+                <i class="iconfont icon-dianpu"></i>
+                {{item.shop_info.shop_title}}
+              </router-link>
+              <i class="iconfont icon-xiangyou"></i>
+            </div>
+            <div class="eval-info">
+              <img :src='userAvatar' class="user-avatar">
+              <div class="detail-info">
+                <div class="detail-header mt-flex-space-between">
+                  <span class="user-name">
+                    {{ userName }}
+                  </span>
+                  <span class="eval-time">2018.11.24</span>
+                </div>
+                <div class="detail-middle">
+                  <div class="shop-rate">
+                    商家
+                    <rate v-model="rate" :size="8" :margin-left="5" :isShowText="false" />
+                  </div>
+                  <div class="distribution-type">
+                    {{ item.distribution_type ? '美团专送' : '商家自配送'}}
+                  </div>
+                  <div class="distribution-time">
+                    {{item.distribution_type}}分钟送达
+                  </div>
+                </div>
+                <div class="detail-bottom">
+                  <span>口味:{{item.taste_rate}}星</span>
+                  <span>包装:{{item.packing_rate}}星</span>
+                  <span>配送:{{item.distribution_rate | starText}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="btn-box">
+              <span>
+                <i class="iconfont icon-fenxiangcopy"></i>
+                分享
+              </span>
+              <span>
+                <i class="iconfont icon-pinglun"></i>
+                追评
+              </span>
+              <span @click="deleteItem(item.id)">
+                <i class="iconfont icon-shanchu"></i>
+                删除
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </van-list>
+    </van-pull-refresh>
+    <div v-if="evalList.length === 0" class="list-empty">
+      <p>没有数据</p>
+    </div>
+  </div>
+</template>
+
+<script type="text/ecmascript-6">
+import headerNav from '@/views/dumb/header-nav';
+import Rate from '@/views/dumb/rate';
+export default {
+  name: 'user-evaluation-list',
+
+  data() {
+    return {
+      rate: 4,
+      evalList: [],
+      pullingDownLoading: false,
+      page: 0,
+      loading: false,
+      finished: false,
+    };
+  },
+  components: {
+    headerNav,
+    Rate,
+  },
+  methods: {
+    getList() {
+      // 初次进入页面展示loadnig
+      if (this.evalList.length === 0 && !this.pullingDownLoading) {
+        this.mtLoading = true;
+      }
+      this.$store
+        .dispatch('user/getEvalList', this.page)
+        .then(resp => {
+          this.mtLoading = false;
+          this.pullingDownLoading = false;
+          this.loading = false;
+          if (resp.data.length === 0) {
+            this.finished = true;
+          } else {
+            this.page++;
+            this.evalList = this.evalList.concat(resp.data);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          this.mtLoading = false;
+          this.pullingDownLoading = false;
+          this.finished = true;
+          this.loading = false;
+          this.$toast(err);
+        });
+    },
+    deleteItem(id) {
+      this.$store
+        .dispatch('user/delEval', id)
+        .then(resp => {
+          this.evalList = [];
+          this.getList();
+          return this.$toast('删除成功');
+        })
+        .catch(err => {
+          console.log(err);
+          this.$toast(err);
+        });
+    },
+    onPullingDown() {
+      this.pullingDownLoading = true;
+      this.evalList = [];
+      this.getList();
+    },
+    onPullingUp() {
+      this.loading = true;
+      this.getList();
+    },
+  },
+  mounted() {
+    this.getList();
+  },
+  computed: {
+    userName() {
+      return this.$store.state.user.userName;
+    },
+    userAvatar() {
+      return this.$store.state.user.userAvatar;
+    },
+  },
+  filters: {
+    starText(val) {
+      switch (val) {
+        case 1:
+          return '很差';
+        case 2:
+          return '一般';
+        case 3:
+          return '满意';
+        case 4:
+          return '非常满意';
+        case 5:
+          return '无可挑剔';
+        default:
+          return '';
+      }
+    },
+  },
+};
+</script>
+
+<style scoped rel="stylesheet/scss" lang="scss">
+.user-evaluation-list {
+  min-height: 100%;
+}
+.header {
+  margin-top: -50px;
+  height: 120px;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  padding-top: 10px;
+  background-color: $mt-light-color;
+  .user-avatar {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+  }
+  .user-name {
+    font-size: 18px;
+    margin: 10px 0 5px;
+  }
+}
+.list-box {
+  .list-item {
+    background-color: #fff;
+    margin-bottom: 5px;
+    padding: 0 8px 5px;
+    .shop-info {
+      padding: 9px 0;
+      border-bottom: 1px solid $mt-gray;
+      span {
+        vertical-align: middle;
+        font-size: 15px;
+        color: $mt-gray;
+      }
+    }
+    .eval-info {
+      margin-top: 5px;
+      display: flex;
+      justify-content: flex-start;
+      .user-avatar {
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        margin-right: 5px;
+      }
+      .detail-info {
+        border-bottom: 1px solid $mt-light-gray;
+        padding-bottom: 5px;
+        flex: 1;
+        .detail-header {
+          margin-bottom: 8px;
+          .user-name {
+            font-size: 15px;
+          }
+          .eval-time {
+            color: $mt-gray;
+            font-size: 12px;
+          }
+        }
+        .detail-middle {
+          display: flex;
+          justify-content: flex-start;
+          margin-bottom: 8px;
+          > div {
+            margin-right: 9px;
+          }
+          .shop-rate {
+            .rate {
+              display: inline-block;
+
+              vertical-align: text-top;
+            }
+          }
+        }
+        .detail-bottom {
+          span {
+            margin-right: 8px;
+          }
+        }
+      }
+    }
+    .btn-box {
+      text-align: right;
+      margin-top: 8px;
+      span {
+        margin-left: 8px;
+        i {
+          color: $mt-gray;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+</style>

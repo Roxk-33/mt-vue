@@ -52,8 +52,22 @@ export function parseTime(time, cFormat) {
   });
   return time_str;
 }
-
-export function getTime(delay = 15) {
+/**
+ * @description {{计算时间差值}}
+ * @param {*} startTime 开始时间 若为空着默认为Date.now()
+ * @param {*} endTime   结束时间
+ */
+export function calTime(startTime = null, endTime) {
+  if (startTime === null) {
+    startTime = new Date();
+  } else {
+    startTime = new Date(startTime);
+  }
+  endTime = new Date(endTime);
+  let time = endTime - startTime;
+  return time;
+}
+export function getDelayTime(delay = 15) {
   const date = new Date();
   date.setMinutes(date.getMinutes() + delay);
   const format = '{y}-{m}-{d} {h}:{i}';

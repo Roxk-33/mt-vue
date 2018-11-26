@@ -27,10 +27,16 @@ export default {
 
     // 订单
     ORDER_CREATE: `${APIPREFIX}/order`,
-    ORDER_PAY: `${APIPREFIX}/order`,
+    ORDER_PAY: `${APIPREFIX}/order/pay`,
+    ORDER_PAY_INFO: `${APIPREFIX}/order/pay/:id`,
     ORDER_LIST: `${APIPREFIX}/user/order`,
     ORDER_DETAIL: `${APIPREFIX}/user/order/:id`,
     ORDER_DELETE: `${APIPREFIX}/user/order/:id`,
+    ORDER_REVIEW: `${APIPREFIX}/user/order/:id/review`, // 评价
+
+    // 评价列表
+    EVAL_LIST: `${APIPREFIX}/user/evaluation/`,
+    EVAL_DELETE: `${APIPREFIX}/user/evaluation/:id`,
   },
   BASE_URL: {
     PRO: 'https://api.lococo.site/',

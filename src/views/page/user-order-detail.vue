@@ -6,7 +6,7 @@
           <i class="iconfont icon-xiangzuo" />
         </router-link>
       </div>
-      <p class="order-progress">
+      <p class="order-progress" @click="showStatusTimeList = true">
         {{ ORDER_STATUS[orderStatus] }}
         <i class='iconfont icon-xiangyou' />
       </p>
@@ -18,19 +18,24 @@
     </div>
     <div class="detail-box detail-other">
       <p v-if="orderStatus !== 'UNPAY'">{{ ORDER_STATUS_MSG[orderStatus] }}</p>
-      <p v-else>预计<span class="arrival-time">{{ orderInfo.arrival_time.substr(-5) }}</span>送达</p>
+      <p v-else>预计<span class="arrival-time">{{ orderStatusTimeArr.predict_arrival_time | parseTime('{h}:{i}')}}</span>送达</p>
       <div class="detail-top-btn">
-        <span v-if="orderStatus === 'UNPAY'" @click="cancelOrder">取消订单</span>
+        <span class="mt-color" v-if="['ACCEPT','ONTHEWAY'].includes(orderStatus)">催单</span>
+        <span v-if="!['ORDER_SUCCESS','ORDER_REFUND','ORDER_CANCEL','ORDER_CANCEL_TIMEOUT'].includes(orderStatus)" @click="cancelOrder">取消订单</span>
         <span class="mt-color" v-if="orderStatus === 'UNPAY'" @click="goPay">立即支付</span>
-        <router-link class="again" :to="{ name: 'shopDetail', params: { orderId: this.orderId }}" v-if="orderStatus === 'ORDER_SUCCESS' ||orderStatus === 'ORDER_CANCEL'">再来一单</router-link>
+        <router-link class="again" :to="{ name: 'shopDetail', params: { id: this.orderId }}" v-if="['ORDER_SUCCESS','ORDER_CANCEL'].includes(orderStatus)">再来一单</router-link>
         <router-link class="after-sale" to="/order/evaluation" v-if="orderStatus === 'ORDER_SUCCESS'">申请售后</router-link>
-        <router-link class="mt-color" v-if="orderStatus === 'ORDER_SUCCESS'" :to="{path: '/user/order/evaluation', query: { orderId: this.orderId }}">评价</router-link>
+        <router-link class="mt-color" v-if="orderStatus === 'ORDER_SUCCESS' && orderInfo.review_status !== 1" :to="{ name: 'userOrderEvaluation', params: { orderId: this.orderId }}">评价</router-link>
       </div>
     </div>
     <div class="detail-box good-box">
       <div class="detail-box-title">
-        <span class="shop-title">{{ shopInfo.shop_title }}</span>
-        <i class='iconfont icon-xiangyou' />
+        <div class="shop-title">
+          <span>
+            {{ shopInfo.shop_title }}
+          </span>
+          <i class='iconfont icon-xiangyou' />
+        </div>
 
         <div class="shop-info-contact">
           <span>
@@ -61,7 +66,7 @@
       </div>
       <div class="detail-box-item detail-price-total">
         <span>合计</span>
-        <span>￥15</span>
+        <span>￥{{orderInfo.total_price}}</span>
       </div>
     </div>
     <div class="detail-box distribution-box">
@@ -86,7 +91,7 @@
         </li>
         <li class="mt-flex-space-between">
           <span class="info-box-title">下单时间</span>
-          <span class="info-box-content">{{ orderInfo.created_at | parseTime }}</span>
+          <span class="info-box-content">{{ orderStatusTimeArr.created_time | parseTime }}</span>
         </li>
         <li class="mt-flex-space-between">
           <span class="info-box-title">支付方式</span>
@@ -94,6 +99,19 @@
         </li>
       </ul>
     </div>
+    <van-popup v-model="showStatusTimeList" position="bottom" :overlay="true">
+      <pop-up @cancel="showStatusTimeList = false" headerTitle="订单跟踪" :showBottomText="false">
+        <ul class="order-status-time">
+          <li class="order-status-time-item" v-for="(item,index) in orderStatusTimeList" :key="index" :class="{'latest' :index === orderStatusTimeList.length - 1}">
+            <div class="item-left">
+              <div class="dot"></div>
+              {{item.label}}
+            </div>
+            <div class="item-right">{{item.time}}</div>
+          </li>
+        </ul>
+      </pop-up>
+    </van-popup>
   </div>
 </template>
 
@@ -101,15 +119,22 @@
 import { parseTime } from '@/common/utils';
 import CONSTANT from '@/common/constant';
 import timer from '@/mixins/timer';
+import popUp from '@/views/dumb/pop-up';
 
 export default {
   name: 'UserOrderDetail',
   mixins: [timer],
+  components: {
+    popUp,
+  },
   data() {
     return {
       orderInfo: {},
       ORDER_STATUS: CONSTANT.ORDER_STATUS,
       ORDER_STATUS_MSG: CONSTANT.ORDER_STATUS_MSG,
+      ORDER_STATUS_TIME_MSG: CONSTANT.ORDER_DETAIL_STATUS_TIME,
+      showStatusTimeList: false,
+      orderStatusTimeList: [],
     };
   },
   methods: {
@@ -121,8 +146,21 @@ export default {
           this.mtLoading = false;
           this.orderInfo = resp.data;
           if (this.orderStatus === 'UNPAY') {
-            this.initCount(this.orderInfo.deadline_pay_time, null);
+            this.initCount(this.orderStatusTimeArr.deadline_pay_time, null);
           }
+
+          Object.keys(this.ORDER_STATUS_TIME_MSG).forEach(key => {
+            let obj = {};
+            if (!!this.orderStatusTimeArr[key]) {
+              obj.label = this.ORDER_STATUS_TIME_MSG[key];
+              obj.time = parseTime(
+                this.orderStatusTimeArr[key],
+                '{y}-{m}-{d} {h}:{i}'
+              );
+              this.orderStatusTimeList.push(obj);
+            }
+          });
+          console.log(this.orderStatusTimeList);
         })
         .catch(err => {
           this.mtLoading = false;
@@ -148,12 +186,12 @@ export default {
           orderId: this.orderInfo.id,
           price: this.orderInfo.total_price,
           shopTitle: this.shopInfo.shop_title,
-          deadLineTime: this.orderInfo.deadline_pay_time,
+          deadLineTime: this.orderStatusTimeArr.deadline_pay_time,
         },
       });
     },
   },
-  created() {
+  mounted() {
     this.getData();
   },
   computed: {
@@ -161,8 +199,7 @@ export default {
       return this.$route.params.id;
     },
     shopInfo() {
-      if (!this.orderInfo.shop_info) return { shop_title: '' };
-      return this.orderInfo.shop_info;
+      return this.orderInfo.shop_info || {};
     },
     foodList() {
       if (!this.orderInfo) return {};
@@ -171,10 +208,16 @@ export default {
     orderStatus() {
       return this.orderInfo.status;
     },
+    orderStatusTimeArr() {
+      if (!!this.orderInfo.order_status) {
+        return this.orderInfo.order_status;
+      }
+      return {};
+    },
   },
   filters: {
-    parseTime(val) {
-      return parseTime(val);
+    parseTime(val, cFormat = null) {
+      return parseTime(val, cFormat);
     },
     formatTime(time) {
       return time < 10 ? '0' + time : time;
@@ -230,10 +273,13 @@ export default {
     padding: 8px;
     margin-bottom: 10px;
     .detail-box-title {
-      font-size: 18px;
+      font-size: 16px;
       padding-bottom: 5px;
       height: 28px;
+      display: flex;
+      align-items: center;
       border-bottom: 1px solid $mt-boder-color;
+      justify-content: space-between;
       .shop-title {
         font-weight: 600;
       }
@@ -248,6 +294,7 @@ export default {
     .arrival-time {
       color: #5353fb;
       font-weight: 600;
+      margin: 0 3px;
     }
     .icon-bell {
       vertical-align: middle;
@@ -355,6 +402,54 @@ export default {
     font-size: 14px;
     .info-box-title {
       color: #797979;
+    }
+  }
+  .order-status-time {
+    padding: 12px;
+    font-size: 15px;
+    .order-status-time-item {
+      display: flex;
+      justify-content: space-between;
+      color: $mt-gray;
+      margin-bottom: 28px;
+      .item-left {
+        position: relative;
+        padding-left: 13px;
+        .dot {
+          position: absolute;
+          left: 0;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background-color: $mt-gray;
+          &::after {
+            content: '';
+            display: inline-block;
+            width: 1px;
+            height: 36px;
+            position: absolute;
+            background-color: $mt-gray;
+            left: 50%;
+            bottom: -35px;
+            transform: translateX(-50%) scale(0.5);
+          }
+        }
+      }
+      &.latest {
+        color: #000;
+        .item-left .dot {
+          border: 2px solid $mt-color;
+          box-sizing: border-box;
+          width: 9px;
+          height: 9px;
+          background-color: #fff;
+          &::after {
+            display: none;
+          }
+        }
+      }
     }
   }
 }

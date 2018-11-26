@@ -6,8 +6,7 @@ import userLogin from '@/views/page/user-login';
 import user from '@/views/page/user';
 import shopList from '@/views/page/shop-list';
 import userOrderList from '@/views/page/user-order-list';
-
-const shopDetail = () => import(/* webpackChunkName: "lazy-detail" */ '@/views/page/shop-list');
+import shopDetail from '@/views/page/shop-detail';
 
 const userOrderEvaluation = () =>
   import(/* webpackChunkName: "lazy-router" */ '@/views/page/user-order-evaluation');
@@ -21,7 +20,8 @@ const userCartList = () =>
   import(/* webpackChunkName: "lazy-router" */ '@/views/page/user-cart-list');
 const userRegister = () =>
   import(/* webpackChunkName: "lazy-router" */ '@/views/page/user-register');
-
+const userEvaluationList = () =>
+  import(/* webpackChunkName: "lazy-router" */ '@/views/page/user-evaluation-list');
 const orderPay = () => import(/* webpackChunkName: "lazy-router" */ '@/views/page/order-pay');
 const orderCreate = () => import(/* webpackChunkName: "lazy-router" */ '@/views/page/order-create');
 const userInfo = () => import(/* webpackChunkName: "lazy-router" */ '@/views/page/user-info');
@@ -82,12 +82,17 @@ export const constantRouterMap = [
         name: 'userOrderList',
       },
       {
+        path: 'evaluation/list',
+        component: userEvaluationList,
+        name: 'userEvaluationList',
+      },
+      {
         path: 'order/detail/:id',
         component: userOrderDetail,
         name: 'userOrderDetail',
       },
       {
-        path: 'order/evaluation',
+        path: 'order/evaluation/:orderId',
         component: userOrderEvaluation,
         name: 'userOrderEvaluation',
       },
@@ -123,7 +128,7 @@ export const constantRouterMap = [
         component: orderCreate,
       },
       {
-        path: 'pay',
+        path: 'pay/:orderId',
         name: 'orderPay',
         component: orderPay,
       },

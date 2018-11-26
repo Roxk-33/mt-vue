@@ -1,56 +1,38 @@
 <template>
   <div class="evaluation">
-    <header-nav
-      :on-left="true"
-      headerbg-color="whitesmoke"
-      :border="false"
-      :is-back="false"
-      :is-close="true"
-      @click-left="close"
-    />
-    <div class="evaluation-person evaluation-box">
+    <header-nav :on-left="true" headerbg-color="whitesmoke" :title="headerTitle" :border="false" :is-back="false" :is-close="true" @click-left="close" />
+    <div class="evaluation-dispatcher evaluation-box">
       <div class="top">
         <div class="info">
-          <img
-            class="info-avatar"
-            src="https://via.placeholder.com/40x40"
-          >
+          <img class="info-avatar" src="https://i.loli.net/2018/11/26/5bfb75c197a0c.png">
           <div class="info-detail">
-            <p>美团专送</p>
-            <p>美团专送</p>
+            <p class="distribution-type">美团专送</p>
+            <p class="arrival-time">{{orderStatusTimeArr.arrival_time | parseTime('{m}-{d} {h}:{i}')}}左右送达</p>
           </div>
         </div>
       </div>
       <div class="evaluation-select">
         <div class="select-box mt-flex-space-around">
-          <div
-            class="select-box-btn"
-            @click="selectSatisfied('not')"
-            :class="{'selected' : isSatisfied === 'not' }"
-          >不满意</div>
-          <div
-            class="select-box-btn"
-            @click="selectSatisfied('satisfied')"
-            :class="{'selected' : isSatisfied === 'satisfied' }"
-          >满意</div>
+          <div class="select-box-btn" @click="selectSatisfied(false)" :class="{'selected' : reviewData.isSatisfied === false  }">
+            <i class="iconfont icon-chaping"></i>
+            不满意
+          </div>
+          <div class="select-box-btn" @click="selectSatisfied(true)" :class="{'selected' : reviewData.isSatisfied  }">
+            <i class="iconfont icon-haoping"></i>
+            满意
+          </div>
         </div>
-        <div
-          class="evaluation-detail"
-          :class="{'show':isSatisfied === 'not','show-1':isSatisfied === 'satisfied'}"
-        >
-          <p
-            class="evaluation-not-satisfied"
-            v-if="isSatisfied === 'not'"
-          >请选择不满意的原因(必选)</p>
-          <ul class="evaluation-detail-list">
-            <li
-              class="evaluation-detail-item"
-              v-for="item in evaPersonList[isSatisfied]"
-              :key="item.text"
-              @click="evaPerson(item)"
-              :class="{'selected':evaPersonSelect.indexOf(item.value) !== -1}"
-            >
-              {{ item.text }}
+        <div class="evaluation-detail" :class="{'show':reviewData.isSatisfied === false,'show-1':reviewData.isSatisfied}">
+          <p class="evaluation-not-satisfied" v-if="reviewData.isSatisfied === false">请选择不满意的原因(必选)</p>
+          <ul class="evaluation-detail-list" v-if="reviewData.isSatisfied === false">
+            <li class="evaluation-detail-item" v-for="item in evalDispatcherList['not']" :key="item.label" @click="evalDispatcher(item)" :class="{'selected':reviewData.evalDispatcher.findIndex(_item => _item.value === item.value) !== -1}">
+              {{ item.label }}
+            </li>
+          </ul>
+          <ul class="evaluation-detail-list" v-if="reviewData.isSatisfied">
+            <li class="evaluation-detail-item" v-for="item in evalDispatcherList['satisfied']" :key="item.label" @click="evalDispatcher(item)" :class="{'selected':reviewData.evalDispatcher.findIndex(_item => _item.value === item.value) !== -1}">
+
+              {{ item.label }}
             </li>
           </ul>
         </div>
@@ -59,117 +41,114 @@
     <div class="evaluation-shop evaluation-box">
       <div class="top">
         <div class="info">
-          <img
-            class="info-avatar"
-            src="https://via.placeholder.com/40x40"
-          >
+          <img class="info-avatar" :src="shopInfo.photo">
           <div class="info-detail">
-            <p>店铺名字</p>
+            <p>
+              {{ shopInfo.shop_title }}
+            </p>
           </div>
         </div>
       </div>
       <div class="evaluation-star">
-        <p
-          class="evaluation-title"
-          v-if="evaShopStar > 0"
-        >"{{ evaluationTitle }}"</p>
-        <rate
-          v-model="evaShopStar"
-          :size="30"
-          :is-show-text="false"
-        />
-      </div>
-      <textarea
-        class="evaluation-content"
-        rows="8"
-        cols="40"
-      />
-      <ul class="evaluation-good">
+        <p class="evaluation-title" v-if="reviewData.evalShopStar > 0">"{{ reviewData.evalShopStar | starText }}"</p>
+        <rate v-model="reviewData.evalShopStar" :size="30" :is-show-text="false" />
+        <div class="evaluation-star-other" v-if="reviewData.evalShopStar > 0">
+          <div class="item">
+            <span class="label">口味</span>
+            <rate v-model="reviewData.evalTasteStar" :is-show-text="false" :iconArr="iconArr" :size="19" marginLeft.number="15" />
+            <span class="text">{{reviewData.evalTasteStar | starText}}</span>
+          </div>
+          <div class="item">
+            <span class="label">包装</span>
+            <rate v-model="reviewData.evalPackingStar" :is-show-text="false" :iconArr="iconArr" :size="19" marginLeft.number="15" />
+            <span class="text">{{reviewData.evalPackingStar | starText}}</span>
 
-        <li class="evaluation-good-item mt-flex-space-between">
-          <span class="good-name">撒尿牛丸</span>
-          <div class="good-review">
-            <span class="good-like"><i class="iconfont icon-dianzan_xianxing" /> 赞</span>
-            <span class="good-dislike"><i class="iconfont icon-cai" /> 踩</span>
           </div>
-        </li>
-        <li class="evaluation-good-item mt-flex-space-between">
-          <span class="good-name">撒尿牛丸</span>
+        </div>
+      </div>
+      <van-field v-model="reviewData.remarks" type="textarea" class="evaluation-content" :placeholder="remaskPlaceholder" rows="5" :autosize="remaskField" />
+      <ul class="evaluation-good">
+        <li class="evaluation-good-item mt-flex-space-between" v-for="item in foodList" :key="item.id">
+          <span class="good-name">{{ item.food_name }}</span>
           <div class="good-review">
-            <span class="good-like"><i class="iconfont icon-dianzan_xianxing" /> 赞</span>
-            <span class="good-dislike"><i class="iconfont icon-cai" /> 踩</span>
-          </div>
-        </li>
-        <li class="evaluation-good-item mt-flex-space-between">
-          <span class="good-name">撒尿牛丸</span>
-          <div class="good-review">
-            <span class="good-like"><i class="iconfont icon-dianzan_xianxing" /> 赞</span>
-            <span class="good-dislike"><i class="iconfont icon-cai" /> 踩</span>
-          </div>
-        </li>
-        <li class="evaluation-good-item mt-flex-space-between">
-          <span class="good-name">撒尿牛丸</span>
-          <div class="good-review">
-            <span class="good-like"><i class="iconfont icon-dianzan_xianxing" /> 赞</span>
-            <span class="good-dislike"><i class="iconfont icon-cai" /> 踩</span>
+            <span @click="evalFood(item.id,1,item.food_name)" :class="{'good-like' : reviewData.evalFood.findIndex(_item=>_item.id===item.id && _item.type === 1)!==-1 }">
+              <i class="iconfont icon-dianzan_xianxing" /> 赞</span>
+            <span @click="evalFood(item.id,-1,item.food_name)" :class="{'good-dislike' : reviewData.evalFood.findIndex(_item=>_item.id===item.id && _item.type === -1)!==-1 }">
+              <i class="iconfont icon-cai" /> 踩</span>
           </div>
         </li>
       </ul>
     </div>
-    <div class="evaluation-btn">提交</div>
+    <div class="evaluation-btn" :class="{'complete' : isComplete}" @click="reviewOrder">提交</div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import Rate from '@/views/dumb/rate';
 import headerNav from '@/views/dumb/header-nav';
+import { parseTime, calTime } from '@/common/utils';
 
 export default {
   name: 'OrderEvaluation',
 
   data() {
     return {
-      isSatisfied: '',
-      evaPersonList: {
+      headerTitle: '评价',
+      remaskPlaceholder: '亲，菜品口味如何，对包装服务等还满意吗？',
+      remaskField: { maxHeight: 100, minHeight: 50 },
+      iconArr: ['icon-haoping', 'icon-chaping'],
+      evalDispatcherList: {
         satisfied: [
           {
-            text: '快速准时',
+            label: '快速准时',
             value: 0,
           },
           {
-            text: '风雨无阻',
+            label: '风雨无阻',
             value: 1,
           },
           {
-            text: '仪表整洁',
+            label: '仪表整洁',
             value: 2,
           },
           {
-            text: '穿戴工服',
+            label: '穿戴工服',
             value: 3,
           },
         ],
         not: [
           {
-            text: '联系沟通困难',
+            label: '联系沟通困难',
             value: 0,
           },
           {
-            text: '送错餐',
+            label: '送错餐',
             value: 1,
           },
           {
-            text: '送达不通知',
+            label: '送达不通知',
             value: 2,
           },
           {
-            text: '配送慢',
+            label: '配送慢',
             value: 3,
           },
         ],
       },
-      evaPersonSelect: [],
-      evaShopStar: 0,
+      evalShopStar: 0,
+      orderInfo: {},
+      reviewData: {
+        isSatisfied: '',
+        evalDispatcher: [],
+        evalFood: [],
+        evalShopStar: 0,
+        evalPackingStar: 0,
+        evalTasteStar: 0,
+        remarks: '',
+        distributionType: 0, // 配送类型
+        distributionTime: '',
+        shopId: null,
+      },
     };
   },
   components: {
@@ -177,17 +156,80 @@ export default {
     headerNav,
   },
   methods: {
-    evaPerson(target) {
-      const index = this.evaPersonSelect.indexOf(target.value);
-      console.log(index);
-      if (index === -1) this.evaPersonSelect.push(target.value);
-      else this.evaPersonSelect.splice(index, 1);
-      console.log(this.evaPersonSelect);
+    getData() {
+      this.mtLoading = true;
+      this.$store
+        .dispatch('order/getOrderDetail', this.orderId)
+        .then(resp => {
+          this.mtLoading = false;
+          this.orderInfo = resp.data;
+          // 计算配送时间
+
+          this.reviewData.distributionTime =
+            calTime(
+              this.orderStatusTimeArr.send_time,
+              this.orderStatusTimeArr.arrival_time
+            ) /
+            60 /
+            1000;
+        })
+        .catch(err => {
+          console.log(err);
+          this.mtLoading = false;
+          this.$toast(err);
+          this.$router.back(-1);
+        });
+    },
+    reviewOrder() {
+      if (!this.isComplete) return;
+      this.reviewData.shopId = this.shopInfo.id;
+
+      this.$store
+        .dispatch('order/reviewOrder', {
+          id: this.orderId,
+          data: this.reviewData,
+        })
+        .then(resp => {
+          this.$toast(resp.message);
+          this.$router.push({
+            name: 'userOrderDetail',
+            params: { id: this.orderId },
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          this.$toast(err);
+        });
+    },
+    evalFood(id, type, food_name) {
+      const index = this.reviewData.evalFood.findIndex(item => item.id === id);
+      console.log(index, this.reviewData.evalFood);
+      if (index === -1) {
+        this.reviewData.evalFood.push({ id, type, food_name });
+        return;
+      }
+      if (this.reviewData.evalFood[index].type === type) return;
+      else {
+        this.reviewData.evalFood[index].type = type;
+      }
+      console.log(this.reviewData.evalFood);
+    },
+    evalDispatcher(target) {
+      const index = this.reviewData.evalDispatcher.findIndex(
+        item => item.value === target.value
+      );
+      if (index === -1)
+        this.reviewData.evalDispatcher.push({
+          value: target.value,
+          label: target.label,
+        });
+      else this.reviewData.evalDispatcher.splice(index, 1);
+      console.log(this.reviewData.evalDispatcher);
     },
     selectSatisfied(type) {
-      if (this.isSatisfied === type) return;
-      this.isSatisfied = type;
-      this.evaPersonSelect = [];
+      if (this.reviewData.isSatisfied === type) return;
+      this.reviewData.isSatisfied = type;
+      this.reviewData.evalDispatcher = [];
     },
     close() {
       const oThis = this;
@@ -207,17 +249,64 @@ export default {
       });
     },
   },
+  mounted() {
+    this.getData();
+  },
   computed: {
-    evaluationTitle() {
-      return '满意';
+    orderId() {
+      return this.$route.params.orderId;
+    },
+    shopInfo() {
+      return this.orderInfo.shop_info || {};
+    },
+    foodList() {
+      if (!this.orderInfo) return {};
+      return this.orderInfo.food_list;
+    },
+    isComplete() {
+      if (this.reviewData.isSatisfied === '') return false;
+      if (this.reviewData.evalShopStar === 0) return false;
+      return true;
+    },
+    orderStatusTimeArr() {
+      if (!!this.orderInfo.order_status) {
+        return this.orderInfo.order_status;
+      }
+      return {};
+    },
+  },
+  filters: {
+    parseTime(val, cFormat = null) {
+      let time = parseTime(val, cFormat);
+      time = time.replace('-', '月');
+      time = time.replace(' ', '日');
+      return time;
+    },
+    starText(val) {
+      switch (val) {
+        case 1:
+          return '很差';
+        case 2:
+          return '一般';
+        case 3:
+          return '满意';
+        case 4:
+          return '非常满意';
+        case 5:
+          return '无可挑剔';
+        default:
+          return '';
+      }
     },
   },
 };
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-
 .evaluation {
+  min-height: 100%;
+  position: relative;
+  padding-bottom: 70px;
   .evaluation-box {
     background-color: white;
     margin: 0 10px 10px;
@@ -238,11 +327,20 @@ export default {
           display: inline-block;
           font-size: 15px;
           vertical-align: middle;
+          margin-left: 8px;
         }
       }
     }
   }
-  .evaluation-person {
+  .evaluation-dispatcher {
+    .info-detail {
+      .distribution-type {
+        margin-bottom: 5px;
+      }
+      .arrival-time {
+        font-size: 12px;
+      }
+    }
     .evaluation-select {
       .select-box {
         margin: 15px auto;
@@ -252,10 +350,16 @@ export default {
           padding: 6px 0;
           text-align: center;
           border: 1px solid $mt-light-gray;
+          i {
+            color: #9a9a9a;
+          }
           &.selected {
             background-color: $mt-color;
             border-color: $mt-color;
             color: #000;
+            i {
+              color: #000;
+            }
           }
         }
       }
@@ -279,7 +383,7 @@ export default {
 
           justify-content: space-around;
           .evaluation-detail-item {
-            width: 25%;
+            width: 30%;
             text-align: center;
             border: 1px solid $mt-gray;
             margin: 3px 0;
@@ -308,16 +412,44 @@ export default {
       margin-top: 10px;
       text-align: center;
     }
+    .evaluation-star-other {
+      background-color: #f8f8f8;
+      padding: 12px 0 12px 25px;
+      margin: 5px auto;
+      width: 90%;
+      .item {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        &:last-child {
+          margin-top: 12px;
+        }
+        .rate {
+          margin: 0;
+          i.selected {
+            color: $mt-color;
+          }
+        }
+        .label {
+          margin-right: 5px;
+          font-size: 14px;
+        }
+        .text {
+          margin-left: 10px;
+        }
+      }
+    }
     .evaluation-content {
       margin: 10px auto;
+      background-color: #fdfafa;
+      border: 1px solid $mt-light-gray;
     }
     .evaluation-good {
       border-top: 1px solid $mt-light-gray;
       margin-top: 5px;
       .evaluation-good-item {
         padding: 8px 5px;
-        .good-like,
-        .good-dislike {
+        span {
           border: 1px solid $mt-gray;
           border-radius: 10px;
           padding: 2px 8px;
@@ -326,23 +458,35 @@ export default {
             font-size: 13px;
           }
         }
-        .good-like.select {
+        .good-like {
           border-color: $mt-color;
           color: $mt-color;
         }
-        .good-dislike.select {
+        .good-dislike {
           border-color: $mt-light-gray;
           background-color: $mt-light-gray;
+          i {
+            color: $mt-gray;
+          }
         }
       }
     }
   }
   .evaluation-btn {
+    height: 60px;
+    box-sizing: border-box;
     padding: 20px 0;
     text-align: center;
     font-size: 18px;
-    background-color: $mt-light-gray;
+    background-color: #dcdcdc;
     color: #fff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    &.complete {
+      background-color: $mt-color;
+    }
   }
 }
 </style>
