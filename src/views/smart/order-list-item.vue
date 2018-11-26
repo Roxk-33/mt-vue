@@ -20,8 +20,8 @@
       </div>
       <div class="item-content-btn-box">
         <span v-if="['UNPAY','PAY','ONTHEWAY'].includes(orderInfo.status)" class="item-content-btn" @click.stop="cancel">取消订单</span>
-        <router-link class="item-content-btn mt-color" :to="{ name: 'orderPay', params: { orderId: this.orderId }}" v-if="orderInfo.status === 0">立即支付</router-link>
-        <router-link class="again item-content-btn" :to="{ name: 'shopDetail', params: { orderId: this.orderId }}" v-if="['ORDER_CANCEL','ORDER_CANCEL_TIMEOUT','ORDER_SUCCESS'].includes(orderInfo.status) ">再来一单</router-link>
+        <router-link class="item-content-btn mt-color" :to="{ name: 'orderPay', params: { orderId: orderId }}" v-if="orderInfo.status === 0">立即支付</router-link>
+        <router-link class="again item-content-btn" :to="{ name: 'shopDetail', params: { id: shopInfo.id }}" v-if="['ORDER_CANCEL','ORDER_CANCEL_TIMEOUT','ORDER_SUCCESS'].includes(orderInfo.status) ">再来一单</router-link>
         <router-link class="after-sale item-content-btn" to="/order/evaluation" v-if="orderInfo.status === 'ACCEPT'">申请售后</router-link>
         <router-link class="item-content-btn" v-if="orderInfo.status === 'ORDER_SUCCESS'" :to="{path: '/user/order/evaluation', query: { orderId: this.orderId }}">评价</router-link>
       </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="check-box" @click="totggle" :class="value ? 'checked' : ''">
-    <i class="iconfont" :class="value ? iconFont : 'icon-xuanze1'" :style="style" />
+    <i class="iconfont" :class="value ? iconFont : 'icon-xuanze1'" />
     <slot />
   </div>
 </template>

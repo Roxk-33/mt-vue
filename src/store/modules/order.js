@@ -18,9 +18,7 @@ const actions = {
   sumbitOrder({}, payload) {
     return ajax.post(API.ORDER_CREATE, payload);
   },
-  payOrder({}, payload) {
-    return ajax.put(API.ORDER_PAY, payload);
-  },
+
   getOrderList({ commit }, payload = 1) {
     return new Promise((resolve, reject) => {
       ajax
@@ -40,6 +38,16 @@ const actions = {
   },
   cancelOrder({ commit }, id) {
     return ajax.put(formatURL(API.ORDER_DELETE, { id }));
+  },
+  payOrder({}, payload) {
+    return ajax.put(API.ORDER_PAY, payload);
+  },
+  getPayData({ commit }, id) {
+    return ajax.get(formatURL(API.ORDER_PAY_INFO, { id }));
+  },
+  reviewOrder({ commit }, payload) {
+    const { id, data } = payload;
+    return ajax.post(formatURL(API.ORDER_REVIEW, { id }), data);
   },
 };
 

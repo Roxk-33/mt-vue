@@ -43,10 +43,10 @@
         </li>
       </ul>
       <div class='food-fee'>
-        <div>
+        <!-- <div>
           <span class='food-fee-title'>包装费</span>
           <span class='food-fee-price'>￥16</span>
-        </div>
+        </div> -->
         <div>
           <span class='food-fee-title'>配送费</span>
           <span class='food-fee-price'>￥{{ shopInfo.freight }}</span>
@@ -115,9 +115,7 @@
         </div>
       </pop-up>
     </van-popup>
-    <van-actionsheet v-model="showTableware" :actions="tablewareList" cancel-text="取消" @select="onSelectTableware" @cancel="showTableware=false">
-
-    </van-actionsheet>
+    <van-actionsheet v-model="showTableware" :actions="tablewareList" cancel-text="取消" @select="onSelectTableware" @cancel="showTableware=false" />
     <!-- 收货地址 -->
     <van-popup v-model="showAddress" position="bottom" :overlay="true">
       <pop-up class="address-list" @cancel="cancel('address')" @clickHeaderLeft="cancel('address')" header-title="选择收货地址" header-left="取消" bottom-text="新增收货地址" bottom-text-icon="icon-add_icon">
@@ -157,7 +155,7 @@
 import popUp from '@/views/dumb/pop-up';
 import CONSTANT from '@/common/constant';
 import headerNav from '@/views/dumb/header-nav';
-import { getTime } from '@/common/utils';
+import { getDelayTime } from '@/common/utils';
 
 export default {
   name: 'OrderPay',
@@ -182,7 +180,7 @@ export default {
         address: {},
         remarks: '',
         shopId: this.shopId,
-        arrivalTime: getTime(3),
+        arrivalTime: getDelayTime(40),
         tableware: null,
       },
       tablewareList: [
@@ -317,7 +315,7 @@ export default {
               orderId: resp.data.order_info.id,
               price: resp.data.order_info.total_price,
               shopTitle: this.shopInfo.shop_title,
-              deadLineTime: resp.data.order_info.deadline_pay_time,
+              deadLineTime: resp.data.order_info.order_status.deadline_pay_time,
             },
           });
           // 重新获取购物车
@@ -331,10 +329,11 @@ export default {
   },
   computed: {
     totalPrice() {
+      let price = this.shopInfo.freight;
       if (this.foodList.length === 0) return 0;
       return this.foodList.reduce(
         (previous, current) => (previous += current.price * current.num),
-        0
+        price
       );
     },
     shopId() {

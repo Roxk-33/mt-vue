@@ -98,9 +98,13 @@ export default {
     },
   },
   watch: {
-    cartList(val) {
-      if (val.length) this.isExist = true;
-      else this.isExist = false;
+     cartList:{
+      handler (val) {
+        if (val.length) this.isExist = true;
+        else this.isExist = false;
+      },
+      // 代表在wacth里声明了firstName这个方法之后立即先去执行handler方法
+      immediate: true
     },
     isExist(val) {
       if (!val) this.isShowDetail = false;

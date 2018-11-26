@@ -240,6 +240,7 @@ export default {
   computed: {
     // 获取特定商店的购物车详情
     cartList() {
+      console.log(123);
       const arr = this.$store.getters['cart/listArr'];
       const target = arr.find(item => item.shop_info.id == this.shopId);
       if (!target) return [];

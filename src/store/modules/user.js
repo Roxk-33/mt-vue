@@ -207,6 +207,30 @@ const actions = {
         .catch(reject);
     });
   },
+  getEvalList({ commit }, payload = 1) {
+    return new Promise((resolve, reject) => {
+      ajax
+        .get(API.EVAL_LIST, {
+          params: {
+            page: payload,
+          },
+        })
+        .then(resp => {
+          resolve(resp);
+        })
+        .catch(reject);
+    });
+  },
+  delEval({ commit }, id) {
+    return new Promise((resolve, reject) => {
+      ajax
+        .delete(formatURL(API.EVAL_DELETE, { id }))
+        .then(resp => {
+          resolve(resp);
+        })
+        .catch(reject);
+    });
+  },
 
   // 获取用户信息
   // GetUserInfo({ commit, state }, token) {

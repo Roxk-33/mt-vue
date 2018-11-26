@@ -1,19 +1,8 @@
 <template>
-  <div
-    class='header-nav'
-    :style="style"
-  >
+  <div class='header-nav' :style="style">
     <div class='header-nav-left'>
-      <i
-        class='iconfont icon-xiangzuo'
-        v-if='isBack'
-        @click="clickLeft"
-      />
-      <i
-        class='iconfont icon-guanbi1'
-        v-if="isClose"
-        @click="clickLeft"
-      />
+      <i class='iconfont icon-xiangzuo' v-if='isBack' @click="clickLeft" />
+      <i class='iconfont icon-guanbi1' v-if="isClose" @click="clickLeft" />
     </div>
     <div class='header-nav-main'>
       <span class='headerNav-title'>{{ title }}</span>
@@ -74,8 +63,6 @@ export default {
 };
 </script>
 <style scoped rel="stylesheet/scss" lang="scss">
-
-
 .header-nav {
   width: 100%;
   height: 46px;

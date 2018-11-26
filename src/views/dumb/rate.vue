@@ -1,8 +1,7 @@
 <template>
   <div class="rate">
     <span v-for="(item,index) in list" :key="index" @click="onSelect(index)">
-
-      <i class="iconfont" :class="item ? iconSelected : iconUnSel" :style="style" />
+      <i class="iconfont" :class="item ? iconSelected : iconUnSel" :style="{marginLeft:marginLeft + 'px',fontSize:size+'px',color:item ? selectedColor : unSelectedColor}" />
     </span>
     <span v-if="isShowText" class="score">{{ value }}</span>
   </div>
@@ -11,17 +10,6 @@
 <script type="text/ecmascript-6">
 export default {
   name: 'Rate',
-
-  data() {
-    return {
-      hoverIndex: -1,
-      iconSelected: '',
-      iconUnSel: '',
-    };
-  },
-  mounted() {
-    [this.iconSelected, this.iconUnSel] = this.iconArr;
-  },
   props: {
     isShowText: {
       type: Boolean,
@@ -54,7 +42,27 @@ export default {
       type: Number,
       default: 10,
     },
+    selectedColor: {
+      type: String,
+      default: '#f5c44e',
+    },
+    unSelectedColor: {
+      type: String,
+      default: '#cacaca',
+    },
   },
+  data() {
+    return {
+      hoverIndex: -1,
+      iconSelected: '',
+      iconUnSel: '',
+    };
+  },
+  mounted() {
+    [this.iconSelected, this.iconUnSel] = this.iconArr;
+    this.iconSelected += ' selected';
+  },
+
   computed: {
     activeClass() {
       return this.iconArr[0];
@@ -88,7 +96,7 @@ export default {
 };
 </script>
 
-<style scoped rel="stylesheet/scss" lang="scss">
+<style rel="stylesheet/scss" lang="scss">
 .iconfont {
   margin-left: 5px;
 }

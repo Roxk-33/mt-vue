@@ -37,7 +37,7 @@ export default {
     orderListItem,
     footerNav,
   },
-  created() {
+  mounted() {
     this.getList();
   },
   methods: {

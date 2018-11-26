@@ -10,11 +10,14 @@ export default {
     };
   },
   methods: {
-    initCount(time, cb) {
+    initCount(time, cb = null) {
       const now = new Date();
       time = new Date(time);
       this.countTime = Math.floor((time - now) / 1000);
-      console.log(this.countTime, time);
+      if (this.countTime <= 0) {
+        cb && cb();
+        return;
+      }
       this.cb = cb;
       this.setCountdown();
     },
@@ -25,13 +28,11 @@ export default {
       }, this.IntervalTime);
     },
     clearCountDown() {
-      console.log('调用了cb');
       clearInterval(this.timer);
       this.cb();
     },
   },
   destroyed() {
-    console.log('destroyed');
     !!this.timer && clearInterval(this.timer);
   },
   watch: {

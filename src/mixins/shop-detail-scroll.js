@@ -1,5 +1,5 @@
 import BetterScroll from '@/views/dumb/scroll';
-import { getRect } from '@/common/dom';
+import { getRect } from '@/common/utils';
 
 export default {
   components: {

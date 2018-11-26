@@ -6,14 +6,14 @@
         剩余时间{{this.coutMin | formatTime}}:{{this.coutSec | formatTime}}
       </div>
       <div class="pay-price">
-        ￥<span class="content">{{price}}</span>
+        ￥<span class="content">{{payData.price}}</span>
       </div>
       <div class="order-info">
-        {{shopTitle}}
+        {{payData.shopTitle}}
       </div>
     </div>
     <div class='footer-box' @click="pay">
-      <span>确认支付￥</span><span class="content">{{price}}</span>
+      <span>确认支付￥</span><span class="content">{{payData.price}}</span>
     </div>
   </div>
 </template>
@@ -28,6 +28,11 @@ export default {
   data() {
     return {
       headerTitle: '支付订单',
+      payData: {
+        price: 0,
+        shopTitle: '',
+        deadLineTime: 0,
+      },
     };
   },
   components: {
@@ -36,8 +41,8 @@ export default {
   methods: {
     back() {
       this.$router.push({
-        path: '/user/order/detail',
-        query: { orderId: this.orderId },
+        name: 'userOrderDetail',
+        params: { id: this.orderId },
       });
     },
     cancelOrder() {
@@ -45,13 +50,21 @@ export default {
         path: '/user/index',
       });
     },
+    getPayData() {
+      this.$store.dispatch('order/getPayData', this.orderId).then(resp => {
+        this.payData.price = resp.data.total_price;
+        this.payData.shopTitle = resp.data.shop_info.shop_title;
+        this.initCount(
+          resp.data.order_status.deadline_pay_time,
+          this.cancelOrder.bind(this)
+        );
+      });
+    },
     pay() {
       this.$store
         .dispatch('order/payOrder', { id: this.orderId })
         .then(resp => {
-          console.log(resp.data);
-
-          this.$toast(resp.data.message);
+          this.$toast(resp.message);
           this.$router.push({
             name: 'userOrderDetail',
             params: { id: this.orderId },
@@ -69,20 +82,11 @@ export default {
       this.$router.push('/user/order/list');
       return;
     }
-    this.initCount(this.deadLineTime, this.cancelOrder.bind(this));
+    this.getPayData();
   },
   computed: {
     orderId() {
       return this.$route.params.orderId;
-    },
-    deadLineTime() {
-      return this.$route.params.deadLineTime;
-    },
-    price() {
-      return this.$route.params.price;
-    },
-    shopTitle() {
-      return this.$route.params.shopTitle;
     },
   },
   filters: {

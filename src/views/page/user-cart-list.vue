@@ -7,7 +7,7 @@
       <div class="cart-list-item" v-for="item in cartList" :key="item.shop_info.shop_id">
         <div class="item-title">
           <check-box v-model="item.selectAll" @click="selectAll(item)" />
-          <router-link class="content" :to="{ name: 'shopDetail', params: { shopId: item.shop_info.id }}">
+          <router-link class="content" :to="{ name: 'shopDetail', params: { id: item.shop_info.id }}">
             <img class="shop-avatar" :src="item.shop_info.photo">
 
             <span class="shop-title">{{ item.shop_info.shop_title }}</span>
@@ -160,7 +160,7 @@ export default {
     height: 33px;
     display: inline-block;
     .check-box {
-      margin-left: 6px;
+      margin-left: 9px;
     }
     .shop-avatar {
       width: 25px;
