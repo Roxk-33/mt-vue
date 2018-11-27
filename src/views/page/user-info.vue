@@ -1,12 +1,23 @@
 <template>
   <div class='person-info'>
-    <header-nav :is-back="true" :title="headerTitle" @click-left="$router.back(-1);" />
+    <header-nav
+      :is-back="true"
+      :title="headerTitle"
+      @click-left="$router.back(-1);"
+    />
 
     <ul class='info-box'>
       <li class='info-box-avatar'>
         <span class='info-box_title'>头像</span>
+
+        <van-uploader :after-read="onRead">
+          <van-icon name="photograph" />
+        </van-uploader>
         <span class='info-box_content'>
-          <img class='box-avatar_img' :src='userAvatar'>
+          <img
+            class='box-avatar_img'
+            :src='userAvatar'
+          >
         </span>
       </li>
       <li @click="showPop('username')">
@@ -34,65 +45,122 @@
       <span @click="logout">退出当前账号</span>
     </div>
 
-    <van-popup v-model="show" position="right">
+    <van-popup
+      v-model="show"
+      position="right"
+    >
 
-      <div class="username-box user-info-pop-box" v-if="boxType === 'username'">
+      <div
+        class="username-box user-info-pop-box"
+        v-if="boxType === 'username'"
+      >
 
-        <header-nav title="修改用户名" @click-left="show=false" :on-left="true">
+        <header-nav
+          title="修改用户名"
+          @click-left="show=false"
+          :on-left="true"
+        >
           <span @click="changeName">确定</span>
         </header-nav>
         <div class="content">
           <span class="content-label">用户名:</span>
-          <input type="text" class="content-input" v-model="nameNew">
+          <input
+            type="text"
+            class="content-input"
+            v-model="nameNew"
+          >
         </div>
         <p class="warm-text">以英文或汉字开头，限4-16个字符，一个字符为2个字符</p>
       </div>
-      <div class="password-box user-info-pop-box" v-if="boxType === 'password'">
-        <header-nav title="设置密码" @click-left="show=false" :on-left="true" />
+      <div
+        class="password-box user-info-pop-box"
+        v-if="boxType === 'password'"
+      >
+        <header-nav
+          title="设置密码"
+          @click-left="show=false"
+          :on-left="true"
+        />
         <div class="content">
-          <input type="password" class="content-input" v-model="psw" placeholder="新密码:">
+          <input
+            type="password"
+            class="content-input"
+            v-model="psw"
+            placeholder="新密码:"
+          >
         </div>
         <div class="content">
-          <input type="password" class="content-input" v-model="pswRe" placeholder="确认新密码:">
+          <input
+            type="password"
+            class="content-input"
+            v-model="pswRe"
+            placeholder="确认新密码:"
+          >
         </div>
         <p class="warm-text">密码长度8~32位，须包含数字、字母、符号至少两种或以上的元素</p>
-        <button class="sumbit" @click="changePsw">确认提交</button>
+        <button
+          class="sumbit"
+          @click="changePsw"
+        >确认提交</button>
       </div>
-      <div class="tel-box user-info-pop-box" v-if="boxType === 'tel'">
-        <header-nav title="更换手机号" @click-left="show=false" :on-left="true" />
+      <div
+        class="tel-box user-info-pop-box"
+        v-if="boxType === 'tel'"
+      >
+        <header-nav
+          title="更换手机号"
+          @click-left="show=false"
+          :on-left="true"
+        />
         <h2 class="title">输入新的手机号</h2>
         <div class="content">
           <span class="content-label">+86</span>
 
-          <input type="text" class="content-input" v-model="tel" @click="showKey">
+          <input
+            type="text"
+            class="content-input"
+            v-model="tel"
+            @click="showKey"
+          >
         </div>
-        <button class="sumbit" @click="getCode">获取验证码</button>
+        <button
+          class="sumbit"
+          @click="getCode"
+        >获取验证码</button>
       </div>
     </van-popup>
 
-    <van-number-keyboard :z-index="2005" :show="showKeyBoard" extra-key="." close-button-text="完成" @blur="showKeyBoard = false" @input="onInputTel" @delete="onDeleteTel" />
+    <van-number-keyboard
+      :z-index="2005"
+      :show="showKeyBoard"
+      extra-key="."
+      close-button-text="完成"
+      @blur="showKeyBoard = false"
+      @input="onInputTel"
+      @delete="onDeleteTel"
+    />
   </div>
 </template>
 <script>
-import headerNav from '@/views/dumb/header-nav';
-import { testUserName, testPsw, testTel, formatTel } from '@/common/utils';
+import headerNav from "@/views/dumb/header-nav";
+import { testUserName, testPsw, testTel, formatTel } from "@/common/utils";
 
 export default {
-  name: 'UserInfo',
+  name: "UserInfo",
   data() {
     return {
-      headerTitle: '我的帐号',
+      headerTitle: "我的帐号",
       show: false,
       showKeyBoard: false,
-      boxType: '',
-      nameNew: '',
-      psw: '',
-      pswRe: '',
-      tel: '',
+      boxType: "",
+      nameNew: "",
+      psw: "",
+      pswRe: "",
+      tel: ""
     };
   },
   components: {
-    headerNav,
+    headerNav
   },
   computed: {
     userName() {
@@ -103,7 +171,7 @@ export default {
     },
     userTel() {
       return this.$store.state.user.userTel;
-    },
+    }
   },
   methods: {
     showPop(type) {
@@ -113,9 +181,9 @@ export default {
     },
     logout() {
       this.$store
-        .dispatch('user/LogOut')
+        .dispatch("user/LogOut")
         .then(() => {
-          this.$router.push({ name: 'userIndex' });
+          this.$router.push({ name: "userIndex" });
           window.location.reload();
         })
         .catch(this.$toast);
@@ -124,9 +192,9 @@ export default {
       const { status, msg } = testUserName(this.nameNew);
       if (!status) return this.$toast(msg);
       this.$store
-        .dispatch('user/updateUserInfo', {
-          action: 'changeName',
-          data: this.nameNew,
+        .dispatch("user/updateUserInfo", {
+          action: "changeName",
+          data: this.nameNew
         })
         .then(resp => {
           this.show = false;
@@ -138,9 +206,9 @@ export default {
       const { status, msg } = testPsw(this.psw, this.pswRe);
       if (!status) return this.$toast(msg);
       this.$store
-        .dispatch('user/updateUserInfo', {
-          action: 'changePsw',
-          data: this.psw,
+        .dispatch("user/updateUserInfo", {
+          action: "changePsw",
+          data: this.psw
         })
         .then(resp => {
           this.$toast(resp.message);
@@ -150,11 +218,11 @@ export default {
     },
     changeTel() {
       const { status, tel } = testTel(this.tel);
-      if (!status) return this.$toast('非法手机');
+      if (!status) return this.$toast("非法手机");
       this.$store
-        .dispatch('user/updateUserInfo', {
-          action: 'changeTel',
-          data: tel,
+        .dispatch("user/updateUserInfo", {
+          action: "changeTel",
+          data: tel
         })
         .then(resp => {
           this.$toast(resp.message);
@@ -164,11 +232,11 @@ export default {
     },
     getCode() {
       const { status, tel } = testTel(this.tel);
-      if (!status) return this.$toast('手机格式错误');
+      if (!status) return this.$toast("手机格式错误");
       this.$store
-        .dispatch('user/updateUserInfo', {
-          action: 'changeTel',
-          data: tel,
+        .dispatch("user/updateUserInfo", {
+          action: "changeTel",
+          data: tel
         })
         .then(resp => {
           this.$toast(resp.message);
@@ -186,19 +254,17 @@ export default {
     },
     showKey() {
       this.showKeyBoard = true;
-    },
+    }
   },
   filters: {
     filterTel(value) {
-      if (!value) return '未绑定手机号';
+      if (!value) return "未绑定手机号";
       return `${value.substr(0, 3)}****${value.substr(7, 4)}`;
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
-
-
 .info-box {
   background-color: white;
   padding: 0;

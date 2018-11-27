@@ -1,14 +1,17 @@
-import BetterScroll from '@/views/dumb/scroll';
 import { getRect } from '@/common/utils';
+import MtBetterScroll from '@/views/dumb/mt-better-scroll';
 
 export default {
   components: {
-    BetterScroll,
+    MtBetterScroll,
   },
   data() {
     return {
       scrollDisabel: false,
-      probeType: 3,
+      scrollOption: {
+        probeType: 3,
+        pullUpLoad: false,
+      },
       bannerHeight: 0,
       isTop: false,
       trackSize: 0, // 商品列表高度

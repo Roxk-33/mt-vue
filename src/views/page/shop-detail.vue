@@ -1,68 +1,123 @@
 
 <template>
   <div class="shop-detail">
-    <shop-nav :track-opacity="trackOpacity" :is-top="isTop" />
-    <div ref="shopBanner" class="shop-header-box">
-      <shop-header :title="shopInfo.shop_title" :announcement="shopInfo.announcement" :photo="shopInfo.photo" />
+    <shop-nav
+      :track-opacity="trackOpacity"
+      :is-top="isTop"
+    />
+    <div
+      ref="shopBanner"
+      class="shop-header-box"
+    >
+      <shop-header
+        :title="shopInfo.shop_title"
+        :announcement="shopInfo.announcement"
+        :photo="shopInfo.photo"
+      />
     </div>
-    <div class="shop-good" ref="shopGood" :style="shopGoodStyle">
+    <div
+      class="shop-good"
+      ref="shopGood"
+      :style="shopGoodStyle"
+    >
       <div class="shop-good-tab">
         <van-tabs v-model="tabActive">
-          <van-tab v-for="(tab,index) in tabs" :title="tab.label" :key="index" />
+          <van-tab
+            v-for="(tab,index) in tabs"
+            :title="tab.label"
+            :key="index"
+          />
         </van-tabs>
       </div>
       <div class="shop-good-content">
         <div class="shop-good-menu">
-          <better-scroll :is-disable="scrollDisabel">
-            <div class="menu-item" v-for="catalog in shopInfo.shop_catalog" :key="catalog.value">{{ catalog.title }}</div>
-          </better-scroll>
+
+          <mt-better-scroll
+            :options="scrollOption"
+            :is-disable="scrollDisabel"
+          >
+            <div
+              class="menu-item"
+              v-for="catalog in shopInfo.shop_catalog"
+              :key="catalog.value"
+            >{{ catalog.title }}</div>
+          </mt-better-scroll>
         </div>
         <div class="shop-good-list">
-          <better-scroll :listen-scroll="true" :probe-type="probeType" @scroll="onScroll" :is-disable="scrollDisabel" @pullingDown="pullingDown">
-            <foodItem v-for="(foodInfo,index) in foodList" :key="foodInfo.food_id" :food-info="foodInfo" :food-index="index" :select-num="foodInfo.selectNum" @showSpec="getSpecInfo" @adjustNum="adjustNum" />
-          </better-scroll>
+          <mt-better-scroll
+            :listen-scroll="true"
+            :options="scrollOption"
+            @scroll="onScroll"
+            :is-disable="scrollDisabel"
+            @pulling-down="pullingDown"
+          >
+            <foodItem
+              v-for="(foodInfo,index) in foodList"
+              :key="foodInfo.food_id"
+              :food-info="foodInfo"
+              :food-index="index"
+              :select-num="foodInfo.selectNum"
+              @showSpec="getSpecInfo"
+              @adjustNum="adjustNum"
+            />
+          </mt-better-scroll>
         </div>
       </div>
     </div>
-    <cart-list :threshold="shopInfo.threshold" :freight="shopInfo.freight" :cart-list="cartList" @adjustNum="adjustNum" @toSettle="toSettle" @emptyCart="emptyCart" />
-    <specificationBox @pushSpecToCart="getSelectGoood" v-model="showSpecBox" :center="true" width="90%" :food-info="foodSelected" :cart-list="cartList" />
+    <cart-list
+      :threshold="shopInfo.threshold"
+      :freight="shopInfo.freight"
+      :cart-list="cartList"
+      @adjustNum="adjustNum"
+      @toSettle="toSettle"
+      @emptyCart="emptyCart"
+    />
+    <specificationBox
+      @pushSpecToCart="getSelectGoood"
+      v-model="showSpecBox"
+      :center="true"
+      width="90%"
+      :food-info="foodSelected"
+      :cart-list="cartList"
+    />
   </div>
 </template>
 
 <script>
-import parabolaAni from '@/mixins/parabola-ani';
-import specificationBox from '@/views/smart/specification-box';
-import cartList from '@/views/smart/cart-list';
-import foodItem from '@/views/smart/food-item';
-import shopHeader from '@/views/smart/shop-header';
-import shopNav from '@/views/smart/shop-nav';
-import foodIsRepeat from '@/mixins/food-is-repeat';
-import shopDetailScroll from '@/mixins/shop-detail-scroll';
+import parabolaAni from "@/mixins/parabola-ani";
+import specificationBox from "@/views/smart/specification-box";
+import cartList from "@/views/smart/cart-list";
+import foodItem from "@/views/smart/food-item";
+import shopHeader from "@/views/smart/shop-header";
+import shopNav from "@/views/smart/shop-nav";
+import foodIsRepeat from "@/mixins/food-is-repeat";
+import shopDetailScroll from "@/mixins/shop-detail-scroll";
 
 export default {
-  name: 'ShopDetail',
+  name: "ShopDetail",
   data() {
     return {
       tabs: [
         {
-          label: '点菜',
-          value: 'menu',
+          label: "点菜",
+          value: "menu"
         },
         {
-          label: '评价',
-          value: 'evaluation',
+          label: "评价",
+          value: "evaluation"
         },
         {
-          label: '商家',
-          value: 'business',
-        },
+          label: "商家",
+          value: "business"
+        }
       ],
+
       tabActive: 0,
       showSpecBox: false,
       shopInfo: {},
       foodList: [],
       foodSelected: {},
-      specIndex: 0, // 规格商品的index
+      specIndex: 0 // 规格商品的index
     };
   },
   components: {
@@ -70,14 +125,14 @@ export default {
     cartList,
     foodItem,
     shopHeader,
-    shopNav,
+    shopNav
   },
   mixins: [foodIsRepeat, parabolaAni, shopDetailScroll],
   methods: {
     getShopData() {
       this.mtLoading = true;
       this.$store
-        .dispatch('shop/getShopDetail', { id: this.shopId })
+        .dispatch("shop/getShopDetail", { id: this.shopId })
         .then(resp => {
           this.shopInfo = resp.data;
           this.mtLoading = false;
@@ -90,7 +145,7 @@ export default {
         });
     },
     pullingDown() {
-      console.log('上拉');
+      console.log("上拉");
       this.scrollDisabel = false;
     },
     // 规格选项的商品放入购物车
@@ -107,21 +162,21 @@ export default {
         foodId: this.foodSelected.id,
         totalPrice,
         shop_id: this.shopId,
-        picture: this.foodSelected.picture,
+        picture: this.foodSelected.picture
       };
       this.pushCart(data, isExist, null, ev);
     },
     // 清空购物车
     emptyCart() {
-      this.$store.dispatch('cart/emptyCart', this.shopId).then(value => {
-        this.$store.dispatch('cart/getCartList');
+      this.$store.dispatch("cart/emptyCart", this.shopId).then(value => {
+        this.$store.dispatch("cart/getCartList");
       });
     },
     // 去结算
     toSettle() {
       this.$router.push({
-        name: 'orderCreate',
-        params: { shopId: this.shopId, isAll: true },
+        name: "orderCreate",
+        params: { shopId: this.shopId, isAll: true }
       });
     },
     // 获取要选规格的商品信息
@@ -159,7 +214,7 @@ export default {
         data = {
           foodId: foodCartInfo.food_id,
           id: foodCartInfo.id, // 此id为购物车内商品的购物车自增ID
-          type,
+          type
         };
       } else {
         // 为新增商品
@@ -170,7 +225,7 @@ export default {
           foodId: foodInfo.id,
           totalPrice: foodInfo.price,
           shop_id: this.shopId,
-          picture: foodInfo.picture,
+          picture: foodInfo.picture
         };
       }
 
@@ -193,8 +248,8 @@ export default {
       }
       try {
         if (isExist !== -1) {
-          this.$store.dispatch('cart/updateProductToCart', data).then(value => {
-            this.$store.dispatch('cart/getCartList');
+          this.$store.dispatch("cart/updateProductToCart", data).then(value => {
+            this.$store.dispatch("cart/getCartList");
             if (data.type === 1) {
               this.foodList[indexMenu].selectNum++;
               this.startBallAni(ev);
@@ -203,15 +258,15 @@ export default {
             }
           });
         } else {
-          this.$store.dispatch('cart/addProductToCart', data).then(value => {
-            this.$store.dispatch('cart/getCartList');
+          this.$store.dispatch("cart/addProductToCart", data).then(value => {
+            this.$store.dispatch("cart/getCartList");
             this.foodList[indexMenu].selectNum++;
             this.startBallAni(ev);
           });
         }
       } catch (error) {
         console.log(error);
-        this.$toast('操作失败');
+        this.$toast("操作失败");
       }
     },
     showSelectNum() {
@@ -223,7 +278,7 @@ export default {
           item.selectNum = 0;
         }
       });
-    },
+    }
   },
   created() {
     this.scroll();
@@ -235,13 +290,13 @@ export default {
   watch: {
     cartList(val) {
       this.showSelectNum();
-    },
+    }
   },
   computed: {
     // 获取特定商店的购物车详情
     cartList() {
       console.log(123);
-      const arr = this.$store.getters['cart/listArr'];
+      const arr = this.$store.getters["cart/listArr"];
       const target = arr.find(item => item.shop_info.id == this.shopId);
       if (!target) return [];
       return target.foodList;
@@ -253,10 +308,10 @@ export default {
     shopGoodStyle() {
       return {
         height: `${this.trackSize}px`,
-        top: `${this.trackTop}px`,
+        top: `${this.trackTop}px`
       };
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -315,7 +370,7 @@ export default {
     margin-bottom: 5px;
     position: relative;
     &::after {
-      content: '邀请拼单';
+      content: "邀请拼单";
       color: $mt-color;
       position: absolute;
       top: 50%;

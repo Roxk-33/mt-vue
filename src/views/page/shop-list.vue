@@ -1,55 +1,74 @@
 <template>
   <div class='shop-catalog'>
-    <header-nav :is-back="true" :title="headerTitle" :on-left="true" @click-left="$router.push('/user/index');" />
-    <shop-list-header :sort-target="sortTarget" @change="changeFilter" @showMask="showMask" />
+    <header-nav
+      :is-back="true"
+      :title="headerTitle"
+      :on-left="true"
+      @click-left="$router.push('/user/index');"
+    />
+    <shop-list-header
+      :sort-target="sortTarget"
+      @change="changeFilter"
+      @showMask="showMask"
+    />
     <div class="shop-list">
       <mt-mask v-model="show" />
-      <van-list v-model="loading" :finished="finished" @load="onPullingUp" :immediate-check="false">
-        <van-cell v-for="(shop,index) in shopList" :key='index' style="padding:10px">
+      <mt-better-scroll
+        ref="contentScroll"
+        :data="shopList"
+        @pulling-down="onPullingDown"
+        @pulling-up="onPullingUp"
+      >
+        <van-cell
+          v-for="(shop,index) in shopList"
+          :key='index'
+          style="padding:10px"
+        >
           <shop-list-item :shopInfo="shop"></shop-list-item>
         </van-cell>
-      </van-list>
-      <van-cell v-if="shopList.length === 0" class="list-empty">
-        <p>没有数据</p>
-      </van-cell>
+      </mt-better-scroll>
+      <list-empty :isShow="finished" />
+
     </div>
     <to-cart-list />
   </div>
 </template>
 
 <script >
-import Scroll from '@/views/dumb/scroll';
-import headerNav from '@/views/dumb/header-nav';
-import shopListHeader from '@/views/smart/shop-list-header';
-import shopListItem from '@/views/smart/shop-list-item';
-import toCartList from '@/views/smart/to-cart-list';
-import mtMask from '@/views/dumb/mt-mask';
+import headerNav from "@/views/dumb/header-nav";
+import shopListHeader from "@/views/smart/shop-list-header";
+import shopListItem from "@/views/smart/shop-list-item";
+import toCartList from "@/views/smart/to-cart-list";
+import mtMask from "@/views/dumb/mt-mask";
+import listEmpty from "@/views/dumb/list-empty";
+import MtBetterScroll from "@/views/dumb/mt-better-scroll";
 
 export default {
-  name: 'shop-list',
+  name: "shop-list",
   data() {
     return {
       loading: false,
       finished: false,
       rate: 3.5,
       shopList: [],
-      headerTitle: '美食',
-      sortTarget: 'complex',
+      headerTitle: "美食",
+      sortTarget: "complex",
       page: 1,
       show: false,
       pullUpLoad: {
         threshold: 10,
-        txt: { more: '', noMore: '暂无更多数据' },
-      },
+        txt: { more: "", noMore: "暂无更多数据" }
+      }
     };
   },
   components: {
-    Scroll,
     headerNav,
     shopListHeader,
     shopListItem,
     mtMask,
     toCartList,
+    listEmpty,
+    MtBetterScroll
   },
   methods: {
     // 点击排序框时，显示店铺列表遮罩层
@@ -58,23 +77,35 @@ export default {
     },
     getList() {
       this.$store
-        .dispatch('shop/getShopList', {
+        .dispatch("shop/getShopList", {
           page: this.page,
-          type: this.sortTarget,
+          type: this.sortTarget
         })
         .then(resp => {
-          this.loading = false;
-          if (resp.data.length === 0) {
+          this.mtLoading = false;
+
+          if (resp.data.length === 0 && this.page === 0) {
             this.finished = true;
+            this.shopList = [];
+            return;
+          }
+          if (this.page === 0) {
+            this.shopList = resp.data;
           } else {
             this.shopList = this.shopList.concat(resp.data);
           }
+          this.page++;
         })
 
         .catch(err => {
           this.$toast(err);
+          this.mtLoading = false;
           console.log(err);
         });
+    },
+    onPullingDown() {
+      this.page = 0;
+      this.getList();
     },
     onPullingUp() {
       // this.loading = true;
@@ -82,11 +113,11 @@ export default {
     },
     changeFilter(type) {
       this.sortTarget = type;
-    },
+    }
   },
   created() {
     this.getList();
-  },
+  }
 };
 </script>
 

@@ -1,49 +1,75 @@
 <template>
   <div class="user-order-list">
     <order-list-header />
-    <van-pull-refresh v-model="pullingDownLoading" @refresh="onPullingDown">
-      <van-list v-model="loading" :finished="finished" :immediate-check="false" @load="onPullingUp">
-        <div class="order-list-content">
-          <order-list-item v-for="(item,index) in orderList" :key="index" :order-info="item" :food-list="item.food_list" @cancelOrder="cancelOrder" />
-        </div>
-      </van-list>
-    </van-pull-refresh>
-    <div v-if="orderList.length === 0" class="list-empty">
-      <p>没有数据</p>
-    </div>
+    <mt-better-scroll
+      ref="contentScroll"
+      :data="orderList"
+      @pulling-down="onPullingDown"
+      @pulling-up="onPullingUp"
+    >
+      <div class="order-list-content">
+        <order-list-item
+          v-for="(item,index) in orderList"
+          :key="index"
+          :order-info="item"
+          :food-list="item.food_list"
+          @cancelOrder="cancelOrder"
+        />
+      </div>
+
+    </mt-better-scroll>
+
+    <list-empty :isShow="finished" />
     <footer-nav active='1' />
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import orderListHeader from '@/views/smart/order-list-header';
-import orderListItem from '@/views/smart/order-list-item';
-import footerNav from '@/views/dumb/footer-nav';
-
+import orderListHeader from "@/views/smart/order-list-header";
+import orderListItem from "@/views/smart/order-list-item";
+import footerNav from "@/views/dumb/footer-nav";
+import MtBetterScroll from "@/views/dumb/mt-better-scroll";
+import listEmpty from "@/views/dumb/list-empty";
 export default {
-  name: 'UserOrderList',
+  name: "UserOrderList",
 
   data() {
     return {
+      options: {
+        pullDownRefresh: {
+          threshold: 60,
+          stop: 40,
+          txt: "更新成功"
+        }
+      },
       orderList: [],
       loading: false,
       finished: false,
+      pullUpLoad: true,
       pullingDownLoading: false,
       page: 0,
+
+      secondStop: 26
     };
   },
   components: {
     orderListHeader,
     orderListItem,
     footerNav,
+    MtBetterScroll,
+    listEmpty
   },
   mounted() {
     this.getList();
   },
   methods: {
+    onPullingUp() {
+      this.loading = true;
+      this.getList();
+    },
     cancelOrder(id) {
       this.$store
-        .dispatch('order/cancelOrder', id)
+        .dispatch("order/cancelOrder", id)
         .then(resp => {
           this.page = 0;
           this.orderList = [];
@@ -55,31 +81,30 @@ export default {
         });
     },
     onPullingDown() {
-      this.pullingDownLoading = true;
-      this.orderList = [];
-      this.getList();
-    },
-    onPullingUp() {
-      this.loading = true;
+      this.page = 0;
       this.getList();
     },
     getList() {
       // 初次进入页面展示loadnig
-      if (this.orderList.length === 0 && !this.pullingDownLoading) {
+      if (this.orderList.length === 0 && this.page === 0) {
         this.mtLoading = true;
       }
       this.$store
-        .dispatch('order/getOrderList', this.page)
+        .dispatch("order/getOrderList", this.page)
         .then(resp => {
           this.mtLoading = false;
-          this.pullingDownLoading = false;
-          this.loading = false;
-          if (resp.data.length === 0) {
+
+          if (resp.data.length === 0 && this.page === 0) {
             this.finished = true;
+            this.orderList = [];
+            return;
+          }
+          if (this.page === 0) {
+            this.orderList = resp.data;
           } else {
-            this.page++;
             this.orderList = this.orderList.concat(resp.data);
           }
+          this.page++;
         })
         .catch(err => {
           console.log(err);
@@ -89,8 +114,8 @@ export default {
           this.loading = false;
           this.$toast(err);
         });
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -98,8 +123,8 @@ export default {
 .user-order-list {
   height: 100%;
 }
-.order-list-content {
+// .order-list-content,
+.better-scroll-wrapper {
   margin-top: 85px;
-  padding-bottom: 50px;
 }
 </style>
