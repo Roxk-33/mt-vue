@@ -9,16 +9,18 @@
     <ul class='info-box'>
       <li class='info-box-avatar'>
         <span class='info-box_title'>头像</span>
-
-        <van-uploader :after-read="onRead">
-          <van-icon name="photograph" />
+        <van-uploader
+          :after-read="changeAvatar"
+          accept="image/gif, image/jpeg"
+          multiple
+        >
+          <span class='info-box_content'>
+            <img
+              class='box-avatar_img'
+              :src='userAvatar'
+            >
+          </span>
         </van-uploader>
-        <span class='info-box_content'>
-          <img
-            class='box-avatar_img'
-            :src='userAvatar'
-          >
-        </span>
       </li>
       <li @click="showPop('username')">
         <span class='info-box_title'>用户名</span>
@@ -120,13 +122,46 @@
             type="text"
             class="content-input"
             v-model="tel"
-            @click="showKey"
+            @click="showKeyBoard = true"
           >
         </div>
         <button
           class="sumbit"
           @click="getCode"
+          :class="{'tel-correct' : telCorrect}"
         >获取验证码</button>
+      </div>
+      <div
+        class="vercode-box"
+        v-if="boxType === 'vercode'"
+      >
+        <header-nav
+          title="更换手机号"
+          @click-left="show=false"
+          :on-left="true"
+        />
+        <h2 class="title">输入验证码</h2>
+        <div class="content">
+          <p class="content-block">
+            验证码已下发至{{tel}}
+          </p>
+          <span class="content-label">
+            57s后重新获取
+          </span>
+          <div class="code-box">
+            <div
+              class="code-input"
+              v-for="(item,index) in codeInputfocusStatus"
+              :key="index"
+            >
+              <span class="code-show">{{codeInput[index]}}</span>
+              <div
+                class="code-ani"
+                v-if="item"
+              ></div>
+            </div>
+          </div>
+        </div>
       </div>
     </van-popup>
 
@@ -139,11 +174,21 @@
       @input="onInputTel"
       @delete="onDeleteTel"
     />
+
+    <van-number-keyboard
+      :z-index="2005"
+      :show="showKeyBoardCode"
+      extra-key="."
+      close-button-text="完成"
+      @blur="showKeyBoard = false"
+      @input="onInputCode"
+      @delete="onDeleteCode"
+    />
   </div>
 </template>
 <script>
 import headerNav from "@/views/dumb/header-nav";
-import { testUserName, testPsw, testTel, formatTel } from "@/common/utils";
+import { testUserName, testPsw, testTel } from "@/common/utils";
 
 export default {
   name: "UserInfo",
@@ -156,7 +201,17 @@ export default {
       nameNew: "",
       psw: "",
       pswRe: "",
-      tel: ""
+      tel: "",
+      telCorrect: false,
+      showKeyBoardCode: false, // 控制输入验证码的键盘
+      codeInput: {
+        // 输入的验证码
+        0: "",
+        1: "",
+        2: "",
+        3: ""
+      },
+      codeInputLen: 0
     };
   },
   components: {
@@ -171,11 +226,37 @@ export default {
     },
     userTel() {
       return this.$store.state.user.userTel;
+    },
+
+    codeInputfocusStatus() {
+      let arr = [false, false, false, false];
+      if (this.codeInputLen < 4 && this.codeInputLen >= 0) {
+        arr[this.codeInputLen] = true;
+      }
+      console.log(arr);
+      return arr;
     }
   },
   methods: {
+    // 上传头像
+    changeAvatar(file) {
+      this.$store.dispatch("user/uploadAvatar", file.file).then(resp => {
+        return this.$toast(resp.message);
+      });
+    },
+    // 获取验证码
+    getCode() {
+      const { status, tel } = testTel(this.tel);
+      if (!status) return this.$toast("手机格式错误");
+      if (tel === this.userTel)
+        return this.$toast("该手机号为当前用户的绑定手机号");
+      this.$store.dispatch("user/getPhoneCode", tel).then(resp => {
+        this.boxType = "vercode";
+        this.showKeyBoardCode = true;
+        return this.$toast(resp.message);
+      });
+    },
     showPop(type) {
-      console.log(type);
       this.show = true;
       this.boxType = type;
     },
@@ -194,7 +275,7 @@ export default {
       this.$store
         .dispatch("user/updateUserInfo", {
           action: "changeName",
-          data: this.nameNew
+          userName: this.nameNew
         })
         .then(resp => {
           this.show = false;
@@ -208,7 +289,7 @@ export default {
       this.$store
         .dispatch("user/updateUserInfo", {
           action: "changePsw",
-          data: this.psw
+          psw: this.psw
         })
         .then(resp => {
           this.$toast(resp.message);
@@ -216,27 +297,18 @@ export default {
         })
         .catch(this.$toast);
     },
-    changeTel() {
+
+    bindPhone() {
+      let code = "";
+      Object.keys(this.codeInput).forEach(key => {
+        code += this.codeInput[key];
+      });
       const { status, tel } = testTel(this.tel);
-      if (!status) return this.$toast("非法手机");
       this.$store
         .dispatch("user/updateUserInfo", {
           action: "changeTel",
-          data: tel
-        })
-        .then(resp => {
-          this.$toast(resp.message);
-          this.$router.back(-1);
-        })
-        .catch(this.$toast);
-    },
-    getCode() {
-      const { status, tel } = testTel(this.tel);
-      if (!status) return this.$toast("手机格式错误");
-      this.$store
-        .dispatch("user/updateUserInfo", {
-          action: "changeTel",
-          data: tel
+          tel,
+          code
         })
         .then(resp => {
           this.$toast(resp.message);
@@ -245,15 +317,37 @@ export default {
         .catch(this.$toast);
     },
     onInputTel(number) {
+      this.tel = this.formatTel(this.tel);
       this.tel += number;
-      this.tel = formatTel(this.tel);
+      const { status } = testTel(this.tel);
+      this.telCorrect = status;
     },
     onDeleteTel(ev) {
-      const temp = this.tel.substring(0, this.tel.length - 1);
-      this.tel = formatTel(temp);
+      const len = this.tel.length;
+      if (len === 5 || len === 10) {
+        this.tel = this.tel.substring(0, len - 2);
+      } else {
+        this.tel = this.tel.substring(0, len - 1);
+      }
     },
-    showKey() {
-      this.showKeyBoard = true;
+    onInputCode(number) {
+      if (this.codeInputLen === 4) return;
+      this.codeInput[this.codeInputLen++] = number;
+      // 已输入四位验证码
+      if (this.codeInputLen === 4) {
+        this.bindPhone();
+      }
+    },
+    onDeleteCode(ev) {
+      if (this.codeInputLen === 0) return;
+      this.codeInput[--this.codeInputLen] = "";
+    },
+    formatTel(tel) {
+      const len = tel.length;
+      if (len === 3 || len === 8) {
+        return (tel += " ");
+      }
+      return tel;
     }
   },
   filters: {
@@ -329,6 +423,10 @@ export default {
     color: #fff;
     border: 0;
     padding: 8px;
+    &.tel-correct {
+      background-color: $mt-color;
+      color: #000;
+    }
   }
 }
 .username-box .content {
@@ -376,6 +474,51 @@ export default {
     }
     .content-input {
       flex: 1;
+    }
+  }
+}
+.vercode-box {
+  .title {
+    margin: 30px 0 0 40px;
+  }
+  .content {
+    margin: 30px 0 0 40px;
+
+    .content-block {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+    .code-box {
+      width: 80%;
+      display: flex;
+      margin-top: 10px;
+      justify-content: space-between;
+      .code-input {
+        position: relative;
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        border: 1px solid $mt-gray;
+        border-radius: 3px;
+        font-size: 30px;
+        text-align: center;
+        box-sizing: border-box;
+      }
+      .code-ani {
+        height: 30px;
+        width: 1px;
+        background-color: #000;
+        animation: show-hide 0.8s infinite;
+        @include center;
+      }
+    }
+  }
+  @keyframes show-hide {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
     }
   }
 }

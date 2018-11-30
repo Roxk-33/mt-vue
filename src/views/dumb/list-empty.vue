@@ -20,7 +20,7 @@ export default {
 };
 </script>
 
-<style scoped rel="stylesheet/scss" lang="scss">
+<style scoped  lang="scss">
 .list-empty {
   position: absolute;
   top: 0;
@@ -31,6 +31,7 @@ export default {
   p {
     @include center;
     margin-top: -46px;
+    text-align: center;
   }
 }
 </style>

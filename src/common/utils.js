@@ -146,15 +146,7 @@ export function testTel(tel) {
   const reg = /^1(3|4|5|7|8)\d{9}$/;
   return { status: reg.test(tel), tel };
 }
-export function formatTel(tel) {
-  // 消除空格
-  const reg1 = /\s+/g;
 
-  // TODO:表现效果不佳，空格应该从左到右出现
-  const reg2 = /(\d)(?=(\d{3})+(\.|$))/g;
-  tel = tel.replace(reg1, '');
-  return tel.replace(reg2, $1 => `${$1} `);
-}
 export function getRect(el) {
   if (el instanceof window.SVGElement) {
     const rect = el.getBoundingClientRect();

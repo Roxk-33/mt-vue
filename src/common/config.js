@@ -8,6 +8,8 @@ export default {
     USER_INFO: `${APIPREFIX}/user`,
     USER_INFO_UPDATE: `${APIPREFIX}/user`,
     USER_REGISTER: `${APIPREFIX}/user/register`,
+    USER_UPLOAD_AVATAR: `${APIPREFIX}/user/avatar`, // 上传头像
+    USER_PHONE_CODE: `${APIPREFIX}/user/phone/vercode`, // 获取验证码
     // 送货地址
     USER_ADDRESS_LIST: `${APIPREFIX}/user/address`, // 地址列表
     USER_ADDRESS_ADD: `${APIPREFIX}/user/address`, // 新增地址

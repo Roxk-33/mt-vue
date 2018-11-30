@@ -93,12 +93,8 @@
 
     </mt-better-scroll>
 
-    <div
-      v-if="finished"
-      class="list-empty"
-    >
-      <p>没有数据</p>
-    </div>
+    <list-empty :isShow="finished" />
+
   </div>
 </template>
 
@@ -106,6 +102,7 @@
 import headerNav from "@/views/dumb/header-nav";
 import Rate from "@/views/dumb/rate";
 import MtBetterScroll from "@/views/dumb/mt-better-scroll";
+import listEmpty from "@/views/dumb/list-empty";
 
 export default {
   name: "user-evaluation-list",
@@ -114,7 +111,6 @@ export default {
     return {
       rate: 4,
       evalList: [],
-      pullingDownLoading: false,
       page: 0,
       finished: false
     };
@@ -122,7 +118,8 @@ export default {
   components: {
     headerNav,
     MtBetterScroll,
-    Rate
+    Rate,
+    listEmpty
   },
   methods: {
     getList() {
@@ -150,7 +147,6 @@ export default {
         .catch(err => {
           console.log(err);
           this.mtLoading = false;
-          this.pullingDownLoading = false;
           this.finished = true;
           this.loading = false;
           this.$toast(err);
@@ -171,7 +167,6 @@ export default {
     },
     onPullingDown() {
       this.page = 0;
-      this.pullingDownLoading = true;
       this.getList();
     },
     onPullingUp() {

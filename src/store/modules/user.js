@@ -3,7 +3,7 @@ import ajax from '@/common/request';
 import config from '@/common/config';
 import { formatURL } from '@/common/utils';
 import * as types from '../mutation-types';
-
+const AVATAR_URL = process.env.VUE_APP_AVATAR_URL;
 const API = config.API;
 const state = {
   userStatus: false,
@@ -36,7 +36,7 @@ const mutations = {
     state.userName = name;
   },
   [types.SET_AVATAR](state, avatar) {
-    state.userAvatar = avatar;
+    state.userAvatar = AVATAR_URL + '' + avatar;
   },
   [types.SET_TEL](state, tel) {
     state.userTel = tel;
@@ -126,13 +126,34 @@ const actions = {
       ajax
         .put(API.USER_INFO_UPDATE, userInfo)
         .then(resp => {
-          const { action, data } = userInfo;
+          const { action, userName, tel } = userInfo;
           if (action === 'changeName') {
-            commit(types.SET_NAME, data);
+            commit(types.SET_NAME, userName);
           }
           if (action === 'changeTel') {
-            commit(types.SET_TEL, data);
+            commit(types.SET_TEL, tel);
           }
+          resolve(resp);
+        })
+        .catch(reject);
+    });
+  },
+  getPhoneCode({}, phone) {
+    return ajax.get(API.USER_PHONE_CODE, { params: { phone } });
+  },
+  uploadAvatar({ commit, state }, payload) {
+    let config = {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    };
+    var formData = new FormData();
+
+    // HTML 文件类型input，由用户选择
+    formData.append('userAvatar', payload);
+    return new Promise((resolve, reject) => {
+      ajax
+        .post(API.USER_UPLOAD_AVATAR, formData, config)
+        .then(resp => {
+          commit(types.SET_AVATAR, resp.data.url);
           resolve(resp);
         })
         .catch(reject);
