@@ -8,6 +8,7 @@ export default {
   data() {
     return {
       scrollDisabel: false,
+      scrollY: -1,
       scrollOption: {
         probeType: 3,
         pullUpLoad: false,
@@ -47,6 +48,7 @@ export default {
       });
     },
     onScroll(op) {
+      this.scrollY = op.y;
       if (op.y > 1) {
         console.log('菜单到顶');
         this.scrollDisabel = false;

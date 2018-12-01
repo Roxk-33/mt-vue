@@ -1,36 +1,79 @@
 <template>
   <div class="evaluation">
-    <header-nav :on-left="true" headerbg-color="whitesmoke" :title="headerTitle" :border="false" :is-back="false" :is-close="true" @click-left="close" />
+    <header-nav
+      :on-left="true"
+      headerbg-color="whitesmoke"
+      :title="headerTitle"
+      :border="false"
+      :is-back="false"
+      :is-close="true"
+      @click-left="close"
+    />
     <div class="evaluation-dispatcher evaluation-box">
       <div class="top">
         <div class="info">
-          <img class="info-avatar" src="https://i.loli.net/2018/11/26/5bfb75c197a0c.png">
+          <img
+            class="info-avatar"
+            src="https://i.loli.net/2018/11/26/5bfb75c197a0c.png"
+          >
           <div class="info-detail">
             <p class="distribution-type">美团专送</p>
-            <p class="arrival-time">{{orderStatusTimeArr.arrival_time | parseTime('{m}-{d} {h}:{i}')}}左右送达</p>
+            <p class="arrival-time">{{orderStatusTimeArr.arrival_time | parseTime('{m}月{d}日{h}:{i}')}}左右送达</p>
           </div>
         </div>
       </div>
       <div class="evaluation-select">
         <div class="select-box mt-flex-space-around">
-          <div class="select-box-btn" @click="selectSatisfied(false)" :class="{'selected' : reviewData.isSatisfied === false  }">
+          <div
+            class="select-box-btn"
+            @click="selectSatisfied(false)"
+            :class="{'selected' : reviewData.isSatisfied === false  }"
+          >
             <i class="iconfont icon-chaping"></i>
             不满意
           </div>
-          <div class="select-box-btn" @click="selectSatisfied(true)" :class="{'selected' : reviewData.isSatisfied  }">
+          <div
+            class="select-box-btn"
+            @click="selectSatisfied(true)"
+            :class="{'selected' : reviewData.isSatisfied  }"
+          >
             <i class="iconfont icon-haoping"></i>
             满意
           </div>
         </div>
-        <div class="evaluation-detail" :class="{'show':reviewData.isSatisfied === false,'show-1':reviewData.isSatisfied}">
-          <p class="evaluation-not-satisfied" v-if="reviewData.isSatisfied === false">请选择不满意的原因(必选)</p>
-          <ul class="evaluation-detail-list" v-if="reviewData.isSatisfied === false">
-            <li class="evaluation-detail-item" v-for="item in evalDispatcherList['not']" :key="item.label" @click="evalDispatcher(item)" :class="{'selected':reviewData.evalDispatcher.findIndex(_item => _item.value === item.value) !== -1}">
+        <div
+          class="evaluation-detail"
+          :class="{'show':reviewData.isSatisfied === false,'show-1':reviewData.isSatisfied}"
+        >
+          <p
+            class="evaluation-not-satisfied"
+            v-if="reviewData.isSatisfied === false"
+          >请选择不满意的原因(必选)</p>
+          <ul
+            class="evaluation-detail-list"
+            v-if="reviewData.isSatisfied === false"
+          >
+            <li
+              class="evaluation-detail-item"
+              v-for="item in evalDispatcherList['not']"
+              :key="item.label"
+              @click="evalDispatcher(item)"
+              :class="{'selected':reviewData.evalDispatcher.findIndex(_item => _item.value === item.value) !== -1}"
+            >
               {{ item.label }}
             </li>
           </ul>
-          <ul class="evaluation-detail-list" v-if="reviewData.isSatisfied">
-            <li class="evaluation-detail-item" v-for="item in evalDispatcherList['satisfied']" :key="item.label" @click="evalDispatcher(item)" :class="{'selected':reviewData.evalDispatcher.findIndex(_item => _item.value === item.value) !== -1}">
+          <ul
+            class="evaluation-detail-list"
+            v-if="reviewData.isSatisfied"
+          >
+            <li
+              class="evaluation-detail-item"
+              v-for="item in evalDispatcherList['satisfied']"
+              :key="item.label"
+              @click="evalDispatcher(item)"
+              :class="{'selected':reviewData.evalDispatcher.findIndex(_item => _item.value === item.value) !== -1}"
+            >
 
               {{ item.label }}
             </li>
@@ -41,7 +84,10 @@
     <div class="evaluation-shop evaluation-box">
       <div class="top">
         <div class="info">
-          <img class="info-avatar" :src="shopInfo.photo">
+          <img
+            class="info-avatar"
+            :src="shopInfo.photo"
+          >
           <div class="info-detail">
             <p>
               {{ shopInfo.shop_title }}
@@ -50,116 +96,159 @@
         </div>
       </div>
       <div class="evaluation-star">
-        <p class="evaluation-title" v-if="reviewData.evalShopStar > 0">"{{ reviewData.evalShopStar | starText }}"</p>
-        <rate v-model="reviewData.evalShopStar" :size="30" :is-show-text="false" />
-        <div class="evaluation-star-other" v-if="reviewData.evalShopStar > 0">
+        <p
+          class="evaluation-title"
+          v-if="reviewData.evalShopStar > 0"
+        >"{{ reviewData.evalShopStar | starText }}"</p>
+        <rate
+          v-model="reviewData.evalShopStar"
+          :size="30"
+          :is-show-text="false"
+        />
+        <div
+          class="evaluation-star-other"
+          v-if="reviewData.evalShopStar > 0"
+        >
           <div class="item">
             <span class="label">口味</span>
-            <rate v-model="reviewData.evalTasteStar" :is-show-text="false" :iconArr="iconArr" :size="19" marginLeft.number="15" />
+            <rate
+              v-model="reviewData.evalTasteStar"
+              :is-show-text="false"
+              :iconArr="iconArr"
+              :size="19"
+              marginLeft.number="15"
+            />
             <span class="text">{{reviewData.evalTasteStar | starText}}</span>
           </div>
           <div class="item">
             <span class="label">包装</span>
-            <rate v-model="reviewData.evalPackingStar" :is-show-text="false" :iconArr="iconArr" :size="19" marginLeft.number="15" />
+            <rate
+              v-model="reviewData.evalPackingStar"
+              :is-show-text="false"
+              :iconArr="iconArr"
+              :size="19"
+              marginLeft.number="15"
+            />
             <span class="text">{{reviewData.evalPackingStar | starText}}</span>
 
           </div>
         </div>
       </div>
-      <van-field v-model="reviewData.remarks" type="textarea" class="evaluation-content" :placeholder="remaskPlaceholder" rows="5" :autosize="remaskField" />
+      <van-field
+        v-model="reviewData.remarks"
+        type="textarea"
+        class="evaluation-content"
+        :placeholder="remaskPlaceholder"
+        rows="5"
+        :autosize="remaskField"
+      />
       <ul class="evaluation-good">
-        <li class="evaluation-good-item mt-flex-space-between" v-for="item in foodList" :key="item.id">
+        <li
+          class="evaluation-good-item mt-flex-space-between"
+          v-for="item in foodList"
+          :key="item.id"
+        >
           <span class="good-name">{{ item.food_name }}</span>
           <div class="good-review">
-            <span @click="evalFood(item.id,1,item.food_name)" :class="{'good-like' : reviewData.evalFood.findIndex(_item=>_item.id===item.id && _item.type === 1)!==-1 }">
+            <span
+              @click="evalFood(item.id,1,item.food_name)"
+              :class="{'good-like' : reviewData.evalFood.findIndex(_item=>_item.id===item.id && _item.type === 1)!==-1 }"
+            >
               <i class="iconfont icon-dianzan_xianxing" /> 赞</span>
-            <span @click="evalFood(item.id,-1,item.food_name)" :class="{'good-dislike' : reviewData.evalFood.findIndex(_item=>_item.id===item.id && _item.type === -1)!==-1 }">
+            <span
+              @click="evalFood(item.id,-1,item.food_name)"
+              :class="{'good-dislike' : reviewData.evalFood.findIndex(_item=>_item.id===item.id && _item.type === -1)!==-1 }"
+            >
               <i class="iconfont icon-cai" /> 踩</span>
           </div>
         </li>
       </ul>
     </div>
-    <div class="evaluation-btn" :class="{'complete' : isComplete}" @click="reviewOrder">提交</div>
+    <div
+      class="evaluation-btn"
+      :class="{'complete' : isComplete}"
+      @click="reviewOrder"
+    >提交</div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import Rate from '@/views/dumb/rate';
-import headerNav from '@/views/dumb/header-nav';
-import { parseTime, calTime } from '@/common/utils';
+import Rate from "@/views/dumb/rate";
+import headerNav from "@/views/dumb/header-nav";
+import { parseTime, calTime } from "@/common/utils";
 
 export default {
-  name: 'OrderEvaluation',
+  name: "OrderEvaluation",
 
   data() {
     return {
-      headerTitle: '评价',
-      remaskPlaceholder: '亲，菜品口味如何，对包装服务等还满意吗？',
+      headerTitle: "评价",
+      remaskPlaceholder: "亲，菜品口味如何，对包装服务等还满意吗？",
       remaskField: { maxHeight: 100, minHeight: 50 },
-      iconArr: ['icon-haoping', 'icon-chaping'],
+      iconArr: ["icon-haoping", "icon-chaping"],
       evalDispatcherList: {
         satisfied: [
           {
-            label: '快速准时',
-            value: 0,
+            label: "快速准时",
+            value: 0
           },
           {
-            label: '风雨无阻',
-            value: 1,
+            label: "风雨无阻",
+            value: 1
           },
           {
-            label: '仪表整洁',
-            value: 2,
+            label: "仪表整洁",
+            value: 2
           },
           {
-            label: '穿戴工服',
-            value: 3,
-          },
+            label: "穿戴工服",
+            value: 3
+          }
         ],
         not: [
           {
-            label: '联系沟通困难',
-            value: 0,
+            label: "联系沟通困难",
+            value: 0
           },
           {
-            label: '送错餐',
-            value: 1,
+            label: "送错餐",
+            value: 1
           },
           {
-            label: '送达不通知',
-            value: 2,
+            label: "送达不通知",
+            value: 2
           },
           {
-            label: '配送慢',
-            value: 3,
-          },
-        ],
+            label: "配送慢",
+            value: 3
+          }
+        ]
       },
       evalShopStar: 0,
       orderInfo: {},
       reviewData: {
-        isSatisfied: '',
+        isSatisfied: "",
         evalDispatcher: [],
         evalFood: [],
         evalShopStar: 0,
         evalPackingStar: 0,
         evalTasteStar: 0,
-        remarks: '',
+        remarks: "",
         distributionType: 0, // 配送类型
-        distributionTime: '',
-        shopId: null,
-      },
+        distributionTime: "",
+        shopId: null
+      }
     };
   },
   components: {
     Rate,
-    headerNav,
+    headerNav
   },
   methods: {
     getData() {
       this.mtLoading = true;
       this.$store
-        .dispatch('order/getOrderDetail', this.orderId)
+        .dispatch("order/getOrderDetail", this.orderId)
         .then(resp => {
           this.mtLoading = false;
           this.orderInfo = resp.data;
@@ -185,15 +274,15 @@ export default {
       this.reviewData.shopId = this.shopInfo.id;
 
       this.$store
-        .dispatch('order/reviewOrder', {
+        .dispatch("order/reviewOrder", {
           id: this.orderId,
-          data: this.reviewData,
+          data: this.reviewData
         })
         .then(resp => {
           this.$toast(resp.message);
           this.$router.push({
-            name: 'userOrderDetail',
-            params: { id: this.orderId },
+            name: "userOrderDetail",
+            params: { id: this.orderId }
           });
         })
         .catch(err => {
@@ -221,7 +310,7 @@ export default {
       if (index === -1)
         this.reviewData.evalDispatcher.push({
           value: target.value,
-          label: target.label,
+          label: target.label
         });
       else this.reviewData.evalDispatcher.splice(index, 1);
       console.log(this.reviewData.evalDispatcher);
@@ -234,20 +323,20 @@ export default {
     close() {
       const oThis = this;
       this.$dialog.alert({
-        message: '确定关闭评价？',
+        message: "确定关闭评价？",
         showCancelButton: true,
-        cancelButtonText: '关闭评价',
-        confirmButtonText: '再想想',
+        cancelButtonText: "关闭评价",
+        confirmButtonText: "再想想",
         beforeClose(action, done) {
-          if (action === 'confirm') {
+          if (action === "confirm") {
             done();
           } else {
             oThis.$router.go(-1);
             done();
           }
-        },
+        }
       });
-    },
+    }
   },
   mounted() {
     this.getData();
@@ -264,7 +353,7 @@ export default {
       return this.orderInfo.food_list;
     },
     isComplete() {
-      if (this.reviewData.isSatisfied === '') return false;
+      if (this.reviewData.isSatisfied === "") return false;
       if (this.reviewData.evalShopStar === 0) return false;
       return true;
     },
@@ -273,32 +362,30 @@ export default {
         return this.orderInfo.order_status;
       }
       return {};
-    },
+    }
   },
   filters: {
     parseTime(val, cFormat = null) {
       let time = parseTime(val, cFormat);
-      time = time.replace('-', '月');
-      time = time.replace(' ', '日');
       return time;
     },
     starText(val) {
       switch (val) {
         case 1:
-          return '很差';
+          return "很差";
         case 2:
-          return '一般';
+          return "一般";
         case 3:
-          return '满意';
+          return "满意";
         case 4:
-          return '非常满意';
+          return "非常满意";
         case 5:
-          return '无可挑剔';
+          return "无可挑剔";
         default:
-          return '';
+          return "";
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

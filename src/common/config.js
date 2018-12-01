@@ -17,9 +17,11 @@ export default {
     USER_ADDRESS_DELETE: `${APIPREFIX}/user/address/:id`, // 修改地址
     USER_ADDRESS_INFO: `${APIPREFIX}/user/address/:id`, // 获取地址
     BAIDU_MAP_INFO: 'http://api.lococo.site/proxy/geocoder/v2/',
+
+    // 商店
     SHOP_LIST: `${APIPREFIX}/shop`, // 商店列表
     SHOP_DETAIL: `${APIPREFIX}/shop/:id`, // 商店详情
-
+    SHOP_EVAL_LIST: `${APIPREFIX}/shop/:id/eval`, // 商店评价列表
     // 购物车
     CART_LIST: `${APIPREFIX}/user/cart`,
     CART_SHOP_LIST: `${APIPREFIX}/user/cart/settle/:shopId`,
@@ -37,8 +39,8 @@ export default {
     ORDER_REVIEW: `${APIPREFIX}/user/order/:id/review`, // 评价
 
     // 评价列表
-    EVAL_LIST: `${APIPREFIX}/user/evaluation/`,
-    EVAL_DELETE: `${APIPREFIX}/user/evaluation/:id`,
+    USER_EVAL_LIST: `${APIPREFIX}/user/evaluation/`,
+    USER_EVAL_DELETE: `${APIPREFIX}/user/evaluation/:id`,
   },
   BASE_URL: {
     PRO: 'https://api.lococo.site/',

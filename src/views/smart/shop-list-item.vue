@@ -1,5 +1,10 @@
 <template>
-  <router-link class='shop-item' :to="{ name: 'shopDetail',params:{ id: shopInfo.id}}">
+  <router-link
+    class='shop-item'
+    :to="''+shopInfo.id"
+    tag="div"
+    append
+  >
     <div class='shop-item_left'>
       <img v-lazy='shopInfo.photo'>
     </div>
@@ -8,7 +13,11 @@
       <div class='shop-basedata'>
         <div class='mt-flex-space-between'>
           <div class='sale-data-stars'>
-            <rate v-model="shopInfo.rate" :size="10" :margin-left="2" />
+            <rate
+              v-model="shopInfo.rate"
+              :size="10"
+              :margin-left="2"
+            />
           </div>
           <div class='sale-data-volume'>
             月售
@@ -32,7 +41,10 @@
             配送￥
             <i>{{ shopInfo.freight }}</i>
           </span>
-          <span class='price-data-item' v-if="shopInfo.perCapita">
+          <span
+            class='price-data-item'
+            v-if="shopInfo.perCapita"
+          >
             人均￥
             <i>{{ shopInfo.perCapita }}</i>
           </span>
@@ -43,16 +55,16 @@
 </template>
 
 <script type="text/ecmascript-6">
-import Rate from '@/views/dumb/rate';
+import Rate from "@/views/dumb/rate";
 
 export default {
-  name: 'shop-list-item',
+  name: "shop-list-item",
   props: {
-    shopInfo: Object,
+    shopInfo: Object
   },
   components: {
-    Rate,
-  },
+    Rate
+  }
 };
 </script>
 

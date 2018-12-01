@@ -1,14 +1,32 @@
 <template>
   <div class="user-cart">
-    <header-nav :is-back="true" :title="headerTitle" @click-left="$router.back(-1);">
+    <header-nav
+      :is-back="true"
+      :title="headerTitle"
+      @click-left="$router.back(-1);"
+    >
       <span>编辑</span>
     </header-nav>
     <div class="cart-list">
-      <div class="cart-list-item" v-for="item in cartList" :key="item.shop_info.shop_id">
+      <div
+        class="cart-list-item"
+        v-for="item in cartList"
+        :key="item.shop_info.shop_id"
+      >
         <div class="item-title">
-          <check-box v-model="item.selectAll" @click="selectAll(item)" />
-          <router-link class="content" :to="{ name: 'shopDetail', params: { id: item.shop_info.id }}">
-            <img class="shop-avatar" :src="item.shop_info.photo">
+          <check-box
+            v-model="item.selectAll"
+            @click="selectAll(item)"
+          />
+          <router-link
+            class="content"
+            :to="{ name: 'shopDetail', params: { id: item.shop_info.id }}"
+            tag="div"
+          >
+            <img
+              class="shop-avatar"
+              :src="item.shop_info.photo"
+            >
 
             <span class="shop-title">{{ item.shop_info.shop_title }}</span>
             <i class='iconfont icon-xiangyou' />
@@ -21,11 +39,18 @@
         </div>
         <div class="food-list">
           <van-checkbox-group v-model="item.selArr">
-            <div class="food-list-item" v-for="foodInfo in item.foodList" :key="foodInfo.id">
+            <div
+              class="food-list-item"
+              v-for="foodInfo in item.foodList"
+              :key="foodInfo.id"
+            >
               <van-checkbox :name="foodInfo.id" />
               <div class="content">
                 <div class="food-info-box">
-                  <img class="food-img" :src="foodInfo.picture">
+                  <img
+                    class="food-img"
+                    :src="foodInfo.picture"
+                  >
                   <div class="food-info">
                     <p class="food-info-title">{{ foodInfo.food_name }}</p>
                     <p class="food-info-spec">规格：{{ foodInfo.spec_text.join(',') }}</p>
@@ -51,9 +76,15 @@
           <!-- <span class="other-info">已优惠2元</span> -->
           <div class="right">
             <span class="total-price">{{ item.totalPrice }}元</span>
-            <button class="settle-btn" :class="{'not' : (item.shop_info.threshold - item.totalPrice > 0)} ">
+            <button
+              class="settle-btn"
+              :class="{'not' : (item.shop_info.threshold - item.totalPrice > 0)} "
+            >
               <span v-if="item.shop_info.threshold - item.totalPrice > 0">差￥{{ item.shop_info.threshold - item.totalPrice }}起送</span>
-              <span v-else @click="toPay(item)">去结算</span>
+              <span
+                v-else
+                @click="toPay(item)"
+              >去结算</span>
             </button>
           </div>
         </div>
@@ -63,23 +94,23 @@
 </template>
 
 <script type="text/ecmascript-6">
-import headerNav from '@/views/dumb/header-nav';
-import checkBox from '@/views/dumb/check-box';
-import { deepClone } from '@/common/utils';
+import headerNav from "@/views/dumb/header-nav";
+import checkBox from "@/views/dumb/check-box";
+import { deepClone } from "@/common/utils";
 
 export default {
-  name: 'userCartList',
+  name: "userCartList",
 
   data() {
     return {
       checked: false,
-      headerTitle: '购物车',
-      cartList: [],
+      headerTitle: "购物车",
+      cartList: []
     };
   },
   components: {
     headerNav,
-    checkBox,
+    checkBox
   },
   created() {
     this.getCart();
@@ -107,7 +138,7 @@ export default {
         const obj = Object.assign({}, item, {
           selArr,
           totalPrice,
-          selectAll: true,
+          selectAll: true
         });
         this.cartList.push(obj);
       });
@@ -115,20 +146,20 @@ export default {
     toPay(target) {
       const foodIdArr = target.selArr;
       let isAll = false;
-      if (foodIdArr.length === 0) return this.$toast('请选择商品');
+      if (foodIdArr.length === 0) return this.$toast("请选择商品");
 
       // 长度相同表示全选
       if (foodIdArr.length === target.foodList.length) isAll = true;
       this.$router.push({
-        name: 'orderCreate',
-        params: { shopId: this.shopID, isAll, foodIdArr },
+        name: "orderCreate",
+        params: { shopId: this.shopID, isAll, foodIdArr }
       });
-    },
+    }
   },
   computed: {
     list() {
-      return this.$store.getters['cart/listArr'];
-    },
+      return this.$store.getters["cart/listArr"];
+    }
   },
   filters: {
     getTotalPrice(item) {
@@ -137,13 +168,13 @@ export default {
         (totalPrice, item) => (totalPrice += item.num * item.price),
         price
       );
-    },
+    }
   },
   watch: {
     list() {
       this.getCart();
-    },
-  },
+    }
+  }
 };
 </script>
 

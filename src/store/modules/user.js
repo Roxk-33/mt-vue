@@ -231,7 +231,7 @@ const actions = {
   getEvalList({ commit }, payload = 1) {
     return new Promise((resolve, reject) => {
       ajax
-        .get(API.EVAL_LIST, {
+        .get(API.USER_EVAL_LIST, {
           params: {
             page: payload,
           },
@@ -245,7 +245,7 @@ const actions = {
   delEval({ commit }, id) {
     return new Promise((resolve, reject) => {
       ajax
-        .delete(formatURL(API.EVAL_DELETE, { id }))
+        .delete(formatURL(API.USER_EVAL_DELETE, { id }))
         .then(resp => {
           resolve(resp);
         })

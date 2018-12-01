@@ -10,18 +10,18 @@ const getters = {};
 const actions = {
   getShopList({}, payload) {
     return new Promise((resolve, reject) => {
-      ajax({ url: API.SHOP_LIST }).then((resp) => {
+      ajax({ url: API.SHOP_LIST }).then(resp => {
         resolve(resp);
       });
     });
   },
   getShopDetail({}, payload) {
-    return new Promise((resolve, reject) => {
-      ajax({ url: formatURL(API.SHOP_DETAIL, { id: payload.id }) })
-        .then((resp) => {
-          resolve(resp);
-        })
-        .catch(e => reject(e));
+    return ajax({ url: formatURL(API.SHOP_DETAIL, { id: payload.id }) });
+  },
+  getShopEvalList({}, payload) {
+    return ajax({
+      url: formatURL(API.SHOP_EVAL_LIST, { id: payload.shopId }),
+      params: { page: payload.page },
     });
   },
 };

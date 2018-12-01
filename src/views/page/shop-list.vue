@@ -156,4 +156,7 @@ export default {
     margin-top: 2rem;
   }
 }
+.better-scroll-list-wrapper {
+  padding-bottom: 50px;
+}
 </style>

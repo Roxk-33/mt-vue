@@ -110,7 +110,7 @@ export const constantRouterMap = [
         name: 'shopList',
       },
       {
-        path: 'detail/:id',
+        path: 'list/:id',
         component: shopDetail,
         name: 'shopDetail',
       },

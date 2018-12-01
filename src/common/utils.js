@@ -185,3 +185,14 @@ export function camelize(str) {
     return c ? c.toUpperCase() : '';
   });
 }
+
+export function scrollTo(y, time = 0) {
+  const _y = document.documentElement.scrollTop || window.pageYOffset;
+  const offset = y - _y > 0 ? 1 : -1; // 1为向上，-1为向下
+  if (!time) {
+    console.log(y);
+    window.pageYOffset = y;
+    document.documentElement.scrollTop = y;
+    return;
+  }
+}

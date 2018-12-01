@@ -21,7 +21,13 @@
       :style="shopGoodStyle"
     >
       <div class="shop-good-tab">
-        <van-tabs v-model="tabActive">
+
+        <van-tabs
+          v-model="tabActive"
+          :line-width="25"
+          swipeable
+          sticky
+        >
           <van-tab
             v-for="(tab,index) in tabs"
             :title="tab.label"
@@ -29,7 +35,10 @@
           />
         </van-tabs>
       </div>
-      <div class="shop-good-content">
+      <div
+        class="shop-good-content"
+        v-if="tabActive === 0"
+      >
         <div class="shop-good-menu">
 
           <mt-better-scroll
@@ -38,9 +47,11 @@
           >
             <div
               class="menu-item"
-              v-for="catalog in shopInfo.shop_catalog"
-              :key="catalog.value"
-            >{{ catalog.title }}</div>
+              v-for="(catalog,index) in shopCatalog"
+              :key="catalog.id"
+              :class="{'active-index' : currentIndex === index }"
+              @click="scrollToCat(index)"
+            >{{ catalog.label }}</div>
           </mt-better-scroll>
         </div>
         <div class="shop-good-list">
@@ -50,6 +61,7 @@
             @scroll="onScroll"
             :is-disable="scrollDisabel"
             @pulling-down="pullingDown"
+            ref="foodlist"
           >
             <foodItem
               v-for="(foodInfo,index) in foodList"
@@ -63,6 +75,7 @@
           </mt-better-scroll>
         </div>
       </div>
+      <shopDetailEval v-if="tabActive === 1" />
     </div>
     <cart-list
       :threshold="shopInfo.threshold"
@@ -92,7 +105,8 @@ import shopHeader from "@/views/smart/shop-header";
 import shopNav from "@/views/smart/shop-nav";
 import foodIsRepeat from "@/mixins/food-is-repeat";
 import shopDetailScroll from "@/mixins/shop-detail-scroll";
-
+import shopDetailEval from "@/views/smart/shop-detail-eval";
+import { scrollTo } from "@/common/utils";
 export default {
   name: "ShopDetail",
   data() {
@@ -111,12 +125,14 @@ export default {
           value: "business"
         }
       ],
-
+      shopCatalog: [],
+      listHeight: [0],
       tabActive: 0,
       showSpecBox: false,
       shopInfo: {},
       foodList: [],
       foodSelected: {},
+      currentIndex: 0,
       specIndex: 0 // 规格商品的index
     };
   },
@@ -125,7 +141,8 @@ export default {
     cartList,
     foodItem,
     shopHeader,
-    shopNav
+    shopNav,
+    shopDetailEval
   },
   mixins: [foodIsRepeat, parabolaAni, shopDetailScroll],
   methods: {
@@ -136,13 +153,42 @@ export default {
         .then(resp => {
           this.shopInfo = resp.data;
           this.mtLoading = false;
-          this.foodList = this.shopInfo.food_list;
+          this.shopCatalog = this.shopInfo.catalog_list;
+          this.adjustSort(this.shopInfo.food_list);
         })
         .catch(err => {
+          console.log(err);
           this.mtLoading = false;
           this.$toast(err);
           this.$router.back(-1);
         });
+    },
+    adjustSort(foodList) {
+      let sortArr = {};
+      this.shopCatalog.forEach(item => {
+        sortArr[item.id] = item.sort;
+      });
+      foodList.sort((prev, next) => {
+        return sortArr[prev.shop_spec_id] - sortArr[next.shop_spec_id];
+      });
+      this.foodList = foodList;
+      let indexId = this.foodList[0].shop_spec_id;
+      let lineHeight = 0;
+      this.foodList.forEach(item => {
+        if (indexId !== item.shop_spec_id) {
+          this.listHeight.push(lineHeight);
+          indexId = item.shop_spec_id;
+        } else {
+          lineHeight -= 68;
+        }
+      });
+    },
+    scrollToCat(index) {
+      const scrollHeight = this.listHeight[index];
+      this.scrollDisabel = false;
+      scrollTo(this.bannerHeight);
+
+      this.$refs.foodlist.scrollTo(0, scrollHeight, 400);
     },
     pullingDown() {
       console.log("上拉");
@@ -290,12 +336,32 @@ export default {
   watch: {
     cartList(val) {
       this.showSelectNum();
+    },
+    scrollY(newY) {
+      const listHeight = this.listHeight;
+      // 当滚动到顶部，newY>0
+      if (newY > -5) {
+        this.currentIndex = 0;
+        return;
+      }
+      // 在中间部分滚动
+      for (let i = 0; i < listHeight.length - 1; i++) {
+        let height1 = listHeight[i];
+        let height2 = listHeight[i + 1];
+        if (newY <= height1 && newY > height2) {
+          this.currentIndex = i;
+
+          // this.diff = height2 + newY;
+          return;
+        }
+      }
+      // 当滚动到底部，且-newY大于最后一个元素的上限
+      this.currentIndex = listHeight.length - 1;
     }
   },
   computed: {
     // 获取特定商店的购物车详情
     cartList() {
-      console.log(123);
       const arr = this.$store.getters["cart/listArr"];
       const target = arr.find(item => item.shop_info.id == this.shopId);
       if (!target) return [];
@@ -363,19 +429,21 @@ export default {
   background-color: white;
   position: relative;
   .shop-good-tab {
-    width: 70%;
     height: 45px;
     background-color: white;
     display: block;
     margin-bottom: 5px;
+    padding-bottom: 3px;
+    padding-right: 90px;
+    border-bottom: 1px solid $mt-light-gray;
     position: relative;
     &::after {
       content: "邀请拼单";
       color: $mt-color;
       position: absolute;
       top: 50%;
-      right: -90px;
-      transform: translateY(-50%);
+      right: 6px;
+      transform: translateY(-50%) scale(0.9);
       padding: 3px 10px;
       border-radius: 20px;
       border: 1px solid $mt-color;
@@ -394,14 +462,18 @@ export default {
     left: 0;
     top: 0;
     bottom: 0;
-    background-color: #fff;
+    background-color: #ececec;
     overflow: hidden;
     .menu-item {
       width: 100%;
-      padding: 8px 5px 8px 8px;
-      font-size: 15px;
+      padding: 15px 5px 15px 8px;
+      font-size: 12px;
       text-align: left;
       box-sizing: border-box;
+      &.active-index {
+        background-color: #fff;
+        color: #000;
+      }
     }
   }
   .shop-good-list {
@@ -415,12 +487,14 @@ export default {
 .shop-detail {
   .van-ellipsis {
   }
+  .van-tab {
+    font-size: 16px;
+  }
   .van-tabs__wrap::after {
     border: 0;
   }
   .van-tabs__line {
-    margin-left: 8px;
-    width: 25px !important;
+    // margin-left: 8px;
     background-color: $mt-color;
   }
   .van-tab--active {
