@@ -16,7 +16,10 @@ export default {
     USER_ADDRESS_EDIT: `${APIPREFIX}/user/address`, // 修改地址
     USER_ADDRESS_DELETE: `${APIPREFIX}/user/address/:id`, // 修改地址
     USER_ADDRESS_INFO: `${APIPREFIX}/user/address/:id`, // 获取地址
-    BAIDU_MAP_INFO: 'http://api.lococo.site/proxy/geocoder/v2/',
+    BAIDU_MAP_INFO: 'https://api.lococo.site/proxy/baidu-map/geocoder/v2/',
+    BAIDU_MAP_SEARCH: 'https://api.lococo.site/proxy/baidu-map/place/v2/suggestion',
+    // BAIDU_MAP_INFO: `${APIPREFIX}/user/address/map`,
+    // BAIDU_MAP_INFO: 'https://api.map.baidu.com/geocoder/v2/',
 
     // 商店
     SHOP_LIST: `${APIPREFIX}/shop`, // 商店列表

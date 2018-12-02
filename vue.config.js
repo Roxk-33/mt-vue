@@ -7,6 +7,15 @@ function resolve(dir) {
   return path.join(__dirname, dir);
 }
 module.exports = {
+  // devServer: {
+  //   proxy: {
+  //     '/proxy/*': {
+  //       changeOrigin: true,
+  //       target: 'https://api.map.baidu.com',
+  //       pathRewrite: { '^/proxy': '' },
+  //     },
+  //   },
+  // },
   chainWebpack: config => {
     config.resolve.alias.set('css', resolve('src/style'));
     config.resolve.alias.set('vendors', resolve('src/vendors'));

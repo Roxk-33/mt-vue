@@ -1,11 +1,9 @@
 import axios from 'axios';
 import store from '@/store';
-import { Toast } from 'vant';
 import CONFIG from './config';
 import router from './router';
-
-const baseURL =
-  process.env.VUE_APP_ENV === 'production' ? CONFIG.BASE_URL.PRO : CONFIG.BASE_URL.DEV;
+const isPro = process.env.VUE_APP_ENV === 'production';
+const baseURL = isPro ? CONFIG.BASE_URL.PRO : CONFIG.BASE_URL.DEV;
 const service = axios.create({
   baseURL,
   timeout: 50000,
@@ -16,7 +14,10 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     // Do something before request is sent
-    if (store.getters['user/token']) {
+
+    // 百度地图相关接口需要nginx代理接口
+    const isProxy = config.url.indexOf('proxy') !== -1;
+    if (store.getters['user/token'] && !isProxy) {
       config.headers.Authorization = `token ${store.getters['user/token']}`;
       config.headers['mt'] = store.getters.token; // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
     }
@@ -30,7 +31,9 @@ service.interceptors.request.use(
 // respone interceptor
 service.interceptors.response.use(
   response => {
+    const isProxy = response.config.url.indexOf('proxy') !== -1;
     const data = response.data;
+    if (isProxy) return Promise.resolve(data);
     if (!data.status) {
       console.log('出错！');
       if (data.status_code === 4001 || data.status_code === 4002 || data.status_code === 401) {

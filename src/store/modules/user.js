@@ -228,6 +228,26 @@ const actions = {
         .catch(reject);
     });
   },
+  searchMapInfo({ commit }, payload) {
+    const { query, region } = payload;
+    return new Promise((resolve, reject) => {
+      ajax
+        .get(API.BAIDU_MAP_SEARCH, {
+          params: {
+            query: query,
+            region: region,
+            output: 'json',
+            city_limit: 'true',
+            ak: 'gql7G3189x9UnKhoAya6yCfdxZz7CsQX',
+          },
+        })
+        .then(resp => {
+          console.log(resp);
+          resolve(resp);
+        })
+        .catch(reject);
+    });
+  },
   getEvalList({ commit }, payload = 1) {
     return new Promise((resolve, reject) => {
       ajax
