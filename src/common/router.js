@@ -26,7 +26,6 @@ const orderPay = () => import(/* webpackChunkName: "lazy-router" */ '@/views/pag
 const orderCreate = () => import(/* webpackChunkName: "lazy-router" */ '@/views/page/order-create');
 const userInfo = () => import(/* webpackChunkName: "lazy-router" */ '@/views/page/user-info');
 const error = () => import(/* webpackChunkName: "lazy-router" */ '@/views/page/error');
-const addressMap = () => import(/* webpackChunkName: "lazy-router" */ '@/views/page/address-map');
 Vue.use(Router);
 
 export const constantRouterMap = [
@@ -55,11 +54,6 @@ export const constantRouterMap = [
         path: 'address/info',
         component: userAddressInfo,
         name: 'userAddressInfo',
-      },
-      {
-        path: 'address/map',
-        component: addressMap,
-        name: 'addressMap',
       },
       {
         path: 'register',

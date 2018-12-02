@@ -1,6 +1,10 @@
 <template>
   <div class="address-map">
-    <header-nav :title="title" />
+    <header-nav
+      :title="title"
+      :on-left="true"
+      @click-left="close"
+    />
 
     <div class="address-input">
 
@@ -23,6 +27,7 @@
       v-show="searchResult.length === 0"
     >
       <div id='baidu-map'></div>
+      <div class="bar"></div>
       <ul class="pois-list">
         <li
           class="pois-item"
@@ -87,6 +92,10 @@ export default {
     headerNav
   },
   methods: {
+    close() {
+      console.log("close");
+      this.$emit("close");
+    },
     getAddress(latitude, longitude, addr, name) {
       this.latitude = latitude;
       this.longitude = longitude;
@@ -139,7 +148,6 @@ export default {
       this.baiduMap.addEventListener("click", showInfo);
     },
     search() {
-      console.log(this.searchKey);
       if (this.searchKey === "") return;
       this.$store
         .dispatch("user/searchMapInfo", {
@@ -170,6 +178,11 @@ export default {
 }
 .address-input {
   background-color: #fff;
+}
+.bar {
+  width: 100%;
+  height: 8px;
+  background-color: #e6e6e6;
 }
 .pois-list {
   background-color: #fff;
