@@ -31,6 +31,7 @@
       :is-required="true"
       v-model="addressInfo.address"
       @click="showAddressMap"
+      readonly
     />
     <form-item
       label="标签"

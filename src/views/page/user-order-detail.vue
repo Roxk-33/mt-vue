@@ -6,13 +6,19 @@
           <i class="iconfont icon-xiangzuo" />
         </router-link>
       </div>
-      <p class="order-progress" @click="showStatusTimeList = true">
+      <p
+        class="order-progress"
+        @click="showStatusTimeList = true"
+      >
         {{ ORDER_STATUS[orderStatus] }}
         <i class='iconfont icon-xiangyou' />
       </p>
     </div>
     <!-- 当订单未支付时显示 -->
-    <div class="detail-box detail-other" v-if="orderStatus === 'UNPAY'">
+    <div
+      class="detail-box detail-other"
+      v-if="orderStatus === 'UNPAY'"
+    >
       <i class="iconfont icon-bell" />
       请在{{this.coutMin | formatTime}}:{{this.coutSec | formatTime}}分钟内完成支付，超时将自动取消
     </div>
@@ -20,12 +26,39 @@
       <p v-if="orderStatus !== 'UNPAY'">{{ ORDER_STATUS_MSG[orderStatus] }}</p>
       <p v-else>预计<span class="arrival-time">{{ orderStatusTimeArr.predict_arrival_time | parseTime('{h}:{i}')}}</span>送达</p>
       <div class="detail-top-btn">
-        <span class="mt-color" v-if="['ACCEPT','ONTHEWAY'].includes(orderStatus)">催单</span>
-        <span v-if="!['ORDER_SUCCESS','ORDER_REFUND','ORDER_CANCEL','ORDER_CANCEL_TIMEOUT'].includes(orderStatus)" @click="cancelOrder">取消订单</span>
-        <span class="mt-color" v-if="orderStatus === 'UNPAY'" @click="goPay">立即支付</span>
-        <router-link class="again" :to="{ name: 'shopDetail', params: { id: this.orderId }}" v-if="['ORDER_SUCCESS','ORDER_CANCEL'].includes(orderStatus)">再来一单</router-link>
-        <router-link class="after-sale" to="/order/evaluation" v-if="orderStatus === 'ORDER_SUCCESS'">申请售后</router-link>
-        <router-link class="mt-color" v-if="orderStatus === 'ORDER_SUCCESS' && orderInfo.review_status !== 1" :to="{ name: 'userOrderEvaluation', params: { orderId: this.orderId }}">评价</router-link>
+        <span
+          class="mt-color"
+          v-if="['ACCEPT','ONTHEWAY'].includes(orderStatus)"
+        >催单</span>
+        <span
+          v-if="!['ORDER_SUCCESS','ORDER_REFUND','ORDER_CANCEL','ORDER_CANCEL_TIMEOUT'].includes(orderStatus)"
+          @click="cancelOrder"
+        >取消订单</span>
+        <span
+          class="mt-color"
+          v-if="orderStatus === 'UNPAY'"
+          @click="goPay"
+        >立即支付</span>
+        <router-link
+          class="again"
+          :to="{ name: 'shopDetail', params: { id: this.orderId }}"
+          v-if="['ORDER_SUCCESS','ORDER_CANCEL'].includes(orderStatus)"
+        >再来一单</router-link>
+        <span
+          class="after-sale"
+          v-if="['ARRIVED','ONTHEWAY'].includes(orderStatus)"
+          @click="confirmOrder"
+        >确认送达</span>
+        <router-link
+          class="after-sale"
+          to="/order/evaluation"
+          v-if="orderStatus === 'ORDER_SUCCESS'"
+        >申请售后</router-link>
+        <router-link
+          class="mt-color"
+          v-if="orderStatus === 'ORDER_SUCCESS' && orderInfo.review_status !== 1"
+          :to="{ name: 'userOrderEvaluation', params: { orderId: this.orderId }}"
+        >评价</router-link>
       </div>
     </div>
     <div class="detail-box good-box">
@@ -49,8 +82,16 @@
       </div>
 
       <div class="detail-box-item detail-content">
-        <div class="detail-content-item" v-for="item in foodList" :key="item.id">
-          <img class="good-img" :src="item.food_picture" alt="">
+        <div
+          class="detail-content-item"
+          v-for="item in foodList"
+          :key="item.id"
+        >
+          <img
+            class="good-img"
+            :src="item.food_picture"
+            alt=""
+          >
           <div class="good-info">
             <div class="good-info-header mt-flex-space-between">
               <span class="good-info-name">{{ item.food_name }}</span>
@@ -99,10 +140,23 @@
         </li>
       </ul>
     </div>
-    <van-popup v-model="showStatusTimeList" position="bottom" :overlay="true">
-      <pop-up @cancel="showStatusTimeList = false" headerTitle="订单跟踪" :showBottomText="false">
+    <van-popup
+      v-model="showStatusTimeList"
+      position="bottom"
+      :overlay="true"
+    >
+      <pop-up
+        @cancel="showStatusTimeList = false"
+        headerTitle="订单跟踪"
+        :showBottomText="false"
+      >
         <ul class="order-status-time">
-          <li class="order-status-time-item" v-for="(item,index) in orderStatusTimeList" :key="index" :class="{'latest' :index === orderStatusTimeList.length - 1}">
+          <li
+            class="order-status-time-item"
+            v-for="(item,index) in orderStatusTimeList"
+            :key="index"
+            :class="{'latest' :index === orderStatusTimeList.length - 1}"
+          >
             <div class="item-left">
               <div class="dot"></div>
               {{item.label}}
@@ -116,16 +170,16 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { parseTime } from '@/common/utils';
-import CONSTANT from '@/common/constant';
-import timer from '@/mixins/timer';
-import popUp from '@/views/dumb/pop-up';
+import { parseTime } from "@/common/utils";
+import CONSTANT from "@/common/constant";
+import timer from "@/mixins/timer";
+import popUp from "@/views/dumb/pop-up";
 
 export default {
-  name: 'UserOrderDetail',
+  name: "UserOrderDetail",
   mixins: [timer],
   components: {
-    popUp,
+    popUp
   },
   data() {
     return {
@@ -134,28 +188,28 @@ export default {
       ORDER_STATUS_MSG: CONSTANT.ORDER_STATUS_MSG,
       ORDER_STATUS_TIME_MSG: CONSTANT.ORDER_DETAIL_STATUS_TIME,
       showStatusTimeList: false,
-      orderStatusTimeList: [],
+      orderStatusTimeList: []
     };
   },
   methods: {
     getData() {
       this.mtLoading = true;
       this.$store
-        .dispatch('order/getOrderDetail', this.orderId)
+        .dispatch("order/getOrderDetail", this.orderId)
         .then(resp => {
           this.mtLoading = false;
           this.orderInfo = resp.data;
-          if (this.orderStatus === 'UNPAY') {
+          if (this.orderStatus === "UNPAY") {
             this.initCount(this.orderStatusTimeArr.deadline_pay_time, null);
           }
-
+          this.orderStatusTimeList = [];
           Object.keys(this.ORDER_STATUS_TIME_MSG).forEach(key => {
             let obj = {};
             if (!!this.orderStatusTimeArr[key]) {
               obj.label = this.ORDER_STATUS_TIME_MSG[key];
               obj.time = parseTime(
                 this.orderStatusTimeArr[key],
-                '{y}-{m}-{d} {h}:{i}'
+                "{y}-{m}-{d} {h}:{i}"
               );
               this.orderStatusTimeList.push(obj);
             }
@@ -168,9 +222,23 @@ export default {
           this.$router.back(-1);
         });
     },
+    confirmOrder() {
+      this.$store
+        .dispatch("order/confirmOrder", {
+          orderId: this.orderId,
+          data: { shopId: this.shopInfo.id }
+        })
+        .then(resp => {
+          this.getData();
+        })
+        .catch(err => {
+          console.log(err);
+          this.$toast(err);
+        });
+    },
     cancelOrder() {
       this.$store
-        .dispatch('order/cancelOrder', this.orderId)
+        .dispatch("order/cancelOrder", this.orderId)
         .then(resp => {
           this.getData();
         })
@@ -181,15 +249,15 @@ export default {
     },
     goPay() {
       this.$router.push({
-        name: 'orderPay',
+        name: "orderPay",
         params: {
           orderId: this.orderInfo.id,
           price: this.orderInfo.total_price,
           shopTitle: this.shopInfo.shop_title,
-          deadLineTime: this.orderStatusTimeArr.deadline_pay_time,
-        },
+          deadLineTime: this.orderStatusTimeArr.deadline_pay_time
+        }
       });
-    },
+    }
   },
   mounted() {
     this.getData();
@@ -213,16 +281,16 @@ export default {
         return this.orderInfo.order_status;
       }
       return {};
-    },
+    }
   },
   filters: {
     parseTime(val, cFormat = null) {
       return parseTime(val, cFormat);
     },
     formatTime(time) {
-      return time < 10 ? '0' + time : time;
-    },
-  },
+      return time < 10 ? "0" + time : time;
+    }
+  }
 };
 </script>
 
@@ -425,7 +493,7 @@ export default {
           border-radius: 50%;
           background-color: $mt-gray;
           &::after {
-            content: '';
+            content: "";
             display: inline-block;
             width: 1px;
             height: 36px;

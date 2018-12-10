@@ -31,8 +31,9 @@
       <ul class="pois-list">
         <li
           class="pois-item"
-          v-for="item in poisList"
+          v-for="(item,index) in poisList"
           :key="item.uid"
+          :class="{'active':active == index}"
           @click="getAddress(item.point.y,item.point.x,item.addr,item.name)"
         >
           <div class="left">
@@ -60,6 +61,7 @@
           {{item.name}}
         </p>
         <p class="label">
+          {{item.province}}
           {{item.province + "" + item.city + "" + item.district + "" +item.name}}
         </p>
 
@@ -85,7 +87,8 @@ export default {
       searchKey: "",
       searchSuggest: "",
       searchResult: [],
-      poisList: []
+      poisList: [],
+      active: 0
     };
   },
   components: {
@@ -95,6 +98,11 @@ export default {
     close() {
       console.log("close");
       this.$emit("close");
+    },
+    getDistance(start, end) {
+      const point1 = new BMap.Point(start);
+      const point2 = new BMap.Point(end);
+      return this.baiduMap.getDistance(point1, point2);
     },
     getAddress(latitude, longitude, addr, name) {
       this.latitude = latitude;
@@ -112,6 +120,17 @@ export default {
         })
         .then(resp => {
           this.poisList = resp.result.pois;
+          const result = resp.result;
+
+          this.poisList.unshift({
+            point: {
+              y: result.location.lat,
+              x: result.location.lng
+            },
+            addr: result.formatted_address,
+            name: result.sematic_description,
+            uid: 1
+          });
         });
     },
     initMap() {
@@ -191,13 +210,21 @@ export default {
     justify-content: flex-start;
     align-items: center;
     padding: 8px 15px;
+    &.active {
+      .left {
+        background-color: $mt-color;
+      }
+      .block {
+        color: $mt-color;
+      }
+    }
     .left {
       display: inline-block;
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background-color: $mt-color;
       margin-right: 10px;
+      background-color: gray;
     }
     .right {
       flex: 1;
@@ -205,12 +232,11 @@ export default {
       border-bottom: 1px solid $mt-light-gray;
     }
     .block {
-      color: $mt-color;
       font-size: 17px;
     }
     .label {
       margin-top: 5px;
-      color: $mt-gray;
+      color: gray;
     }
   }
 }

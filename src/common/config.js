@@ -40,6 +40,7 @@ export default {
     ORDER_DETAIL: `${APIPREFIX}/user/order/:id`,
     ORDER_DELETE: `${APIPREFIX}/user/order/:id`,
     ORDER_REVIEW: `${APIPREFIX}/user/order/:id/review`, // 评价
+    ORDER_CONFIRM: `${APIPREFIX}/user/order/:id/confirm`, // 评价
 
     // 评价列表
     USER_EVAL_LIST: `${APIPREFIX}/user/evaluation/`,

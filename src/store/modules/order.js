@@ -45,6 +45,11 @@ const actions = {
   getPayData({ commit }, id) {
     return ajax.get(formatURL(API.ORDER_PAY_INFO, { id }));
   },
+  confirmOrder({ commit }, payload) {
+    const { orderId, data } = payload;
+    console.log(payload);
+    return ajax.put(formatURL(API.ORDER_CONFIRM, { id: orderId }), data);
+  },
   reviewOrder({ commit }, payload) {
     const { id, data } = payload;
     return ajax.post(formatURL(API.ORDER_REVIEW, { id }), data);
