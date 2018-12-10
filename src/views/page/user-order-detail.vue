@@ -29,36 +29,50 @@
         <span
           class="mt-color"
           v-if="['ACCEPT','ONTHEWAY'].includes(orderStatus)"
-        >催单</span>
+        >
+          催单
+        </span>
         <span
           v-if="!['ORDER_SUCCESS','ORDER_REFUND','ORDER_CANCEL','ORDER_CANCEL_TIMEOUT'].includes(orderStatus)"
           @click="cancelOrder"
-        >取消订单</span>
+        >
+          取消订单
+        </span>
         <span
           class="mt-color"
           v-if="orderStatus === 'UNPAY'"
           @click="goPay"
-        >立即支付</span>
+        >
+          立即支付
+        </span>
         <router-link
           class="again"
           :to="{ name: 'shopDetail', params: { id: this.orderId }}"
           v-if="['ORDER_SUCCESS','ORDER_CANCEL'].includes(orderStatus)"
-        >再来一单</router-link>
+        >
+          再来一单
+        </router-link>
         <span
           class="after-sale"
           v-if="['ARRIVED','ONTHEWAY'].includes(orderStatus)"
           @click="confirmOrder"
-        >确认送达</span>
+        >
+          确认送达
+        </span>
         <router-link
           class="after-sale"
           to="/order/evaluation"
           v-if="orderStatus === 'ORDER_SUCCESS'"
-        >申请售后</router-link>
+        >
+          申请售后
+        </router-link>
         <router-link
           class="mt-color"
           v-if="orderStatus === 'ORDER_SUCCESS' && orderInfo.review_status !== 1"
           :to="{ name: 'userOrderEvaluation', params: { orderId: this.orderId }}"
-        >评价</router-link>
+        >
+          评价
+        </router-link>
       </div>
     </div>
     <div class="detail-box good-box">

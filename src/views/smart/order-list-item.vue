@@ -2,7 +2,10 @@
   <div class="order-list-item">
     <div class="item-header mt-flex-space-between">
       <div class="item-header-left">
-        <img v-lazy="shopInfo.photo" alt="">
+        <img
+          v-lazy="shopInfo.photo"
+          alt=""
+        >
         <div class="item-header-shop-info">
           <span class="shop-info-name">{{ shopInfo.shop_title }}</span>
           <i class='iconfont icon-xiangyou' />
@@ -12,47 +15,80 @@
         <p>{{ ORDER_STATUS[orderInfo.status] }}</p>
       </div>
     </div>
-    <div class="item-content" @click="gotoDetail">
+    <div
+      class="item-content"
+      @click="gotoDetail"
+    >
       <div class="item-content-info">
         <span class="info-name">{{ foodList[0] && foodList[0].food_name }}</span>
         <span class="info-num">等<i>{{ foodList.length }}</i>件商品</span>
         <p class="order-price">￥15</p>
       </div>
       <div class="item-content-btn-box">
-        <span v-if="['UNPAY','PAY','ONTHEWAY'].includes(orderInfo.status)" class="item-content-btn" @click.stop="cancel">取消订单</span>
-        <router-link class="item-content-btn mt-color" :to="{ name: 'orderPay', params: { orderId: orderId }}" v-if="orderInfo.status === 0">立即支付</router-link>
-        <router-link class="again item-content-btn" :to="{ name: 'shopDetail', params: { id: shopInfo.id }}" v-if="['ORDER_CANCEL','ORDER_CANCEL_TIMEOUT','ORDER_SUCCESS'].includes(orderInfo.status) ">再来一单</router-link>
-        <router-link class="after-sale item-content-btn" to="/order/evaluation" v-if="orderInfo.status === 'ACCEPT'">申请售后</router-link>
-        <router-link class="item-content-btn" v-if="orderInfo.status === 'ORDER_SUCCESS'" :to="{path: '/user/order/evaluation', query: { orderId: this.orderId }}">评价</router-link>
+        <span
+          v-if="['UNPAY','PAY','ONTHEWAY'].includes(orderInfo.status)"
+          class="item-content-btn"
+          @click.stop="cancel"
+        >
+          取消订单
+        </span>
+        <router-link
+          class="item-content-btn mt-color"
+          :to="{ name: 'orderPay', params: { orderId: orderId }}"
+          v-if="orderInfo.status === 0"
+        >
+          立即支付
+        </router-link>
+        <router-link
+          class="again item-content-btn"
+          :to="{ name: 'shopDetail', params: { id: shopInfo.id }}"
+          v-if="['ORDER_CANCEL','ORDER_CANCEL_TIMEOUT','ORDER_SUCCESS'].includes(orderInfo.status) "
+        >
+          再来一单
+        </router-link>
+        <router-link
+          class="after-sale item-content-btn"
+          to="/order/evaluation"
+          v-if="orderInfo.status === 'ACCEPT'"
+        >
+          申请售后
+        </router-link>
+        <router-link
+          class="item-content-btn mt-color"
+          v-if="orderInfo.status === 'ORDER_SUCCESS'"
+          :to="{path: '/user/order/evaluation', query: { orderId: this.orderId }}"
+        >
+          评价
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import CONSTANT from '@/common/constant';
+import CONSTANT from "@/common/constant";
 
 export default {
-  name: 'OrderListItem',
+  name: "OrderListItem",
   props: {
     orderInfo: Object,
-    foodList: Array,
+    foodList: Array
   },
   data() {
     return {
-      ORDER_STATUS: CONSTANT.ORDER_STATUS,
+      ORDER_STATUS: CONSTANT.ORDER_STATUS
     };
   },
   methods: {
     cancel() {
-      this.$emit('cancelOrder', this.orderId);
+      this.$emit("cancelOrder", this.orderId);
     },
     gotoDetail() {
       this.$router.push({
-        name: 'userOrderDetail',
-        params: { id: this.orderId },
+        name: "userOrderDetail",
+        params: { id: this.orderId }
       });
-    },
+    }
   },
 
   computed: {
@@ -65,8 +101,8 @@ export default {
     },
     orderStatus() {
       return this.orderInfo.status;
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -78,7 +114,6 @@ export default {
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   padding: 10px;
   .item-header {
-    border-bottom: 1px solid $mt-boder-color;
     padding-bottom: 5px;
     margin-bottom: 5px;
     .item-header-left {

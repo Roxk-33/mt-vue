@@ -1,6 +1,6 @@
 <template>
   <div class="user-order-list">
-    <order-list-header />
+    <order-list-header @changeTab="changeTab" />
     <mt-better-scroll
       ref="contentScroll"
       :data="orderList"
@@ -42,6 +42,8 @@ export default {
           txt: "更新成功"
         }
       },
+      searchType: "all",
+      isInit: true,
       orderList: [],
       loading: false,
       finished: false,
@@ -84,13 +86,24 @@ export default {
       this.page = 0;
       this.getList();
     },
-    getList() {
+    changeTab(type) {
+      this.page = 0;
+      this.orderList = [];
+      this.getList(type);
+    },
+
+    getList(type = "") {
       // 初次进入页面展示loadnig
-      if (this.orderList.length === 0 && this.page === 0) {
+      if (this.isInit) {
         this.mtLoading = true;
+        this.isInit = false;
       }
+      type && (this.searchType = type);
       this.$store
-        .dispatch("order/getOrderList", this.page)
+        .dispatch("order/getOrderList", {
+          page: this.page,
+          type: this.searchType
+        })
         .then(resp => {
           this.mtLoading = false;
 
@@ -99,6 +112,7 @@ export default {
             this.orderList = [];
             return;
           }
+          this.finished = false;
           if (this.page === 0) {
             this.orderList = resp.data;
           } else {

@@ -19,12 +19,14 @@ const actions = {
     return ajax.post(API.ORDER_CREATE, payload);
   },
 
-  getOrderList({ commit }, payload = 1) {
+  getOrderList({ commit }, payload) {
+    const { page, type } = payload;
     return new Promise((resolve, reject) => {
       ajax
         .get(API.ORDER_LIST, {
           params: {
-            page: payload,
+            page,
+            type,
           },
         })
         .then(resp => {

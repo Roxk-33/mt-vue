@@ -4,28 +4,45 @@
       <p>订单</p>
     </div>
     <ul class="header-nav">
-      <li class="header-nav-item">全部订单</li>
-      <li class="header-nav-item">待评价</li>
-      <li class="header-nav-item">退款</li>
+      <li
+        class="header-nav-item"
+        :class="{'active':active === 'all'}"
+        @click="onClick('all')"
+      >全部订单</li>
+      <li
+        class="header-nav-item"
+        :class="{'active':active === 'eval'}"
+        @click="onClick('eval')"
+      >待评价</li>
+      <li
+        class="header-nav-item"
+        :class="{'active':active === 'refund'}"
+        @click="onClick('refund')"
+      >退款</li>
     </ul>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'OrderListHeader',
+  name: "OrderListHeader",
 
   data() {
-    return {};
+    return {
+      active: "all"
+    };
   },
   components: {},
-  methods: {},
+  methods: {
+    onClick(type) {
+      this.active = type;
+      this.$emit("changeTab", type);
+    }
+  }
 };
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-
-
 .order-list-header {
   background-color: #fff;
   position: fixed;
@@ -47,6 +64,17 @@ export default {
       width: 100px;
       padding: 10px 0;
       font-size: 15px;
+      position: relative;
+      &.active::after {
+        position: absolute;
+        content: "";
+        width: 20px;
+        height: 2px;
+        background-color: $mt-color;
+        bottom: 5px;
+        left: 50%;
+        margin-left: -10px;
+      }
     }
   }
 }
