@@ -1,7 +1,7 @@
 <template>
   <transition name="van-fade">
     <div
-      v-show="value"
+      v-show="visible"
       class="mt-modal"
       :class="className"
       :style="style"
@@ -13,37 +13,51 @@
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'MtMask',
+  name: "MtMask",
 
   props: {
-    value: Boolean,
+    visible: Boolean,
     zIndex: Number,
     className: String,
     customStyle: Object,
+    lockScroll: {
+      type: Boolean,
+      default: true
+    },
     closeOnClickOverlay: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
   computed: {
     style() {
       return {
-        ...this.customStyle,
+        ...this.customStyle
       };
-    },
+    }
   },
   methods: {
     onClick(ev) {
-      this.$emit('click', ev);
-      this.closeOnClickOverlay && this.$emit('input', false);
-    },
+      this.$emit("click", ev);
+      this.closeOnClickOverlay && this.$emit("input", false);
+    }
   },
+  watch: {
+    visible: {
+      deep: true,
+      handler(val) {
+        if (val && this.lockScroll) {
+          document.body.classList.add("mt-overflow-hidden");
+        } else {
+          document.body.classList.remove("mt-overflow-hidden");
+        }
+      }
+    }
+  }
 };
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-
-
 .mt-modal {
   position: fixed;
   width: 100%;

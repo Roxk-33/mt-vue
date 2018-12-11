@@ -8,16 +8,9 @@
       :border="false"
     />
     <div class="header">
-      <img
-        :src='userAvatar'
-        class="user-avatar"
-      >
-      <p class="user-name">
-        {{ userName }}
-      </p>
-      <span>
-        已共享3条评价
-      </span>
+      <img :src="userAvatar" class="user-avatar">
+      <p class="user-name">{{ userName }}</p>
+      <span>已共享3条评价</span>
     </div>
     <mt-better-scroll
       ref="contentScroll"
@@ -26,11 +19,7 @@
       @pulling-up="onPullingUp"
     >
       <div class="list-box">
-        <div
-          class="list-item"
-          v-for="item in evalList"
-          :key="item.id"
-        >
+        <div class="list-item" v-for="item in evalList" :key="item.id">
           <div class="shop-info mt-flex-space-between">
             <router-link :to="{ name: 'shopDetail',params:{ id: item.shop_info.id}}">
               <i class="iconfont icon-dianpu"></i>
@@ -39,33 +28,18 @@
             <i class="iconfont icon-xiangyou"></i>
           </div>
           <div class="eval-info">
-            <img
-              :src='userAvatar'
-              class="user-avatar"
-            >
+            <img :src="userAvatar" class="user-avatar">
             <div class="detail-info">
               <div class="detail-header mt-flex-space-between">
-                <span class="user-name">
-                  {{ userName }}
-                </span>
+                <span class="user-name">{{ userName }}</span>
                 <span class="eval-time">2018.11.24</span>
               </div>
               <div class="detail-middle">
-                <div class="shop-rate">
-                  商家
-                  <rate
-                    v-model="rate"
-                    :size="8"
-                    :margin-left="5"
-                    :isShowText="false"
-                  />
+                <div class="shop-rate">商家
+                  <rate v-model="rate" :size="10" :margin-left="5" :isShowText="false"/>
                 </div>
-                <div class="distribution-type">
-                  {{ item.distribution_type ? '美团专送' : '商家自配送'}}
-                </div>
-                <div class="distribution-time">
-                  {{item.distribution_type}}分钟送达
-                </div>
+                <div class="distribution-type">{{ item.distribution_type ? '美团专送' : '商家自配送'}}</div>
+                <div class="distribution-time">{{item.distribution_type}}分钟送达</div>
               </div>
               <div class="detail-bottom">
                 <span>口味:{{item.taste_rate}}星</span>
@@ -90,11 +64,9 @@
           </div>
         </div>
       </div>
-
     </mt-better-scroll>
 
-    <list-empty :isShow="finished" />
-
+    <list-empty :isShow="finished"/>
   </div>
 </template>
 
@@ -153,16 +125,25 @@ export default {
         });
     },
     deleteItem(id) {
-      this.$store
-        .dispatch("user/delEval", id)
-        .then(resp => {
-          this.evalList = [];
-          this.getList();
-          return this.$toast("删除成功");
+      this.$dialog
+        .confirm({
+          message: "确定删除这条评价吗？"
         })
-        .catch(err => {
-          console.log(err);
-          this.$toast(err);
+        .then(() => {
+          this.$store
+            .dispatch("user/delEval", id)
+            .then(resp => {
+              this.evalList = [];
+              this.getList();
+              return this.$toast("删除成功");
+            })
+            .catch(err => {
+              console.log(err);
+              this.$toast(err);
+            });
+        })
+        .catch(() => {
+          // on cancel
         });
     },
     onPullingDown() {
@@ -234,16 +215,19 @@ export default {
     margin-bottom: 5px;
     padding: 0 8px 5px;
     .shop-info {
-      padding: 9px 0;
-      border-bottom: 1px solid $mt-gray;
+      padding: 15px 0 9px;
+      border-bottom: 1px solid #dfdfdf;
+      font-size: 15px;
       span {
         vertical-align: middle;
-        font-size: 15px;
+        color: $mt-gray;
+      }
+      .icon-xiangyou {
         color: $mt-gray;
       }
     }
     .eval-info {
-      margin-top: 5px;
+      margin-top: 15px;
       display: flex;
       justify-content: flex-start;
       .user-avatar {
@@ -274,6 +258,9 @@ export default {
             margin-right: 9px;
           }
           .shop-rate {
+            display: flex;
+            align-content: center;
+            margin-right: 20px;
             .rate {
               display: inline-block;
 
@@ -291,11 +278,14 @@ export default {
     .btn-box {
       text-align: right;
       margin-top: 8px;
+
       span {
         margin-left: 8px;
+        font-size: 14px;
+
         i {
+          vertical-align: text-top;
           color: $mt-gray;
-          font-size: 12px;
         }
       }
     }

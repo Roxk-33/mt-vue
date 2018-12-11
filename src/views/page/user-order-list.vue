@@ -1,6 +1,6 @@
 <template>
   <div class="user-order-list">
-    <order-list-header @changeTab="changeTab" />
+    <order-list-header @changeTab="changeTab"/>
     <mt-better-scroll
       ref="contentScroll"
       :data="orderList"
@@ -16,11 +16,10 @@
           @cancelOrder="cancelOrder"
         />
       </div>
-
     </mt-better-scroll>
 
-    <list-empty :isShow="finished" />
-    <footer-nav active='1' />
+    <list-empty :isShow="finished"/>
+    <footer-nav active="1"/>
   </div>
 </template>
 
@@ -137,8 +136,10 @@ export default {
 .user-order-list {
   height: 100%;
 }
-// .order-list-content,
+.order-list-content {
+  padding-top: 8px;
+}
 .better-scroll-wrapper {
-  margin-top: 85px;
+  margin-top: 78px;
 }
 </style>

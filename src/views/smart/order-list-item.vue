@@ -2,26 +2,23 @@
   <div class="order-list-item">
     <div class="item-header mt-flex-space-between">
       <div class="item-header-left">
-        <img
-          v-lazy="shopInfo.photo"
-          alt=""
-        >
+        <img v-lazy="shopInfo.photo" alt>
         <div class="item-header-shop-info">
           <span class="shop-info-name">{{ shopInfo.shop_title }}</span>
-          <i class='iconfont icon-xiangyou' />
+          <i class="iconfont icon-xiangyou"/>
         </div>
       </div>
       <div class="item-header-right">
         <p>{{ ORDER_STATUS[orderInfo.status] }}</p>
       </div>
     </div>
-    <div
-      class="item-content"
-      @click="gotoDetail"
-    >
+    <div class="item-content" @click="gotoDetail">
       <div class="item-content-info">
         <span class="info-name">{{ foodList[0] && foodList[0].food_name }}</span>
-        <span class="info-num">等<i>{{ foodList.length }}</i>件商品</span>
+        <span class="info-num">
+          等
+          <i>{{ foodList.length }}</i>件商品
+        </span>
         <p class="order-price">￥15</p>
       </div>
       <div class="item-content-btn-box">
@@ -29,37 +26,27 @@
           v-if="['UNPAY','PAY','ONTHEWAY'].includes(orderInfo.status)"
           class="item-content-btn"
           @click.stop="cancel"
-        >
-          取消订单
-        </span>
+        >取消订单</span>
         <router-link
           class="item-content-btn mt-color"
           :to="{ name: 'orderPay', params: { orderId: orderId }}"
           v-if="orderInfo.status === 0"
-        >
-          立即支付
-        </router-link>
+        >立即支付</router-link>
         <router-link
           class="again item-content-btn"
           :to="{ name: 'shopDetail', params: { id: shopInfo.id }}"
           v-if="['ORDER_CANCEL','ORDER_CANCEL_TIMEOUT','ORDER_SUCCESS'].includes(orderInfo.status) "
-        >
-          再来一单
-        </router-link>
+        >再来一单</router-link>
         <router-link
           class="after-sale item-content-btn"
           to="/order/evaluation"
           v-if="orderInfo.status === 'ACCEPT'"
-        >
-          申请售后
-        </router-link>
+        >申请售后</router-link>
         <router-link
           class="item-content-btn mt-color"
-          v-if="orderInfo.status === 'ORDER_SUCCESS'"
+          v-if="orderInfo.status === 'ORDER_SUCCESS' && orderInfo.review_status !== 1"
           :to="{path: '/user/order/evaluation', query: { orderId: this.orderId }}"
-        >
-          评价
-        </router-link>
+        >评价</router-link>
       </div>
     </div>
   </div>
@@ -144,11 +131,10 @@ export default {
   }
   .item-content {
     border-top: 1px solid #cccccc;
-    margin-left: 45px;
+    margin-left: 38px;
     padding: 10px 0;
     .item-content-info {
       text-align: left;
-      margin-left: 44px;
       span {
         font-size: 14px;
         color: #5d5b5b;
@@ -176,7 +162,7 @@ export default {
         box-sizing: border-box;
         padding: 5px;
         margin-right: 5px;
-        border: 1px solid #cccccc;
+        border: 1px solid #dfdfdf;
         &:last-child {
           margin-right: 0;
         }

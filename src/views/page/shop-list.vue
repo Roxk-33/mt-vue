@@ -1,36 +1,28 @@
 <template>
-  <div class='shop-catalog'>
+  <div class="shop-catalog">
     <header-nav
       :is-back="true"
       :title="headerTitle"
       :on-left="true"
       @click-left="$router.push('/user/index');"
     />
-    <shop-list-header
-      :sort-target="sortTarget"
-      @change="changeFilter"
-      @showMask="showMask"
-    />
+    <shop-list-header :sort-target="sortTarget" @change="changeFilter" @showMask="showMask"/>
+
     <div class="shop-list">
-      <mt-mask v-model="show" />
+      <mt-mask :visible="show"/>
       <mt-better-scroll
         ref="contentScroll"
         :data="shopList"
         @pulling-down="onPullingDown"
         @pulling-up="onPullingUp"
       >
-        <van-cell
-          v-for="(shop,index) in shopList"
-          :key='index'
-          style="padding:10px"
-        >
+        <van-cell v-for="(shop,index) in shopList" :key="index" style="padding:10px">
           <shop-list-item :shopInfo="shop"></shop-list-item>
         </van-cell>
       </mt-better-scroll>
-      <list-empty :isShow="finished" />
-
+      <list-empty :isShow="finished"/>
     </div>
-    <to-cart-list />
+    <to-cart-list/>
   </div>
 </template>
 
