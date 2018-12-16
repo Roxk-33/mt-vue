@@ -1,32 +1,18 @@
 <template>
-
-  <van-tabbar
-    v-model="active"
-    @change="toPage"
-  >
+  <van-tabbar v-model="active" @change="toPage">
     <van-tabbar-item>
-      <i
-        class='iconfont icon-index'
-        slot="icon"
-      />
+      <i class="iconfont icon-index" slot="icon"/>
       商店
     </van-tabbar-item>
     <van-tabbar-item>
-      <i
-        class='iconfont icon-order-list'
-        slot="icon"
-      />
+      <i class="iconfont icon-order-list" slot="icon"/>
       订单
     </van-tabbar-item>
     <van-tabbar-item icon="records">
-      <i
-        class='iconfont icon-person'
-        slot="icon"
-      />
+      <i class="iconfont icon-person" slot="icon"/>
       我的
     </van-tabbar-item>
   </van-tabbar>
-
 </template>
 <script>
 export default {
@@ -39,7 +25,7 @@ export default {
   props: {},
   data() {
     return {
-      active: 0
+      active: 2
     };
   },
   methods: {
