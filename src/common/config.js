@@ -48,6 +48,6 @@ export default {
   },
   BASE_URL: {
     PRO: 'https://api.lococo.site/',
-    DEV: 'http://192.168.191.1:7001/',
+    DEV: 'http://localhost:7001/',
   },
 };
