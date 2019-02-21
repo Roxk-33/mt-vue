@@ -47,11 +47,11 @@
           >
             <div
               class="menu-item"
-              v-for="(catalog,index) in shopCatalog"
-              :key="catalog.id"
+              v-for="(category,index) in shopCatalog"
+              :key="category.id"
               :class="{'active-index' : currentIndex === index }"
               @click="scrollToCat(index)"
-            >{{ catalog.label }}</div>
+            >{{ category.label }}</div>
           </mt-better-scroll>
         </div>
         <div class="shop-good-list">
@@ -153,7 +153,7 @@ export default {
         .then(resp => {
           this.shopInfo = resp.data;
           this.mtLoading = false;
-          this.shopCatalog = this.shopInfo.catalog_list;
+          this.shopCatalog = this.shopInfo.category_list;
           this.adjustSort(this.shopInfo.food_list);
         })
         .catch(err => {
@@ -169,15 +169,15 @@ export default {
         sortArr[item.id] = item.sort;
       });
       foodList.sort((prev, next) => {
-        return sortArr[prev.shop_spec_id] - sortArr[next.shop_spec_id];
+        return sortArr[prev.category_id] - sortArr[next.category_id];
       });
       this.foodList = foodList;
-      let indexId = this.foodList[0].shop_spec_id;
+      let indexId = this.foodList[0].category_id;
       let lineHeight = 0;
       this.foodList.forEach(item => {
-        if (indexId !== item.shop_spec_id) {
+        if (indexId !== item.category_id) {
           this.listHeight.push(lineHeight);
-          indexId = item.shop_spec_id;
+          indexId = item.category_id;
         } else {
           lineHeight -= 68;
         }
@@ -369,7 +369,7 @@ export default {
     },
 
     shopId() {
-      return this.$route.params.shopId || 1;
+      return this.$route.params.id;
     },
     shopGoodStyle() {
       return {

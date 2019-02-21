@@ -10,7 +10,7 @@ const getters = {};
 const actions = {
   getShopList({}, payload) {
     return new Promise((resolve, reject) => {
-      ajax({ url: API.SHOP_LIST }).then(resp => {
+      ajax.get(API.SHOP_LIST, { params: payload }).then(resp => {
         resolve(resp);
       });
     });
@@ -21,9 +21,9 @@ const actions = {
   getShopEvalList({}, payload) {
     return ajax({
       url: formatURL(API.SHOP_EVAL_LIST, { id: payload.shopId }),
-      params: { page: payload.page },
+      params: { page: payload.page }
     });
-  },
+  }
 };
 
 export default {
@@ -31,5 +31,5 @@ export default {
   state,
   actions,
   getters,
-  mutations,
+  mutations
 };

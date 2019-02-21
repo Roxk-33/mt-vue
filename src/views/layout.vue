@@ -13,28 +13,34 @@
 
 <script>
 export default {
-  name: 'Layout',
+  name: "Layout",
   created() {
     this.$store
-      .dispatch('user/getUserInfo')
+      .dispatch("user/getUserInfo")
       .then(() => {
-        this.$store.dispatch('cart/getCartList');
+        this.$store.dispatch("cart/getCartList");
       })
-      .catch((err) => {
+      .catch(err => {
         this.$toast({
           duration: 3000, // 持续展示 toast
-          message: err,
+          message: err
         });
       });
+    this.$store.dispatch("user/getLocation").catch(err => {
+      this.$toast({
+        duration: 3000, // 持续展示 toast
+        message: err
+      });
+    });
   },
   computed: {
     cachedViews() {
       // return this.$store.state.app.cachedViews;
-    },
+    }
     // key() {
     //   return this.$route.name !== undefined ? this.$route.name + +new Date() : this.$route + +new Date()
     // }
-  },
+  }
 };
 </script>
 <style>

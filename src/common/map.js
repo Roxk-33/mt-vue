@@ -4,7 +4,7 @@ export function getAddress() {
   map.centerAndZoom(point, 12);
 
   const geolocation = new BMap.Geolocation();
-  geolocation.getCurrentPosition(function (r) {
+  geolocation.getCurrentPosition(function(r) {
     if (this.getStatus() == BMAP_STATUS_SUCCESS) {
       const mk = new BMap.Marker(r.point);
       map.addOverlay(mk);
@@ -18,14 +18,9 @@ export function getAddress() {
 export function getLocation() {
   return new Promise((resolve, reject) => {
     const geolocation = new BMap.Geolocation();
-    geolocation.getCurrentPosition(function (r) {
+    geolocation.getCurrentPosition(function(r) {
       if (this.getStatus() == BMAP_STATUS_SUCCESS) {
-        // var mk = new BMap.Marker(r.point);
-        // map.addOverlay(mk);
-        // map.panTo(r.point);
-        // var point = new BMap.Point(113.36963653560001, 23.097891524286087);
-        // map.centerAndZoom(point, 12);
-        resolve(`${r.point.lat},${r.point.lng}`);
+        resolve({ lat: r.point.lat, lng: r.point.lng });
       } else {
         reject(this.getStatus());
       }

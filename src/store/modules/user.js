@@ -3,6 +3,8 @@ import ajax from '@/common/request';
 import config from '@/common/config';
 import { formatURL } from '@/common/utils';
 import * as types from '../mutation-types';
+import { getLocation } from '@/common/map';
+
 const AVATAR_URL = process.env.VUE_APP_AVATAR_URL;
 const API = config.API;
 const state = {
@@ -15,6 +17,7 @@ const state = {
   introduction: '',
   token: getToken(),
   addressList: [],
+  location: null
 };
 
 const mutations = {
@@ -44,6 +47,9 @@ const mutations = {
   [types.SET_ADDRESS](state, addressList) {
     state.addressList = addressList;
   },
+  [types.SAVE_LOCATION](state, location) {
+    state.location = location;
+  }
 };
 const getters = {
   userAvatar: state => state.userAvatar,
@@ -52,6 +58,7 @@ const getters = {
   userTel: state => state.userTel,
   introduction: state => state.introduction,
   token: state => state.token,
+  location: state => state.location
 };
 const actions = {
   RegiterByAccount({ commit }, userInfo) {
@@ -61,7 +68,7 @@ const actions = {
       ajax
         .post(API.USER_REGISTER, {
           account,
-          password,
+          password
         })
         .then(resp => {
           resolve(resp);
@@ -82,7 +89,7 @@ const actions = {
       ajax
         .post(API.USER_LOGIN, {
           account,
-          password,
+          password
         })
         .then(resp => {
           resolve(resp);
@@ -143,7 +150,7 @@ const actions = {
   },
   uploadAvatar({ commit, state }, payload) {
     let config = {
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: { 'Content-Type': 'multipart/form-data' }
     };
     var formData = new FormData();
 
@@ -218,12 +225,23 @@ const actions = {
             location,
             pois: 1,
             output: 'json',
-            ak: 'gql7G3189x9UnKhoAya6yCfdxZz7CsQX',
-          },
+            ak: 'gql7G3189x9UnKhoAya6yCfdxZz7CsQX'
+          }
         })
         .then(resp => {
           console.log(resp);
           resolve(resp);
+        })
+        .catch(reject);
+    });
+  },
+  // 获取用户当前位置
+  getLocation({ commit }) {
+    return new Promise((resolve, reject) => {
+      getLocation()
+        .then(location => {
+          commit(types.SAVE_LOCATION, location);
+          resolve(location);
         })
         .catch(reject);
     });
@@ -238,8 +256,8 @@ const actions = {
             region: region,
             output: 'json',
             city_limit: 'true',
-            ak: 'gql7G3189x9UnKhoAya6yCfdxZz7CsQX',
-          },
+            ak: 'gql7G3189x9UnKhoAya6yCfdxZz7CsQX'
+          }
         })
         .then(resp => {
           console.log(resp);
@@ -253,8 +271,8 @@ const actions = {
       ajax
         .get(API.USER_EVAL_LIST, {
           params: {
-            page: payload,
-          },
+            page: payload
+          }
         })
         .then(resp => {
           resolve(resp);
@@ -316,7 +334,7 @@ const actions = {
       commit('REMOVE_TOKEN');
       resolve();
     });
-  },
+  }
 };
 
 export default {
@@ -324,5 +342,5 @@ export default {
   state,
   actions,
   getters,
-  mutations,
+  mutations
 };

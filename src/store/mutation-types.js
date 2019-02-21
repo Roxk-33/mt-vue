@@ -12,3 +12,6 @@ export const SET_USERID = 'SET_USERID';
 export const SET_TEL = 'SET_TEL';
 export const REMOVE_TOKEN = 'REMOVE_TOKEN';
 export const SET_INTRODUCTION = 'SET_INTRODUCTION';
+
+// 地图相关
+export const SAVE_LOCATION = 'SAVE_LOCATION';

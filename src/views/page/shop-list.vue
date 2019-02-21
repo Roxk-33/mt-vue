@@ -1,28 +1,36 @@
 <template>
-  <div class="shop-catalog">
+  <div class="shop-category">
     <header-nav
       :is-back="true"
       :title="headerTitle"
       :on-left="true"
       @click-left="$router.push('/user/index');"
     />
-    <shop-list-header :sort-target="sortTarget" @change="changeFilter" @showMask="showMask"/>
+    <shop-list-header
+      :sort-target="sortTarget"
+      @change="changeFilter"
+      @showMask="showMask"
+    />
 
     <div class="shop-list">
-      <mt-mask :visible="show"/>
+      <mt-mask :visible="show" />
       <mt-better-scroll
         ref="contentScroll"
         :data="shopList"
         @pulling-down="onPullingDown"
         @pulling-up="onPullingUp"
       >
-        <van-cell v-for="(shop,index) in shopList" :key="index" style="padding:10px">
+        <van-cell
+          v-for="(shop,index) in shopList"
+          :key="index"
+          style="padding:10px"
+        >
           <shop-list-item :shopInfo="shop"></shop-list-item>
         </van-cell>
       </mt-better-scroll>
-      <list-empty :isShow="finished"/>
+      <list-empty :isShow="finished" />
     </div>
-    <to-cart-list/>
+    <to-cart-list />
   </div>
 </template>
 
@@ -34,6 +42,7 @@ import toCartList from "@/views/smart/to-cart-list";
 import mtMask from "@/views/dumb/mt-mask";
 import listEmpty from "@/views/dumb/list-empty";
 import MtBetterScroll from "@/views/dumb/mt-better-scroll";
+import { getLocation } from "@/common/map";
 
 export default {
   name: "shop-list",
@@ -71,7 +80,8 @@ export default {
       this.$store
         .dispatch("shop/getShopList", {
           page: this.page,
-          type: this.sortTarget
+          type: this.sortTarget,
+          ...this.location
         })
         .then(resp => {
           this.mtLoading = false;
@@ -107,14 +117,34 @@ export default {
       this.sortTarget = type;
     }
   },
+  computed: {
+    location() {
+      return this.$store.state.user.location;
+    }
+  },
   created() {
-    this.getList();
+    if (!this.location) {
+      this.timers = setInterval(() => {
+        if (this.location) {
+          console.log(
+            "%cthis.location: ",
+            "color: MidnightBlue; background: Aquamarine; font-size: 20px;",
+            this.location
+          );
+          this.getList();
+
+          this.timers && clearInterval(this.timers);
+        }
+      }, 200);
+    } else {
+      this.getList();
+    }
   }
 };
 </script>
 
 <style  rel="stylesheet/scss" lang="scss">
-.shop-catalog {
+.shop-category {
   height: 100%;
   min-height: 100%;
 }

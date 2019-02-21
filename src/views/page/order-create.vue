@@ -1,11 +1,27 @@
 <template>
   <div class="order-pay">
-    <header-nav :title="headerTitle" :on-left="true" @click-left="$router.back(-1);" />
+    <header-nav
+      :title="headerTitle"
+      :on-left="true"
+      @click-left="$router.back(-1);"
+    />
     <div class='order-pay-header'>
-      <div class='header-address box-right-arrow ' @click="showAddress = true">
-        <p class='address-content' v-if="orderInfo.address.address">{{ orderInfo.address.address }}</p>
-        <span class='address-person' v-if="orderInfo.address.user_name">{{ orderInfo.address.user_name }} {{ orderInfo.address.tel }}</span>
-        <p v-else class="address-select">请选择地址</p>
+      <div
+        class='header-address box-right-arrow '
+        @click="showAddress = true"
+      >
+        <p
+          class='address-content'
+          v-if="orderInfo.address.address"
+        >{{ orderInfo.address.address }}</p>
+        <span
+          class='address-person'
+          v-if="orderInfo.address.user_name"
+        >{{ orderInfo.address.user_name }} {{ orderInfo.address.tel }}</span>
+        <p
+          v-else
+          class="address-select"
+        >请选择地址</p>
         <i class='iconfont icon-xiangyou right' />
       </div>
       <div class='header-shipping-time box-right-arrow mt-flex-space-between'>
@@ -20,7 +36,11 @@
         <span>{{ shopInfo.shop_title }}</span>
       </div>
       <ul class='main-food-list order-pay-main-item'>
-        <li class='food-list-item' v-for="item in foodList" :key="item.id">
+        <li
+          class='food-list-item'
+          v-for="item in foodList"
+          :key="item.id"
+        >
           <div class='food-pic'>
             <img :src="item.picture">
           </div>
@@ -63,7 +83,10 @@
 
     </div>
     <div class='order-pay-note'>
-      <div class='order-pay-note-item box-right-arrow mt-flex-space-between' @click="showRemarks = true;tempRemarks = orderInfo.remarks;">
+      <div
+        class='order-pay-note-item box-right-arrow mt-flex-space-between'
+        @click="showRemarks = true;tempRemarks = orderInfo.remarks;"
+      >
         <span class='note-item-left'>备注</span>
         <div class="note-item-right-box">
           <span class='note-item-right'>{{ orderInfo.remarks }}</span>
@@ -71,7 +94,10 @@
         </div>
 
       </div>
-      <div class='order-pay-note-item box-right-arrow mt-flex-space-between' @click="showTableware = true;">
+      <div
+        class='order-pay-note-item box-right-arrow mt-flex-space-between'
+        @click="showTableware = true;"
+      >
         <span class='note-item-left'>餐具数量</span>
         <div class="note-item-right-box">
           <span class='note-item-right'>{{orderInfo.tableware !== null ? orderInfo.tableware +'人' :'未选择'}}</span>
@@ -102,12 +128,19 @@
           {{ totalPrice }}
         </span>
       </div>
-      <div class='footer-box-right' @click="sumbitOrder">
+      <div
+        class='footer-box-right'
+        @click="sumbitOrder"
+      >
         <span>提交订单</span>
       </div>
     </div>
 
-    <van-popup v-model="showPay" position="bottom" :overlay="true">
+    <van-popup
+      v-model="showPay"
+      position="bottom"
+      :overlay="true"
+    >
       <pop-up @cancel="cancel('pay')">
         <div class="pay-way-box">
           <p @click="cancel('pay')">在线支付</p>
@@ -115,17 +148,49 @@
         </div>
       </pop-up>
     </van-popup>
-    <van-actionsheet v-model="showTableware" :actions="tablewareList" cancel-text="取消" @select="onSelectTableware" @cancel="showTableware=false" />
+    <van-actionsheet
+      v-model="showTableware"
+      :actions="tablewareList"
+      cancel-text="取消"
+      @select="onSelectTableware"
+      @cancel="showTableware=false"
+    />
     <!-- 收货地址 -->
-    <van-popup v-model="showAddress" position="bottom" :overlay="true">
-      <pop-up class="address-list" @cancel="cancel('address')" @clickHeaderLeft="cancel('address')" header-title="选择收货地址" header-left="取消" bottom-text="新增收货地址" bottom-text-icon="icon-add_icon">
+    <van-popup
+      v-model="showAddress"
+      position="bottom"
+      :overlay="true"
+    >
+      <pop-up
+        class="address-list"
+        @cancel="cancel('address')"
+        @clickHeaderLeft="cancel('address')"
+        header-title="选择收货地址"
+        header-left="取消"
+        bottom-text="新增收货地址"
+        bottom-text-icon="icon-add_icon"
+      >
         <div class="address-list-box">
           <ul class="list-box">
-            <li class="list-box-item" v-for="(item,index) in addressList" :key="item.id" @click="selAddress(index)">
-              <van-radio :name="true" v-model="item.selected" @click="selAddress(index)" :checked-color="mtColor" />
+            <li
+              class="list-box-item"
+              v-for="(item,index) in addressList"
+              :key="item.id"
+              @click="selAddress(index)"
+            >
+              <van-radio
+                :name="true"
+                v-model="item.selected"
+                @click="selAddress(index)"
+                :checked-color="mtColor"
+              />
               <div class="content">
                 <div class="address">{{ item.address }}
-                  <div class="tag" v-if="item.tag !== ''" :class="{'school':item.tag == 0,'company':item.tag == 1,'home' :item.tag == 2}">
+                  <div
+                    class="tag"
+                    v-if="item.tag !== ''"
+                    :class="{'school':item.tag == 0,'company':item.tag == 1,'home' :item.tag == 2}"
+                  >
                     {{ TAGS[item.tag] }}
                   </div>
                 </div>
@@ -140,33 +205,51 @@
       </pop-up>
     </van-popup>
     <!-- 备注 -->
-    <van-popup v-model="showRemarks" position="right" :overlay="false">
+    <van-popup
+      v-model="showRemarks"
+      position="right"
+      :overlay="false"
+    >
       <div class="remark-box">
-        <header-nav title="添加备注" @click-left="showRemarks = false" :on-left="true">
-          <span @click="saveRemarks" class="save-btn">完成</span>
+        <header-nav
+          title="添加备注"
+          @click-left="showRemarks = false"
+          :on-left="true"
+        >
+          <span
+            @click="saveRemarks"
+            class="save-btn"
+          >完成</span>
         </header-nav>
-        <van-field v-model="tempRemarks" type="textarea" class="content" :placeholder="remaskPlaceholder" rows="1" :autosize="remaskField" />
+        <van-field
+          v-model="tempRemarks"
+          type="textarea"
+          class="content"
+          :placeholder="remaskPlaceholder"
+          rows="1"
+          :autosize="remaskField"
+        />
       </div>
     </van-popup>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import popUp from '@/views/dumb/pop-up';
-import CONSTANT from '@/common/constant';
-import headerNav from '@/views/dumb/header-nav';
-import { getDelayTime } from '@/common/utils';
+import popUp from "@/views/dumb/pop-up";
+import CONSTANT from "@/common/constant";
+import headerNav from "@/views/dumb/header-nav";
+import { getDelayTime } from "@/common/utils";
 
 export default {
-  name: 'OrderPay',
+  name: "OrderPay",
 
   data() {
     return {
-      headerTitle: '提交订单',
+      headerTitle: "提交订单",
       SEX: CONSTANT.TYPE.SEX_EN,
       TAGS: CONSTANT.TYPE.TAGS,
       mtColor: CONSTANT.COLOR.MT,
-      remaskPlaceholder: '请输入口味、偏好等要求，不支持额外代沟其他物品哦~',
+      remaskPlaceholder: "请输入口味、偏好等要求，不支持额外代沟其他物品哦~",
       remaskField: { maxHeight: 100, minHeight: 50 },
       showPay: false,
       showRemarks: false,
@@ -175,47 +258,47 @@ export default {
       foodList: [],
       addressList: [],
       shopInfo: {},
-      tempRemarks: '',
+      tempRemarks: "",
       orderInfo: {
         address: {},
-        remarks: '',
+        remarks: "",
         shopId: this.shopId,
         arrivalTime: getDelayTime(40),
-        tableware: null,
+        tableware: null
       },
       tablewareList: [
         {
-          name: '不需要餐具',
-          value: 0,
+          name: "不需要餐具",
+          value: 0
         },
         {
-          name: '1人',
-          value: 1,
+          name: "1人",
+          value: 1
         },
         {
-          name: '2人',
-          value: 2,
+          name: "2人",
+          value: 2
         },
         {
-          name: '3人',
-          value: 3,
+          name: "3人",
+          value: 3
         },
         {
-          name: '4人',
-          value: 4,
-        },
-      ],
+          name: "4人",
+          value: 4
+        }
+      ]
     };
   },
   components: {
     popUp,
-    headerNav,
+    headerNav
   },
 
   created() {
     if (!this.shopId) {
-      this.$toast('非法操作！');
-      this.$router.push({ name: 'userIndex' });
+      this.$toast("非法操作！");
+      this.$router.push({ name: "userIndex" });
     }
   },
   mounted() {
@@ -226,24 +309,24 @@ export default {
       this.mtLoading = true;
 
       this.$store
-        .dispatch('user/getAddressList')
+        .dispatch("user/getAddressList")
         .then(resp => {
           this.mtLoading = false;
           this.addressList = this.addressList.concat(resp.data);
           this.getDefaultAddress();
         })
         .catch(e => {
-          this.router.push('/error');
+          this.router.push("/error");
           this.$toast(e);
         });
 
       this.$store
-        .dispatch('cart/getCartListByShop', { shopId: this.shopId })
+        .dispatch("cart/getCartListByShop", { shopId: this.shopId })
         .then(resp => {
           this.mtLoading = false;
           if (resp.data.length === 0) {
-            this.$toast('未选购商品');
-            return this.router.push('/user/cart');
+            this.$toast("未选购商品");
+            return this.router.push("/user/cart");
           }
           if (this.foodIdArr.length) {
             this.foodList = resp.data.filter(
@@ -255,14 +338,14 @@ export default {
           this.shopInfo = this.foodList[0].shop_info;
         })
         .catch(e => {
-          this.router.push('/error');
+          this.router.push("/error");
           this.$toast(e);
         });
     },
     // 选择餐具数量
     onSelectTableware(data) {
       this.orderInfo.tableware = data.value;
-      this.cancel('tableware');
+      this.cancel("tableware");
     },
     // 获取默认地址
     getDefaultAddress() {
@@ -278,54 +361,54 @@ export default {
       this.orderInfo.address.selected = false;
       this.addressList[index].selected = true;
       this.orderInfo.address = this.addressList[index];
-      this.cancel('address');
+      this.cancel("address");
     },
     cancel(type) {
       switch (type) {
-        case 'address':
+        case "address":
           this.showAddress = false;
           break;
-        case 'pay':
+        case "pay":
           this.showPay = false;
           break;
-        case 'remarks':
+        case "remarks":
           this.showRemarks = false;
           break;
-        case 'tableware':
+        case "tableware":
           this.showTableware = false;
           break;
       }
     },
     saveRemarks() {
       this.orderInfo.remarks = this.tempRemarks;
-      this.cancel('remarks');
+      this.cancel("remarks");
     },
     sumbitOrder() {
       if (!this.orderInfo.address.address) {
-        return this.$toast('请选择地址');
+        return this.$toast("请选择地址");
       }
       this.orderInfo.cartIdArr = this.foodIdArr;
-      this.orderInfo.shopId = this.shopId;
+      this.orderInfo.shopId = parseInt(this.shopId);
       this.$store
-        .dispatch('order/sumbitOrder', this.orderInfo)
+        .dispatch("order/sumbitOrder", this.orderInfo)
         .then(resp => {
           this.$router.push({
-            name: 'orderPay',
+            name: "orderPay",
             params: {
               orderId: resp.data.order_info.id,
               price: resp.data.order_info.total_price,
               shopTitle: this.shopInfo.shop_title,
-              deadLineTime: resp.data.order_info.order_status.deadline_pay_time,
-            },
+              deadLineTime: resp.data.order_info.order_status.deadline_pay_time
+            }
           });
           // 重新获取购物车
-          this.$store.dispatch('cart/getCartList');
+          this.$store.dispatch("cart/getCartList");
         })
         .catch(err => {
           console.log(err);
           this.$toast(err);
         });
-    },
+    }
   },
   computed: {
     totalPrice() {
@@ -344,8 +427,8 @@ export default {
     },
     foodIdArr() {
       return this.$route.params.foodIdArr || [];
-    },
-  },
+    }
+  }
 };
 </script>
 
