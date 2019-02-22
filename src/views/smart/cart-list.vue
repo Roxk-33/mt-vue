@@ -1,12 +1,9 @@
 <template>
   <div class="cart-list">
-    <div
-      class="cart-emtpy mt-flex-space-between"
-      v-if="!isExist"
-    >
+    <div class="cart-emtpy mt-flex-space-between" v-if="!isExist">
       <div class="emtpy-left cart-list-left">
         <i class="iconfont icon-kuaidiyuan"></i>
-        <span>{{ freight === 0 ? '免配送费' : `另需配送费￥${freight}` }}</span>
+        <span>{{ freight === 0 ? "免配送费" : `另需配送费￥${freight}` }}</span>
         <!-- TODO:自取功能以后再加 -->
         <!-- <span>支持自取</span> -->
       </div>
@@ -14,65 +11,56 @@
         <span>￥{{ threshold }}起送</span>
       </div>
     </div>
-    <div
-      class="cart-exist mt-flex-space-between"
-      v-else
-      @click="showMenu"
-    >
+    <div class="cart-exist mt-flex-space-between" v-else @click="showMenu">
       <div class="exist-left cart-list-left">
         <i class="iconfont icon-kuaidiyuan"></i>
         <div class="exist-left-price">
           <span class="exist-left-price_actual">￥{{ totalPrice }}</span>
-          <span class="exist-left-price_original">￥35.4</span>
+          <!-- <span class="exist-left-price_original">￥35.4</span> -->
         </div>
-        <!-- <div class="exist-left-info">
-          <span>支持自取</span>
-        </div> -->
+        <div class="exist-left-info">
+          {{ freight | calFreight }}
+          <!-- <span>支持自取</span> -->
+        </div>
       </div>
       <div
         class="exist-right cart-list-right"
-        :class="{'to-pay' : threshold - totalPrice <= 0}"
+        :class="{ 'to-pay': threshold - totalPrice <= 0 }"
       >
-        <span v-if="threshold - totalPrice > 0">差￥{{ threshold - totalPrice }}起送</span>
-        <span
-          v-else
-          @click.prevent="toSettle"
-        >去结算</span>
+        <span v-if="threshold - totalPrice > 0"
+          >差￥{{ threshold - totalPrice }}起送</span
+        >
+        <span v-else @click.prevent="toSettle">去结算</span>
       </div>
     </div>
     <mt-mask :visible="isShowDetail" />
     <!-- 列表 -->
     <transition name="box-up">
-      <div
-        class="food-list-box"
-        v-show="isShowDetail"
-      >
+      <div class="food-list-box" v-show="isShowDetail">
         <div class="emtyp-btn">
           <i class="iconfont icon-shanchu"></i>
           <span @click="emptyCart">清空购物车</span>
         </div>
         <ul class="food-list">
           <li
-            v-for="(foodInfo,index) in cartList"
+            v-for="(foodInfo, index) in cartList"
             :key="index"
             class="mt-flex-space-between"
           >
             <div class="food-list_item-name">
               {{ foodInfo.food_name }}
-              <p v-show="foodInfo.spec_text.length">{{ foodInfo.spec_text.join(',') }}</p>
+              <p v-show="foodInfo.spec_text.length">
+                {{ foodInfo.spec_text.join(",") }}
+              </p>
             </div>
 
-            <span class="food-list_item-price">{{ foodInfo.price * foodInfo.num }}</span>
+            <span class="food-list_item-price">{{
+              foodInfo.price * foodInfo.num
+            }}</span>
             <div class="food-list_item-num">
-              <span
-                class="num-cut-round"
-                @click="adjustNum(-1,index)"
-              >-</span>
+              <span class="num-cut-round" @click="adjustNum(-1, index)">-</span>
               <span class="food-list_item-num_content">{{ foodInfo.num }}</span>
-              <span
-                class="num-add-round"
-                @click="adjustNum(1,index)"
-              >+</span>
+              <span class="num-add-round" @click="adjustNum(1, index)">+</span>
             </div>
           </li>
         </ul>
@@ -152,6 +140,14 @@ export default {
     emptyCart() {
       this.$emit("emptyCart");
     }
+  },
+  filters: {
+    calFreight(val) {
+      if (val === 0) {
+        return "免配送费";
+      }
+      return `另需配送费￥${val}`;
+    }
   }
 };
 </script>
@@ -188,12 +184,12 @@ export default {
   }
 
   .emtpy-right {
-    font-size: 12px;
+    font-size: 0.5rem;
   }
 
   .emtpy-left {
     position: relative;
-
+    font-size: 0.3rem;
     span:first-child::after {
       @include SeparationLine;
     }
@@ -203,6 +199,10 @@ export default {
     line-height: 0.6rem;
     padding: 3px 0;
     box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+    align-items: flex-start;
     .icon-kuaidiyuan {
       color: $mt-color;
       top: 8px;
@@ -219,13 +219,16 @@ export default {
     }
     .exist-left-info {
       font-size: 12px;
-      padding-left: 5px;
+      transform: scale(0.9);
+      margin-top: -2px;
+      color: #a2a2a4;
     }
   }
   .cart-list-right {
     &.to-pay {
       background-color: $mt-color;
       color: #000;
+      padding: 0 15px;
     }
     border-radius: 0 30px 30px 0;
     position: relative;

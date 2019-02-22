@@ -1,33 +1,49 @@
 <template>
-  <transition name='box-scale'>
+  <transition name="box-scale">
     <div class="specification-box-container" v-show="value">
-      <div class='specification-box'>
-        <div class='specification-box_header'>
-          <span class='specification-box_title'>{{ foodInfo.food_name }}</span>
-          <i class='specification-box_close fa fa-close' />
+      <div class="specification-box">
+        <div class="specification-box_header">
+          <span class="specification-box_title">{{ foodInfo.food_name }}</span>
+          <i class="specification-box_close fa fa-close" />
         </div>
-        <div class='specification-box_content'>
-          <div class='box-item' v-for="(typeItem,index) in totalSpec" :key="typeItem.value">
-            <p class='box-item_title'>{{ typeItem.spec_name }}</p>
-            <ul class='box-item-specification'>
-              <li @click="chooseType(item,index,type_index)" v-for="(item,type_index) in typeItem.spec_arr" :key="type_index" :class="{'box-item_selected' :specArr[index] == item.id,'slod-out':item.stock == 0}">
+        <div class="specification-box_content">
+          <div
+            class="box-item"
+            v-for="(typeItem, index) in totalSpec"
+            :key="typeItem.value"
+          >
+            <p class="box-item_title">{{ typeItem.spec_name }}</p>
+            <ul class="box-item-specification">
+              <li
+                @click="chooseType(item, index, type_index)"
+                v-for="(item, type_index) in typeItem.spec_arr"
+                :key="type_index"
+                :class="{
+                  'box-item_selected': specArr[index] == item.id,
+                  'slod-out': item.stock == 0
+                }"
+              >
                 {{ item.label }}
               </li>
             </ul>
           </div>
         </div>
-        <div class='specification-box_footer mt-flex-space-between'>
-          <div class='footer-info'>
-            <span class='footer-info_price'>￥{{ totalPrice }}</span>
-            <span class='footer-info_specification'>({{ slogan }})</span>
+        <div class="specification-box_footer mt-flex-space-between">
+          <div class="footer-info">
+            <span class="footer-info_price">￥{{ totalPrice }}</span>
+            <span class="footer-info_specification">({{ slogan }})</span>
           </div>
-          <van-button size="small" @click="pushCart" v-if="isExist == -1 || num == 0">
-            <i class='fa fa-plus' />加入购物车
+          <van-button
+            size="small"
+            @click="pushCart"
+            v-if="isExist == -1 || num == 0"
+          >
+            <i class="fa fa-plus" />加入购物车
           </van-button>
-          <div class='specification-box-num-btn' v-else>
-            <span class='num-cut-round' @click="adjustNum(-1)">-</span>
-            <span class='food-num'>{{ num }}</span>
-            <span class='num-add-round' @click="adjustNum(1,$event)">+</span>
+          <div class="specification-box-num-btn" v-else>
+            <span class="num-cut-round" @click="adjustNum(-1)">-</span>
+            <span class="food-num">{{ num }}</span>
+            <span class="num-add-round" @click="adjustNum(1, $event)">+</span>
           </div>
         </div>
       </div>
@@ -36,12 +52,12 @@
 </template>
 
 <script type="text/ecmascript-6">
-import Popup from '@/mixins/popup';
-import { deepClone } from '@/common/utils';
-import foodIsRepeat from '@/mixins/food-is-repeat';
+import Popup from "@/mixins/popup";
+import { deepClone } from "@/common/utils";
+import foodIsRepeat from "@/mixins/food-is-repeat";
 
 export default {
-  name: 'SpecificationBox',
+  name: "SpecificationBox",
   mixins: [Popup, foodIsRepeat],
   data() {
     return {
@@ -51,19 +67,19 @@ export default {
       isExist: -1,
       specArr: [],
       specText: [],
-      num: 0,
+      num: 0
     };
   },
   props: {
     // 购物车中的商品
     cartList: {
       type: Array,
-      default: [],
+      default: []
     },
 
     foodInfo: {
-      type: Object,
-    },
+      type: Object
+    }
   },
   methods: {
     /**
@@ -83,7 +99,7 @@ export default {
       this.specText.splice(index, 1, specInfo.label);
       this.isExist = this.isRepeat(this.cartList, {
         id: this.foodId,
-        specArr: this.specArr,
+        specArr: this.specArr
       });
       if (this.isExist === -1) {
         this.num = 0;
@@ -99,7 +115,7 @@ export default {
     isExistCart() {
       this.isExist = this.isRepeat(this.cartList, {
         id: this.foodId,
-        specArr: this.specArr,
+        specArr: this.specArr
       });
 
       if (this.isExist !== -1) {
@@ -114,9 +130,10 @@ export default {
     },
     // 初始化
     init() {
+      this.totalSpec = [];
       this.formatSpec(this.foodInfo.spec_arr);
       if (!this.isExistCart()) {
-        console.log('购物车中未有该商品');
+        console.log("购物车中未有该商品");
         // 购物车中未有该商品
         // 计算默认规格的价钱
         this.totalPrice = this.foodInfo.price;
@@ -138,7 +155,7 @@ export default {
           temp[_type] = {
             spec_name: item.spec_name,
             spec_arr: [],
-            spec_default: 0,
+            spec_default: 0
           };
         }
 
@@ -146,7 +163,7 @@ export default {
           price: item.price,
           stock: item.stock,
           label: item.label,
-          id: item.id,
+          id: item.id
         });
         if (item.is_default) {
           temp[_type].spec_default = temp[_type].spec_arr.length - 1;
@@ -161,7 +178,7 @@ export default {
     pushCart() {
       this.num++;
       this.$emit(
-        'pushSpecToCart',
+        "pushSpecToCart",
         this.isExist,
         this.specArr,
         this.specText,
@@ -171,11 +188,11 @@ export default {
     },
     adjustNum(type, ev) {
       if (type === 1) {
-        if (this.specInfo.stock < this.num) return this.$toast('库存不足');
-        console.log('增加');
+        if (this.specInfo.stock < this.num) return this.$toast("库存不足");
+        console.log("增加");
         this.num++;
         this.$emit(
-          'pushSpecToCart',
+          "pushSpecToCart",
           this.isExist,
           this.specArr,
           this.specText,
@@ -186,14 +203,14 @@ export default {
       } else if (this.num > 0) {
         this.num--;
         this.$emit(
-          'pushSpecToCart',
+          "pushSpecToCart",
           this.isExist,
           this.specArr,
           this.specText,
           type
         );
       }
-    },
+    }
   },
 
   watch: {
@@ -204,16 +221,16 @@ export default {
     },
     cartList() {
       this.value && this.isExistCart();
-    },
+    }
   },
   computed: {
     foodId() {
       return this.foodInfo.id;
     },
     slogan() {
-      return this.specText.join(',');
-    },
-  },
+      return this.specText.join(",");
+    }
+  }
 };
 </script>
 
@@ -267,20 +284,23 @@ export default {
     max-height: 7rem;
   }
   .specification-box_footer {
-    height: 1.2rem;
+    height: 1.6rem;
     width: 100%;
     line-height: 0.6rem;
     box-sizing: border-box;
     padding: 10px 5px;
-    background-color: #fdf6f6;
+    background-color: #80808038;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     .specification-box-num-btn {
       .num-add-round,
       .num-cut-round {
         border-radius: 50%;
-        border: 1px solid #e6e5e5;
+        border: 1px solid #a0a0a0;
         width: 20px;
+        font-size: 0.5rem;
         line-height: 20px;
         display: inline-block;
         text-align: center;
@@ -289,6 +309,7 @@ export default {
         background-color: $mt-color;
       }
       .food-num {
+        font-size: 0.6rem;
         margin: 0 8px;
       }
     }
@@ -336,7 +357,9 @@ export default {
     vertical-align: middle;
   }
   .van-button {
-    background-color: $mt-color;
+    background-color: #f3af0a;
+    border-color: #f3af0a;
+    color: #000;
     border-radius: 12px;
     font-weight: 700px;
     min-width: 100px;

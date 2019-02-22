@@ -1,65 +1,65 @@
 <template>
-  <div class='header-nav' :style="style">
-    <div class='header-nav-left'>
-      <i class='iconfont icon-xiangzuo' v-if='isBack' @click="clickLeft" />
-      <i class='iconfont icon-guanbi1' v-if="isClose" @click="clickLeft" />
+  <div class="header-nav" :style="style">
+    <div class="header-nav-left">
+      <i class="iconfont icon-xiangzuo" v-if="isBack" @click="clickLeft" />
+      <i class="iconfont icon-guanbi1" v-if="isClose" @click="clickLeft" />
     </div>
-    <div class='header-nav-main'>
-      <span class='headerNav-title'>{{ title }}</span>
+    <div class="header-nav-main">
+      <span class="headerNav-title">{{ title }}</span>
     </div>
-    <div class='header-nav-right'>
+    <div class="header-nav-right">
       <slot />
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: 'HeaderNav',
+  name: "HeaderNav",
 
   props: {
     headerbgColor: {
       type: String,
-      default: '#fff',
+      default: "#fff"
     },
     title: {
       type: String,
-      default: '',
+      default: ""
     },
     isClose: {
       type: Boolean,
-      default: false,
+      default: false
     },
     isBack: {
       type: Boolean,
-      default: true,
+      default: true
     },
     onLeft: {
       type: Boolean,
-      default: false,
+      default: false
     },
     border: {
       type: Boolean,
-      default: true,
-    },
+      default: true
+    }
   },
   methods: {
     clickLeft() {
       if (this.onLeft) {
-        this.$emit('click-left');
+        this.$emit("click-left");
       } else {
         this.$router.go(-1);
       }
-    },
+    }
   },
   created() {},
   computed: {
     style() {
       return {
-        borderBottom: this.border ? '1px solid rgba(128, 128, 128, 0.26)' : '0',
-        backgroundColor: this.headerbgColor,
+        borderBottom: this.border ? "1px solid rgba(128, 128, 128, 0.26)" : "0",
+        backgroundColor: this.headerbgColor
       };
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped rel="stylesheet/scss" lang="scss">
@@ -70,11 +70,15 @@ export default {
   background-color: #fff;
   position: relative;
   border-bottom: 1px solid #b1adad12;
-  display: flex;
   justify-content: space-between;
-  align-items: center;
+  display: flex;
   padding: 5px 10px;
+  align-items: center;
   box-sizing: border-box;
+  .header-nav-left {
+    display: flex;
+    align-items: center;
+  }
   .header-nav-main {
     font-size: 16px;
     @include center;
