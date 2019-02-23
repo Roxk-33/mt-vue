@@ -38,7 +38,7 @@ export function parseTime(time, cFormat) {
     h: date.getHours(),
     i: date.getMinutes(),
     s: date.getSeconds(),
-    a: date.getDay(),
+    a: date.getDay()
   };
   const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
     let value = formatObj[key];
@@ -76,7 +76,7 @@ export function getDelayTime(delay = 15) {
     m: date.getMonth() + 1,
     d: date.getDate(),
     h: date.getHours(),
-    i: date.getMinutes(),
+    i: date.getMinutes()
   };
   const time_str = format.replace(/{(y|m|d|h|i)+}/g, (result, key) => {
     let value = formatObj[key];
@@ -99,7 +99,7 @@ export function testUserName(name) {
   const maxLen = 16;
   const result = {
     status: false,
-    msg: '',
+    msg: ''
   };
   if (len < minLen || len > maxLen) {
     result.msg = '长度不符合要求';
@@ -122,7 +122,7 @@ export function testPsw(psw, pswRe) {
 
   let result = {
     status: false,
-    msg: '',
+    msg: ''
   };
   if (len < minLen || len > maxLen) {
     result.msg = '长度不符合要求';
@@ -154,14 +154,14 @@ export function getRect(el) {
       top: rect.top,
       left: rect.left,
       width: rect.width,
-      height: rect.height,
+      height: rect.height
     };
   }
   return {
     top: el.offsetTop,
     left: el.offsetLeft,
     width: el.offsetWidth,
-    height: el.offsetHeight,
+    height: el.offsetHeight
   };
 }
 const TokenKey = 'Mt-Token';
@@ -195,4 +195,33 @@ export function scrollTo(y, time = 0) {
     document.documentElement.scrollTop = y;
     return;
   }
+}
+// 是否在营业时间，通过00:00:00到xxx时间戳对比
+// 0 : 接受预订
+// 1 : 营业中
+// 2 : 已休息
+export function isBusinessHours(businessHours, colsingHours) {
+  businessHours = new Date(businessHours);
+  colsingHours = new Date(colsingHours);
+
+  // 获取营业时间 00:00:00的时间戳
+  let tempObj = new Date(businessHours);
+  tempObj.setHours(0);
+  tempObj.setMinutes(0);
+  tempObj.setSeconds(0);
+  tempObj.setMilliseconds(0);
+  const businessHoursStamp = businessHours.getTime() - tempObj.getTime();
+  const colsingHoursStamp = colsingHours.getTime() - tempObj.getTime();
+  const nowDate = new Date();
+
+  // 获取今日时间 00:00:00的时间戳
+  tempObj = new Date();
+  tempObj.setHours(0);
+  tempObj.setMinutes(0);
+  tempObj.setSeconds(0);
+  tempObj.setMilliseconds(0);
+  const nowDateStamp = nowDate.getTime() - tempObj.getTime();
+  if (businessHoursStamp > nowDateStamp) return 0;
+  if (colsingHoursStamp > nowDateStamp) return 1;
+  return 2;
 }

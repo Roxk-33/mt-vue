@@ -6,55 +6,59 @@
           <i class="iconfont icon-xiangzuo" />
         </router-link>
       </div>
-      <p
-        class="order-progress"
-        @click="showStatusTimeList = true"
-      >
+      <p class="order-progress" @click="showStatusTimeList = true">
         {{ ORDER_STATUS[orderStatus] }}
-        <i class='iconfont icon-xiangyou' />
+        <i class="iconfont icon-xiangyou" />
       </p>
     </div>
     <!-- 当订单未支付时显示 -->
-    <div
-      class="detail-box detail-other"
-      v-if="orderStatus === 'UNPAY'"
-    >
+    <div class="detail-box detail-other" v-if="orderStatus === 'UNPAY'">
       <i class="iconfont icon-bell" />
-      请在{{this.coutMin | formatTime}}:{{this.coutSec | formatTime}}分钟内完成支付，超时将自动取消
+      请在{{ this.coutMin | formatTime }}:{{
+        this.coutSec | formatTime
+      }}分钟内完成支付，超时将自动取消
     </div>
     <div class="detail-box detail-other">
       <p v-if="orderStatus !== 'UNPAY'">{{ ORDER_STATUS_MSG[orderStatus] }}</p>
-      <p v-else>预计<span class="arrival-time">{{ orderStatusTimeArr.predict_arrival_time | parseTime('{h}:{i}')}}</span>送达</p>
+      <p v-else>
+        预计<span class="arrival-time">{{
+          orderStatusTimeArr.predict_arrival_time | parseTime("{h}:{i}")
+        }}</span
+        >送达
+      </p>
       <div class="detail-top-btn">
         <span
           class="mt-color"
-          v-if="['ACCEPT','ONTHEWAY'].includes(orderStatus)"
+          v-if="['ACCEPT', 'ONTHEWAY'].includes(orderStatus)"
         >
           催单
         </span>
         <span
-          v-if="!['ORDER_SUCCESS','ORDER_REFUND','ORDER_CANCEL','ORDER_CANCEL_TIMEOUT'].includes(orderStatus)"
+          v-if="
+            ![
+              'ORDER_SUCCESS',
+              'ORDER_REFUND',
+              'ORDER_CANCEL',
+              'ORDER_CANCEL_TIMEOUT'
+            ].includes(orderStatus)
+          "
           @click="cancelOrder"
         >
           取消订单
         </span>
-        <span
-          class="mt-color"
-          v-if="orderStatus === 'UNPAY'"
-          @click="goPay"
-        >
+        <span class="mt-color" v-if="orderStatus === 'UNPAY'" @click="goPay">
           立即支付
         </span>
         <router-link
           class="again"
-          :to="{ name: 'shopDetail', params: { id: this.orderId }}"
-          v-if="['ORDER_SUCCESS','ORDER_CANCEL'].includes(orderStatus)"
+          :to="{ name: 'shopDetail', params: { id: this.orderId } }"
+          v-if="['ORDER_SUCCESS', 'ORDER_CANCEL'].includes(orderStatus)"
         >
           再来一单
         </router-link>
         <span
           class="after-sale"
-          v-if="['ARRIVED','ONTHEWAY'].includes(orderStatus)"
+          v-if="['ARRIVED', 'ONTHEWAY'].includes(orderStatus)"
           @click="confirmOrder"
         >
           确认送达
@@ -68,8 +72,13 @@
         </router-link>
         <router-link
           class="mt-color"
-          v-if="orderStatus === 'ORDER_SUCCESS' && orderInfo.review_status !== 1"
-          :to="{ name: 'userOrderEvaluation', params: { orderId: this.orderId }}"
+          v-if="
+            orderStatus === 'ORDER_SUCCESS' && orderInfo.review_status !== 1
+          "
+          :to="{
+            name: 'userOrderEvaluation',
+            params: { orderId: this.orderId }
+          }"
         >
           评价
         </router-link>
@@ -81,18 +90,17 @@
           <span>
             {{ shopInfo.shop_title }}
           </span>
-          <i class='iconfont icon-xiangyou' />
+          <i class="iconfont icon-xiangyou" />
         </div>
 
         <div class="shop-info-contact">
           <span>
-            <i class='iconfont icon-dianhua' />
+            <i class="iconfont icon-dianhua" />
           </span>
           <span>
-            <i class='iconfont icon-duanxin' />
+            <i class="iconfont icon-duanxin" />
           </span>
         </div>
-
       </div>
 
       <div class="detail-box-item detail-content">
@@ -101,11 +109,7 @@
           v-for="item in foodList"
           :key="item.id"
         >
-          <img
-            class="good-img"
-            :src="item.food_picture"
-            alt=""
-          >
+          <img class="good-img" :src="item.food_picture" alt="" />
           <div class="good-info">
             <div class="good-info-header mt-flex-space-between">
               <span class="good-info-name">{{ item.food_name }}</span>
@@ -121,7 +125,7 @@
       </div>
       <div class="detail-box-item detail-price-total">
         <span>合计</span>
-        <span>￥{{orderInfo.total_price}}</span>
+        <span>￥{{ orderInfo.total_price }}</span>
       </div>
     </div>
     <div class="detail-box distribution-box">
@@ -146,7 +150,9 @@
         </li>
         <li class="mt-flex-space-between">
           <span class="info-box-title">下单时间</span>
-          <span class="info-box-content">{{ orderStatusTimeArr.created_time | parseTime }}</span>
+          <span class="info-box-content">{{
+            orderStatusTimeArr.created_at | parseTime
+          }}</span>
         </li>
         <li class="mt-flex-space-between">
           <span class="info-box-title">支付方式</span>
@@ -154,11 +160,7 @@
         </li>
       </ul>
     </div>
-    <van-popup
-      v-model="showStatusTimeList"
-      position="bottom"
-      :overlay="true"
-    >
+    <van-popup v-model="showStatusTimeList" position="bottom" :overlay="true">
       <pop-up
         @cancel="showStatusTimeList = false"
         headerTitle="订单跟踪"
@@ -167,15 +169,15 @@
         <ul class="order-status-time">
           <li
             class="order-status-time-item"
-            v-for="(item,index) in orderStatusTimeList"
+            v-for="(item, index) in orderStatusTimeList"
             :key="index"
-            :class="{'latest' :index === orderStatusTimeList.length - 1}"
+            :class="{ latest: index === orderStatusTimeList.length - 1 }"
           >
             <div class="item-left">
               <div class="dot"></div>
-              {{item.label}}
+              {{ item.label }}
             </div>
-            <div class="item-right">{{item.time}}</div>
+            <div class="item-right">{{ item.time }}</div>
           </li>
         </ul>
       </pop-up>

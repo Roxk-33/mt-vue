@@ -1,50 +1,49 @@
 <template>
-  <router-link
-    class='shop-item'
-    :to="''+shopInfo.id"
-    tag="div"
-    append
-  >
-    <div class='shop-item_left'>
-      <img v-lazy='shopInfo.photo'>
+  <router-link class="shop-item" :to="'' + shopInfo.id" tag="div" append>
+    <div class="shop-item_left">
+      <img v-lazy="shopInfo.photo" />
     </div>
-    <div class='shop-item_right'>
-      <p class='shop-title'>{{ shopInfo.shop_title }}</p>
-      <div class='shop-basedata'>
-        <div class='mt-flex-space-between'>
-          <div class='sale-data-stars'>
-            <rate
-              v-model="shopInfo.rate"
-              :size="10"
-              :margin-left="2"
-            />
+    <div class="shop-item_right">
+      <p class="shop-title">{{ shopInfo.shop_title }}</p>
+      <div class="book-box" v-if="isBusiness === 0">
+        <span class="title">接受预订</span>
+        <span class="time"
+          >{{ shopInfo.business_hours | formatTime }}后配送</span
+        >
+      </div>
+      <div class="close-box" v-if="isBusiness === 2">
+        <span class="title">商店已休息</span>
+      </div>
+      <div class="shop-basedata">
+        <div class="shop-basedata-sale">
+          <div class="sale-data-stars">
+            <rate v-model="shopInfo.rate" :size="10" :margin-left="2" />
           </div>
-          <div class='sale-data-volume'>
+          <div class="sale-data-volume">
             月售
             <i>{{ shopInfo.total_sales }}</i>
           </div>
-          <div class='logistics-data'>
-            <span class='logistics-data-item'>
-              <i>{{ shopInfo.transportTime }}</i>分钟
+          <!-- <div class="logistics-data">
+            <span class="logistics-data-item">
+              <i>{{ shopInfo.transportTime }}</i
+              >分钟
             </span>
-            <span class='logistics-data-item'>
-              <i>{{ shopInfo.distance }}</i>Km
+            <span class="logistics-data-item">
+              <i>{{ shopInfo.distance }}</i
+              >Km
             </span>
-          </div>
+          </div> -->
         </div>
-        <div class='price-data'>
-          <span class='price-data-item'>
+        <div class="price-data">
+          <span class="price-data-item">
             起送￥
             <i>{{ shopInfo.threshold }}</i>
           </span>
-          <span class='price-data-item'>
+          <span class="price-data-item">
             配送￥
             <i>{{ shopInfo.freight }}</i>
           </span>
-          <span
-            class='price-data-item'
-            v-if="shopInfo.perCapita"
-          >
+          <span class="price-data-item" v-if="shopInfo.perCapita">
             人均￥
             <i>{{ shopInfo.perCapita }}</i>
           </span>
@@ -56,14 +55,33 @@
 
 <script type="text/ecmascript-6">
 import Rate from "@/views/dumb/rate";
-
+import { isBusinessHours } from "@/common/utils";
 export default {
   name: "shop-list-item",
+  data() {
+    return {
+      isBusiness: 1
+    };
+  },
   props: {
     shopInfo: Object
   },
   components: {
     Rate
+  },
+  created() {
+    this.isBusiness = isBusinessHours(
+      this.shopInfo.business_hours,
+      this.shopInfo.closing_hours
+    );
+  },
+  filters: {
+    formatTime(val) {
+      const date = new Date(val);
+      return `${date.getHours()}:${
+        date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
+      }`;
+    }
   }
 };
 </script>
@@ -90,13 +108,18 @@ export default {
   .shop-basedata {
     font-size: 12px;
     color: gray;
+    text-align: left;
     & > div {
       height: 20px;
     }
-    text-align: left;
+    .shop-basedata-sale {
+      display: flex;
+      justify-content: flex-start;
+    }
     .sale-data-volume {
       font-weight: 900;
       color: #000;
+      margin-left: 10px;
     }
   }
   .shop-title {
@@ -107,7 +130,37 @@ export default {
     font-size: 17px;
     color: black;
   }
-
+  .book-box {
+    transform: scale(0.8);
+    margin-left: -23px;
+    margin-top: -10px;
+    span {
+      padding: 3px 5px;
+      border: 1px solid #3283facc;
+      text-align: center;
+      font-size: 12px;
+    }
+    .title {
+      background-color: #3283facc;
+      color: #fff;
+    }
+    .time {
+      color: #3283facc;
+    }
+  }
+  .close-box {
+    transform: scale(0.8);
+    margin-left: -23px;
+    margin-top: -10px;
+    span {
+      padding: 3px 5px;
+      border: 1px solid #3283facc;
+      text-align: center;
+      font-size: 12px;
+      background-color: #3283facc;
+      color: #fff;
+    }
+  }
   .sale-data {
     .sale-data-item {
       display: inline-block;

@@ -1,57 +1,36 @@
 
 <template>
   <div class="shop-detail">
-    <shop-nav
-      :track-opacity="trackOpacity"
-      :is-top="isTop"
-    />
-    <div
-      ref="shopBanner"
-      class="shop-header-box"
-    >
+    <shop-nav :track-opacity="trackOpacity" :is-top="isTop" />
+    <div ref="shopBanner" class="shop-header-box">
       <shop-header
         :title="shopInfo.shop_title"
         :announcement="shopInfo.announcement"
         :photo="shopInfo.photo"
       />
     </div>
-    <div
-      class="shop-good"
-      ref="shopGood"
-      :style="shopGoodStyle"
-    >
+    <div class="shop-good" ref="shopGood" :style="shopGoodStyle">
       <div class="shop-good-tab">
-
-        <van-tabs
-          v-model="tabActive"
-          :line-width="25"
-          swipeable
-          sticky
-        >
+        <van-tabs v-model="tabActive" :line-width="25" swipeable sticky>
           <van-tab
-            v-for="(tab,index) in tabs"
+            v-for="(tab, index) in tabs"
             :title="tab.label"
             :key="index"
           />
         </van-tabs>
       </div>
-      <div
-        class="shop-good-content"
-        v-if="tabActive === 0"
-      >
+      <div class="shop-good-content" v-if="tabActive === 0">
         <div class="shop-good-menu">
-
-          <mt-better-scroll
-            :options="scrollOption"
-            :is-disable="scrollDisabel"
-          >
+          <mt-better-scroll :options="scrollOption" :is-disable="scrollDisabel">
             <div
               class="menu-item"
-              v-for="(category,index) in shopCatalog"
+              v-for="(category, index) in shopCatalog"
               :key="category.id"
-              :class="{'active-index' : currentIndex === index }"
+              :class="{ 'active-index': currentIndex === index }"
               @click="scrollToCat(index)"
-            >{{ category.label }}</div>
+            >
+              {{ category.label }}
+            </div>
           </mt-better-scroll>
         </div>
         <div class="shop-good-list">
@@ -64,7 +43,7 @@
             ref="foodlist"
           >
             <foodItem
-              v-for="(foodInfo,index) in foodList"
+              v-for="(foodInfo, index) in foodList"
               :key="foodInfo.food_id"
               :food-info="foodInfo"
               :food-index="index"
@@ -107,10 +86,13 @@ import foodIsRepeat from "@/mixins/food-is-repeat";
 import shopDetailScroll from "@/mixins/shop-detail-scroll";
 import shopDetailEval from "@/views/smart/shop-detail-eval";
 import { scrollTo } from "@/common/utils";
+import { isBusinessHours } from "@/common/utils";
+
 export default {
   name: "ShopDetail",
   data() {
     return {
+      isBusiness: 1,
       tabs: [
         {
           label: "点菜",
@@ -155,6 +137,17 @@ export default {
           this.mtLoading = false;
           this.shopCatalog = this.shopInfo.category_list;
           this.adjustSort(this.shopInfo.food_list);
+          this.isBusiness = isBusinessHours(
+            this.shopInfo.business_hours,
+            this.shopInfo.closing_hours
+          );
+
+          if (this.isBusiness === 0) {
+            return this.$toast("商店先接受预订");
+          }
+          if (this.isBusiness === 2) {
+            return this.$toast("商店已休息");
+          }
         })
         .catch(err => {
           console.log(err);
