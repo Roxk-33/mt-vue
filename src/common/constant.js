@@ -40,7 +40,7 @@ export default {
     ONTHEWAY: '送达中',
     ARRIVED: '已送达',
     ORDER_SUCCESS: '订单已完成',
-    ORDER_REFUND: '退款中',
+    ORDER_REFUND: '申请退款中',
     ORDER_CANCEL: '订单已取消',
     ORDER_CANCEL_TIMEOUT: '订单已取消'
   },
@@ -52,7 +52,7 @@ export default {
     ONTHEWAY: '送达中',
     ARRIVED: '已送达',
     ORDER_SUCCESS: '感谢您对美团外卖的信任，期待再次光临',
-    ORDER_REFUND: '退款中',
+    ORDER_REFUND: '申请退款中',
     ORDER_CANCEL: '您的订单已取消',
     ORDER_CANCEL_TIMEOUT: '支付超时，订单已取消'
   },

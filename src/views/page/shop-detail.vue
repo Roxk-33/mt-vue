@@ -257,12 +257,16 @@ export default {
         };
       } else {
         // 为新增商品
+        const price =
+          foodInfo.discount_info === null
+            ? foodInfo.price
+            : foodInfo.discount_info.discount;
         data = {
           specArr: [],
           foodName: foodInfo.food_name,
           specText: [],
           foodId: foodInfo.id,
-          totalPrice: foodInfo.price,
+          totalPrice: price,
           shop_id: this.shopId,
           picture: foodInfo.picture
         };

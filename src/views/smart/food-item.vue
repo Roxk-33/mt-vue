@@ -1,30 +1,46 @@
 <template>
   <div class="good-list-item">
-    <div class="good-image" :class="{'good-sold-out':foodInfo.stock==0}">
-      <img v-lazy="foodInfo.picture">
+    <div class="good-image" :class="{ 'good-sold-out': foodInfo.stock == 0 }">
+      <img v-lazy="foodInfo.picture" />
       <div v-if="foodInfo.stock == 0" class="sold-out-slogan">已售罄</div>
       <div v-if="foodInfo.stock == 0" class="sold-out-mask"></div>
     </div>
     <div class="good-content mt-flex-space-between">
       <div class="good-content_info">
-        <h4 class="good-content_info_title">{{foodInfo.food_name}}</h4>
-        <span class="good-content_info_sale">月售 {{foodInfo.month_sale}}</span>
-        <span class="good-content_info_lick">赞{{foodInfo.food_like}}</span>
-        <p class="good-content_info_price">{{foodInfo.price}}</p>
+        <h4 class="good-content_info_title">{{ foodInfo.food_name }}</h4>
+        <span class="good-content_info_sale"
+          >月售 {{ foodInfo.month_sale }}</span
+        >
+        <span class="good-content_info_lick">赞{{ foodInfo.food_like }}</span>
+        <div class="good-content_info_price">
+          <p v-if="foodInfo.discount_info === null">￥{{ foodInfo.price }}</p>
+          <div v-else class="discount-box">
+            <span class="discount"
+              >￥{{ foodInfo.discount_info.discount }}</span
+            >
+            <span class="original"
+              >￥{{ foodInfo.discount_info.original }}</span
+            >
+          </div>
+        </div>
       </div>
       <div class="good-content_buy" v-if="foodInfo.spec_arr.length">
         <button @click="getSpecInfo" class="btn-sepc">
           选规格
-          <div class="food-select-num" v-if="selectNum">{{selectNum}}</div>
+          <div class="food-select-num" v-if="selectNum">{{ selectNum }}</div>
         </button>
       </div>
       <div class="good-content_buy good-content_buy_nontype" v-else>
-        <div class="good-content_buy_nontype_box" v-if="foodInfo.stock>0">
+        <div class="good-content_buy_nontype_box" v-if="foodInfo.stock > 0">
           <!-- <transition name="adjust-num"> -->
-          <div class="iconfont icon-jian" @click="adjustNum(-1)" v-show="selectNum > 0"></div>
+          <div
+            class="iconfont icon-jian"
+            @click="adjustNum(-1)"
+            v-show="selectNum > 0"
+          ></div>
           <!-- </transition> -->
-          <span v-show="selectNum > 0" class="num">{{selectNum}}</span>
-          <i class="iconfont icon-jia" @click="adjustNum(1,$event)"></i>
+          <span v-show="selectNum > 0" class="num">{{ selectNum }}</span>
+          <i class="iconfont icon-jia" @click="adjustNum(1, $event)"></i>
         </div>
       </div>
     </div>
@@ -33,7 +49,7 @@
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'food-item',
+  name: "food-item",
 
   data() {
     return {};
@@ -41,30 +57,30 @@ export default {
   props: {
     foodInfo: {
       type: Object,
-      default: {},
+      default: {}
     },
     foodIndex: {
       type: Number,
-      default: -1,
+      default: -1
     },
     selectNum: {
       type: Number,
-      default: 0,
-    },
+      default: 0
+    }
   },
   components: {},
   methods: {
     getSpecInfo() {
-      this.$emit('showSpec', this.foodIndex);
+      this.$emit("showSpec", this.foodIndex);
     },
     adjustNum(type, ev) {
       if (type === 1 && this.selectNum > this.foodInfo.stock) {
-        return this.$toast('库存不足');
+        return this.$toast("库存不足");
       }
 
-      this.$emit('adjustNum', type, -1, this.foodIndex, ev);
-    },
-  },
+      this.$emit("adjustNum", type, -1, this.foodIndex, ev);
+    }
+  }
 };
 </script>
 
@@ -128,15 +144,20 @@ export default {
       }
       .good-content_info_price {
         position: absolute;
-        bottom: 5px;
+        bottom: 0;
         left: 5px;
         color: red;
         margin: 0;
         font-weight: 700;
         font-size: 15px;
-        &::before {
-          content: '￥';
-          font-size: 12px;
+
+        .discount-box {
+          .original {
+            text-decoration: line-through;
+            font-size: 12px;
+            color: $mt-gray;
+            margin-left: 6px;
+          }
         }
       }
     }
