@@ -13,12 +13,14 @@
         :name="SEX_EN['male']"
         :value="SEX_EN['male']"
         v-model="addressInfo.user_sex"
-      >先生</van-radio>
+        >先生</van-radio
+      >
       <van-radio
         :name="SEX_EN['female']"
         :value="SEX_EN['female']"
         v-model="addressInfo.user_sex"
-      >女士</van-radio>
+        >女士</van-radio
+      >
     </div>
     <form-item
       label="手机号"
@@ -27,12 +29,20 @@
       placeholder="请填写收货人手机号码"
     />
     <form-item
-      label="送货地址"
+      label="收货地址"
       :is-required="true"
       v-model="addressInfo.address"
       @click="showAddressMap"
       readonly
+      placeholder="点击选择"
     />
+
+    <form-item
+      label="门牌号"
+      :isRequired="true"
+      placeholder="详细地址，例：25栋5楼402室"
+      v-model="addressInfo.stress"
+    ></form-item>
     <form-item
       label="标签"
       :is-required="false"
@@ -43,7 +53,7 @@
         <span
           class="tag"
           @click="addressInfo.tag = tag.value"
-          :class="{'active' :addressInfo.tag === tag.value }"
+          :class="{ active: addressInfo.tag === tag.value }"
           v-for="tag in tags"
           :key="tag.value"
         >
@@ -51,21 +61,13 @@
         </span>
       </div>
     </form-item>
-    <form-item
-      label="门牌号"
-      :isRequired="true"
-      v-model="addressInfo.stress"
-    ></form-item>
     <div class="footer-box">
-      <p
-        class="save"
-        @click="save"
-      >保存地址</p>
+      <p class="save" @click="onSumbit">保存地址</p>
     </div>
 
     <van-popup v-model="showMap">
       <user-address-map
-        :select-address="selectAddress"
+        @select-address="selectAddress"
         @close="closeAddressMap"
       />
     </van-popup>
@@ -88,11 +90,12 @@ export default {
       showMap: false,
       sex: 1,
       addressInfo: {
-        user_name: "",
+        user_name: "测试地址",
         user_sex: 0,
-        tel: "",
+        tel: "18024589062",
+        tag: "",
         address: "",
-        tag: ""
+        stress: ""
       },
       tags: [
         {
@@ -132,7 +135,7 @@ export default {
       this.showMap = true;
     },
     selectAddress(data) {
-      console.log(data);
+      this.addressInfo.address = data.addr;
       this.showMap = false;
     },
     getAddress() {
@@ -149,7 +152,7 @@ export default {
       //     });
       // });
     },
-    save() {
+    onSumbit() {
       try {
         if (this.isAdd) {
           this.$store
@@ -188,6 +191,7 @@ export default {
 .user-address-info {
   height: 100%;
   background-color: #fff;
+  font-size: 17px;
 }
 .user-address-info-sex {
   padding: 10px 10px 10px 90px;
@@ -224,9 +228,18 @@ export default {
   }
 }
 </style>
-<style>
+<style rel="stylesheet/scss" lang="scss">
 .user-address-info .van-popup {
   width: 100%;
   height: 100%;
+}
+.form-item-input {
+  flex: 1;
+  input {
+    width: 100%;
+  }
+}
+.form-item-label {
+  width: 70px;
 }
 </style>

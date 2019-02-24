@@ -1,13 +1,8 @@
 <template>
   <div class="address-map">
-    <header-nav
-      :title="title"
-      :on-left="true"
-      @click-left="close"
-    />
+    <header-nav :title="title" :on-left="true" @click-left="close" />
 
     <div class="address-input">
-
       <form action="/">
         <van-search
           v-model="searchKey"
@@ -20,51 +15,48 @@
           @clear="searchResult = []"
         />
       </form>
-
     </div>
-    <div
-      class="baidu-map-box"
-      v-show="searchResult.length === 0"
-    >
-      <div id='baidu-map'></div>
+    <div class="baidu-map-box" v-show="searchResult.length === 0">
+      <div id="baidu-map"></div>
       <div class="bar"></div>
       <ul class="pois-list">
         <li
           class="pois-item"
-          v-for="(item,index) in poisList"
+          v-for="(item, index) in poisList"
           :key="item.uid"
-          :class="{'active':active == index}"
-          @click="getAddress(item.point.y,item.point.x,item.addr,item.name)"
+          :class="{ active: active == index }"
+          @click="getAddress(item.point.y, item.point.x, item.addr, item.name)"
         >
-          <div class="left">
-          </div>
+          <div class="left"></div>
           <div class="right">
-            <p class="block">{{item.name}}</p>
-            <p class="label">{{item.addr}}</p>
+            <p class="block">{{ item.name }}</p>
+            <p class="label">{{ item.addr }}</p>
           </div>
-
         </li>
       </ul>
     </div>
-    <div
-      class="search-result"
-      v-if="searchResult.length"
-    >
+    <div class="search-result" v-if="searchResult.length">
       <div
         class="search-result-item"
         v-for="item in searchResult"
         :key="item"
-        v-if="item.uid"
-        @click='getAddress(item.location.lat,item.location.lng,item.province + "" + item.city + "" + item.district + "" +item.name)'
+        @click="
+          getAddress(
+            item.location.lat,
+            item.location.lng,
+            item.province + '' + item.city + '' + item.district + '' + item.name
+          )
+        "
       >
-        <p class="block">
-          {{item.name}}
+        <p class="block" v-if="item.uid">
+          {{ item.name }}
         </p>
-        <p class="label">
-          {{item.province}}
-          {{item.province + "" + item.city + "" + item.district + "" +item.name}}
+        <p class="label" v-if="item.uid">
+          {{ item.province }}
+          {{
+            item.province + "" + item.city + "" + item.district + "" + item.name
+          }}
         </p>
-
       </div>
     </div>
   </div>
