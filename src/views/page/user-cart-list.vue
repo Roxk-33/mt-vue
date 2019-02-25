@@ -3,7 +3,7 @@
     <header-nav
       :is-back="true"
       :title="headerTitle"
-      @click-left="$router.back(-1);"
+      @click-left="$router.back(-1)"
     >
       <span>编辑</span>
     </header-nav>
@@ -14,22 +14,16 @@
         :key="item.shop_info.shop_id"
       >
         <div class="item-title">
-          <check-box
-            v-model="item.selectAll"
-            @click="selectAll(item)"
-          />
+          <check-box v-model="item.selectAll" @click="selectAll(item)" />
           <router-link
             class="content"
-            :to="{ name: 'shopDetail', params: { id: item.shop_info.id }}"
+            :to="{ name: 'shopDetail', params: { id: item.shop_info.id } }"
             tag="div"
           >
-            <img
-              class="shop-avatar"
-              :src="item.shop_info.photo"
-            >
+            <img class="shop-avatar" :src="item.shop_info.photo" />
 
             <span class="shop-title">{{ item.shop_info.shop_title }}</span>
-            <i class='iconfont icon-xiangyou' />
+            <i class="iconfont icon-xiangyou" />
             <!-- TODO:二期实现促销功能 -->
             <!-- <div class="shop-discount">
               <div class="discount-icon">促销</div>
@@ -47,16 +41,17 @@
               <van-checkbox :name="foodInfo.id" />
               <div class="content">
                 <div class="food-info-box">
-                  <img
-                    class="food-img"
-                    :src="foodInfo.picture"
-                  >
+                  <img class="food-img" :src="foodInfo.picture" />
                   <div class="food-info">
                     <p class="food-info-title">{{ foodInfo.food_name }}</p>
-                    <p class="food-info-spec">规格：{{ foodInfo.spec_text.join(',') }}</p>
+                    <p class="food-info-spec">
+                      规格：{{ foodInfo.spec_text.join(",") }}
+                    </p>
                     <div class="food-info-num">
                       <span class="num">x{{ foodInfo.num }}</span>
-                      <span class="price">￥{{ foodInfo.num * foodInfo.price }}</span>
+                      <span class="price"
+                        >￥{{ foodInfo.num * foodInfo.price }}</span
+                      >
                     </div>
                   </div>
                 </div>
@@ -78,13 +73,12 @@
             <span class="total-price">{{ item.totalPrice }}元</span>
             <button
               class="settle-btn"
-              :class="{'not' : (item.shop_info.threshold - item.totalPrice > 0)} "
+              :class="{ not: item.shop_info.threshold - item.totalPrice > 0 }"
             >
-              <span v-if="item.shop_info.threshold - item.totalPrice > 0">差￥{{ item.shop_info.threshold - item.totalPrice }}起送</span>
-              <span
-                v-else
-                @click="toPay(item)"
-              >去结算</span>
+              <span v-if="item.shop_info.threshold - item.totalPrice > 0"
+                >差￥{{ item.shop_info.threshold - item.totalPrice }}起送</span
+              >
+              <span v-else @click="toPay(item)">去结算</span>
             </button>
           </div>
         </div>
@@ -158,7 +152,7 @@ export default {
   },
   computed: {
     list() {
-      return this.$store.getters["cart/listArr"];
+      return this.$store.getters["cart/cartList"];
     }
   },
   filters: {

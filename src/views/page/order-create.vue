@@ -313,12 +313,13 @@ export default {
             this.$toast("未选购商品");
             return this.router.push("/user/cart");
           }
+          const data = this.formatCartList(resp.data);
           if (this.foodIdArr.length) {
-            this.foodList = resp.data.filter(
+            this.foodList = data.filter(
               item => this.foodIdArr.indexOf(item.id) !== -1
             );
           } else {
-            this.foodList = resp.data;
+            this.foodList = data;
           }
           this.shopInfo = this.foodList[0].shop_info;
         })
@@ -326,6 +327,35 @@ export default {
           this.router.push("/error");
           this.$toast(e);
         });
+    },
+    formatCartList(data) {
+      let cartList = [];
+      data.forEach(item => {
+        // 折扣商品
+        if (item.food_info.discount_info === null) {
+          item.price = item.food_info.price;
+        } else {
+          item.price = item.food_info.discount_info.discount;
+        }
+
+        item.food_name = item.food_info.food_name;
+        item.picture = item.food_info.picture;
+        // 规格产品,需要加上规格价格
+        if (item.spec_arr.length) {
+          item.spec_text = [];
+          item.price = item.spec_arr.reduce((price, current) => {
+            const specArr = item.food_info.spec_arr;
+            const index = specArr.findIndex(specItem => current == specItem.id);
+            price += specArr[index].price;
+            item.spec_text.push(specArr[index].label);
+            return price;
+          }, item.food_info.price);
+        }
+        delete item.food_info;
+        delete item.discount_info;
+      });
+
+      return data;
     },
     // 选择餐具数量
     onSelectTableware(data) {

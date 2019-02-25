@@ -65,7 +65,7 @@
       @emptyCart="emptyCart"
     />
     <specificationBox
-      @pushSpecToCart="getSelectGoood"
+      @pushSpecToCart="pushSpecFood"
       v-model="showSpecBox"
       :center="true"
       width="90%"
@@ -188,7 +188,7 @@ export default {
       this.scrollDisabel = false;
     },
     // 规格选项的商品放入购物车
-    getSelectGoood(isExist, specArr, specText, totalPrice, type, ev = null) {
+    pushSpecFood(isExist, specArr, specText, totalPrice, type, ev = null) {
       // 若已存在在购物车中，不需要format数据
       if (isExist !== -1) {
         this.adjustNum(type, isExist, this.specIndex, ev);
@@ -359,7 +359,7 @@ export default {
   computed: {
     // 获取特定商店的购物车详情
     cartList() {
-      const arr = this.$store.getters["cart/listArr"];
+      const arr = this.$store.getters["cart/cartList"];
       const target = arr.find(item => item.shop_info.id == this.shopId);
       if (!target) return [];
       return target.foodList;
