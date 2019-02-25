@@ -1,12 +1,7 @@
 <template>
   <div class="user-register">
-    <header-nav
-      :is-back="true"
-      :title="headerTitle"
-      :on-left="true"
-      @click-left="$router.back(-1);"
-    />
-    <div class='container-box'>
+    <header-nav :title="headerTitle" />
+    <div class="container-box">
       <van-cell-group>
         <van-field
           v-model="registerForm.account"
@@ -16,7 +11,7 @@
         <van-field
           v-model="registerForm.password"
           label="密码"
-          type='password'
+          type="password"
           placeholder="请输入密码"
           required
           clearable
@@ -24,59 +19,59 @@
         <van-field
           v-model="registerForm.repassword"
           label="重复密码"
-          type='password'
+          type="password"
           placeholder="请输入密码"
           required
           clearable
         />
       </van-cell-group>
       <div class="btn-box">
-
         <van-button
           type="default"
           round
           @click="handleRegister"
-          :loading='loading'
-        >注册</van-button>
+          :loading="loading"
+          >注册</van-button
+        >
       </div>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import headerNav from '@/views/dumb/header-nav';
+import headerNav from "@/views/dumb/header-nav";
 
 export default {
-  name: 'UserRegister',
+  name: "UserRegister",
 
   data() {
     return {
-      headerTitle: '注册',
+      headerTitle: "注册",
       registerForm: {
-        account: '',
-        password: '',
-        repassword: '',
+        account: "",
+        password: "",
+        repassword: ""
       },
-      loading: false,
+      loading: false
     };
   },
   components: {
-    headerNav,
+    headerNav
   },
   methods: {
     handleRegister() {
       this.$store
-        .dispatch('user/RegiterByAccount', this.registerForm)
+        .dispatch("user/RegiterByAccount", this.registerForm)
         .then(() => {
           this.loading = false;
-          this.$router.push({ name: '/userIndex' });
+          this.$router.push({ name: "/userIndex" });
         })
-        .catch((e) => {
+        .catch(e => {
           this.$toast(e);
           this.loading = false;
         });
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -1,13 +1,12 @@
 <template>
   <div class="evaluation">
     <header-nav
-      :on-left="true"
+      :left-click="true"
       headerbg-color="whitesmoke"
       :title="headerTitle"
       :border="false"
       :is-back="false"
-      :is-close="true"
-      @click-left="close"
+      @left-click-fn="close"
     />
     <div class="evaluation-dispatcher evaluation-box">
       <div class="top">
@@ -15,10 +14,15 @@
           <img
             class="info-avatar"
             src="https://i.loli.net/2018/11/26/5bfb75c197a0c.png"
-          >
+          />
           <div class="info-detail">
             <p class="distribution-type">美团专送</p>
-            <p class="arrival-time">{{orderStatusTimeArr.arrival_time | parseTime('{m}月{d}日{h}:{i}')}}左右送达</p>
+            <p class="arrival-time">
+              {{
+                orderStatusTimeArr.arrival_time
+                  | parseTime("{m}月{d}日{h}:{i}")
+              }}左右送达
+            </p>
           </div>
         </div>
       </div>
@@ -27,7 +31,7 @@
           <div
             class="select-box-btn"
             @click="selectSatisfied(false)"
-            :class="{'selected' : reviewData.isSatisfied === false  }"
+            :class="{ selected: reviewData.isSatisfied === false }"
           >
             <i class="iconfont icon-chaping"></i>
             不满意
@@ -35,7 +39,7 @@
           <div
             class="select-box-btn"
             @click="selectSatisfied(true)"
-            :class="{'selected' : reviewData.isSatisfied  }"
+            :class="{ selected: reviewData.isSatisfied }"
           >
             <i class="iconfont icon-haoping"></i>
             满意
@@ -43,12 +47,17 @@
         </div>
         <div
           class="evaluation-detail"
-          :class="{'show':reviewData.isSatisfied === false,'show-1':reviewData.isSatisfied}"
+          :class="{
+            show: reviewData.isSatisfied === false,
+            'show-1': reviewData.isSatisfied
+          }"
         >
           <p
             class="evaluation-not-satisfied"
             v-if="reviewData.isSatisfied === false"
-          >请选择不满意的原因(必选)</p>
+          >
+            请选择不满意的原因(必选)
+          </p>
           <ul
             class="evaluation-detail-list"
             v-if="reviewData.isSatisfied === false"
@@ -58,23 +67,29 @@
               v-for="item in evalDispatcherList['not']"
               :key="item.label"
               @click="evalDispatcher(item)"
-              :class="{'selected':reviewData.evalDispatcher.findIndex(_item => _item.value === item.value) !== -1}"
+              :class="{
+                selected:
+                  reviewData.evalDispatcher.findIndex(
+                    _item => _item.value === item.value
+                  ) !== -1
+              }"
             >
               {{ item.label }}
             </li>
           </ul>
-          <ul
-            class="evaluation-detail-list"
-            v-if="reviewData.isSatisfied"
-          >
+          <ul class="evaluation-detail-list" v-if="reviewData.isSatisfied">
             <li
               class="evaluation-detail-item"
               v-for="item in evalDispatcherList['satisfied']"
               :key="item.label"
               @click="evalDispatcher(item)"
-              :class="{'selected':reviewData.evalDispatcher.findIndex(_item => _item.value === item.value) !== -1}"
+              :class="{
+                selected:
+                  reviewData.evalDispatcher.findIndex(
+                    _item => _item.value === item.value
+                  ) !== -1
+              }"
             >
-
               {{ item.label }}
             </li>
           </ul>
@@ -84,10 +99,7 @@
     <div class="evaluation-shop evaluation-box">
       <div class="top">
         <div class="info">
-          <img
-            class="info-avatar"
-            :src="shopInfo.photo"
-          >
+          <img class="info-avatar" :src="shopInfo.photo" />
           <div class="info-detail">
             <p>
               {{ shopInfo.shop_title }}
@@ -96,19 +108,15 @@
         </div>
       </div>
       <div class="evaluation-star">
-        <p
-          class="evaluation-title"
-          v-if="reviewData.evalShopStar > 0"
-        >"{{ reviewData.evalShopStar | starText }}"</p>
+        <p class="evaluation-title" v-if="reviewData.evalShopStar > 0">
+          "{{ reviewData.evalShopStar | starText }}"
+        </p>
         <rate
           v-model="reviewData.evalShopStar"
           :size="30"
           :is-show-text="false"
         />
-        <div
-          class="evaluation-star-other"
-          v-if="reviewData.evalShopStar > 0"
-        >
+        <div class="evaluation-star-other" v-if="reviewData.evalShopStar > 0">
           <div class="item">
             <span class="label">口味</span>
             <rate
@@ -118,7 +126,7 @@
               :size="19"
               marginLeft.number="15"
             />
-            <span class="text">{{reviewData.evalTasteStar | starText}}</span>
+            <span class="text">{{ reviewData.evalTasteStar | starText }}</span>
           </div>
           <div class="item">
             <span class="label">包装</span>
@@ -129,8 +137,9 @@
               :size="19"
               marginLeft.number="15"
             />
-            <span class="text">{{reviewData.evalPackingStar | starText}}</span>
-
+            <span class="text">{{
+              reviewData.evalPackingStar | starText
+            }}</span>
           </div>
         </div>
       </div>
@@ -151,24 +160,38 @@
           <span class="good-name">{{ item.food_name }}</span>
           <div class="good-review">
             <span
-              @click="evalFood(item.id,1,item.food_name)"
-              :class="{'good-like' : reviewData.evalFood.findIndex(_item=>_item.id===item.id && _item.type === 1)!==-1 }"
+              @click="evalFood(item.id, 1, item.food_name)"
+              :class="{
+                'good-like':
+                  reviewData.evalFood.findIndex(
+                    _item => _item.id === item.id && _item.type === 1
+                  ) !== -1
+              }"
             >
-              <i class="iconfont icon-dianzan_xianxing" /> 赞</span>
+              <i class="iconfont icon-dianzan_xianxing" /> 赞</span
+            >
             <span
-              @click="evalFood(item.id,-1,item.food_name)"
-              :class="{'good-dislike' : reviewData.evalFood.findIndex(_item=>_item.id===item.id && _item.type === -1)!==-1 }"
+              @click="evalFood(item.id, -1, item.food_name)"
+              :class="{
+                'good-dislike':
+                  reviewData.evalFood.findIndex(
+                    _item => _item.id === item.id && _item.type === -1
+                  ) !== -1
+              }"
             >
-              <i class="iconfont icon-cai" /> 踩</span>
+              <i class="iconfont icon-cai" /> 踩</span
+            >
           </div>
         </li>
       </ul>
     </div>
     <div
       class="evaluation-btn"
-      :class="{'complete' : isComplete}"
+      :class="{ complete: isComplete }"
       @click="reviewOrder"
-    >提交</div>
+    >
+      提交
+    </div>
   </div>
 </template>
 

@@ -1,8 +1,8 @@
 <template>
   <div class="header-nav" :style="style">
     <div class="header-nav-left">
-      <i class="iconfont icon-xiangzuo" v-if="isBack" @click="clickLeft" />
-      <i class="iconfont icon-guanbi1" v-if="isClose" @click="clickLeft" />
+      <i class="iconfont icon-xiangzuo" v-if="isBack" @click="clickLeftBtn" />
+      <i class="iconfont icon-guanbi1" v-else @click="clickLeftBtn" />
     </div>
     <div class="header-nav-main">
       <span class="headerNav-title">{{ title }}</span>
@@ -25,33 +25,36 @@ export default {
       type: String,
       default: ""
     },
-    isClose: {
-      type: Boolean,
-      default: false
-    },
     isBack: {
       type: Boolean,
       default: true
     },
-    onLeft: {
+    leftClick: {
       type: Boolean,
       default: false
     },
     border: {
       type: Boolean,
       default: true
+    },
+    backRouter: {
+      type: Object,
+      default: null
     }
   },
   methods: {
-    clickLeft() {
-      if (this.onLeft) {
-        this.$emit("click-left");
+    clickLeftBtn() {
+      if (this.leftClick) {
+        this.$emit("left-click-fn");
       } else {
-        this.$router.go(-1);
+        if (this.backRouter) {
+          this.$router.push(this.backRouter);
+        } else {
+          this.$router.go(-1);
+        }
       }
     }
   },
-  created() {},
   computed: {
     style() {
       return {

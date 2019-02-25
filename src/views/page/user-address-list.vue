@@ -1,6 +1,6 @@
 <template>
   <div class="user-address-list">
-    <header-nav title="我的收货地址">
+    <header-nav title="我的收货地址" :back-router="backRouter">
       <router-link :to="{ name: 'userAddressInfo', query: { type: 'add' } }"
         >新增地址</router-link
       >
@@ -41,7 +41,10 @@ export default {
   data() {
     return {
       list: [],
-      SEX: CONSTANT.TYPE.SEX
+      SEX: CONSTANT.TYPE.SEX,
+      backRouter: {
+        name: "userIndex"
+      }
     };
   },
   components: {

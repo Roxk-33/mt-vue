@@ -1,14 +1,12 @@
 <template>
   <div class="user-evaluation-list">
     <header-nav
-      :is-back="true"
-      :on-left="true"
-      @click-left="$router.push('/user/index');"
+      :back-router="backRouter"
       headerbgColor="transparent"
       :border="false"
     />
     <div class="header">
-      <img :src="userAvatar" class="user-avatar">
+      <img :src="userAvatar" class="user-avatar" />
       <p class="user-name">{{ userName }}</p>
       <span>已共享3条评价</span>
     </div>
@@ -21,30 +19,42 @@
       <div class="list-box">
         <div class="list-item" v-for="item in evalList" :key="item.id">
           <div class="shop-info mt-flex-space-between">
-            <router-link :to="{ name: 'shopDetail',params:{ id: item.shop_info.id}}">
+            <router-link
+              :to="{ name: 'shopDetail', params: { id: item.shop_info.id } }"
+            >
               <i class="iconfont icon-dianpu"></i>
-              {{item.shop_info.shop_title}}
+              {{ item.shop_info.shop_title }}
             </router-link>
             <i class="iconfont icon-xiangyou"></i>
           </div>
           <div class="eval-info">
-            <img :src="userAvatar" class="user-avatar">
+            <img :src="userAvatar" class="user-avatar" />
             <div class="detail-info">
               <div class="detail-header mt-flex-space-between">
                 <span class="user-name">{{ userName }}</span>
                 <span class="eval-time">2018.11.24</span>
               </div>
               <div class="detail-middle">
-                <div class="shop-rate">商家
-                  <rate v-model="rate" :size="10" :margin-left="5" :isShowText="false"/>
+                <div class="shop-rate">
+                  商家
+                  <rate
+                    v-model="rate"
+                    :size="10"
+                    :margin-left="5"
+                    :isShowText="false"
+                  />
                 </div>
-                <div class="distribution-type">{{ item.distribution_type ? '美团专送' : '商家自配送'}}</div>
-                <div class="distribution-time">{{item.distribution_type}}分钟送达</div>
+                <div class="distribution-type">
+                  {{ item.distribution_type ? "美团专送" : "商家自配送" }}
+                </div>
+                <div class="distribution-time">
+                  {{ item.distribution_type }}分钟送达
+                </div>
               </div>
               <div class="detail-bottom">
-                <span>口味:{{item.taste_rate}}星</span>
-                <span>包装:{{item.packing_rate}}星</span>
-                <span>配送:{{item.distribution_rate | starText}}</span>
+                <span>口味:{{ item.taste_rate }}星</span>
+                <span>包装:{{ item.packing_rate }}星</span>
+                <span>配送:{{ item.distribution_rate | starText }}</span>
               </div>
             </div>
           </div>
@@ -66,7 +76,7 @@
       </div>
     </mt-better-scroll>
 
-    <list-empty :isShow="finished"/>
+    <list-empty :isShow="finished" />
   </div>
 </template>
 
@@ -84,7 +94,10 @@ export default {
       rate: 4,
       evalList: [],
       page: 0,
-      finished: false
+      finished: false,
+      backRouter: {
+        name: "userIndex"
+      }
     };
   },
   components: {

@@ -1,57 +1,57 @@
 <template>
   <div class="order-pay">
-    <header-nav :title="headerTitle" :on-left="true" @click-left="back" />
+    <header-nav :title="headerTitle" :left-click="true" @left-click-fn="back" />
     <div class="order-pay-info">
       <div class="residual-time">
-        剩余时间{{this.coutMin | formatTime}}:{{this.coutSec | formatTime}}
+        剩余时间{{ this.coutMin | formatTime }}:{{ this.coutSec | formatTime }}
       </div>
       <div class="pay-price">
-        ￥<span class="content">{{payData.price}}</span>
+        ￥<span class="content">{{ payData.price }}</span>
       </div>
       <div class="order-info">
-        {{payData.shopTitle}}
+        {{ payData.shopTitle }}
       </div>
     </div>
-    <div class='footer-box' @click="pay">
-      <span>确认支付￥</span><span class="content">{{payData.price}}</span>
+    <div class="footer-box" @click="pay">
+      <span>确认支付￥</span><span class="content">{{ payData.price }}</span>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import headerNav from '@/views/dumb/header-nav';
-import timer from '@/mixins/timer';
+import headerNav from "@/views/dumb/header-nav";
+import timer from "@/mixins/timer";
 
 export default {
-  name: 'OrderPay',
+  name: "OrderPay",
   mixins: [timer],
   data() {
     return {
-      headerTitle: '支付订单',
+      headerTitle: "支付订单",
       payData: {
         price: 0,
-        shopTitle: '',
-        deadLineTime: 0,
-      },
+        shopTitle: "",
+        deadLineTime: 0
+      }
     };
   },
   components: {
-    headerNav,
+    headerNav
   },
   methods: {
     back() {
       this.$router.push({
-        name: 'userOrderDetail',
-        params: { id: this.orderId },
+        name: "userOrderDetail",
+        params: { id: this.orderId }
       });
     },
     cancelOrder() {
       this.$router.push({
-        path: '/user/index',
+        path: "/user/index"
       });
     },
     getPayData() {
-      this.$store.dispatch('order/getPayData', this.orderId).then(resp => {
+      this.$store.dispatch("order/getPayData", this.orderId).then(resp => {
         this.payData.price = resp.data.total_price;
         this.payData.shopTitle = resp.data.shop_info.shop_title;
         this.initCount(
@@ -62,24 +62,24 @@ export default {
     },
     pay() {
       this.$store
-        .dispatch('order/payOrder', { id: this.orderId })
+        .dispatch("order/payOrder", { id: this.orderId })
         .then(resp => {
           this.$toast(resp.message);
           this.$router.push({
-            name: 'userOrderDetail',
-            params: { id: this.orderId },
+            name: "userOrderDetail",
+            params: { id: this.orderId }
           });
         })
         .catch(err => {
           console.log(err);
           this.$toast(err);
         });
-    },
+    }
   },
   mounted() {
     if (!this.orderId) {
-      this.$toast('非法访问');
-      this.$router.push('/user/order/list');
+      this.$toast("非法访问");
+      this.$router.push("/user/order/list");
       return;
     }
     this.getPayData();
@@ -87,13 +87,13 @@ export default {
   computed: {
     orderId() {
       return this.$route.params.orderId;
-    },
+    }
   },
   filters: {
     formatTime(time) {
-      return time < 10 ? '0' + time : time;
-    },
-  },
+      return time < 10 ? "0" + time : time;
+    }
+  }
 };
 </script>
 

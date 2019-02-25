@@ -1,10 +1,6 @@
 <template>
   <div class="user-cart">
-    <header-nav
-      :is-back="true"
-      :title="headerTitle"
-      @click-left="$router.back(-1)"
-    >
+    <header-nav :title="headerTitle">
       <span>编辑</span>
     </header-nav>
     <div class="cart-list">

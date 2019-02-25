@@ -1,6 +1,6 @@
 <template>
   <div class="address-map">
-    <header-nav :title="title" :on-left="true" @click-left="close" />
+    <header-nav :title="title" :left-click="true" @left-click-fn="close" />
 
     <div class="address-input">
       <form action="/">

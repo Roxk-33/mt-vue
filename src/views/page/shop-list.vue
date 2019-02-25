@@ -1,11 +1,6 @@
 <template>
   <div class="shop-category">
-    <header-nav
-      :is-back="true"
-      :title="headerTitle"
-      :on-left="true"
-      @click-left="$router.push('/user/index');"
-    />
+    <header-nav :title="headerTitle" :back-router="backRouter" />
     <shop-list-header
       :sort-target="sortTarget"
       @change="changeFilter"
@@ -21,7 +16,7 @@
         @pulling-up="onPullingUp"
       >
         <van-cell
-          v-for="(shop,index) in shopList"
+          v-for="(shop, index) in shopList"
           :key="index"
           style="padding:10px"
         >
@@ -59,6 +54,9 @@ export default {
       pullUpLoad: {
         threshold: 10,
         txt: { more: "", noMore: "暂无更多数据" }
+      },
+      backRouter: {
+        name: "userIndex"
       }
     };
   },

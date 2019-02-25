@@ -1,12 +1,6 @@
 <template>
   <div class="order-pay">
-    <header-nav
-      :title="headerTitle"
-      :on-left="true"
-      :border="false"
-      headerbgColor="#fbd475"
-      @click-left="$router.back(-1)"
-    />
+    <header-nav :title="headerTitle" :border="false" headerbgColor="#fbd475" />
     <div class="order-pay-header">
       <div class="header-address box-right-arrow " @click="showAddress = true">
         <p class="address-content" v-if="orderInfo.address.address">
@@ -202,8 +196,8 @@
       <div class="remark-box">
         <header-nav
           title="添加备注"
-          @click-left="showRemarks = false"
-          :on-left="true"
+          @left-click-fn="showRemarks = false"
+          :left-click="true"
         >
           <span @click="saveRemarks" class="save-btn">完成</span>
         </header-nav>

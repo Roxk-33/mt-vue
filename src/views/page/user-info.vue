@@ -1,87 +1,67 @@
 <template>
-  <div class='person-info'>
-    <header-nav
-      :is-back="true"
-      :title="headerTitle"
-      @click-left="$router.back(-1);"
-    />
+  <div class="person-info">
+    <header-nav :title="headerTitle" />
 
-    <ul class='info-box'>
-      <li class='info-box-avatar'>
-        <span class='info-box_title'>头像</span>
+    <ul class="info-box">
+      <li class="info-box-avatar">
+        <span class="info-box_title">头像</span>
         <van-uploader
           :after-read="changeAvatar"
           accept="image/gif, image/jpeg"
           multiple
         >
-          <span class='info-box_content'>
-            <img
-              class='box-avatar_img'
-              :src='userAvatar'
-            >
+          <span class="info-box_content">
+            <img class="box-avatar_img" :src="userAvatar" />
           </span>
         </van-uploader>
       </li>
       <li @click="showPop('username')">
-        <span class='info-box_title'>用户名</span>
-        <span class='info-box_content'>
+        <span class="info-box_title">用户名</span>
+        <span class="info-box_content">
           {{ userName }}
           <van-icon name="arrow" />
         </span>
       </li>
       <li @click="showPop('password')">
-        <span class='info-box_title'>账户密码</span>
-        <span class='info-box_content'>
+        <span class="info-box_title">账户密码</span>
+        <span class="info-box_content">
           <van-icon name="arrow" />
         </span>
       </li>
       <li @click="showPop('tel')">
-        <span class='info-box_title'>手机号</span>
-        <span class='info-box_content'>
+        <span class="info-box_title">手机号</span>
+        <span class="info-box_content">
           {{ userTel | filterTel }}
           <van-icon name="arrow" />
         </span>
       </li>
     </ul>
-    <div class='info-footer'>
+    <div class="info-footer">
       <span @click="logout">退出当前账号</span>
     </div>
 
-    <van-popup
-      v-model="show"
-      position="right"
-    >
-
-      <div
-        class="username-box user-info-pop-box"
-        v-if="boxType === 'username'"
-      >
-
+    <van-popup v-model="show" position="right">
+      <div class="username-box user-info-pop-box" v-if="boxType === 'username'">
         <header-nav
           title="修改用户名"
-          @click-left="show=false"
-          :on-left="true"
+          @left-click-fn="show = false"
+          :left-click="true"
         >
           <span @click="changeName">确定</span>
         </header-nav>
         <div class="content">
           <span class="content-label">用户名:</span>
-          <input
-            type="text"
-            class="content-input"
-            v-model="nameNew"
-          >
+          <input type="text" class="content-input" v-model="nameNew" />
         </div>
-        <p class="warm-text">以英文或汉字开头，限4-16个字符，一个字符为2个字符</p>
+        <p class="warm-text">
+          以英文或汉字开头，限4-16个字符，一个字符为2个字符
+        </p>
       </div>
-      <div
-        class="password-box user-info-pop-box"
-        v-if="boxType === 'password'"
-      >
+      <div class="password-box user-info-pop-box" v-if="boxType === 'password'">
         <header-nav
           title="设置密码"
-          @click-left="show=false"
-          :on-left="true"
+          @left-click-fn="show = false"
+          :left-click="true"
         />
         <div class="content">
           <input
@@ -89,7 +69,7 @@
             class="content-input"
             v-model="psw"
             placeholder="新密码:"
-          >
+          />
         </div>
         <div class="content">
           <input
@@ -97,22 +77,18 @@
             class="content-input"
             v-model="pswRe"
             placeholder="确认新密码:"
-          >
+          />
         </div>
-        <p class="warm-text">密码长度8~32位，须包含数字、字母、符号至少两种或以上的元素</p>
-        <button
-          class="sumbit"
-          @click="changePsw"
-        >确认提交</button>
+        <p class="warm-text">
+          密码长度8~32位，须包含数字、字母、符号至少两种或以上的元素
+        </p>
+        <button class="sumbit" @click="changePsw">确认提交</button>
       </div>
-      <div
-        class="tel-box user-info-pop-box"
-        v-if="boxType === 'tel'"
-      >
+      <div class="tel-box user-info-pop-box" v-if="boxType === 'tel'">
         <header-nav
           title="更换手机号"
-          @click-left="show=false"
-          :on-left="true"
+          @left-click-fn="show = false"
+          :left-click="true"
         />
         <h2 class="title">输入新的手机号</h2>
         <div class="content">
@@ -123,42 +99,36 @@
             class="content-input"
             v-model="tel"
             @click="showKeyBoard = true"
-          >
+          />
         </div>
         <button
           class="sumbit"
           @click="getCode"
-          :class="{'tel-correct' : telCorrect}"
-        >获取验证码</button>
+          :class="{ 'tel-correct': telCorrect }"
+        >
+          获取验证码
+        </button>
       </div>
-      <div
-        class="vercode-box"
-        v-if="boxType === 'vercode'"
-      >
+      <div class="vercode-box" v-if="boxType === 'vercode'">
         <header-nav
           title="更换手机号"
-          @click-left="show=false"
-          :on-left="true"
+          @left-click-fn="show = false"
+          :left-click="true"
         />
         <h2 class="title">输入验证码</h2>
         <div class="content">
-          <p class="content-block">
-            验证码已下发至{{tel}}
-          </p>
+          <p class="content-block">验证码已下发至{{ tel }}</p>
           <span class="content-label">
             57s后重新获取
           </span>
           <div class="code-box">
             <div
               class="code-input"
-              v-for="(item,index) in codeInputfocusStatus"
+              v-for="(item, index) in codeInputfocusStatus"
               :key="index"
             >
-              <span class="code-show">{{codeInput[index]}}</span>
-              <div
-                class="code-ani"
-                v-if="item"
-              ></div>
+              <span class="code-show">{{ codeInput[index] }}</span>
+              <div class="code-ani" v-if="item"></div>
             </div>
           </div>
         </div>
