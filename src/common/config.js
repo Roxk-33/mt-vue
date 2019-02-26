@@ -1,4 +1,4 @@
-const APIPREFIX = '/v1';
+const APIPREFIX = '/client';
 
 export default {
   API: {
@@ -47,7 +47,7 @@ export default {
     USER_EVAL_DELETE: `${APIPREFIX}/user/evaluation/:id`,
   },
   BASE_URL: {
-    PRO: 'https://api.lococo.site/',
+    PRO: 'https://api.lococo.site',
     DEV: 'http://localhost:7001/',
   },
 };
