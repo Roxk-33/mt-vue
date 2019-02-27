@@ -58,7 +58,7 @@
         </router-link>
         <span
           class="after-sale"
-          v-if="['ARRIVED', 'ONTHEWAY'].includes(orderStatus)"
+          v-if="['ONTHEWAY'].includes(orderStatus)"
           @click="confirmOrder"
         >
           确认送达
@@ -128,6 +128,14 @@
         <span>￥{{ orderInfo.total_price }}</span>
       </div>
     </div>
+    <div
+      class="detail-box review-box mt-flex-space-between"
+      v-if="orderInfo.review_status === 1"
+      @click="showReview = true"
+    >
+      <span>我的评价</span>
+      <i class="iconfont icon-xiangyou"></i>
+    </div>
     <div class="detail-box distribution-box">
       <p class="detail-box-title">配送信息</p>
       <ul class="distribution-info-box">
@@ -182,6 +190,20 @@
         </ul>
       </pop-up>
     </van-popup>
+
+    <van-popup v-model="showReview" position="right" :overlay="true">
+      <pop-up
+        @clickHeaderLeft="showReview = false"
+        headerTitle="我的评价"
+        :showBottomText="false"
+        headerLeft="关闭"
+      >
+        <order-review-detail
+          :shopInfo="shopInfo"
+          :reviewInfo="orderInfo.order_review"
+        />
+      </pop-up>
+    </van-popup>
   </div>
 </template>
 
@@ -190,12 +212,14 @@ import { parseTime } from "@/common/utils";
 import CONSTANT from "@/common/constant";
 import timer from "@/mixins/timer";
 import popUp from "@/views/dumb/pop-up";
+import orderReviewDetail from "@/views/smart/order-review-detail";
 
 export default {
   name: "UserOrderDetail",
   mixins: [timer],
   components: {
-    popUp
+    popUp,
+    orderReviewDetail
   },
   data() {
     return {
@@ -204,7 +228,8 @@ export default {
       ORDER_STATUS_MSG: CONSTANT.ORDER_STATUS_MSG,
       ORDER_STATUS_TIME_MSG: CONSTANT.ORDER_DETAIL_STATUS_TIME,
       showStatusTimeList: false,
-      orderStatusTimeList: []
+      orderStatusTimeList: [],
+      showReview: false
     };
   },
   methods: {
@@ -480,6 +505,9 @@ export default {
       margin-top: 10px;
     }
   }
+  .review-box {
+    font-size: 16px;
+  }
   .order-box-info-box li,
   .distribution-info-box li {
     margin: 5px 0;
@@ -536,5 +564,9 @@ export default {
       }
     }
   }
+}
+.van-popup--right {
+  width: 100%;
+  height: 100%;
 }
 </style>

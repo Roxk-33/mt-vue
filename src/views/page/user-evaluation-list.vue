@@ -59,14 +59,14 @@
             </div>
           </div>
           <div class="btn-box">
-            <span>
+            <!-- <span>
               <i class="iconfont icon-fenxiangcopy"></i>
               分享
-            </span>
-            <span>
+            </span> -->
+            <!-- <span>
               <i class="iconfont icon-pinglun"></i>
               追评
-            </span>
+            </span> -->
             <span @click="deleteItem(item.id)">
               <i class="iconfont icon-shanchu"></i>
               删除

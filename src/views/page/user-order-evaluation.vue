@@ -26,7 +26,7 @@
           </div>
         </div>
       </div>
-      <div class="evaluation-select">
+      <div class="evaluation-select" v-if="false">
         <div class="select-box mt-flex-space-around">
           <div
             class="select-box-btn"
@@ -151,39 +151,6 @@
         rows="5"
         :autosize="remaskField"
       />
-      <ul class="evaluation-good">
-        <li
-          class="evaluation-good-item mt-flex-space-between"
-          v-for="item in foodList"
-          :key="item.id"
-        >
-          <span class="good-name">{{ item.food_name }}</span>
-          <div class="good-review">
-            <span
-              @click="evalFood(item.id, 1, item.food_name)"
-              :class="{
-                'good-like':
-                  reviewData.evalFood.findIndex(
-                    _item => _item.id === item.id && _item.type === 1
-                  ) !== -1
-              }"
-            >
-              <i class="iconfont icon-dianzan_xianxing" /> 赞</span
-            >
-            <span
-              @click="evalFood(item.id, -1, item.food_name)"
-              :class="{
-                'good-dislike':
-                  reviewData.evalFood.findIndex(
-                    _item => _item.id === item.id && _item.type === -1
-                  ) !== -1
-              }"
-            >
-              <i class="iconfont icon-cai" /> 踩</span
-            >
-          </div>
-        </li>
-      </ul>
     </div>
     <div
       class="evaluation-btn"
@@ -250,9 +217,8 @@ export default {
       evalShopStar: 0,
       orderInfo: {},
       reviewData: {
-        isSatisfied: "",
-        evalDispatcher: [],
-        evalFood: [],
+        // isSatisfied: "",
+        // evalDispatcher: [],
         evalShopStar: 0,
         evalPackingStar: 0,
         evalTasteStar: 0,
@@ -313,19 +279,6 @@ export default {
           this.$toast(err);
         });
     },
-    evalFood(id, type, food_name) {
-      const index = this.reviewData.evalFood.findIndex(item => item.id === id);
-      console.log(index, this.reviewData.evalFood);
-      if (index === -1) {
-        this.reviewData.evalFood.push({ id, type, food_name });
-        return;
-      }
-      if (this.reviewData.evalFood[index].type === type) return;
-      else {
-        this.reviewData.evalFood[index].type = type;
-      }
-      console.log(this.reviewData.evalFood);
-    },
     evalDispatcher(target) {
       const index = this.reviewData.evalDispatcher.findIndex(
         item => item.value === target.value
@@ -338,11 +291,11 @@ export default {
       else this.reviewData.evalDispatcher.splice(index, 1);
       console.log(this.reviewData.evalDispatcher);
     },
-    selectSatisfied(type) {
-      if (this.reviewData.isSatisfied === type) return;
-      this.reviewData.isSatisfied = type;
-      this.reviewData.evalDispatcher = [];
-    },
+    // selectSatisfied(type) {
+    //   if (this.reviewData.isSatisfied === type) return;
+    //   this.reviewData.isSatisfied = type;
+    //   this.reviewData.evalDispatcher = [];
+    // },
     close() {
       const oThis = this;
       this.$dialog.alert({
@@ -416,14 +369,14 @@ export default {
 .evaluation {
   min-height: 100%;
   position: relative;
-  padding-bottom: 70px;
+  // padding-bottom: 70px;
   .evaluation-box {
     background-color: white;
     margin: 0 10px 10px;
     padding: 8px;
     .top {
       padding-bottom: 5px;
-      border-bottom: 1px solid $mt-light-gray;
+      // border-bottom: 1px solid $mt-light-gray;
 
       .info {
         .info-avatar {
@@ -553,33 +506,6 @@ export default {
       margin: 10px auto;
       background-color: #fdfafa;
       border: 1px solid $mt-light-gray;
-    }
-    .evaluation-good {
-      border-top: 1px solid $mt-light-gray;
-      margin-top: 5px;
-      .evaluation-good-item {
-        padding: 8px 5px;
-        span {
-          border: 1px solid $mt-gray;
-          border-radius: 10px;
-          padding: 2px 8px;
-          margin: 0 2px;
-          i {
-            font-size: 13px;
-          }
-        }
-        .good-like {
-          border-color: $mt-color;
-          color: $mt-color;
-        }
-        .good-dislike {
-          border-color: $mt-light-gray;
-          background-color: $mt-light-gray;
-          i {
-            color: $mt-gray;
-          }
-        }
-      }
     }
   }
   .evaluation-btn {
