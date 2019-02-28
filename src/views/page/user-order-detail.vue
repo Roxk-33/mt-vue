@@ -192,17 +192,11 @@
     </van-popup>
 
     <van-popup v-model="showReview" position="right" :overlay="true">
-      <pop-up
-        @clickHeaderLeft="showReview = false"
-        headerTitle="我的评价"
-        :showBottomText="false"
-        headerLeft="关闭"
-      >
-        <order-review-detail
-          :shopInfo="shopInfo"
-          :reviewInfo="orderInfo.order_review"
-        />
-      </pop-up>
+      <order-review-detail
+        :shopInfo="shopInfo"
+        :reviewInfo="orderInfo.order_review"
+        @close="showReview = false"
+      />
     </van-popup>
   </div>
 </template>
