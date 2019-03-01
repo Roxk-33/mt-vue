@@ -1,6 +1,6 @@
 <template>
   <div class="user-order-list">
-    <order-list-header @changeTab="changeTab"/>
+    <order-list-header @changeTab="changeTab" />
     <mt-better-scroll
       ref="contentScroll"
       :data="orderList"
@@ -9,7 +9,7 @@
     >
       <div class="order-list-content">
         <order-list-item
-          v-for="(item,index) in orderList"
+          v-for="(item, index) in orderList"
           :key="index"
           :order-info="item"
           :food-list="item.food_list"
@@ -18,8 +18,8 @@
       </div>
     </mt-better-scroll>
 
-    <list-empty :isShow="finished"/>
-    <footer-nav active="1"/>
+    <list-empty :isShow="finished" />
+    <footer-nav active="1" />
   </div>
 </template>
 
@@ -49,7 +49,7 @@ export default {
       pullUpLoad: true,
       pullingDownLoading: false,
       page: 0,
-
+      isEmpty: false,
       secondStop: 26
     };
   },
@@ -105,13 +105,13 @@ export default {
         })
         .then(resp => {
           this.mtLoading = false;
-
-          if (resp.data.length === 0 && this.page === 0) {
-            this.finished = true;
-            this.orderList = [];
+          if (resp.data.length === 0) {
+            this.isEmpty = true;
+            this.page === 0 && ((this.orderList = []), (this.finished = true));
             return;
           }
           this.finished = false;
+          this.isEmpty = false;
           if (this.page === 0) {
             this.orderList = resp.data;
           } else {
@@ -132,14 +132,18 @@ export default {
 };
 </script>
 
-<style scoped rel="stylesheet/scss" lang="scss">
+<style rel="stylesheet/scss" lang="scss">
 .user-order-list {
   height: 100%;
-}
-.order-list-content {
-  padding-top: 8px;
-}
-.better-scroll-wrapper {
-  margin-top: 78px;
+  padding-bottom: 60px;
+  .order-list-content {
+    padding-top: 8px;
+  }
+  .better-scroll-content {
+    padding: 80px 0 0px;
+  }
+  .better-scroll-list-wrapper {
+    padding-bottom: 0;
+  }
 }
 </style>
