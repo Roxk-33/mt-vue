@@ -49,13 +49,13 @@
         <span class="mt-color" v-if="orderStatus === 'UNPAY'" @click="goPay">
           立即支付
         </span>
-        <router-link
+        <!-- <router-link
           class="again"
           :to="{ name: 'shopDetail', params: { id: this.orderId } }"
           v-if="['ORDER_SUCCESS', 'ORDER_CANCEL'].includes(orderStatus)"
         >
           再来一单
-        </router-link>
+        </router-link> -->
         <span
           class="after-sale"
           v-if="['ONTHEWAY'].includes(orderStatus)"
