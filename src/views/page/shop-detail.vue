@@ -24,7 +24,7 @@
           <mt-better-scroll :options="scrollOption" :is-disable="scrollDisabel">
             <div
               class="menu-item"
-              v-for="(category, index) in shopCatalog"
+              v-for="(category, index) in foodCatalog"
               :key="category.id"
               :class="{ 'active-index': currentIndex === index }"
               @click="scrollToCat(index)"
@@ -107,7 +107,7 @@ export default {
           value: "business"
         }
       ],
-      shopCatalog: [],
+      foodCatalog: [],
       listHeight: [0],
       tabActive: 0,
       showSpecBox: false,
@@ -135,8 +135,7 @@ export default {
         .then(resp => {
           this.shopInfo = resp.data;
           this.mtLoading = false;
-          this.shopCatalog = this.shopInfo.category_list;
-          this.adjustSort(this.shopInfo.food_list);
+          this.adjustSort(this.shopInfo.category_list, this.shopInfo.food_list);
           this.isBusiness = isBusinessHours(
             this.shopInfo.business_hours,
             this.shopInfo.closing_hours
@@ -156,17 +155,20 @@ export default {
           this.$router.back(-1);
         });
     },
-    adjustSort(foodList) {
+    adjustSort(foodCatalog, foodList) {
+      this.foodCatalog = foodCatalog.filter(item => {
+        return foodList.some(food => food.category_id === item.id);
+      });
       let sortArr = {};
-      this.shopCatalog.forEach(item => {
+      this.foodCatalog.forEach(item => {
         sortArr[item.id] = item.sort;
       });
-      foodList.sort((prev, next) => {
+      this.foodList = foodList.sort((prev, next) => {
         return sortArr[prev.category_id] - sortArr[next.category_id];
       });
-      this.foodList = foodList;
       let indexId = this.foodList[0].category_id;
       let lineHeight = 0;
+
       this.foodList.forEach(item => {
         if (indexId !== item.category_id) {
           this.listHeight.push(lineHeight);
