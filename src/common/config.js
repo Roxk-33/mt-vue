@@ -30,8 +30,8 @@ export default {
     CART_SHOP_LIST: `${APIPREFIX}/user/cart/settle/:shopId`,
     CART_ADD: `${APIPREFIX}/user/cart`,
     CART_UPDATE: `${APIPREFIX}/user/cart`,
-    CART_DELETE: `${APIPREFIX}/user/cart/:shopId`,
-
+    CART_DELETE: `${APIPREFIX}/user/cart/shop/:shopId`,
+    CART_PRODUCT_DELETE: `${APIPREFIX}/user/cart/food/:id`,
     // 订单
     ORDER_CREATE: `${APIPREFIX}/order`,
     ORDER_PAY: `${APIPREFIX}/order/pay`,

@@ -17,42 +17,39 @@
             tag="div"
           >
             <img class="shop-avatar" :src="item.shop_info.photo" />
-
             <span class="shop-title">{{ item.shop_info.shop_title }}</span>
             <i class="iconfont icon-xiangyou" />
-            <!-- TODO:二期实现促销功能 -->
-            <!-- <div class="shop-discount">
-              <div class="discount-icon">促销</div>
-              <p class="shop-discount-info">满15减1</p>
-            </div> -->
           </router-link>
         </div>
         <div class="food-list">
           <van-checkbox-group v-model="item.selArr">
-            <div
-              class="food-list-item"
+            <van-swipe-cell
+              :right-width="65"
               v-for="foodInfo in item.foodList"
               :key="foodInfo.id"
             >
-              <van-checkbox :name="foodInfo.id" />
-              <div class="content">
-                <div class="food-info-box">
-                  <img class="food-img" :src="foodInfo.picture" />
-                  <div class="food-info">
-                    <p class="food-info-title">{{ foodInfo.food_name }}</p>
-                    <p class="food-info-spec">
-                      规格：{{ foodInfo.spec_text.join(",") }}
-                    </p>
-                    <div class="food-info-num">
-                      <span class="num">x{{ foodInfo.num }}</span>
-                      <span class="price"
-                        >￥{{ foodInfo.num * foodInfo.price }}</span
-                      >
+              <div class="food-list-item">
+                <van-checkbox :name="foodInfo.id" />
+                <div class="content">
+                  <div class="food-info-box">
+                    <img class="food-img" :src="foodInfo.picture" />
+                    <div class="food-info">
+                      <p class="food-info-title">{{ foodInfo.food_name }}</p>
+                      <p class="food-info-spec">
+                        规格：{{ foodInfo.spec_text.join(",") }}
+                      </p>
+                      <div class="food-info-num">
+                        <span class="num">x{{ foodInfo.num }}</span>
+                        <span class="price"
+                          >￥{{ foodInfo.num * foodInfo.price }}</span
+                        >
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
+              <span slot="right" @click="deleteFood(foodInfo.id)">删除</span>
+            </van-swipe-cell>
           </van-checkbox-group>
 
           <div class="fee-info">
@@ -115,12 +112,22 @@ export default {
         });
       }
     },
-    // 无法直接更store
+    deleteFood(id) {
+      this.$store
+        .dispatch("cart/deleteProduct", id)
+        .then(resp => {
+          this.$store.dispatch("cart/getCartList");
+          return this.$message.success(resp);
+        })
+        .catch(err => {});
+    },
     getCart() {
+      // 无法直接更该store
+      this.cartList = [];
       const temp = deepClone(this.list);
       temp.forEach(item => {
         const selArr = [];
-        let totalPrice = 0;
+        let totalPrice = item.shop_info.freight;
         item.foodList.forEach(item => {
           totalPrice += item.num * item.price;
           selArr.push(item.id);
@@ -137,7 +144,6 @@ export default {
       const foodIdArr = target.selArr;
       let isAll = false;
       if (foodIdArr.length === 0) return this.$toast("请选择商品");
-
       // 长度相同表示全选
       if (foodIdArr.length === target.foodList.length) isAll = true;
       this.$router.push({
@@ -216,6 +222,8 @@ export default {
     .food-list-item {
       display: flex;
       margin-bottom: 5px;
+      &.expire {
+      }
       .van-checkbox {
         display: flex;
         align-items: center;
@@ -224,7 +232,6 @@ export default {
         flex: 1;
       }
       .food-info-box {
-        background-color: #bebdbd36;
         height: 60px;
         display: flex;
         .food-img {
@@ -297,5 +304,16 @@ export default {
   vertical-align: top;
   margin: 0 5px;
   transform: scale(0.8);
+}
+</style>
+<style>
+.van-swipe-cell__right {
+  color: #fff;
+  font-size: 18px;
+  width: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f44;
 }
 </style>

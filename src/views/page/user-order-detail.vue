@@ -86,12 +86,15 @@
     </div>
     <div class="detail-box good-box">
       <div class="detail-box-title">
-        <div class="shop-title">
+        <router-link
+          class="shop-title"
+          :to="{ path: `/shop/list/${shopInfo.id}` }"
+        >
           <span>
             {{ shopInfo.shop_title }}
           </span>
           <i class="iconfont icon-xiangyou" />
-        </div>
+        </router-link>
 
         <div class="shop-info-contact">
           <span>

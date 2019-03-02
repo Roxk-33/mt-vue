@@ -3,10 +3,13 @@
     <div class="item-header mt-flex-space-between">
       <div class="item-header-left">
         <img v-lazy="shopInfo.photo" alt />
-        <div class="item-header-shop-info">
+        <router-link
+          class="item-header-shop-info"
+          :to="{ path: `/shop/list/${shopInfo.id}` }"
+        >
           <span class="shop-info-name">{{ shopInfo.shop_title }}</span>
           <i class="iconfont icon-xiangyou" />
-        </div>
+        </router-link>
       </div>
       <div class="item-header-right">
         <p>{{ ORDER_STATUS[orderInfo.status] }}</p>

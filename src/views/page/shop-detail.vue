@@ -286,7 +286,6 @@ export default {
       this._startBallAni();
     },
     // 发送新增商品到购物车的请求
-    //
     pushCart(data, isExist = -1, indexMenu = -1, ev) {
       if (indexMenu === -1) {
         indexMenu = this.foodList.findIndex(item => item.id === data.foodId);

@@ -4,11 +4,20 @@ import { formatURL } from '@/common/utils';
 import * as types from '../mutation-types';
 // 整理格式
 function formatCartList(data) {
-  data.forEach(item => {
-    // 折扣商品
+  // 失效产品
+  const expireList = [];
+  data.forEach((item, idx) => {
+    // 失效商品
+    if (item.food_info === null) {
+      expireList.push(item.id);
+      item.isExpire = 1;
+      return;
+    }
+
     if (item.food_info.discount_info === null) {
       item.price = item.food_info.price;
     } else {
+      // 折扣商品
       item.price = item.food_info.discount_info.discount;
     }
 
@@ -28,7 +37,7 @@ function formatCartList(data) {
     delete item.food_info;
     delete item.discount_info;
   });
-  return data;
+  return { foodList: data, expireList };
 }
 const API = config.API;
 // state
@@ -63,6 +72,7 @@ const mutations = {
   CART_INIT_LIST(state, list) {
     const temp = [];
     list.forEach(item => {
+      if (item.isExpire) return;
       const index = temp.findIndex(_item => _item.shop_info.id == item.shop_id);
       if (index === -1) {
         const shopInfo = item.shop_info;
@@ -82,8 +92,11 @@ const actions = {
       ajax
         .get(API.CART_LIST)
         .then(resp => {
-          const data = formatCartList(resp.data);
-          commit(types.CART_INIT_LIST, data);
+          const { foodList, expireList } = formatCartList(resp.data);
+          expireList.forEach(id => {
+            this.dispatch('cart/deleteProduct', id);
+          });
+          commit(types.CART_INIT_LIST, foodList);
           resolve(resp);
         })
         .catch(reject);
@@ -97,14 +110,22 @@ const actions = {
     data.userId = rootState.user.userId;
     return ajax.post(API.CART_ADD, data);
   },
-  //
+
   // 购物车中已有该商品，可以直接通过购物车自增id判断
   updateProductToCart({ state, commit }, payload) {
     return ajax.put(API.CART_UPDATE, payload);
   },
-  // 购物车中已有该商品，可以直接通过购物车自增id判断
+  // 清空某商店里的商品
   emptyCart({ state, commit }, payload) {
     return ajax.delete(formatURL(API.CART_DELETE, { shopId: payload }));
+  },
+  // 删除购物车里的商品
+  deleteProduct({ commit }, payload) {
+    return new Promise((resolve, reject) => {
+      ajax.delete(formatURL(API.CART_PRODUCT_DELETE, { id: payload })).then(resp => {
+        resolve(resp);
+      });
+    });
   }
 };
 

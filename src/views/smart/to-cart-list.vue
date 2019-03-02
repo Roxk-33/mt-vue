@@ -1,21 +1,18 @@
 <template>
-  <router-link
-    class="to-cart-list"
-    to="/user/cart"
-  >
+  <router-link class="to-cart-list" to="/user/cart">
     <i class="iconfont icon-gouwuche" />
   </router-link>
 </template>
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'ToCartList',
+  name: "ToCartList",
 
   data() {
     return {};
   },
   components: {},
-  methods: {},
+  methods: {}
 };
 </script>
 
@@ -31,6 +28,7 @@ export default {
   line-height: 30px;
   width: 30px;
   height: 30px;
+  z-index: 100;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
 }
 </style>

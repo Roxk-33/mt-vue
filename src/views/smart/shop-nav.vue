@@ -1,16 +1,10 @@
 <template>
   <div class="shop-nav mt-flex-space-between">
-    <div
-      class="nav-wrapper"
-      :style="{opacity:trackOpacity}"
-    />
-    <router-link to="/shop/list">
+    <div class="nav-wrapper" :style="{ opacity: trackOpacity }" />
+    <div @click="back">
       <i class="iconfont icon-xiangzuo" />
-    </router-link>
-    <div
-      class="shop-nav_right"
-      :class="{'shop-nav_right_white' :isTop}"
-    >
+    </div>
+    <div class="shop-nav_right" :class="{ 'shop-nav_right_white': isTop }">
       <i class="iconfont icon-sousuo" />
       <i class="iconfont icon-shoucang" />
       <i class="iconfont icon-gengduo" />
@@ -20,28 +14,26 @@
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'ShopNav',
+  name: "ShopNav",
   props: {
     trackOpacity: {
       type: [Number, String],
-      default: 0,
+      default: 0
     },
     isTop: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
-  data() {
-    return {};
-  },
-  components: {},
-  methods: {},
+  methods: {
+    back() {
+      this.$router.go(-1);
+    }
+  }
 };
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-
-
 .shop-nav {
   padding: 0.1rem;
   box-sizing: border-box;

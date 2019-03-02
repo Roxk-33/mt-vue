@@ -8,7 +8,6 @@
     <div class="header">
       <img :src="userAvatar" class="user-avatar" />
       <p class="user-name">{{ userName }}</p>
-      <span>已共享3条评价</span>
     </div>
     <mt-better-scroll
       ref="contentScroll"
@@ -47,14 +46,10 @@
                 <div class="distribution-type">
                   {{ item.distribution_type ? "美团专送" : "商家自配送" }}
                 </div>
-                <div class="distribution-time">
-                  {{ item.distribution_type }}分钟送达
-                </div>
               </div>
               <div class="detail-bottom">
                 <span>口味:{{ item.taste_rate }}星</span>
                 <span>包装:{{ item.packing_rate }}星</span>
-                <span>配送:{{ item.distribution_rate | starText }}</span>
               </div>
             </div>
           </div>
