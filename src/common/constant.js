@@ -49,7 +49,7 @@ export default {
     PAY: '订单已支付，等待商家接单',
     ACCEPT: '商家已接单',
     ONTHEWAY: '送达中',
-    ORDER_SUCCESS: '感谢您对美团外卖的信任，期待再次光临',
+    ORDER_SUCCESS: '感谢您对嘻嘻外卖的信任，期待再次光临',
     ORDER_REFUND: '申请退款中',
     ORDER_CANCEL: '您的订单已取消',
     ORDER_CANCEL_TIMEOUT: '支付超时，订单已取消'
