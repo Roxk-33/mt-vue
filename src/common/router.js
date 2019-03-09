@@ -8,8 +8,8 @@ import shopList from '@/views/page/shop-list';
 import userOrderList from '@/views/page/user-order-list';
 import shopDetail from '@/views/page/shop-detail';
 
-const userOrderEvaluation = () =>
-  import(/* webpackChunkName: "lazy-router" */ '@/views/page/user-order-evaluation');
+const userOrderReview = () =>
+  import(/* webpackChunkName: "lazy-router" */ '@/views/page/user-order-review');
 const userAddressInfo = () =>
   import(/* webpackChunkName: "lazy-router" */ '@/views/page/user-address-info');
 const userAddressList = () =>
@@ -37,60 +37,60 @@ export const constantRouterMap = [
       {
         path: 'index',
         component: user,
-        name: 'userIndex'
+        name: 'userIndex',
       },
       {
         path: 'info',
         component: userInfo,
-        name: 'userInfo'
+        name: 'userInfo',
       },
 
       {
         path: 'address/list',
         component: userAddressList,
-        name: 'userAddressList'
+        name: 'userAddressList',
       },
       {
         path: 'address/info',
         component: userAddressInfo,
-        name: 'userAddressInfo'
+        name: 'userAddressInfo',
       },
       {
         path: 'register',
         component: userRegister,
-        name: 'userRegister'
+        name: 'userRegister',
       },
       {
         path: 'login',
         component: userLogin,
-        name: 'userLogin'
+        name: 'userLogin',
       },
       {
         path: 'cart',
         component: userCartList,
-        name: 'userCartList'
+        name: 'userCartList',
       },
       {
         path: 'order/list',
         component: userOrderList,
-        name: 'userOrderList'
+        name: 'userOrderList',
       },
       {
         path: 'evaluation/list',
         component: userEvaluationList,
-        name: 'userEvaluationList'
+        name: 'userEvaluationList',
       },
       {
         path: 'order/detail/:id',
         component: userOrderDetail,
-        name: 'userOrderDetail'
+        name: 'userOrderDetail',
       },
       {
         path: 'order/evaluation/:orderId',
-        component: userOrderEvaluation,
-        name: 'userOrderEvaluation'
-      }
-    ]
+        component: userOrderReview,
+        name: 'userOrderReview',
+      },
+    ],
   },
 
   {
@@ -101,14 +101,14 @@ export const constantRouterMap = [
       {
         path: 'list',
         component: shopList,
-        name: 'shopList'
+        name: 'shopList',
       },
       {
         path: 'list/:id',
         component: shopDetail,
-        name: 'shopDetail'
-      }
-    ]
+        name: 'shopDetail',
+      },
+    ],
   },
 
   {
@@ -119,17 +119,17 @@ export const constantRouterMap = [
       {
         path: 'create',
         name: 'orderCreate',
-        component: orderCreate
+        component: orderCreate,
       },
       {
         path: 'pay/:orderId',
         name: 'orderPay',
-        component: orderPay
-      }
-    ]
+        component: orderPay,
+      },
+    ],
   },
   { path: '/', redirect: 'user/index' },
-  { path: '/error', component: error }
+  { path: '/error', component: error },
   // { path: '/401', component: _import('errorPage/401'),  },
   // {
   //     path: '',
@@ -146,5 +146,5 @@ export const constantRouterMap = [
 export default new Router({
   mode: 'history',
   // base: process.env.BASE_URL,
-  routes: constantRouterMap
+  routes: constantRouterMap,
 });

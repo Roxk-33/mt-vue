@@ -69,7 +69,7 @@
             orderStatus === 'ORDER_SUCCESS' && orderInfo.review_status !== 1
           "
           :to="{
-            name: 'userOrderEvaluation',
+            name: 'userOrderReview',
             params: { orderId: this.orderId }
           }"
         >

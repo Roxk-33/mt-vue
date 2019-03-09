@@ -31,11 +31,11 @@
           >差￥{{ threshold - totalPrice }}起送</span
         >
         <span
-          v-if="isBusiness !== 2 && threshold - totalPrice <= 0"
+          v-if="isBusiness === 2 && threshold - totalPrice <= 0"
           @click.stop="toSettle"
           >去结算</span
         >
-        <span v-if="isBusiness === 2" @click.stop="closeShop">休业中</span>
+        <!-- <span v-if="isBusiness === 2" @click.stop="closeShop">休业中</span> -->
       </div>
     </div>
     <mt-mask :visible="isShowDetail" />

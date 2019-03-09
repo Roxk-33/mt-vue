@@ -45,23 +45,15 @@
           :to="{ name: 'shopDetail', params: { id: shopInfo.id }}"
           v-if="['ORDER_CANCEL','ORDER_CANCEL_TIMEOUT','ORDER_SUCCESS'].includes(orderInfo.status) "
         >再来一单</router-link> -->
-        <router-link
-          class="after-sale item-content-btn"
-          to="/order/evaluation"
-          v-if="orderInfo.status === 'ACCEPT'"
-          >申请售后</router-link
-        >
-        <router-link
+
+        <span
           class="item-content-btn mt-color"
           v-if="
             orderInfo.status === 'ORDER_SUCCESS' &&
               orderInfo.review_status !== 1
           "
-          :to="{
-            path: '/user/order/evaluation',
-            query: { orderId: this.orderId }
-          }"
-          >评价</router-link
+          @click.stop="gotoReview"
+          >评价</span
         >
       </div>
     </div>
@@ -90,6 +82,12 @@ export default {
       this.$router.push({
         name: "userOrderDetail",
         params: { id: this.orderId }
+      });
+    },
+    gotoReview() {
+      this.$router.push({
+        name: "userOrderReview",
+        params: { orderId: this.orderId }
       });
     }
   },

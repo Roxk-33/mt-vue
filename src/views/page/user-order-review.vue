@@ -19,7 +19,7 @@
             <p class="distribution-type">美团专送</p>
             <p class="arrival-time">
               {{
-                orderStatusTimeArr.arrival_time
+                orderStatusTimeArr.complete_time
                   | parseTime("{m}月{d}日{h}:{i}")
               }}左右送达
             </p>
@@ -168,7 +168,7 @@ import headerNav from "@/views/dumb/header-nav";
 import { parseTime, calTime } from "@/common/utils";
 
 export default {
-  name: "OrderEvaluation",
+  name: "userOrderReview",
 
   data() {
     return {
@@ -240,13 +240,13 @@ export default {
         .dispatch("order/getOrderDetail", this.orderId)
         .then(resp => {
           this.mtLoading = false;
-          this.orderInfo = resp.data;
+          this.orderInfo = Object.assign({}, resp.data);
           // 计算配送时间
-
+          console.log(this.orderStatusTimeArr);
           this.reviewData.distributionTime =
             calTime(
               this.orderStatusTimeArr.send_time,
-              this.orderStatusTimeArr.arrival_time
+              this.orderStatusTimeArr.complete_time
             ) /
             60 /
             1000;
@@ -289,7 +289,6 @@ export default {
           label: target.label
         });
       else this.reviewData.evalDispatcher.splice(index, 1);
-      console.log(this.reviewData.evalDispatcher);
     },
     // selectSatisfied(type) {
     //   if (this.reviewData.isSatisfied === type) return;
@@ -342,6 +341,7 @@ export default {
   },
   filters: {
     parseTime(val, cFormat = null) {
+      if (!val) return "";
       let time = parseTime(val, cFormat);
       return time;
     },
