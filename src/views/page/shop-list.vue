@@ -79,16 +79,17 @@ export default {
         .dispatch("shop/getShopList", {
           page: this.page,
           type: this.sortTarget,
+          total: this.shopList.length,
           ...this.location
         })
         .then(resp => {
           this.mtLoading = false;
 
-          if (resp.data.length === 0 && this.page === 0) {
-            this.finished = true;
-            this.shopList = [];
-            return;
+          if (resp.data.length === 0) {
+            this.page === 0 && (this.finished = true);
+            return this.$toast("附近已无门店");
           }
+
           if (this.page === 0) {
             this.shopList = resp.data;
           } else {
@@ -104,7 +105,7 @@ export default {
         });
     },
     onPullingDown() {
-      this.page = 0;
+      this.page = 1;
       this.getList();
     },
     onPullingUp() {

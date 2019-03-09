@@ -44,11 +44,11 @@ export default {
 
     // 评价列表
     USER_EVAL_LIST: `${APIPREFIX}/user/evaluation/`,
-    USER_EVAL_DELETE: `${APIPREFIX}/user/evaluation/:id`
+    USER_EVAL_DELETE: `${APIPREFIX}/user/evaluation/:id`,
   },
   BASE_URL: {
     PRO: 'https://api.lococo.site',
-    // DEV: 'http://localhost:7001/',
-    DEV: 'http://192.168.31.247:7001/'
-  }
+    DEV: 'http://localhost:7001/',
+    // DEV: 'http://192.168.31.247:7001/'
+  },
 };

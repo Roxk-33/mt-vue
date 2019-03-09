@@ -17,9 +17,8 @@ const state = {
   introduction: '',
   token: getToken(),
   addressList: [],
-  location: null
+  location: { lat: 23.096536, lng: 113.361258 },
 };
-
 const mutations = {
   [types.SET_TOKEN](state, token) {
     setToken(token);
@@ -49,7 +48,7 @@ const mutations = {
   },
   [types.SAVE_LOCATION](state, location) {
     state.location = location;
-  }
+  },
 };
 const getters = {
   userAvatar: state => state.userAvatar,
@@ -58,7 +57,7 @@ const getters = {
   userTel: state => state.userTel,
   introduction: state => state.introduction,
   token: state => state.token,
-  location: state => state.location
+  location: state => state.location,
 };
 const actions = {
   RegiterByAccount({ commit }, userInfo) {
@@ -68,7 +67,7 @@ const actions = {
       ajax
         .post(API.USER_REGISTER, {
           account,
-          password
+          password,
         })
         .then(resp => {
           resolve(resp);
@@ -89,7 +88,7 @@ const actions = {
       ajax
         .post(API.USER_LOGIN, {
           account,
-          password
+          password,
         })
         .then(resp => {
           resolve(resp);
@@ -150,7 +149,7 @@ const actions = {
   },
   uploadAvatar({ commit, state }, payload) {
     let config = {
-      headers: { 'Content-Type': 'multipart/form-data' }
+      headers: { 'Content-Type': 'multipart/form-data' },
     };
     var formData = new FormData();
 
@@ -225,8 +224,8 @@ const actions = {
             location,
             pois: 1,
             output: 'json',
-            ak: 'gql7G3189x9UnKhoAya6yCfdxZz7CsQX'
-          }
+            ak: 'gql7G3189x9UnKhoAya6yCfdxZz7CsQX',
+          },
         })
         .then(resp => {
           console.log(resp);
@@ -256,8 +255,8 @@ const actions = {
             region: region,
             output: 'json',
             city_limit: 'true',
-            ak: 'gql7G3189x9UnKhoAya6yCfdxZz7CsQX'
-          }
+            ak: 'gql7G3189x9UnKhoAya6yCfdxZz7CsQX',
+          },
         })
         .then(resp => {
           console.log(resp);
@@ -271,8 +270,8 @@ const actions = {
       ajax
         .get(API.USER_EVAL_LIST, {
           params: {
-            page: payload
-          }
+            page: payload,
+          },
         })
         .then(resp => {
           resolve(resp);
@@ -334,7 +333,7 @@ const actions = {
       commit('REMOVE_TOKEN');
       resolve();
     });
-  }
+  },
 };
 
 export default {
@@ -342,5 +341,5 @@ export default {
   state,
   actions,
   getters,
-  mutations
+  mutations,
 };

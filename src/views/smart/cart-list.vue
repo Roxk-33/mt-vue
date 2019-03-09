@@ -27,10 +27,15 @@
         class="exist-right cart-list-right"
         :class="{ 'to-pay': threshold - totalPrice <= 0 }"
       >
-        <span v-if="threshold - totalPrice > 0"
+        <span v-if="isBusiness !== 2 && threshold - totalPrice > 0"
           >差￥{{ threshold - totalPrice }}起送</span
         >
-        <span v-else @click.prevent="toSettle">去结算</span>
+        <span
+          v-if="isBusiness !== 2 && threshold - totalPrice <= 0"
+          @click.stop="toSettle"
+          >去结算</span
+        >
+        <span v-if="isBusiness === 2" @click.stop="closeShop">休业中</span>
       </div>
     </div>
     <mt-mask :visible="isShowDetail" />
@@ -78,6 +83,10 @@ export default {
   directives: { clickoutside },
 
   props: {
+    isBusiness: {
+      type: Number,
+      default: 1
+    },
     cartList: {
       type: Array,
       default: []
@@ -132,6 +141,9 @@ export default {
       if (this.isExist) {
         this.isShowDetail = !this.isShowDetail;
       }
+    },
+    closeShop() {
+      return this.$toast("门店休业中,暂不接受订单");
     },
     toSettle(event) {
       this.$emit("toSettle");

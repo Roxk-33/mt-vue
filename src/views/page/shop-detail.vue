@@ -63,6 +63,7 @@
       @adjustNum="adjustNum"
       @toSettle="toSettle"
       @emptyCart="emptyCart"
+      :isBusiness="isBusiness"
     />
     <specificationBox
       @pushSpecToCart="pushSpecFood"

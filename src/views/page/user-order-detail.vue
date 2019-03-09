@@ -39,7 +39,8 @@
               'ORDER_SUCCESS',
               'ORDER_REFUND',
               'ORDER_CANCEL',
-              'ORDER_CANCEL_TIMEOUT'
+              'ORDER_CANCEL_TIMEOUT',
+              'ONTHEWAY'
             ].includes(orderStatus)
           "
           @click="cancelOrder"
