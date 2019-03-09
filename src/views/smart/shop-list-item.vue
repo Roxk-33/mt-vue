@@ -21,7 +21,7 @@
           </div>
           <div class="sale-data-volume">
             月售
-            <i>{{ shopInfo.total_sales }}</i>
+            <i>{{ shopInfo.month_sale }}</i>
           </div>
           <!-- <div class="logistics-data">
             <span class="logistics-data-item">

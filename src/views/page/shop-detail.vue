@@ -93,7 +93,7 @@ export default {
   name: "ShopDetail",
   data() {
     return {
-      isBusiness: 1,
+      isBusiness: 0,
       tabs: [
         {
           label: "点菜",
@@ -142,10 +142,7 @@ export default {
             this.shopInfo.closing_hours
           );
 
-          if (this.isBusiness === 0) {
-            return this.$toast("商店先接受预订");
-          }
-          if (this.isBusiness === 2) {
+          if (this.isBusiness === 1) {
             return this.$toast("商店已休息");
           }
         })

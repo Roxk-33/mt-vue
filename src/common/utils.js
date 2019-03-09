@@ -38,7 +38,7 @@ export function parseTime(time, cFormat) {
     h: date.getHours(),
     i: date.getMinutes(),
     s: date.getSeconds(),
-    a: date.getDay()
+    a: date.getDay(),
   };
   const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
     let value = formatObj[key];
@@ -76,7 +76,7 @@ export function getDelayTime(delay = 15) {
     m: date.getMonth() + 1,
     d: date.getDate(),
     h: date.getHours(),
-    i: date.getMinutes()
+    i: date.getMinutes(),
   };
   const time_str = format.replace(/{(y|m|d|h|i)+}/g, (result, key) => {
     let value = formatObj[key];
@@ -99,7 +99,7 @@ export function testUserName(name) {
   const maxLen = 16;
   const result = {
     status: false,
-    msg: ''
+    msg: '',
   };
   if (len < minLen || len > maxLen) {
     result.msg = '长度不符合要求';
@@ -122,7 +122,7 @@ export function testPsw(psw, pswRe) {
 
   let result = {
     status: false,
-    msg: ''
+    msg: '',
   };
   if (len < minLen || len > maxLen) {
     result.msg = '长度不符合要求';
@@ -154,14 +154,14 @@ export function getRect(el) {
       top: rect.top,
       left: rect.left,
       width: rect.width,
-      height: rect.height
+      height: rect.height,
     };
   }
   return {
     top: el.offsetTop,
     left: el.offsetLeft,
     width: el.offsetWidth,
-    height: el.offsetHeight
+    height: el.offsetHeight,
   };
 }
 const TokenKey = 'Mt-Token';
@@ -221,7 +221,6 @@ export function isBusinessHours(businessHours, colsingHours) {
   tempObj.setSeconds(0);
   tempObj.setMilliseconds(0);
   const nowDateStamp = nowDate.getTime() - tempObj.getTime();
-  if (businessHoursStamp > nowDateStamp) return 0;
-  if (colsingHoursStamp > nowDateStamp) return 1;
-  return 2;
+  if (businessHoursStamp < nowDateStamp && colsingHoursStamp > nowDateStamp) return 0;
+  return 1;
 }
