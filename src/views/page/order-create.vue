@@ -360,12 +360,13 @@ export default {
     getDefaultAddress() {
       console.log(this.addressList);
       this.addressList.forEach(item => {
-        item = Object.assign({}, item, { select: false });
+        item = Object.assign(item, { selected: false });
         if (item.is_default) {
           item.selected = true;
           this.orderInfo.address = item;
         }
       });
+      console.log(this.addressList);
     },
     selAddress(index) {
       this.orderInfo.address.selected = false;

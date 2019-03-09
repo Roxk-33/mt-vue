@@ -34,15 +34,7 @@
           催单
         </span>
         <span
-          v-if="
-            ![
-              'ORDER_SUCCESS',
-              'ORDER_REFUND',
-              'ORDER_CANCEL',
-              'ORDER_CANCEL_TIMEOUT',
-              'ONTHEWAY'
-            ].includes(orderStatus)
-          "
+          v-if="['UNPAY', 'PAY', 'ONTHEWAY'].includes(orderStatus)"
           @click="cancelOrder"
         >
           取消订单
