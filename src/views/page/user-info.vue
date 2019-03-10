@@ -92,13 +92,12 @@
         />
         <h2 class="title">输入新的手机号</h2>
         <div class="content">
-          <span class="content-label">+86</span>
-
           <input
             type="text"
             class="content-input"
             v-model="tel"
             @click="showKeyBoard = true"
+            @input="onInputTel"
           />
         </div>
         <button
@@ -135,7 +134,7 @@
       </div>
     </van-popup>
 
-    <van-number-keyboard
+    <!-- <van-number-keyboard
       :z-index="2005"
       :show="showKeyBoard"
       extra-key="."
@@ -144,7 +143,7 @@
       @input="onInputTel"
       @delete="onDeleteTel"
     />
-
+-->
     <van-number-keyboard
       :z-index="2005"
       :show="showKeyBoardCode"
@@ -158,7 +157,7 @@
 </template>
 <script>
 import headerNav from "@/views/dumb/header-nav";
-import { testUserName, testPsw, testTel } from "@/common/utils";
+import { validateUserName, validatePsw, validateTel } from "@/common/utils";
 
 export default {
   name: "UserInfo",
@@ -171,7 +170,7 @@ export default {
       nameNew: "",
       psw: "",
       pswRe: "",
-      tel: "",
+      tel: "18024589062",
       telCorrect: false,
       showKeyBoardCode: false, // 控制输入验证码的键盘
       codeInput: {
@@ -216,7 +215,7 @@ export default {
     },
     // 获取验证码
     getCode() {
-      const { status, tel } = testTel(this.tel);
+      const { status, tel } = validateTel(this.tel);
       if (!status) return this.$toast("手机格式错误");
       if (tel === this.userTel)
         return this.$toast("该手机号为当前用户的绑定手机号");
@@ -240,7 +239,7 @@ export default {
         .catch(this.$toast);
     },
     changeName() {
-      const { status, msg } = testUserName(this.nameNew);
+      const { status, msg } = validateUserName(this.nameNew);
       if (!status) return this.$toast(msg);
       this.$store
         .dispatch("user/updateUserInfo", {
@@ -254,7 +253,7 @@ export default {
         .catch(this.$toast);
     },
     changePsw() {
-      const { status, msg } = testPsw(this.psw, this.pswRe);
+      const { status, msg } = validatePsw(this.psw, this.pswRe);
       if (!status) return this.$toast(msg);
       this.$store
         .dispatch("user/updateUserInfo", {
@@ -273,7 +272,7 @@ export default {
       Object.keys(this.codeInput).forEach(key => {
         code += this.codeInput[key];
       });
-      const { status, tel } = testTel(this.tel);
+      const { status, tel } = validateTel(this.tel);
       this.$store
         .dispatch("user/updateUserInfo", {
           action: "changeTel",
@@ -286,10 +285,15 @@ export default {
         })
         .catch(this.$toast);
     },
-    onInputTel(number) {
-      this.tel = this.formatTel(this.tel);
-      this.tel += number;
-      const { status } = testTel(this.tel);
+    onInputTel(ev) {
+      const number = ev.data;
+      if (isNaN(number)) {
+        this.tel = this.tel.substring(0, this.tel.length - 1);
+        return this.$toast("请输入数字");
+      }
+
+      // this.tel = this.formatTel(this.tel);
+      const { status } = validateTel(this.tel);
       this.telCorrect = status;
     },
     onDeleteTel(ev) {
@@ -389,10 +393,11 @@ export default {
     width: 90%;
     display: block;
     margin: 5px auto;
-    font-size: 17px;
+    font-size: 20px;
     color: #fff;
+    background-color: $mt-gray;
     border: 0;
-    padding: 8px;
+    padding: 12px 8px;
     &.tel-correct {
       background-color: $mt-color;
       color: #000;
@@ -409,9 +414,18 @@ export default {
 }
 .password-box {
   .content {
-    border-color: $mt-light-gray;
+    font-size: 19px;
+    border: 0;
+    box-sizing: content-box;
+    margin-bottom: 0;
     .content-input {
+      height: 1.2rem;
+      line-height: 1.2rem;
       width: 100%;
+      border: 1px solid $mt-gray;
+      line-height: 1.2rem;
+      padding: 7px;
+      box-sizing: border-box;
     }
   }
   .warm-text {
@@ -439,11 +453,15 @@ export default {
     display: flex;
     justify-content: flex-start;
     border-radius: 0;
+    height: 1rem;
+    line-height: 1rem;
+    padding: 0 7px;
     .content-label {
       padding-right: 20px;
     }
     .content-input {
       flex: 1;
+      font-size: 21px;
     }
   }
 }

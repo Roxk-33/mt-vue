@@ -4,8 +4,6 @@ import config from '@/common/config';
 import { formatURL } from '@/common/utils';
 import * as types from '../mutation-types';
 import { getLocation } from '@/common/map';
-
-const AVATAR_URL = process.env.VUE_APP_AVATAR_URL;
 const API = config.API;
 const state = {
   userStatus: false,
@@ -38,7 +36,7 @@ const mutations = {
     state.userName = name;
   },
   [types.SET_AVATAR](state, avatar) {
-    state.userAvatar = AVATAR_URL + '' + avatar;
+    state.userAvatar = avatar;
   },
   [types.SET_TEL](state, tel) {
     state.userTel = tel;

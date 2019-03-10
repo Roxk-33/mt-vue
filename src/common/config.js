@@ -48,7 +48,7 @@ export default {
   },
   BASE_URL: {
     PRO: 'https://api.lococo.site',
-    DEV: 'http://localhost:7001/',
-    // DEV: 'http://192.168.31.247:7001/'
+    // DEV: 'http://localhost:7001/',
+    DEV: 'http://192.168.31.247:7001/',
   },
 };
