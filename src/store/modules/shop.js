@@ -18,12 +18,12 @@ const actions = {
   getShopDetail({}, payload) {
     return ajax({ url: formatURL(API.SHOP_DETAIL, { id: payload.id }) });
   },
-  getShopEvalList({}, payload) {
+  getShopReviewList({}, payload) {
     return ajax({
       url: formatURL(API.SHOP_EVAL_LIST, { id: payload.shopId }),
-      params: { page: payload.page }
+      params: { page: payload.page },
     });
-  }
+  },
 };
 
 export default {
@@ -31,5 +31,5 @@ export default {
   state,
   actions,
   getters,
-  mutations
+  mutations,
 };

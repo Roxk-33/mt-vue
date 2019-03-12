@@ -102,11 +102,11 @@ export default {
         {
           label: "评价",
           value: "evaluation"
-        },
-        {
-          label: "商家",
-          value: "business"
         }
+        //{
+        //  label: "商家",
+        //  value: "business"
+        // }
       ],
       foodCatalog: [],
       listHeight: [0],
@@ -433,17 +433,17 @@ export default {
     padding-right: 90px;
     border-bottom: 1px solid $mt-light-gray;
     position: relative;
-    &::after {
-      content: "邀请拼单";
-      color: $mt-color;
-      position: absolute;
-      top: 50%;
-      right: 6px;
-      transform: translateY(-50%) scale(0.9);
-      padding: 3px 10px;
-      border-radius: 20px;
-      border: 1px solid $mt-color;
-    }
+    // &::after {
+    //   content: "邀请拼单";
+    //   color: $mt-color;
+    //   position: absolute;
+    //   top: 50%;
+    //   right: 6px;
+    //   transform: translateY(-50%) scale(0.9);
+    //   padding: 3px 10px;
+    //   border-radius: 20px;
+    //   border: 1px solid $mt-color;
+    // }
   }
   .shop-good-content {
     justify-content: flex-start;

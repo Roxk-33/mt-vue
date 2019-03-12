@@ -1,57 +1,56 @@
 <template>
-  <div class='user-index'>
-    <div class='user-index-header'>
-      <div class='header_setting'>
-        <i class='fa fa-cog' />
+  <div class="user-index">
+    <div class="user-index-header">
+      <div class="header_setting">
+        <i class="fa fa-cog" />
 
-        <i class='fa fa-commenting-o' style="vertical-align: top;" />
+        <i class="fa fa-commenting-o" style="vertical-align: top;" />
       </div>
-      <div class='header_content'>
-        <router-link class='content-avatar' to="/user/info">
-          <img :src='userAvatar'>
+      <div class="header_content">
+        <router-link class="content-avatar" to="/user/info">
+          <img :src="userAvatar" />
         </router-link>
-        <router-link v-if="userName" class='content-info_body' to="/user/info">
+        <router-link v-if="userName" class="content-info_body" to="/user/info">
           {{ userName }}
         </router-link>
-        <router-link v-else class='content-info_login' to="/user/login">
+        <router-link v-else class="content-info_login" to="/user/login">
           登录/注册
         </router-link>
       </div>
     </div>
-    <div class='user-index-body'>
-      <van-row class='fn-list' type="flex" justify="space-around">
-        <van-col :span="8">
+    <div class="user-index-body">
+      <van-row class="fn-list" type="flex" justify="space-around">
+        <!-- <van-col :span="8">
           <div class='fn-list-item'>
             <i class='iconfont icon-gouwudai' />
             <p>我的收藏</p>
           </div>
-        </van-col>
+        </van-col> -->
         <van-col :span="8">
-          <router-link class='fn-list-item' to="/user/evaluation/list">
-            <i class='iconfont icon-pingjia' />
+          <router-link class="fn-list-item" to="/user/evaluation/list">
+            <i class="iconfont icon-pingjia" />
             <p>我的评价</p>
           </router-link>
         </van-col>
         <van-col :span="8">
-          <router-link class='fn-list-item' to="/user/address/list">
-
-            <i class='iconfont icon-dizhi' />
+          <router-link class="fn-list-item" to="/user/address/list">
+            <i class="iconfont icon-dizhi" />
             <p>我的地址</p>
           </router-link>
         </van-col>
       </van-row>
     </div>
-    <footer-nav active='1' />
+    <footer-nav active="1" />
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex';
-import footerNav from '@/views/dumb/footer-nav';
+import { mapGetters } from "vuex";
+import footerNav from "@/views/dumb/footer-nav";
 
 export default {
-  name: 'UserIndex',
+  name: "UserIndex",
   components: {
-    footerNav,
+    footerNav
   },
   data() {
     return {};
@@ -63,9 +62,9 @@ export default {
     },
     userAvatar() {
       return this.$store.state.user.userAvatar;
-    },
+    }
   },
-  methods: {},
+  methods: {}
 };
 </script>
 <style rel="stylesheet/scss" lang="scss">
@@ -107,7 +106,7 @@ export default {
       position: relative;
       height: 50%;
       &::after {
-        content: '个人信息>';
+        content: "个人信息>";
         font-size: 10px;
         display: block;
         position: absolute;

@@ -5,6 +5,7 @@
       :sort-target="sortTarget"
       @change="changeFilter"
       @showMask="showMask"
+      v-if="false"
     />
 
     <div class="shop-list">

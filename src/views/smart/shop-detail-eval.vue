@@ -85,7 +85,7 @@ export default {
   methods: {
     getList() {
       this.$store
-        .dispatch("shop/getShopEvalList", {
+        .dispatch("shop/getShopReviewList", {
           page: this.page,
           shopId: 1
         })

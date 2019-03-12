@@ -165,7 +165,7 @@
               />
               <div class="content">
                 <div class="address">
-                  {{ item.address }}
+                  {{ item.address + " " + item.stress }}
                   <div
                     class="tag"
                     v-if="item.tag !== ''"
