@@ -1,6 +1,6 @@
 <template>
   <div class="shop-detail-eval">
-    <div class="shop-eval-box">
+    <!-- <div class="shop-eval-box">
       <div class="left">
         <div class="shop-total-eval">
           <p class="rate">4.7</p>
@@ -29,21 +29,14 @@
         <p class="satisfactory-data">100%</p>
         <p class="label">配送满意度</p>
       </div>
-    </div>
+    </div> -->
     <div class="user-eval-box">
-      <div
-        class="user-eval-item"
-        v-for="item in evalList"
-        :key="item.id"
-      >
+      <div class="user-eval-item" v-for="item in reviewList" :key="item.id">
         <div class="user-eval-item-top mt-flex-space-between">
           <div class="user-info mt-flex-space-between">
-            <img
-              :src="item.user_info.avatar"
-              class="user-avatar"
-            />
+            <img :src="item.user_info.avatar" class="user-avatar" />
             <div>
-              <p class="user-name">{{item.user_info.user_name}}</p>
+              <p class="user-name">{{ item.user_info.user_name }}</p>
               <span class="label">评分</span>
               <rate
                 v-model="item.rate"
@@ -53,16 +46,16 @@
               />
             </div>
           </div>
-          <span class="eval-time">{{item.created_at | parseTime('{y}.{m}.{d}')}}</span>
+          <span class="eval-time">{{
+            item.created_at | parseTime("{y}.{m}.{d}")
+          }}</span>
         </div>
-        <div
-          class="user-eval-content"
-          v-if="item.remarks.length"
-        >
-          {{item.remarks}}
+        <div class="user-eval-content" v-if="item.remarks.length">
+          {{ item.remarks }}
         </div>
       </div>
     </div>
+    <p class="empty-slogan" v-if="isEmpty">暂无评价</p>
   </div>
 </template>
 
@@ -76,8 +69,12 @@ export default {
     return {
       rate: 3,
       page: 0,
-      evalList: []
+      isEmpty: false,
+      reviewList: []
     };
+  },
+  props: {
+    shopId: String
   },
   components: {
     Rate
@@ -87,20 +84,21 @@ export default {
       this.$store
         .dispatch("shop/getShopReviewList", {
           page: this.page,
-          shopId: 1
+          shopId: this.shopId
         })
         .then(resp => {
           this.mtLoading = false;
 
           if (resp.data.length === 0 && this.page === 0) {
             this.finished = true;
-            this.evalList = [];
+            this.reviewList = [];
+            this.isEmpty = true;
             return;
           }
           if (this.page === 0) {
-            this.evalList = resp.data;
+            this.reviewList = resp.data;
           } else {
-            this.evalList = this.evalList.concat(resp.data);
+            this.reviewList = this.reviewList.concat(resp.data);
           }
           this.page++;
         })
@@ -209,6 +207,11 @@ export default {
         padding: 0 10px 0 37px;
       }
     }
+  }
+  .empty-slogan {
+    font-size: 18px;
+    text-align: center;
+    margin-top: 20px;
   }
 }
 </style>

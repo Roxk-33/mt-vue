@@ -20,7 +20,7 @@ const actions = {
   },
   getShopReviewList({}, payload) {
     return ajax({
-      url: formatURL(API.SHOP_EVAL_LIST, { id: payload.shopId }),
+      url: formatURL(API.SHOP_REVIEW_LIST, { id: payload.shopId }),
       params: { page: payload.page },
     });
   },

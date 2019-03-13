@@ -24,7 +24,7 @@ export default {
     // 商店
     SHOP_LIST: `${APIPREFIX}/shop`, // 商店列表
     SHOP_DETAIL: `${APIPREFIX}/shop/:id`, // 商店详情
-    SHOP_EVAL_LIST: `${APIPREFIX}/shop/:id/eval`, // 商店评价列表
+    SHOP_REVIEW_LIST: `${APIPREFIX}/shop/:id/review`, // 商店评价列表
     // 购物车
     CART_LIST: `${APIPREFIX}/user/cart`,
     CART_SHOP_LIST: `${APIPREFIX}/user/cart/settle/:shopId`,

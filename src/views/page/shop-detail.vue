@@ -54,7 +54,7 @@
           </mt-better-scroll>
         </div>
       </div>
-      <shopDetailEval v-if="tabActive === 1" />
+      <shopDetailReview v-if="tabActive === 1" :shopId="shopId" />
     </div>
     <cart-list
       :threshold="shopInfo.threshold"
@@ -85,7 +85,7 @@ import shopHeader from "@/views/smart/shop-header";
 import shopNav from "@/views/smart/shop-nav";
 import foodIsRepeat from "@/mixins/food-is-repeat";
 import shopDetailScroll from "@/mixins/shop-detail-scroll";
-import shopDetailEval from "@/views/smart/shop-detail-eval";
+import shopDetailReview from "@/views/smart/shop-detail-eval";
 import { scrollTo } from "@/common/utils";
 import { isBusinessHours } from "@/common/utils";
 
@@ -125,7 +125,7 @@ export default {
     foodItem,
     shopHeader,
     shopNav,
-    shopDetailEval
+    shopDetailReview
   },
   mixins: [foodIsRepeat, parabolaAni, shopDetailScroll],
   methods: {
@@ -164,6 +164,7 @@ export default {
       this.foodList = foodList.sort((prev, next) => {
         return sortArr[prev.category_id] - sortArr[next.category_id];
       });
+
       let indexId = this.foodList[0].category_id;
       let lineHeight = 0;
 
