@@ -15,12 +15,7 @@ export default {
       .then(() => {
         this.$store.dispatch("cart/getCartList");
       })
-      .catch(err => {
-        this.$toast({
-          duration: 3000, // 持续展示 toast
-          message: err
-        });
-      });
+      .catch(err => {});
     // this.$store.dispatch("user/getLocation").catch(err => {
     //   console.log(err);
     //   this.$toast({

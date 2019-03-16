@@ -2,7 +2,7 @@
   <div class="header-nav" :style="style">
     <div class="header-nav-left">
       <i class="iconfont icon-xiangzuo" v-if="isBack" @click="clickLeftBtn" />
-      <i class="iconfont icon-guanbi1" v-else @click="clickLeftBtn" />
+      <i class="iconfont icon-close" v-else @click="clickLeftBtn" />
     </div>
     <div class="header-nav-main">
       <span class="headerNav-title">{{ title }}</span>

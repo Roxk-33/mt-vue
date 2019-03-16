@@ -1,23 +1,30 @@
 <template>
   <div class="login-container">
-    <header-nav :title="headerTitle">
+    <header-nav title="" :isBack="false" :border="false">
       <router-link to="/user/register" class="register">注册</router-link>
     </header-nav>
     <div class="container-box">
-      <van-cell-group>
-        <van-field
+      <p class="container-box-title">欢迎登录嘻嘻外卖</p>
+      <div class="form-item">
+        <input
+          type="text"
           v-model="loginForm.account"
-          label="用户名"
-          placeholder="请输入用户名"
+          placeholder="请输入账号"
         />
-        <van-field
+      </div>
+      <div class="form-item">
+        <input
+          :type="pswType"
           v-model="loginForm.password"
-          label="密码"
-          type="password"
           placeholder="请输入密码"
-          clearable
         />
-      </van-cell-group>
+        <i
+          class="iconfont"
+          @click="showPsw"
+          :class="pswType === 'text' ? 'icon-show' : 'icon-yincang'"
+        ></i>
+        <i class="iconfont icon-close" @click="clearPsw"></i>
+      </div>
       <van-button type="default" round @click="handleLogin" :loading="loading"
         >登录</van-button
       >
@@ -33,6 +40,7 @@ export default {
     return {
       headerTitle: "登录美团",
       loading: false,
+      pswType: "password",
       loginForm: {
         account: "admin",
         password: "5634398"
@@ -43,6 +51,12 @@ export default {
     headerNav
   },
   methods: {
+    showPsw() {
+      this.pswType = this.pswType === "text" ? "password" : "text";
+    },
+    clearPsw() {
+      this.password = "";
+    },
     handleLogin() {
       // this.loading = true;
       this.$store
@@ -62,30 +76,64 @@ export default {
 </script>
 <style rel="stylesheet/scss" lang="scss" scoped>
 .register {
-  color: #000;
+  color: $mt-color;
+  font-size: 0.5rem;
 }
 .login-container {
   background-color: white;
   height: 100%;
   text-align: center;
   .container-box {
-    width: 100%;
-    margin: 10px auto;
+    margin: 30px auto;
+    padding: 0 20px;
   }
-  .el-input input {
-    border: 0;
-    border-radius: 0;
-    border-bottom: 1px solid rgba(128, 128, 128, 0.51);
+  .container-box-title {
+    text-align: left;
+    font-size: 0.7rem;
+    margin-bottom: 30px;
+  }
+  .form-item {
+    padding: 5px 10px;
+    margin-bottom: 10px;
+    text-align: center;
+    position: relative;
+    input {
+      font-size: 0.7rem;
+      border: 0;
+      border-radius: 0;
+      width: 80%;
+      padding: 5px;
+      border-bottom: 1px solid #dedede;
+    }
+
+    .iconfont {
+      position: absolute;
+      margin-left: -22px;
+      top: 50%;
+      transform: translateY(-50%);
+      &.icon-close {
+        font-size: 12px;
+        margin-left: -40px;
+      }
+    }
   }
 
   .van-button {
-    width: 60%;
-    line-height: 1rem;
-    height: 1rem;
-    font-size: 18px;
+    width: 90%;
+    padding: 8px 0;
+    line-height: 0.9rem;
+    height: 1.2rem;
+    font-size: 0.6rem;
     margin-top: 20px;
     background-color: #ffd161;
-    color: white;
+    color: #000;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
   }
+}
+</style>
+<style rel="stylesheet/scss" lang="scss">
+.header-nav-left .icon-close {
+  font-size: 0.5rem;
+  color: $mt-color;
 }
 </style>
