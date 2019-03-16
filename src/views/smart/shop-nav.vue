@@ -5,9 +5,9 @@
       <i class="iconfont icon-xiangzuo" />
     </div>
     <div class="shop-nav_right" :class="{ 'shop-nav_right_white': isTop }">
-      <i class="iconfont icon-sousuo" />
+      <!-- <i class="iconfont icon-sousuo" />
       <i class="iconfont icon-shoucang" />
-      <i class="iconfont icon-gengduo" />
+      <i class="iconfont icon-gengduo" /> -->
     </div>
   </div>
 </template>

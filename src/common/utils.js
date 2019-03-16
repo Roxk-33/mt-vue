@@ -197,9 +197,8 @@ export function scrollTo(y, time = 0) {
   }
 }
 // 是否在营业时间，通过00:00:00到xxx时间戳对比
-// 0 : 接受预订
-// 1 : 营业中
-// 2 : 已休息
+// 0 : 营业中
+// 1 : 已休息
 export function isBusinessHours(businessHours, colsingHours) {
   businessHours = new Date(businessHours);
   colsingHours = new Date(colsingHours);

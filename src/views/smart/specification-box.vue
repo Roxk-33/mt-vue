@@ -4,7 +4,7 @@
       <div class="specification-box">
         <div class="specification-box_header">
           <span class="specification-box_title">{{ foodInfo.food_name }}</span>
-          <i class="specification-box_close fa fa-close" />
+          <i class="specification-box_close iconfont icon-close" />
         </div>
         <div class="specification-box_content">
           <div
@@ -38,12 +38,12 @@
             @click="pushCart"
             v-if="isExist == -1 || num == 0"
           >
-            <i class="fa fa-plus" />加入购物车
+            <i class="iconfont icon-jia1" />加入购物车
           </van-button>
           <div class="specification-box-num-btn" v-else>
-            <span class="num-cut-round" @click="adjustNum(-1)">-</span>
+            <i class="iconfont icon-jianshao" @click="adjustNum(-1)"></i>
             <span class="food-num">{{ num }}</span>
-            <span class="num-add-round" @click="adjustNum(1, $event)">+</span>
+            <i class="iconfont icon-add_icon" @click="adjustNum(1, $event)"></i>
           </div>
         </div>
       </div>
@@ -255,7 +255,7 @@ export default {
   background-color: white;
   z-index: 101;
   border-radius: 5px;
-  @include scroll-style;
+  // @include scroll-style;
   font-size: 12px;
   overflow: hidden;
   .specification-box_header {
@@ -273,7 +273,9 @@ export default {
       position: absolute;
       right: 10px;
       line-height: 18px;
-      font-size: 18px;
+      font-size: 15px;
+      top: 50%;
+      transform: translateY(-60%);
     }
   }
   .specification-box_content {
@@ -289,24 +291,14 @@ export default {
     line-height: 0.6rem;
     box-sizing: border-box;
     padding: 10px 5px;
-    background-color: #80808038;
+    background-color: #efefef;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     justify-content: space-between;
     .specification-box-num-btn {
-      .num-add-round,
-      .num-cut-round {
-        border-radius: 50%;
-        border: 1px solid #a0a0a0;
-        width: 20px;
-        font-size: 0.5rem;
-        line-height: 20px;
-        display: inline-block;
-        text-align: center;
-      }
-      .num-add-round {
-        background-color: $mt-color;
+      .iconfont {
+        font-size: 0.6rem;
       }
       .food-num {
         font-size: 0.6rem;
@@ -365,6 +357,10 @@ export default {
     min-width: 100px;
     i {
       margin: 0 5px;
+      &.icon-jia1 {
+        font-size: 12px;
+        margin-right: 3px;
+      }
     }
   }
 }

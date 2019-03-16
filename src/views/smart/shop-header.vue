@@ -1,36 +1,42 @@
 <template>
-  <div class="shop-header">
+  <div class="shop-header" :style="style">
     <div class="box">
       <h3 class="title">{{ title }}</h3>
       <p class="fee">配送约32分钟</p>
       <p class="announcement">公告：{{ announcement }}</p>
-      <img class="pic" :src="photo">
+      <img class="pic" :src="photo" />
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 export default {
-  name: 'ShopHeader',
+  name: "ShopHeader",
   props: {
     title: String,
     announcement: String,
     photo: {
       type: String,
-      default: 'https://via.placeholder.com/250x250',
-    },
+      default: "https://via.placeholder.com/250x250"
+    }
   },
   data() {
     return {};
   },
-  components: {},
-  methods: {},
+  computed: {
+    style() {
+      return {
+        backgroundImage: `url(${this.photo})`
+      };
+    }
+  },
+  methods: {}
 };
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
 .shop-header {
-  background: url('https://via.placeholder.com/350x150') no-repeat;
+  background: url("https://via.placeholder.com/350x150") no-repeat;
   background-clip: content-box;
   background-size: 100% 100%;
   height: 150px;

@@ -27,15 +27,15 @@
         class="exist-right cart-list-right"
         :class="{ 'to-pay': threshold - totalPrice <= 0 }"
       >
-        <span v-if="isBusiness !== 0 && threshold - totalPrice > 0"
+        <span v-if="isBusiness === 0 && threshold - totalPrice > 0"
           >差￥{{ threshold - totalPrice }}起送</span
         >
         <span
-          v-if="isBusiness === 1 && threshold - totalPrice <= 0"
+          v-if="isBusiness === 0 && threshold - totalPrice <= 0"
           @click.stop="toSettle"
           >去结算</span
         >
-        <!-- <span v-if="isBusiness === 1" @click.stop="closeShop">休业中</span> -->
+        <span v-if="isBusiness === 1" @click.stop="closeShop">休业中</span>
       </div>
     </div>
     <mt-mask :visible="isShowDetail" />

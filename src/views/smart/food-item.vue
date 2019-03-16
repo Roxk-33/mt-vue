@@ -8,10 +8,10 @@
     <div class="good-content mt-flex-space-between">
       <div class="good-content_info">
         <h4 class="good-content_info_title">{{ foodInfo.food_name }}</h4>
-        <span class="good-content_info_sale"
+        <!-- <span class="good-content_info_sale"
           >月售 {{ foodInfo.month_sale }}</span
-        >
-        <span class="good-content_info_lick">赞{{ foodInfo.food_like }}</span>
+        > -->
+        <!-- <span class="good-content_info_lick">赞{{ foodInfo.food_like }}</span> -->
         <div class="good-content_info_price">
           <p v-if="foodInfo.discount_info === null">￥{{ foodInfo.price }}</p>
           <div v-else class="discount-box">

@@ -431,7 +431,6 @@ export default {
     display: block;
     margin-bottom: 5px;
     padding-bottom: 3px;
-    padding-right: 90px;
     border-bottom: 1px solid $mt-light-gray;
     position: relative;
     // &::after {
