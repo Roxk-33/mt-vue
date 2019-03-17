@@ -20,7 +20,7 @@ const userCartList = () =>
   import(/* webpackChunkName: "lazy-router" */ '@/views/page/user-cart-list');
 const userRegister = () =>
   import(/* webpackChunkName: "lazy-router" */ '@/views/page/user-register');
-const userEvaluationList = () =>
+const userReviewList = () =>
   import(/* webpackChunkName: "lazy-router" */ '@/views/page/user-evaluation-list');
 const orderPay = () => import(/* webpackChunkName: "lazy-router" */ '@/views/page/order-pay');
 const orderCreate = () => import(/* webpackChunkName: "lazy-router" */ '@/views/page/order-create');
@@ -76,9 +76,9 @@ export const constantRouterMap = [
         name: 'userOrderList',
       },
       {
-        path: 'evaluation/list',
-        component: userEvaluationList,
-        name: 'userEvaluationList',
+        path: 'review/list',
+        component: userReviewList,
+        name: 'userReviewList',
       },
       {
         path: 'order/detail/:id',

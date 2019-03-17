@@ -27,7 +27,7 @@
           </div>
         </van-col> -->
         <van-col :span="8">
-          <router-link class="fn-list-item" to="/user/evaluation/list">
+          <router-link class="fn-list-item" to="/user/review/list">
             <i class="iconfont icon-pingjia" />
             <p>我的评价</p>
           </router-link>

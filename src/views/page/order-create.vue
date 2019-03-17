@@ -170,9 +170,9 @@
                     class="tag"
                     v-if="item.tag !== ''"
                     :class="{
-                      school: item.tag == 0,
-                      company: item.tag == 1,
-                      home: item.tag == 2
+                      company: item.tag === '0',
+                      school: item.tag === '1',
+                      home: item.tag === '2'
                     }"
                   >
                     {{ TAGS[item.tag] }}
@@ -278,7 +278,7 @@ export default {
   created() {
     if (!this.shopId) {
       this.$toast("非法操作！");
-      this.$router.push({ name: "userIndex" });
+      this.$router.go(-1);
     }
   },
   mounted() {
@@ -286,6 +286,7 @@ export default {
   },
   methods: {
     getData() {
+      if (!this.shopId) return;
       this.mtLoading = true;
       this.$store
         .dispatch("user/getAddressList")
@@ -366,7 +367,6 @@ export default {
           this.orderInfo.address = item;
         }
       });
-      console.log(this.addressList);
     },
     selAddress(index) {
       this.orderInfo.address.selected = false;
@@ -431,7 +431,7 @@ export default {
       );
     },
     shopId() {
-      return this.$route.params.shopId || 1;
+      return this.$route.params.shopId || false;
     },
     isAll() {
       return this.$route.params.isAll || false;
@@ -675,23 +675,28 @@ export default {
   }
 }
 .address-list-box {
+  padding-bottom: 0.5rem;
   .list-box-item {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding: 5px 15px;
+    padding: 0.1rem 0.3rem;
     .content {
-      padding-left: 15px;
+      padding-bottom: 0.2rem;
+      border-bottom: 1px solid $mt-light-gray;
       flex: 1;
       .address {
         font-weight: 600;
-        font-size: 17px;
+        font-size: 0.4rem;
         margin-bottom: 5px;
+        padding-right: 10px;
+        display: flex;
+        align-items: center;
         .tag {
           font-size: 12px;
           font-weight: normal;
           margin-left: 15px;
-          padding: 5px 7px;
+          padding: 2px 7px;
           vertical-align: middle;
           display: inline-block;
           transform: scale(0.8);
@@ -704,8 +709,8 @@ export default {
             background-color: $mt-address-school-bg;
           }
           &.home {
-            color: $mt-color;
-            background-color: $mt-light-color;
+            color: $mt-address-home;
+            background-color: $mt-address-home;
           }
         }
       }
@@ -723,7 +728,12 @@ export default {
   width: 100%;
   height: 100%;
 }
-
+.order-pay .van-radio {
+  margin-right: 0.3rem;
+}
+.address-list .pop-up-bottom {
+  padding: 0.4rem 0;
+}
 .address-list .pop-up-bottom i {
   color: $mt-color;
 }

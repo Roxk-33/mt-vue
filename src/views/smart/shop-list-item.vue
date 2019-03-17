@@ -5,13 +5,7 @@
     </div>
     <div class="shop-item_right">
       <p class="shop-title">{{ shopInfo.shop_title }}</p>
-      <div class="book-box" v-if="isBusiness === 0">
-        <span class="title">接受预订</span>
-        <span class="time"
-          >{{ shopInfo.business_hours | formatTime }}后配送</span
-        >
-      </div>
-      <div class="close-box" v-if="isBusiness === 2">
+      <div class="close-box" v-if="isBusiness === 1">
         <span class="title">商店已休息</span>
       </div>
       <div class="shop-basedata">
@@ -74,14 +68,6 @@ export default {
       this.shopInfo.business_hours,
       this.shopInfo.closing_hours
     );
-  },
-  filters: {
-    formatTime(val) {
-      const date = new Date(val);
-      return `${date.getHours()}:${
-        date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
-      }`;
-    }
   }
 };
 </script>

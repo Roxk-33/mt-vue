@@ -10,9 +10,20 @@
         <van-cell-group>
           <van-cell>
             <slot name="title">
-              <p class="address-content">
-                {{ item.address }} {{ item.stress }}
-              </p>
+              <div class="address-content">
+                <div
+                  class="address-tag"
+                  :class="{
+                    company: item.tag === '0',
+                    school: item.tag === '1',
+                    home: item.tag === '2'
+                  }"
+                  v-if="item.tag !== ''"
+                >
+                  {{ TAGS[item.tag] }}
+                </div>
+                <p>{{ item.address }} {{ item.stress }}</p>
+              </div>
             </slot>
             <slot name="label">
               <span class="address-user">{{ item.user_name }}</span>
@@ -42,6 +53,7 @@ export default {
     return {
       list: [],
       SEX: CONSTANT.TYPE.SEX,
+      TAGS: CONSTANT.TYPE.TAGS,
       backRouter: {
         name: "userIndex"
       }
@@ -89,6 +101,27 @@ export default {
   .address-content {
     font-weight: 600;
     font-size: 17px;
+    display: flex;
+    .address-tag {
+      margin-right: 5px;
+      font-size: 0.3rem;
+      vertical-align: middle;
+      padding: 0 0.2rem;
+      height: 19px;
+      line-height: 20px;
+      &.company {
+        color: $mt-address-company;
+        background-color: $mt-address-company-bg;
+      }
+      &.school {
+        color: $mt-address-school;
+        background-color: $mt-address-school-bg;
+      }
+      &.home {
+        color: $mt-address-home;
+        background-color: $mt-address-home-bg;
+      }
+    }
   }
   .icon-xiugai {
     position: absolute;
@@ -108,5 +141,8 @@ export default {
   text-align: center;
   line-height: 68px;
   background-color: #f44;
+}
+.user-address-list .van-cell {
+  padding: 10px 25px 0 15px;
 }
 </style>

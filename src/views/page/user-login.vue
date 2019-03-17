@@ -25,7 +25,12 @@
         ></i>
         <i class="iconfont icon-close" @click="clearPsw"></i>
       </div>
-      <van-button type="default" round @click="handleLogin" :loading="loading"
+      <van-button
+        type="default"
+        round
+        @click="handleLogin"
+        loading-text="登录中"
+        :class="{ 'is-loading': loading }"
         >登录</van-button
       >
     </div>
@@ -58,7 +63,8 @@ export default {
       this.password = "";
     },
     handleLogin() {
-      // this.loading = true;
+      if (this.loading) return;
+      this.loading = true;
       this.$store
         .dispatch("user/LoginByAccount", this.loginForm)
         .then(() => {
@@ -120,14 +126,23 @@ export default {
 
   .van-button {
     width: 90%;
-    padding: 8px 0;
-    line-height: 0.9rem;
-    height: 1.2rem;
+    position: relative;
     font-size: 0.6rem;
     margin-top: 20px;
     background-color: #ffd161;
-    color: #000;
+    color: #fff;
     box-shadow: 0 2px 0 rgba(0, 0, 0, 0.045);
+    &.is-loading::after {
+      pointer-events: none;
+      content: "";
+      position: absolute;
+      left: -1px;
+      top: -1px;
+      right: -1px;
+      bottom: -1px;
+      border-radius: inherit;
+      background-color: hsla(0, 0%, 100%, 0.35);
+    }
   }
 }
 </style>

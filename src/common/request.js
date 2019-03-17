@@ -13,20 +13,18 @@ const service = axios.create({
 /* eslint-disable */
 service.interceptors.request.use(
   config => {
-    // Do something before request is sent
-
     // 百度地图相关接口需要nginx代理接口
     const isProxy = config.url.indexOf('proxy') !== -1;
     if (store.getters['user/token'] && !isProxy) {
       config.headers.Authorization = `token ${store.getters['user/token']}`;
-      config.headers['mt'] = store.getters.token; // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
+      config.headers['mt'] = store.getters.token;
     }
     return config;
   },
   error => {
-    console.log(error); // for debug
+    console.error(error); // for debug
     Promise.reject(error);
-  }
+  },
 );
 // respone interceptor
 service.interceptors.response.use(
@@ -37,13 +35,12 @@ service.interceptors.response.use(
     if (!data.status) {
       console.log('出错！');
       if (data.status_code === 4001 || data.status_code === 4002 || data.status_code === 401) {
+        console.log('没登录');
         store.dispatch('user/FedLogOut').then(() => {
-          location.reload(); // 为了重新实例化vue-router对象 避免bug
           router.push('/user/login');
         });
-      } else {
-        return Promise.reject(data.message, data);
       }
+      return Promise.reject(data.message, data);
     }
     return Promise.resolve(data);
   },
@@ -55,7 +52,7 @@ service.interceptors.response.use(
       return Promise.reject(error.response.data.message);
     }
     return Promise.reject('系统错误');
-  }
+  },
 );
 
 export default service;

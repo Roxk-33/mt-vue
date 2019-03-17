@@ -28,9 +28,6 @@ export default {
     cachedViews() {
       // return this.$store.state.app.cachedViews;
     }
-    // key() {
-    //   return this.$route.name !== undefined ? this.$route.name + +new Date() : this.$route + +new Date()
-    // }
   }
 };
 </script>

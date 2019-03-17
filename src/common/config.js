@@ -43,8 +43,8 @@ export default {
     ORDER_CONFIRM: `${APIPREFIX}/user/order/:id/confirm`, // 评价
 
     // 评价列表
-    USER_EVAL_LIST: `${APIPREFIX}/user/evaluation/`,
-    USER_EVAL_DELETE: `${APIPREFIX}/user/evaluation/:id`,
+    USER_EVAL_LIST: `${APIPREFIX}/user/review/`,
+    USER_EVAL_DELETE: `${APIPREFIX}/user/review/:id`,
   },
   BASE_URL: {
     PRO: 'https://api.lococo.site',
