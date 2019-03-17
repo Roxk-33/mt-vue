@@ -7,6 +7,15 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover" />
 		<meta name="theme-color" content="#ffd161" />
 		<link rel="stylesheet" href="//at.alicdn.com/t/font_785880_n5fnsww7bbi.css" />
+		<!-- 使用CDN加速的CSS文件，配置在vue.config.js下 -->
+		<% for (var i in htmlWebpackPlugin.options.cdn&&htmlWebpackPlugin.options.cdn.css) { %>
+		<link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="preload" as="style" />
+		<link href="<%= htmlWebpackPlugin.options.cdn.css[i] %>" rel="stylesheet" />
+		<% } %>
+		<!-- 使用CDN加速的JS文件，配置在vue.config.js下 -->
+		<% for (var i in htmlWebpackPlugin.options.cdn&&htmlWebpackPlugin.options.cdn.js) { %>
+		<link href="<%= htmlWebpackPlugin.options.cdn.js[i] %>" rel="preload" as="script" />
+		<% } %>
 		<title>嘻嘻外卖</title>
 	</head>
 
@@ -14,6 +23,9 @@
 		<noscript> <strong>浏览器版本太低，服务不支持！</strong> </noscript>
 		<div id="app"></div>
 		<!-- built files will be auto injected -->
-		<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=gql7G3189x9UnKhoAya6yCfdxZz7CsQX"></script>
+		<!-- 使用CDN加速的JS文件，配置在vue.config.js下 -->
+		<% for (var i in htmlWebpackPlugin.options.cdn&&htmlWebpackPlugin.options.cdn.js) { %>
+		<script src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
+		<% } %>
 	</body>
 </html>

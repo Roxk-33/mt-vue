@@ -4,7 +4,6 @@ import Vue from 'vue';
 import Vant from 'vant';
 import App from './App.vue';
 import 'lib-flexible';
-import 'vant/lib/vant-css/index.css';
 import router from '@/common/router';
 import store from '@/store/index';
 
