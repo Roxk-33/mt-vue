@@ -43,7 +43,6 @@ export default {
   name: "UserLogin",
   data() {
     return {
-      headerTitle: "登录美团",
       loading: false,
       pswType: "password",
       loginForm: {
@@ -60,7 +59,7 @@ export default {
       this.pswType = this.pswType === "text" ? "password" : "text";
     },
     clearPsw() {
-      this.password = "";
+      this.loginForm.password = "";
     },
     handleLogin() {
       if (this.loading) return;
