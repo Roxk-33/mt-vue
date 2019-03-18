@@ -32,7 +32,7 @@
             <i
               slot="right-icon"
               class="iconfont icon-xiugai"
-              @click="go('edit', item.id)"
+              @click="getDetail('edit', item.id)"
             />
           </van-cell>
         </van-cell-group>
@@ -63,7 +63,7 @@ export default {
     headerNav
   },
   methods: {
-    go(type, id) {
+    getDetail(type, id) {
       this.$router.push({ name: "userAddressInfo", query: { type, id } });
     },
     delAddress(id) {
@@ -143,6 +143,6 @@ export default {
   background-color: #f44;
 }
 .user-address-list .van-cell {
-  padding: 10px 25px 0 15px;
+  padding: 10px 25px 15px 15px;
 }
 </style>

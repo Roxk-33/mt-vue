@@ -1,5 +1,5 @@
 <template>
-  <div class="evaluation">
+  <div class="user-review-order">
     <header-nav
       :left-click="true"
       headerbg-color="whitesmoke"
@@ -8,7 +8,7 @@
       :is-back="false"
       @left-click-fn="close"
     />
-    <div class="evaluation-dispatcher evaluation-box">
+    <div class="review-dispatcher review-box">
       <div class="top">
         <div class="info">
           <img
@@ -26,7 +26,7 @@
           </div>
         </div>
       </div>
-      <div class="evaluation-select" v-if="false">
+      <div class="review-select" v-if="false">
         <div class="select-box mt-flex-space-around">
           <div
             class="select-box-btn"
@@ -46,24 +46,24 @@
           </div>
         </div>
         <div
-          class="evaluation-detail"
+          class="review-detail"
           :class="{
             show: reviewData.isSatisfied === false,
             'show-1': reviewData.isSatisfied
           }"
         >
           <p
-            class="evaluation-not-satisfied"
+            class="review-not-satisfied"
             v-if="reviewData.isSatisfied === false"
           >
             请选择不满意的原因(必选)
           </p>
           <ul
-            class="evaluation-detail-list"
+            class="review-detail-list"
             v-if="reviewData.isSatisfied === false"
           >
             <li
-              class="evaluation-detail-item"
+              class="review-detail-item"
               v-for="item in evalDispatcherList['not']"
               :key="item.label"
               @click="evalDispatcher(item)"
@@ -77,9 +77,9 @@
               {{ item.label }}
             </li>
           </ul>
-          <ul class="evaluation-detail-list" v-if="reviewData.isSatisfied">
+          <ul class="review-detail-list" v-if="reviewData.isSatisfied">
             <li
-              class="evaluation-detail-item"
+              class="review-detail-item"
               v-for="item in evalDispatcherList['satisfied']"
               :key="item.label"
               @click="evalDispatcher(item)"
@@ -96,7 +96,7 @@
         </div>
       </div>
     </div>
-    <div class="evaluation-shop evaluation-box">
+    <div class="review-shop review-box">
       <div class="top">
         <div class="info">
           <img class="info-avatar" :src="shopInfo.photo" />
@@ -107,8 +107,8 @@
           </div>
         </div>
       </div>
-      <div class="evaluation-star">
-        <p class="evaluation-title" v-if="reviewData.evalShopStar > 0">
+      <div class="review-star">
+        <p class="review-title" v-if="reviewData.evalShopStar > 0">
           "{{ reviewData.evalShopStar | starText }}"
         </p>
         <rate
@@ -116,7 +116,7 @@
           :size="30"
           :is-show-text="false"
         />
-        <div class="evaluation-star-other" v-if="reviewData.evalShopStar > 0">
+        <div class="review-star-other" v-if="reviewData.evalShopStar > 0">
           <div class="item">
             <span class="label">口味</span>
             <rate
@@ -146,14 +146,14 @@
       <van-field
         v-model="reviewData.remarks"
         type="textarea"
-        class="evaluation-content"
+        class="review-content"
         :placeholder="remaskPlaceholder"
         rows="5"
         :autosize="remaskField"
       />
     </div>
     <div
-      class="evaluation-btn"
+      class="review-btn"
       :class="{ complete: isComplete }"
       @click="reviewOrder"
     >
@@ -366,11 +366,12 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-.evaluation {
+.user-review-order {
   min-height: 100%;
+  background: whitesmoke;
   position: relative;
   // padding-bottom: 70px;
-  .evaluation-box {
+  .review-box {
     background-color: white;
     margin: 0 10px 10px;
     padding: 8px;
@@ -395,7 +396,7 @@ export default {
       }
     }
   }
-  .evaluation-dispatcher {
+  .review-dispatcher {
     .info-detail {
       .distribution-type {
         margin-bottom: 5px;
@@ -404,7 +405,7 @@ export default {
         font-size: 12px;
       }
     }
-    .evaluation-select {
+    .review-select {
       .select-box {
         margin: 15px auto;
         .select-box-btn {
@@ -427,7 +428,7 @@ export default {
         }
       }
 
-      .evaluation-detail {
+      .review-detail {
         transition: max-height 0.8s;
         max-height: 20px;
         &.show {
@@ -436,16 +437,16 @@ export default {
         &.show-1 {
           max-height: 400px;
         }
-        .evaluation-not-satisfied {
+        .review-not-satisfied {
           text-align: center;
           margin: 5px 0;
         }
-        .evaluation-detail-list {
+        .review-detail-list {
           display: flex;
           flex-wrap: wrap;
 
           justify-content: space-around;
-          .evaluation-detail-item {
+          .review-detail-item {
             width: 30%;
             text-align: center;
             border: 1px solid $mt-gray;
@@ -461,12 +462,12 @@ export default {
       }
     }
   }
-  .evaluation-shop {
+  .review-shop {
     text-align: center;
     .top {
       text-align: left;
     }
-    .evaluation-title {
+    .review-title {
       text-align: center;
       font-size: 17px;
       margin-top: 5px;
@@ -475,7 +476,7 @@ export default {
       margin-top: 10px;
       text-align: center;
     }
-    .evaluation-star-other {
+    .review-star-other {
       background-color: #f8f8f8;
       padding: 12px 0 12px 25px;
       margin: 5px auto;
@@ -502,19 +503,19 @@ export default {
         }
       }
     }
-    .evaluation-content {
+    .review-content {
       margin: 10px auto;
       background-color: #fdfafa;
       border: 1px solid $mt-light-gray;
     }
   }
-  .evaluation-btn {
+  .review-btn {
     height: 60px;
     box-sizing: border-box;
     padding: 20px 0;
     text-align: center;
     font-size: 18px;
-    background-color: #dcdcdc;
+    background-color: #c3c3c3;
     color: #fff;
     position: absolute;
     bottom: 0;

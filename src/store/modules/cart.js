@@ -43,7 +43,7 @@ const API = config.API;
 // state
 const state = {
   cartList: [],
-  shopId: null
+  shopId: null,
 };
 
 // getters
@@ -55,16 +55,16 @@ const getters = {
       return {
         title: product.title,
         price: product.price,
-        quantity
+        quantity,
       };
     }),
 
   cartTotalPrice: (state, getters) => {
     return getters.cartProducts.reduce(
       (total, product) => total + product.price * product.quantity,
-      0
+      0,
     );
-  }
+  },
 };
 
 // mutations
@@ -83,7 +83,7 @@ const mutations = {
       } else temp[index].foodList.push(item);
     });
     state.cartList = temp;
-  }
+  },
 };
 
 const actions = {
@@ -106,8 +106,7 @@ const actions = {
     const { shopId } = payload;
     return ajax.get(formatURL(API.CART_SHOP_LIST, { shopId }));
   },
-  addProductToCart({ commit, rootState }, data) {
-    data.userId = rootState.user.userId;
+  addProductToCart({ commit }, data) {
     return ajax.post(API.CART_ADD, data);
   },
 
@@ -126,7 +125,7 @@ const actions = {
         resolve(resp);
       });
     });
-  }
+  },
 };
 
 export default {
@@ -134,5 +133,5 @@ export default {
   state,
   mutations,
   getters,
-  actions
+  actions,
 };

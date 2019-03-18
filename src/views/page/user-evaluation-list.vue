@@ -26,12 +26,12 @@
             </router-link>
             <i class="iconfont icon-xiangyou"></i>
           </div>
-          <div class="eval-info">
+          <div class="review-info">
             <img :src="userAvatar" class="user-avatar" />
             <div class="detail-info">
               <div class="detail-header mt-flex-space-between">
                 <span class="user-name">{{ userName }}</span>
-                <span class="eval-time">2018.11.24</span>
+                <span class="review-time">2018.11.24</span>
               </div>
               <div class="detail-middle">
                 <div class="shop-rate">
@@ -234,7 +234,7 @@ export default {
         color: $mt-gray;
       }
     }
-    .eval-info {
+    .review-info {
       margin-top: 15px;
       display: flex;
       justify-content: flex-start;
@@ -253,7 +253,7 @@ export default {
           .user-name {
             font-size: 15px;
           }
-          .eval-time {
+          .review-time {
             color: $mt-gray;
             font-size: 12px;
           }

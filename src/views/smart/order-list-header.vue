@@ -6,19 +6,25 @@
     <ul class="header-nav">
       <li
         class="header-nav-item"
-        :class="{'active':active === 'all'}"
+        :class="{ active: active === 'all' }"
         @click="onClick('all')"
-      >全部订单</li>
+      >
+        全部订单
+      </li>
       <li
         class="header-nav-item"
-        :class="{'active':active === 'eval'}"
-        @click="onClick('eval')"
-      >待评价</li>
+        :class="{ active: active === 'review' }"
+        @click="onClick('review')"
+      >
+        待评价
+      </li>
       <li
         class="header-nav-item"
-        :class="{'active':active === 'refund'}"
+        :class="{ active: active === 'refund' }"
         @click="onClick('refund')"
-      >退款</li>
+      >
+        退款
+      </li>
     </ul>
   </div>
 </template>
@@ -32,7 +38,6 @@ export default {
       active: "all"
     };
   },
-  components: {},
   methods: {
     onClick(type) {
       this.active = type;

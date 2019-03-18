@@ -39,10 +39,11 @@ service.interceptors.response.use(
         store.dispatch('user/FedLogOut').then(() => {
           router.push('/user/login');
         });
+        return Promise.reject(data.message, data);
       }
-      return Promise.reject(data.message, data);
+    } else {
+      return Promise.resolve(data);
     }
-    return Promise.resolve(data);
   },
 
   error => {

@@ -202,7 +202,6 @@ export default {
       if (this.codeInputLen < 4 && this.codeInputLen >= 0) {
         arr[this.codeInputLen] = true;
       }
-      console.log(arr);
       return arr;
     }
   },

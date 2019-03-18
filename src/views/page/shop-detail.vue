@@ -85,7 +85,7 @@ import shopHeader from "@/views/smart/shop-header";
 import shopNav from "@/views/smart/shop-nav";
 import foodIsRepeat from "@/mixins/food-is-repeat";
 import shopDetailScroll from "@/mixins/shop-detail-scroll";
-import shopDetailReview from "@/views/smart/shop-detail-eval";
+import shopDetailReview from "@/views/smart/shop-detail-review";
 import { scrollTo } from "@/common/utils";
 import { isBusinessHours } from "@/common/utils";
 
@@ -101,12 +101,8 @@ export default {
         },
         {
           label: "评价",
-          value: "evaluation"
+          value: "review"
         }
-        //{
-        //  label: "商家",
-        //  value: "business"
-        // }
       ],
       foodCatalog: [],
       listHeight: [0],
@@ -291,21 +287,31 @@ export default {
       }
       try {
         if (isExist !== -1) {
-          this.$store.dispatch("cart/updateProductToCart", data).then(value => {
-            this.$store.dispatch("cart/getCartList");
-            if (data.type === 1) {
+          this.$store
+            .dispatch("cart/updateProductToCart", data)
+            .then(value => {
+              this.$store.dispatch("cart/getCartList");
+              if (data.type === 1) {
+                this.foodList[indexMenu].selectNum++;
+                this.startBallAni(ev);
+              } else {
+                this.foodList[indexMenu].selectNum--;
+              }
+            })
+            .catch(err => {
+              this.$toast(err);
+            });
+        } else {
+          this.$store
+            .dispatch("cart/addProductToCart", data)
+            .then(value => {
+              this.$store.dispatch("cart/getCartList");
               this.foodList[indexMenu].selectNum++;
               this.startBallAni(ev);
-            } else {
-              this.foodList[indexMenu].selectNum--;
-            }
-          });
-        } else {
-          this.$store.dispatch("cart/addProductToCart", data).then(value => {
-            this.$store.dispatch("cart/getCartList");
-            this.foodList[indexMenu].selectNum++;
-            this.startBallAni(ev);
-          });
+            })
+            .catch(err => {
+              this.$toast(err);
+            });
         }
       } catch (error) {
         console.log(error);

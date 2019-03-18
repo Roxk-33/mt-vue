@@ -8,7 +8,6 @@ const API = config.API;
 const state = {
   userStatus: false,
   code: '',
-  userId: null,
   userName: '',
   userAvatar: 'https://i.loli.net/2018/11/14/5bec27346a028.jpg',
   userTel: '',
@@ -29,8 +28,8 @@ const mutations = {
   [types.SET_INTRODUCTION](state, introduction) {
     state.introduction = introduction;
   },
-  [types.SET_USERID](state, id) {
-    state.userId = id;
+  [types.SET_USERSTATUS](state) {
+    state.userStatus = true;
   },
   [types.SET_NAME](state, name) {
     state.userName = name;
@@ -46,6 +45,15 @@ const mutations = {
   },
   [types.SAVE_LOCATION](state, location) {
     state.location = location;
+  },
+  [types.REMOVE_USERINFO](state) {
+    state.userStatus = false;
+    state.code = '';
+    state.userName = '';
+    state.userAvatar = 'https://i.loli.net/2018/11/14/5bec27346a028.jpg';
+    state.userTel = '';
+    state.introduction = '';
+    state.addressList = [];
   },
 };
 const getters = {
@@ -111,14 +119,10 @@ const actions = {
             resolve(resp);
             commit(types.SET_NAME, resp.data.user_name);
             commit(types.SET_AVATAR, resp.data.avatar);
-            commit(types.SET_USERID, resp.data.id);
+            commit(types.SET_USERSTATUS, true);
             commit(types.SET_TEL, resp.data.tel);
           })
           .catch(err => {
-            // commit('REMOVE_TOKEN');
-            // commit('SET_NAME', '');
-            // commit('SET_TEL', '');
-            // commit('SET_AVATAR', '');
             console.log(err);
             reject(err);
           });
@@ -287,38 +291,15 @@ const actions = {
         .catch(reject);
     });
   },
-
-  // 获取用户信息
-  // GetUserInfo({ commit, state }, token) {
-  //   return new Promise((resolve, reject) => {
-
-  //   });
-  // },
-
-  // 第三方验证登录
-  // LoginByThirdparty({ commit, state }, code) {
-  //   return new Promise((resolve, reject) => {
-  //     commit('SET_CODE', code)
-  //     loginByThirdparty(state.status, state.email, state.code).then(response => {
-  //       commit('SET_TOKEN', response.data.token)
-  //       setToken(response.data.token)
-  //       resolve()
-  //     }).catch(error => {
-  //       reject(error)
-  //     })
-  //   })
-  // },
-
   // 登出
   LogOut({ commit }) {
     return new Promise((resolve, reject) => {
       ajax
         .get(API.USER_LOGOUT)
         .then(resp => {
-          commit('REMOVE_TOKEN');
-          commit('SET_NAME', '');
-          commit('SET_TEL', '');
-          commit('SET_AVATAR', '');
+          commit(types.REMOVE_TOKEN);
+          commit(types.REMOVE_USERINFO);
+          commit(types.SET_USERSTATUS, false);
           resolve(resp);
         })
         .catch(reject);
@@ -328,7 +309,8 @@ const actions = {
   // 前端 登出
   FedLogOut({ commit }) {
     return new Promise(resolve => {
-      commit('REMOVE_TOKEN');
+      commit(types.REMOVE_TOKEN);
+      commit(types.SET_USERSTATUS, false);
       resolve();
     });
   },

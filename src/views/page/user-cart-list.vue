@@ -1,7 +1,7 @@
 <template>
   <div class="user-cart">
     <header-nav :title="headerTitle">
-      <span>编辑</span>
+      <!-- <span>编辑</span> -->
     </header-nav>
     <div class="cart-list">
       <div
@@ -9,7 +9,7 @@
         v-for="item in cartList"
         :key="item.shop_info.shop_id"
       >
-        <div class="item-title">
+        <div class="shop-info">
           <check-box v-model="item.selectAll" @click="selectAll(item)" />
           <router-link
             class="content"
@@ -175,20 +175,25 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
+.cart-list {
+  overflow: hidden;
+  background-color: whitesmoke;
+}
 .cart-list-item {
-  margin-bottom: 10px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   background-color: #fff;
-  padding: 5px 0;
+  padding: 0 0 5px;
+  margin: 0.2rem 0.3rem;
+  border-radius: 5px;
   .content {
     display: inline-block;
   }
-  .item-title {
+  .shop-info {
     color: #000;
-    height: 33px;
-    display: inline-block;
-    .check-box {
-      margin-left: 9px;
-    }
+    margin-bottom: 0.2rem;
+    display: flex;
+    padding: 0.2rem 0;
+    background-color: #f3f3f3;
     .shop-avatar {
       width: 25px;
       height: 25px;
@@ -222,12 +227,7 @@ export default {
     .food-list-item {
       display: flex;
       margin-bottom: 5px;
-      &.expire {
-      }
-      .van-checkbox {
-        display: flex;
-        align-items: center;
-      }
+
       .content {
         flex: 1;
       }
@@ -281,10 +281,11 @@ export default {
     }
     .settle-btn {
       vertical-align: middle;
-      width: 80px;
+      width: 2.5rem;
       height: 30px;
       background-color: $mt-color;
       text-align: center;
+      border-radius: 20px;
       border: 0;
       span {
         display: inline-block;
@@ -300,10 +301,9 @@ export default {
   }
 }
 .van-checkbox {
-  display: inline-block;
-  vertical-align: top;
-  margin: 0 5px;
   transform: scale(0.8);
+  width: 10%;
+  text-align: center;
 }
 </style>
 <style>

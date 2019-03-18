@@ -4,7 +4,10 @@
       <div class="specification-box">
         <div class="specification-box_header">
           <span class="specification-box_title">{{ foodInfo.food_name }}</span>
-          <i class="specification-box_close iconfont icon-close" />
+          <i
+            class="specification-box_close iconfont icon-close"
+            @click="value = false"
+          />
         </div>
         <div class="specification-box_content">
           <div

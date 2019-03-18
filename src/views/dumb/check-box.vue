@@ -1,54 +1,47 @@
 <template>
-  <div class="check-box" @click="totggle" :class="value ? 'checked' : ''">
-    <i class="iconfont" :class="value ? iconFont : 'icon-xuanze1'" />
+  <div
+    class="van-checkbox van-checkbox__icon "
+    @click="totggle"
+    :class="value ? 'van-checkbox__icon--checked' : ''"
+  >
+    <i class="van-icon van-icon-success" />
     <slot />
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import CONSTANT from '@/common/constant';
+import CONSTANT from "@/common/constant";
 
 export default {
-  name: 'CheckBox',
+  name: "CheckBox",
   props: {
     name: [String, Number],
     value: [String, Number, Boolean],
     iconFont: {
       type: String,
-      default: 'icon-selected',
+      default: "icon-selected"
     },
     checkedColor: {
       type: String,
-      default: CONSTANT.COLOR.MT,
-    },
+      default: CONSTANT.COLOR.MT
+    }
   },
   methods: {
     totggle() {
-      this.$emit('input', !this.value);
-      this.$emit('click');
-    },
-  },
+      this.$emit("input", !this.value);
+      this.$emit("click");
+    }
+  }
 };
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-.check-box {
+.van-checkbox {
   display: inline-flex;
   align-items: center;
-  &.checked i {
-    background-color: $mt-color;
-    color: #fff;
-    font-size: 14px;
-  }
+  justify-content: center;
   i {
     border-radius: 50%;
-    margin-right: 4px;
-    font-size: 15px;
-    width: 17px;
-    height: 17px;
-    text-align: center;
-    line-height: 20px;
-    color: $mt-gray;
   }
 }
 </style>

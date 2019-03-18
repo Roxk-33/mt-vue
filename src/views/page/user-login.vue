@@ -1,6 +1,11 @@
 <template>
   <div class="login-container">
-    <header-nav title="" :isBack="false" :border="false">
+    <header-nav
+      title=""
+      :isBack="false"
+      :border="false"
+      :back-router="backRouter"
+    >
       <router-link to="/user/register" class="register">注册</router-link>
     </header-nav>
     <div class="container-box">
@@ -44,6 +49,9 @@ export default {
   data() {
     return {
       loading: false,
+      backRouter: {
+        name: "userIndex"
+      },
       pswType: "password",
       loginForm: {
         account: "admin",
@@ -69,7 +77,7 @@ export default {
         .then(() => {
           this.loading = false;
           this.$store.dispatch("cart/getCartList");
-          this.$router.push({ name: "userIndex" });
+          this.$router.go(-1);
         })
         .catch(e => {
           this.$toast(e);
@@ -146,7 +154,7 @@ export default {
 }
 </style>
 <style rel="stylesheet/scss" lang="scss">
-.header-nav-left .icon-close {
+.login-container .header-nav-left .icon-close {
   font-size: 0.5rem;
   color: $mt-color;
 }

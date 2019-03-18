@@ -1,12 +1,12 @@
 <template>
-  <div class="shop-detail-eval">
-    <!-- <div class="shop-eval-box">
+  <div class="shop-detail-review">
+    <!-- <div class="shop-review-box">
       <div class="left">
-        <div class="shop-total-eval">
+        <div class="shop-total-review">
           <p class="rate">4.7</p>
           <p class="label">商家评分</p>
         </div>
-        <div class="shop-star-eval mt-flex-space-between">
+        <div class="shop-star-review mt-flex-space-between">
           <div class="block">
             <span class="label">口味</span>
             <rate
@@ -30,9 +30,9 @@
         <p class="label">配送满意度</p>
       </div>
     </div> -->
-    <div class="user-eval-box">
-      <div class="user-eval-item" v-for="item in reviewList" :key="item.id">
-        <div class="user-eval-item-top mt-flex-space-between">
+    <div class="user-review-box">
+      <div class="user-review-item" v-for="item in reviewList" :key="item.id">
+        <div class="user-review-item-top mt-flex-space-between">
           <div class="user-info mt-flex-space-between">
             <img :src="item.user_info.avatar" class="user-avatar" />
             <div>
@@ -46,11 +46,11 @@
               />
             </div>
           </div>
-          <span class="eval-time">{{
+          <span class="review-time">{{
             item.created_at | parseTime("{y}.{m}.{d}")
           }}</span>
         </div>
-        <div class="user-eval-content" v-if="item.remarks.length">
+        <div class="user-review-content" v-if="item.remarks.length">
           {{ item.remarks }}
         </div>
       </div>
@@ -63,7 +63,7 @@
 import Rate from "@/views/dumb/rate";
 import { parseTime } from "@/common/utils";
 export default {
-  name: "shop-detail-eval",
+  name: "shop-detail-review",
 
   data() {
     return {
@@ -123,8 +123,8 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
-.shop-detail-eval {
-  .shop-eval-box {
+.shop-detail-review {
+  .shop-review-box {
     background-color: #fff;
     margin-bottom: 5px;
     display: flex;
@@ -134,7 +134,7 @@ export default {
       width: 70%;
       display: flex;
       border-right: 1px solid $mt-light-gray;
-      .shop-total-eval {
+      .shop-total-review {
         text-align: center;
         margin-right: 20px;
         .label {
@@ -146,7 +146,7 @@ export default {
           font-size: 25px;
         }
       }
-      .shop-star-eval {
+      .shop-star-review {
         flex-direction: column;
         padding: 5px 0;
         .rate {
@@ -174,11 +174,11 @@ export default {
       }
     }
   }
-  .user-eval-box {
-    .user-eval-item {
+  .user-review-box {
+    .user-review-item {
       padding: 10px;
       border-bottom: 1px solid $mt-light-gray;
-      .user-eval-item-top {
+      .user-review-item-top {
         .user-info {
           align-items: center;
           .user-avatar {
@@ -198,11 +198,11 @@ export default {
             display: inline-block;
           }
         }
-        .eval-time {
+        .review-time {
           color: $mt-gray;
         }
       }
-      .user-eval-content {
+      .user-review-content {
         margin-top: 10px;
         padding: 0 10px 0 37px;
       }
@@ -216,7 +216,7 @@ export default {
 }
 </style>
 <style>
-.shop-star-eval .rate .score {
+.shop-star-review .rate .score {
   color: #eea900;
 }
 </style>
