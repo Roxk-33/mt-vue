@@ -7,7 +7,7 @@ export default {
   },
   data() {
     return {
-      scrollDisabel: false,
+      FoodListScrollDisabel: false,
       scrollY: -1,
       scrollOption: {
         probeType: 3,
@@ -25,34 +25,46 @@ export default {
       // 35为 header-nav的高度
       // 45为 shop-good-tab的高度
       this.bannerHeight = getRect(this.$refs.shopBanner).height - 35;
-      this.trackSize = window.innerHeight - 45 - 35 + 1;
+      this.trackSize = document.body.clientHeight - 35;
       this.ballAniPoi.end.left = 60;
-      this.ballAniPoi.end.top = window.innerHeight - 60;
+      this.ballAniPoi.end.top = document.body.clientHeight - 60;
     },
     scroll() {
       document.addEventListener('scroll', e => {
+        // 为了兼容Safari
         const scorllY = Math.abs(document.documentElement.scrollTop || window.pageYOffset);
-        if (!this.scrollDisabel) {
-          // 为了兼容Safari
+        //
+        if (!this.FoodListScrollDisabel) {
           this.isTop = false;
           if (this.bannerHeight > scorllY) {
             this.trackOpacity = scorllY / this.bannerHeight;
           } else {
-            this.scrollDisabel = true;
+            this.FoodListScrollDisabel = true;
             this.trackOpacity = '1';
             this.isTop = true;
           }
         } else if (this.bannerHeight > scorllY) {
-          this.scrollDisabel = false;
+          this.FoodListScrollDisabel = false;
         }
       });
     },
-    onScroll(op) {
+    onFoodListPullingDown() {
+      console.log('上拉');
+      this.FoodListScrollDisabel = false;
+    },
+    onFoodListScroll(op) {
       this.scrollY = op.y;
       if (op.y > 1) {
-        console.log('菜单到顶');
-        this.scrollDisabel = false;
+        this.FoodListScrollDisabel = false;
       }
+    },
+  },
+  computed: {
+    shopGoodStyle() {
+      return {
+        height: `${this.trackSize}px`,
+        top: `${this.trackTop}px`,
+      };
     },
   },
 };

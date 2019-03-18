@@ -9,7 +9,7 @@
         :photo="shopInfo.photo"
       />
     </div>
-    <div class="shop-good" ref="shopGood" :style="shopGoodStyle">
+    <div class="shop-good" :style="shopGoodStyle">
       <div class="shop-good-tab">
         <van-tabs v-model="tabActive" :line-width="25" swipeable sticky>
           <van-tab
@@ -21,7 +21,10 @@
       </div>
       <div class="shop-good-content" v-if="tabActive === 0">
         <div class="shop-good-menu">
-          <mt-better-scroll :options="scrollOption" :is-disable="scrollDisabel">
+          <mt-better-scroll
+            :options="scrollOption"
+            :is-disable="FoodListScrollDisabel"
+          >
             <div
               class="menu-item"
               v-for="(category, index) in foodCatalog"
@@ -37,9 +40,9 @@
           <mt-better-scroll
             :listen-scroll="true"
             :options="scrollOption"
-            @scroll="onScroll"
-            :is-disable="scrollDisabel"
-            @pulling-down="pullingDown"
+            @scroll="onFoodListScroll"
+            :is-disable="FoodListScrollDisabel"
+            @pulling-down="onFoodListPullingDown"
             ref="foodlist"
           >
             <foodItem
@@ -175,15 +178,12 @@ export default {
     },
     scrollToCat(index) {
       const scrollHeight = this.listHeight[index];
-      this.scrollDisabel = false;
+      this.FoodListScrollDisabel = false;
       scrollTo(this.bannerHeight);
 
       this.$refs.foodlist.scrollTo(0, scrollHeight, 400);
     },
-    pullingDown() {
-      console.log("上拉");
-      this.scrollDisabel = false;
-    },
+
     // 规格选项的商品放入购物车
     pushSpecFood(isExist, specArr, specText, totalPrice, type, ev = null) {
       // 若已存在在购物车中，不需要format数据
@@ -275,7 +275,7 @@ export default {
       this.ballAniPoi.start.left = ev.screenX;
       this.ballAniPoi.start.top = ev.screenY;
       // 补偿位差
-      if (this.scrollDisabel) {
+      if (this.FoodListScrollDisabel) {
         this.ballAniPoi.start.top -= 200;
       }
       this._startBallAni();
@@ -373,12 +373,6 @@ export default {
 
     shopId() {
       return this.$route.params.id;
-    },
-    shopGoodStyle() {
-      return {
-        height: `${this.trackSize}px`,
-        top: `${this.trackTop}px`
-      };
     }
   }
 };

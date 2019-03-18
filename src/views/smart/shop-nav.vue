@@ -2,7 +2,7 @@
   <div class="shop-nav mt-flex-space-between">
     <div class="nav-wrapper" :style="{ opacity: trackOpacity }" />
     <div @click="back">
-      <i class="iconfont icon-xiangzuo" />
+      <i class="iconfont icon-xiangzuo" :class="{ blank: isMove }" />
     </div>
     <div class="shop-nav_right" :class="{ 'shop-nav_right_white': isTop }">
       <!-- <i class="iconfont icon-sousuo" />
@@ -25,9 +25,19 @@ export default {
       default: false
     }
   },
+  data() {
+    return {
+      isMove: false
+    };
+  },
   methods: {
     back() {
       this.$router.go(-1);
+    }
+  },
+  watch: {
+    trackOpacity(val) {
+      this.isMove = val > 0;
     }
   }
 };
@@ -44,7 +54,8 @@ export default {
   top: 0;
   left: 0;
   transition: all 0.5s;
-  z-index: $zindex-first;
+  align-items: center;
+  z-index: $zindex-navbar;
   .iconfont {
     font-size: 18px;
     color: #fff;
@@ -52,6 +63,9 @@ export default {
     margin: 5px;
     &.icon-sousuo {
       font-size: 20px;
+    }
+    &.blank {
+      color: #000;
     }
   }
 
