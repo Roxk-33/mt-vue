@@ -501,10 +501,8 @@ export default {
       justify-content: flex-start;
       .food-pic {
         width: 18%;
-        height: 60px;
         img {
           width: 100%;
-          height: 100%;
         }
       }
       .food-info {

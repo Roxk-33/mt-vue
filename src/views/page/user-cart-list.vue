@@ -6,11 +6,14 @@
     <div class="cart-list">
       <div
         class="cart-list-item"
-        v-for="item in cartList"
+        v-for="(item, index) in cartList"
         :key="item.shop_info.shop_id"
       >
         <div class="shop-info">
-          <check-box v-model="item.selectAll" @click="selectAll(item)" />
+          <check-box
+            v-model="item.selectAll"
+            @change="toggleSelectItem(index)"
+          />
           <router-link
             class="content"
             :to="{ name: 'shopDetail', params: { id: item.shop_info.id } }"
@@ -22,7 +25,10 @@
           </router-link>
         </div>
         <div class="food-list">
-          <van-checkbox-group v-model="item.selArr">
+          <van-checkbox-group
+            v-model="item.selArr"
+            @change="toggleSelectAll(index)"
+          >
             <van-swipe-cell
               :right-width="65"
               v-for="foodInfo in item.foodList"
@@ -35,7 +41,10 @@
                     <img class="food-img" :src="foodInfo.picture" />
                     <div class="food-info">
                       <p class="food-info-title">{{ foodInfo.food_name }}</p>
-                      <p class="food-info-spec">
+                      <p
+                        class="food-info-spec"
+                        v-if="foodInfo.spec_text.length"
+                      >
                         规格：{{ foodInfo.spec_text.join(",") }}
                       </p>
                       <div class="food-info-num">
@@ -71,7 +80,7 @@
               <span v-if="item.shop_info.threshold - item.totalPrice > 0"
                 >差￥{{ item.shop_info.threshold - item.totalPrice }}起送</span
               >
-              <span v-else @click="toPay(item)">去结算</span>
+              <span v-else @click="toSettle(item)">去结算</span>
             </button>
           </div>
         </div>
@@ -140,7 +149,35 @@ export default {
         this.cartList.push(obj);
       });
     },
-    toPay(target) {
+    toggleSelectAll(index) {
+      let item = this.cartList[index];
+      let selArr = item.selArr;
+      if (selArr.length === item.foodList.length) item.selectAll = true;
+      else item.selectAll = false;
+      // 重新计算价格
+      if (selArr.length === 0) item.totalPrice = 0;
+      else {
+        item.totalPrice = item.shop_info.freight;
+        item.foodList.forEach(food => {
+          if (selArr.indexOf(food.id) !== -1) {
+            item.totalPrice += food.num * food.price;
+          }
+        });
+      }
+    },
+    toggleSelectItem(index) {
+      let item = this.cartList[index];
+      item.selArr.splice(0, item.selArr.length);
+      item.totalPrice = 0;
+      if (item.selectAll) {
+        item.totalPrice = item.shop_info.freight;
+        item.foodList.forEach(food => {
+          item.totalPrice += food.num * food.price;
+          item.selArr.push(food.id);
+        });
+      }
+    },
+    toSettle(target) {
       const foodIdArr = target.selArr;
       let isAll = false;
       if (foodIdArr.length === 0) return this.$toast("请选择商品");
@@ -148,7 +185,7 @@ export default {
       if (foodIdArr.length === target.foodList.length) isAll = true;
       this.$router.push({
         name: "orderCreate",
-        params: { shopId: this.shopID, isAll, foodIdArr }
+        params: { shopId: target.shop_info.id, isAll, foodIdArr }
       });
     }
   },
@@ -175,8 +212,12 @@ export default {
 </script>
 
 <style scoped rel="stylesheet/scss" lang="scss">
+.user-cart {
+  min-height: 100%;
+}
 .cart-list {
   overflow: hidden;
+  min-height: 100%;
   background-color: whitesmoke;
 }
 .cart-list-item {

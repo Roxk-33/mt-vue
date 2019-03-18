@@ -1,7 +1,7 @@
 <template>
   <div
     class="van-checkbox van-checkbox__icon "
-    @click="totggle"
+    @click="toggle"
     :class="value ? 'van-checkbox__icon--checked' : ''"
   >
     <i class="van-icon van-icon-success" />
@@ -27,9 +27,9 @@ export default {
     }
   },
   methods: {
-    totggle() {
+    toggle() {
       this.$emit("input", !this.value);
-      this.$emit("click");
+      this.$emit("change", this.value);
     }
   }
 };
