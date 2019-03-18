@@ -17,7 +17,6 @@ service.interceptors.request.use(
     const isProxy = config.url.indexOf('proxy') !== -1;
     if (store.getters['user/token'] && !isProxy) {
       config.headers.Authorization = `token ${store.getters['user/token']}`;
-      config.headers['mt'] = store.getters.token;
     }
     return config;
   },

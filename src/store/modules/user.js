@@ -102,6 +102,7 @@ const actions = {
           commit(types.SET_NAME, resp.data.user.user_name);
           commit(types.SET_AVATAR, resp.data.user.avatar);
           commit(types.SET_USERID, resp.data.user.id);
+          commit(types.SET_USERSTATUS, true);
           commit(types.SET_TEL, resp.data.user.tel);
         })
         .catch(reject);
