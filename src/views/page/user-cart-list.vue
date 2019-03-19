@@ -108,17 +108,13 @@ export default {
     headerNav,
     checkBox
   },
+
   created() {
     if (this.userStatus) {
       this.getCart();
     } else {
       this.$toast("请登录");
       this.$router.push("/user/login");
-    }
-  },
-  computed: {
-    userStatus() {
-      return this.$store.state.user.userStatus;
     }
   },
   methods: {
@@ -202,6 +198,9 @@ export default {
   computed: {
     list() {
       return this.$store.getters["cart/cartList"];
+    },
+    userStatus() {
+      return this.$store.state.user.userStatus;
     }
   },
   filters: {

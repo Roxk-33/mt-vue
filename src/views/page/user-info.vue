@@ -1,5 +1,5 @@
 <template>
-  <div class="person-info">
+  <div class="person-info gray-bg">
     <header-nav :title="headerTitle" />
 
     <ul class="info-box">
@@ -344,7 +344,7 @@ export default {
 .info-box {
   background-color: white;
   padding: 0;
-
+  margin-top: 0.2rem;
   .info-box-avatar {
     height: 1.5rem;
     line-height: 1.5rem;
@@ -518,4 +518,6 @@ export default {
     }
   }
 }
+</style>
+<style>
 </style>

@@ -29,6 +29,7 @@ const mutations = {
     state.introduction = introduction;
   },
   [types.SET_USERSTATUS](state) {
+    console.log(111);
     state.userStatus = true;
   },
   [types.SET_NAME](state, name) {
