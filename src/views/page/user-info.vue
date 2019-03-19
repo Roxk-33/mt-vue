@@ -186,7 +186,17 @@ export default {
   components: {
     headerNav
   },
+  created() {
+    if (!this.userStatus) {
+      this.$toast("请登录");
+      this.$router.push("/user/login");
+    }
+  },
+
   computed: {
+    userStatus() {
+      return this.$store.state.user.userStatus;
+    },
     userName() {
       return this.$store.state.user.userName;
     },
@@ -196,7 +206,6 @@ export default {
     userTel() {
       return this.$store.state.user.userTel;
     },
-
     codeInputfocusStatus() {
       let arr = [false, false, false, false];
       if (this.codeInputLen < 4 && this.codeInputLen >= 0) {

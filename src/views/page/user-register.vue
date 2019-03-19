@@ -110,7 +110,7 @@ export default {
     text-align: center;
     position: relative;
     input {
-      font-size: 0.5rem;
+      font-size: 0.4rem;
       border: 0;
       border-radius: 0;
       width: 100%;
@@ -123,6 +123,7 @@ export default {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
+      margin-top: -2px;
       &.icon-person,
       &.icon-mima {
         left: 10px;

@@ -109,7 +109,17 @@ export default {
     checkBox
   },
   created() {
-    this.getCart();
+    if (this.userStatus) {
+      this.getCart();
+    } else {
+      this.$toast("请登录");
+      this.$router.push("/user/login");
+    }
+  },
+  computed: {
+    userStatus() {
+      return this.$store.state.user.userStatus;
+    }
   },
   methods: {
     selectAll(target) {
