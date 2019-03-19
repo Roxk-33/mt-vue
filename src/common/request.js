@@ -35,10 +35,12 @@ service.interceptors.response.use(
       console.log('出错！');
       if (data.status_code === 4001 || data.status_code === 4002 || data.status_code === 401) {
         console.log('没登录');
-        store.dispatch('user/FedLogOut').then(() => {
-          router.push('/user/login');
-        });
-        return Promise.reject(data.message, data);
+        setTimeout(() => {
+          store.dispatch('user/FedLogOut').then(() => {
+            router.push('/user/login');
+          });
+        }, 10);
+        return Promise.reject(data.message);
       }
     } else {
       return Promise.resolve(data);

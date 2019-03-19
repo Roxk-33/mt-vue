@@ -110,12 +110,7 @@ export default {
   },
 
   created() {
-    if (this.userStatus) {
-      this.getCart();
-    } else {
-      this.$toast("请登录");
-      this.$router.push("/user/login");
-    }
+    this.getCart();
   },
   methods: {
     selectAll(target) {
@@ -198,9 +193,6 @@ export default {
   computed: {
     list() {
       return this.$store.getters["cart/cartList"];
-    },
-    userStatus() {
-      return this.$store.state.user.userStatus;
     }
   },
   filters: {

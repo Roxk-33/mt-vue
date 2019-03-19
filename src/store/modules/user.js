@@ -6,7 +6,6 @@ import * as types from '../mutation-types';
 import { getLocation } from '@/common/map';
 const API = config.API;
 const state = {
-  userStatus: false,
   code: '',
   userName: '',
   userAvatar: 'https://i.loli.net/2018/11/14/5bec27346a028.jpg',
@@ -27,10 +26,6 @@ const mutations = {
   },
   [types.SET_INTRODUCTION](state, introduction) {
     state.introduction = introduction;
-  },
-  [types.SET_USERSTATUS](state) {
-    console.log(111);
-    state.userStatus = true;
   },
   [types.SET_NAME](state, name) {
     state.userName = name;
@@ -82,7 +77,6 @@ const actions = {
           commit(types.SET_NAME, resp.data.user.user_name);
           commit(types.SET_AVATAR, resp.data.user.avatar);
           commit(types.SET_USERID, resp.data.user.id);
-          commit(types.SET_USERSTATUS, true);
           commit(types.SET_TEL, resp.data.user.tel);
         })
         .catch(reject);
@@ -104,7 +98,6 @@ const actions = {
           commit(types.SET_NAME, resp.data.user.user_name);
           commit(types.SET_AVATAR, resp.data.user.avatar);
           commit(types.SET_USERID, resp.data.user.id);
-          commit(types.SET_USERSTATUS, true);
           commit(types.SET_TEL, resp.data.user.tel);
         })
         .catch(reject);
@@ -122,7 +115,6 @@ const actions = {
             resolve(resp);
             commit(types.SET_NAME, resp.data.user_name);
             commit(types.SET_AVATAR, resp.data.avatar);
-            commit(types.SET_USERSTATUS, true);
             commit(types.SET_TEL, resp.data.tel);
           })
           .catch(err => {
@@ -302,7 +294,6 @@ const actions = {
         .then(resp => {
           commit(types.REMOVE_TOKEN);
           commit(types.REMOVE_USERINFO);
-          commit(types.SET_USERSTATUS, false);
           resolve(resp);
         })
         .catch(reject);
@@ -313,7 +304,6 @@ const actions = {
   FedLogOut({ commit }) {
     return new Promise(resolve => {
       commit(types.REMOVE_TOKEN);
-      commit(types.SET_USERSTATUS, false);
       resolve();
     });
   },

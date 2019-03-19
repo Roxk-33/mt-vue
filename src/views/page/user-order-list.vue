@@ -60,18 +60,9 @@ export default {
     MtBetterScroll,
     listEmpty
   },
-  computed: {
-    userStatus() {
-      return this.$store.state.user.userStatus;
-    }
-  },
+
   mounted() {
-    if (this.userStatus) {
-      this.getList();
-    } else {
-      this.$toast("请登录");
-      this.$router.push("/user/login");
-    }
+    this.getList();
   },
   methods: {
     onPullingUp() {
