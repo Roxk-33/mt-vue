@@ -232,7 +232,7 @@ export default {
       this.$store
         .dispatch("user/LogOut")
         .then(() => {
-          this.$router.push({ name: "userIndex" });
+          this.$router.push({ name: "userLogin" });
           window.location.reload();
         })
         .catch(this.$toast);
