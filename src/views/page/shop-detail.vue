@@ -45,7 +45,7 @@
             @pulling-down="onFoodListPullingDown"
             ref="foodlist"
           >
-            <foodItem
+            <food-item
               v-for="(foodInfo, index) in foodList"
               :key="foodInfo.food_id"
               :food-info="foodInfo"

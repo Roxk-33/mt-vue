@@ -7,7 +7,7 @@
           class="item-header-shop-info"
           :to="{ path: `/shop/list/${shopInfo.id}` }"
         >
-          <span class="shop-info-name">{{ shopInfo.shop_title }}</span>
+          {{ shopInfo.shop_title }}
           <i class="iconfont icon-xiangyou" />
         </router-link>
       </div>
@@ -127,12 +127,14 @@ export default {
       .item-header-shop-info {
         display: inline-block;
         vertical-align: middle;
-        .shop-info-name {
-          margin-left: 10px;
-          font-size: 14px;
-        }
+        height: 19px;
+        line-height: 19px;
+        margin-left: 5px;
+        font-size: 16px;
+        font-weight: 600;
         i {
-          font-size: 12px;
+          font-weight: normal;
+          // font-size: 0.3rem;
         }
       }
     }

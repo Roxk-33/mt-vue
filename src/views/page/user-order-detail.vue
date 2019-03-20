@@ -83,20 +83,18 @@
           class="shop-title"
           :to="{ path: `/shop/list/${shopInfo.id}` }"
         >
-          <span>
-            {{ shopInfo.shop_title }}
-          </span>
+          {{ shopInfo.shop_title }}
           <i class="iconfont icon-xiangyou" />
         </router-link>
 
-        <div class="shop-info-contact">
+        <!-- <div class="shop-info-contact">
           <span>
             <i class="iconfont icon-dianhua" />
           </span>
           <span>
             <i class="iconfont icon-duanxin" />
           </span>
-        </div>
+        </div> -->
       </div>
 
       <div class="detail-box-item detail-content">
@@ -364,6 +362,7 @@ export default {
     .order-progress {
       font-size: 22px;
       margin-bottom: 15px;
+      display: flex;
       i {
         font-size: 20px;
       }
@@ -383,12 +382,16 @@ export default {
       border-bottom: 1px solid $mt-boder-color;
       justify-content: space-between;
       .shop-title {
+        display: flex;
+        height: 18px;
+        line-height: 18px;
         font-weight: 600;
       }
     }
   }
   .detail-other {
-    padding: 12px 8px;
+    padding: 12px 8px 0;
+    margin-bottom: 0;
     p {
       font-size: 15px;
       margin-bottom: 15px;

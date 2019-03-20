@@ -170,7 +170,7 @@ export default {
       nameNew: "",
       psw: "",
       pswRe: "",
-      tel: "18024589062",
+      tel: "",
       telCorrect: false,
       showKeyBoardCode: false, // 控制输入验证码的键盘
       codeInput: {

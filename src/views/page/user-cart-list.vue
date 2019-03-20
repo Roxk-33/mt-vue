@@ -15,11 +15,9 @@
             @change="toggleSelectItem(index)"
           />
           <router-link
-            class="content"
+            class="shop-info-box"
             :to="{ name: 'shopDetail', params: { id: item.shop_info.id } }"
-            tag="div"
           >
-            <img class="shop-avatar" :src="item.shop_info.photo" />
             <span class="shop-title">{{ item.shop_info.shop_title }}</span>
             <i class="iconfont icon-xiangyou" />
           </router-link>
@@ -72,13 +70,13 @@
           <span class="other-info" />
           <!-- <span class="other-info">已优惠2元</span> -->
           <div class="right">
-            <span class="total-price">{{ item.totalPrice }}元</span>
+            <span class="total-price">￥{{ item.totalPrice }}</span>
             <button
               class="settle-btn"
               :class="{ not: item.shop_info.threshold - item.totalPrice > 0 }"
             >
               <span v-if="item.shop_info.threshold - item.totalPrice > 0"
-                >差￥{{ item.shop_info.threshold - item.totalPrice }}起送</span
+                >￥{{ item.shop_info.threshold - item.totalPrice }}起送</span
               >
               <span v-else @click="toSettle(item)">去结算</span>
             </button>
@@ -156,8 +154,8 @@ export default {
       if (selArr.length === item.foodList.length) item.selectAll = true;
       else item.selectAll = false;
       // 重新计算价格
-      if (selArr.length === 0) item.totalPrice = 0;
-      else {
+      item.totalPrice = item.shop_info.freight;
+      if (selArr.length !== 0) {
         item.totalPrice = item.shop_info.freight;
         item.foodList.forEach(food => {
           if (selArr.indexOf(food.id) !== -1) {
@@ -169,9 +167,8 @@ export default {
     toggleSelectItem(index) {
       let item = this.cartList[index];
       item.selArr.splice(0, item.selArr.length);
-      item.totalPrice = 0;
+      item.totalPrice = item.shop_info.freight;
       if (item.selectAll) {
-        item.totalPrice = item.shop_info.freight;
         item.foodList.forEach(food => {
           item.totalPrice += food.num * food.price;
           item.selArr.push(food.id);
@@ -226,29 +223,23 @@ export default {
   background-color: #fff;
   padding: 0 0 5px;
   margin: 0.2rem 0.3rem;
-  border-radius: 5px;
-  .content {
-    display: inline-block;
-  }
+  border-radius: 10px;
+
   .shop-info {
     color: #000;
     margin-bottom: 0.2rem;
     display: flex;
     padding: 0.2rem 0;
+    align-items: center;
+    height: 0.7rem;
     background-color: #f3f3f3;
-    .shop-avatar {
-      width: 25px;
-      height: 25px;
-      vertical-align: middle;
+    .shop-info-box {
+      margin-top: 1px;
     }
-
     .shop-title {
-      vertical-align: middle;
-      font-size: 17px;
-      margin: 0 0 0 5px;
+      font-size: 15px;
     }
     .iconfont {
-      vertical-align: middle;
       font-size: 12px;
     }
     .shop-discount {
@@ -325,7 +316,7 @@ export default {
       vertical-align: middle;
       width: 2.5rem;
       height: 30px;
-      background-color: $mt-color;
+      background-color: #ffc12b;
       text-align: center;
       border-radius: 20px;
       border: 0;

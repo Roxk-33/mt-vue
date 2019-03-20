@@ -30,18 +30,19 @@
           <div class="food-select-num" v-if="selectNum">{{ selectNum }}</div>
         </button>
       </div>
-      <div class="good-content_buy good-content_buy_nontype" v-else>
-        <div class="good-content_buy_nontype_box" v-if="foodInfo.stock > 0">
-          <!-- <transition name="adjust-num"> -->
-          <div
-            class="iconfont icon-jian"
-            @click="adjustNum(-1)"
-            v-show="selectNum > 0"
-          ></div>
-          <!-- </transition> -->
-          <span v-show="selectNum > 0" class="num">{{ selectNum }}</span>
-          <i class="iconfont icon-jia" @click="adjustNum(1, $event)"></i>
-        </div>
+      <div
+        class="good-content_buy good-content_buy_nontype"
+        v-if="foodInfo.spec_arr.length === 0 && foodInfo.stock > 0"
+      >
+        <!-- <transition name="adjust-num"> -->
+        <i
+          class="iconfont icon-jian"
+          @click="adjustNum(-1)"
+          v-show="selectNum > 0"
+        ></i>
+        <!-- </transition> -->
+        <span v-show="selectNum > 0" class="num">{{ selectNum }}</span>
+        <i class="iconfont icon-jia" @click="adjustNum(1, $event)"></i>
       </div>
     </div>
   </div>
@@ -127,6 +128,7 @@ export default {
     width: 70%;
     height: 100%;
     padding-right: 9px;
+    position: relative;
     .good-content_info {
       position: relative;
       margin-left: 10px;
@@ -164,14 +166,15 @@ export default {
     .good-content_buy {
       position: relative;
       &.good-content_buy_nontype {
-        .good-content_buy_nontype_box {
-          position: absolute;
-          bottom: 0;
-          right: 0;
-          width: 100px;
-          text-align: right;
-          height: 21px;
-        }
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 100px;
+        height: 21px;
+        padding-right: 5px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
         .icon-jia {
           display: inline-block;
           color: $mt-color;
