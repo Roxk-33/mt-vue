@@ -47,15 +47,19 @@
           @left-click-fn="show = false"
           :left-click="true"
         >
-          <span @click="changeName">确定</span>
         </header-nav>
         <div class="content">
-          <span class="content-label">用户名:</span>
-          <input type="text" class="content-input" v-model="nameNew" />
+          <input
+            type="text"
+            class="content-input"
+            v-model="nameNew"
+            placeholder="用户名"
+          />
         </div>
         <p class="warm-text">
           以英文或汉字开头，限4-16个字符，一个字符为2个字符
         </p>
+        <button class="sumbit" @click="changeName">确认</button>
       </div>
       <div class="password-box user-info-pop-box" v-if="boxType === 'password'">
         <header-nav
@@ -406,8 +410,13 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  border-color: #b1adad;
   .content-input {
     flex: 1;
+    height: 0.8rem;
+  }
+  .sumbit {
+    padding: 5px 8px;
   }
 }
 .password-box {
