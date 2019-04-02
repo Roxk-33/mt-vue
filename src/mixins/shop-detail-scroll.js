@@ -14,7 +14,7 @@ export default {
         pullUpLoad: false,
       },
       bannerHeight: 0,
-      isTop: false,
+      isTop: false, // 商品到顶
       trackSize: 0, // 商品列表高度
       trackTop: 0, // 商品列表Top
       trackOpacity: 0, // 顶部状态栏opacity
@@ -24,8 +24,8 @@ export default {
     initMenu() {
       // 35为 header-nav的高度
       // 45为 shop-good-tab的高度
-      this.bannerHeight = getRect(this.$refs.shopBanner).height - 35;
-      this.trackSize = document.body.clientHeight - 35;
+      this.bannerHeight = getRect(this.$refs.shopBanner).height - 35 + 45;
+      this.trackSize = document.body.clientHeight - 35 - 45;
       this.ballAniPoi.end.left = 60;
       this.ballAniPoi.end.top = document.body.clientHeight - 60;
     },
