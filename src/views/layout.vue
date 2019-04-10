@@ -1,7 +1,7 @@
 <template>
   <section class="app-main">
     <transition name="fade" mode="out-in">
-      <router-view />
+      <router-view/>
     </transition>
   </section>
 </template>
@@ -16,13 +16,13 @@ export default {
         this.$store.dispatch("cart/getCartList");
       })
       .catch(err => {});
-    // this.$store.dispatch("user/getLocation").catch(err => {
-    //   console.log(err);
-    //   this.$toast({
-    //     duration: 3000, // 持续展示 toast
-    //     message: err
-    //   });
-    // });
+    this.$store.dispatch("user/getLocation").catch(err => {
+      console.log(err);
+      this.$toast({
+        duration: 3000, // 持续展示 toast
+        message: err
+      });
+    });
   },
   computed: {
     cachedViews() {

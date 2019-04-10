@@ -20,6 +20,7 @@ export function getLocation() {
     const geolocation = new BMap.Geolocation();
     geolocation.getCurrentPosition(function(r) {
       if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+        console.log(`您的位置：${r.point.lng},${r.point.lat}`);
         resolve({ lat: r.point.lat, lng: r.point.lng });
       } else {
         reject(this.getStatus());

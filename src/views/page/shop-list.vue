@@ -126,13 +126,7 @@ export default {
     if (!this.location) {
       this.timers = setInterval(() => {
         if (this.location) {
-          console.log(
-            "%cthis.location: ",
-            "color: MidnightBlue; background: Aquamarine; font-size: 20px;",
-            this.location
-          );
           this.getList();
-
           this.timers && clearInterval(this.timers);
         }
       }, 200);
