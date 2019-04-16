@@ -34,7 +34,7 @@
           催单
         </span>
         <span
-          v-if="['UNPAY', 'PAY', 'ONTHEWAY'].includes(orderStatus)"
+          v-if="['UNPAY', 'PAY', 'ACCEPT', 'ONTHEWAY'].includes(orderStatus)"
           @click="cancelOrder"
         >
           取消订单
