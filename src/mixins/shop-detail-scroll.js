@@ -21,6 +21,19 @@ export default {
     };
   },
   methods: {
+    throttle(callback, context, atleast = 100) {
+      let previous = null;
+      if (!context) context = this;
+      return function() {
+        const now = +new Date();
+        if (!previous) previous = now;
+        if (now - previous > atleast) {
+          callback.apply(context, Array.prototype.slice.call(arguments, 0));
+          // 重置上一次开始时间为本次结束时间
+          previous = now;
+        }
+      };
+    },
     initMenu() {
       // 35为 header-nav的高度
       // 45为 shop-good-tab的高度
@@ -30,23 +43,29 @@ export default {
       this.ballAniPoi.end.top = document.body.clientHeight - 60;
     },
     scroll() {
-      document.addEventListener('scroll', e => {
-        // 为了兼容Safari
-        const scorllY = Math.abs(document.documentElement.scrollTop || window.pageYOffset);
-        //
-        if (!this.FoodListScrollDisabel) {
-          this.isTop = false;
-          if (this.bannerHeight > scorllY) {
-            this.trackOpacity = scorllY / this.bannerHeight;
-          } else {
-            this.FoodListScrollDisabel = true;
-            this.trackOpacity = '1';
-            this.isTop = true;
-          }
-        } else if (this.bannerHeight > scorllY) {
-          this.FoodListScrollDisabel = false;
-        }
-      });
+      const oThis = this;
+      document.addEventListener(
+        'scroll',
+        this.throttle(e => {
+          e => {
+            // 为了兼容Safari
+            const scorllY = Math.abs(document.documentElement.scrollTop || window.pageYOffset);
+            //
+            if (!this.FoodListScrollDisabel) {
+              this.isTop = false;
+              if (this.bannerHeight > scorllY) {
+                this.trackOpacity = scorllY / this.bannerHeight;
+              } else {
+                this.FoodListScrollDisabel = true;
+                this.trackOpacity = '1';
+                this.isTop = true;
+              }
+            } else if (this.bannerHeight > scorllY) {
+              this.FoodListScrollDisabel = false;
+            }
+          };
+        }, oThis),
+      );
     },
     onFoodListPullingDown() {
       console.log('上拉');
