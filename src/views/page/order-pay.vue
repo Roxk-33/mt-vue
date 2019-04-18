@@ -3,7 +3,7 @@
     <header-nav :title="headerTitle" :left-click="true" @left-click-fn="back" />
     <div class="order-pay-info">
       <div class="residual-time">
-        剩余时间{{ this.coutMin | formatTime }}:{{ this.coutSec | formatTime }}
+        剩余时间{{ this.coutMin }}:{{ this.coutSec }}
       </div>
       <div class="pay-price">
         ￥<span class="content">{{ payData.price }}</span>
@@ -45,10 +45,20 @@ export default {
         params: { id: this.orderId }
       });
     },
+
     cancelOrder() {
-      this.$router.push({
-        path: "/user/index"
-      });
+      this.$store
+        .dispatch("order/cancelOrder", { orderId: this.orderId, isTimeOut: 1 })
+        .then(resp => {
+          this.$router.push({
+            name: "userOrderDetail",
+            params: { id: this.orderId }
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          this.$toast(err);
+        });
     },
     getPayData() {
       this.$store.dispatch("order/getPayData", this.orderId).then(resp => {
@@ -87,11 +97,6 @@ export default {
   computed: {
     orderId() {
       return this.$route.params.orderId;
-    }
-  },
-  filters: {
-    formatTime(time) {
-      return time < 10 ? "0" + time : time;
     }
   }
 };

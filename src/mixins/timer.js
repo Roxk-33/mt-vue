@@ -37,8 +37,17 @@ export default {
   },
   watch: {
     countTime(val) {
-      this.coutMin = Math.floor(val / 60);
-      this.coutSec = Math.floor(val - this.coutMin * 60);
+      if (val <= 60) {
+        this.coutMin = '0';
+      } else {
+        this.coutMin = Math.floor(val / 60);
+      }
+      if (val == 0) {
+        this.coutSec = '0';
+      } else {
+        this.coutSec = Math.floor(val - this.coutMin * 60);
+        this.coutSec = this.coutSec < 10 ? '0' + this.coutSec : this.coutSec;
+      }
     },
   },
 };

@@ -14,9 +14,7 @@
     <!-- 当订单未支付时显示 -->
     <div class="detail-box detail-other" v-if="orderStatus === 'UNPAY'">
       <i class="iconfont icon-bell" />
-      请在{{ this.coutMin | formatTime }}:{{
-        this.coutSec | formatTime
-      }}分钟内完成支付，超时将自动取消
+      请在{{ this.coutMin }}:{{ this.coutSec }}分钟内完成支付，超时将自动取消
     </div>
     <div class="detail-box detail-other">
       <p v-if="orderStatus !== 'UNPAY'">{{ ORDER_STATUS_MSG[orderStatus] }}</p>
@@ -232,7 +230,10 @@ export default {
           this.mtLoading = false;
           this.orderInfo = resp.data;
           if (this.orderStatus === "UNPAY") {
-            this.initCount(this.orderStatusTimeArr.deadline_pay_time, null);
+            this.initCount(
+              this.orderStatusTimeArr.deadline_pay_time,
+              this.cancelOrder.bind(this, 1)
+            );
           }
           this.orderStatusTimeList = [];
           Object.keys(this.ORDER_STATUS_TIME_MSG).forEach(key => {
@@ -246,7 +247,6 @@ export default {
               this.orderStatusTimeList.push(obj);
             }
           });
-          console.log(this.orderStatusTimeList);
         })
         .catch(err => {
           this.mtLoading = false;
@@ -268,9 +268,9 @@ export default {
           this.$toast(err);
         });
     },
-    cancelOrder() {
+    cancelOrder(isTimeOut = 0) {
       this.$store
-        .dispatch("order/cancelOrder", this.orderId)
+        .dispatch("order/cancelOrder", { orderId: this.orderId, isTimeOut })
         .then(resp => {
           this.getData();
         })
@@ -318,9 +318,6 @@ export default {
   filters: {
     parseTime(val, cFormat = null) {
       return parseTime(val, cFormat);
-    },
-    formatTime(time) {
-      return time < 10 ? "0" + time : time;
     }
   }
 };

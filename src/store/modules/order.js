@@ -38,8 +38,10 @@ const actions = {
   getOrderDetail({ commit }, payload) {
     return ajax.get(formatURL(API.ORDER_DETAIL, { id: payload }));
   },
-  cancelOrder({ commit }, id) {
-    return ajax.put(formatURL(API.ORDER_DELETE, { id }));
+  cancelOrder({ commit }, payload) {
+    const { orderId, isTimeOut } = payload;
+
+    return ajax.put(formatURL(API.ORDER_DELETE, { id: orderId }), { isTimeOut });
   },
   payOrder({}, payload) {
     return ajax.put(API.ORDER_PAY, payload);
@@ -49,7 +51,6 @@ const actions = {
   },
   confirmOrder({ commit }, payload) {
     const { orderId, data } = payload;
-    console.log(payload);
     return ajax.put(formatURL(API.ORDER_CONFIRM, { id: orderId }), data);
   },
   reviewOrder({ commit }, payload) {
