@@ -1,24 +1,16 @@
 <template>
   <div class="register-container">
-    <header-nav title="" :border="false" />
+    <header-nav title :border="false"/>
     <div class="container-box">
       <p class="container-box-title">欢迎加入嘻嘻外卖</p>
       <div class="form-item">
-        <i class="iconfont icon-person" />
-        <input
-          type="text"
-          v-model="registerForm.account"
-          placeholder="请输入账号"
-        />
+        <i class="iconfont icon-person"/>
+        <input type="text" v-model="registerForm.account" placeholder="请输入账号">
       </div>
       <div class="form-item">
-        <i class="iconfont icon-mima" />
+        <i class="iconfont icon-mima"/>
 
-        <input
-          :type="pswType"
-          v-model="registerForm.password"
-          placeholder="请输入密码"
-        />
+        <input :type="pswType" v-model="registerForm.password" placeholder="请输入密码">
         <i
           class="iconfont"
           @click="showPsw"
@@ -26,26 +18,16 @@
         ></i>
       </div>
       <div class="form-item">
-        <i class="iconfont icon-mima" />
+        <i class="iconfont icon-mima"/>
 
-        <input
-          :type="pswType"
-          v-model="registerForm.repassword"
-          placeholder="请再次输入密码"
-        />
+        <input :type="pswType" v-model="registerForm.repassword" placeholder="请再次输入密码">
         <i
           class="iconfont"
           @click="showPsw"
           :class="pswType === 'text' ? 'icon-show' : 'icon-yincang'"
         ></i>
       </div>
-      <van-button
-        type="default"
-        round
-        @click="handleRegister"
-        :class="{ 'is-loading': loading }"
-        >注册</van-button
-      >
+      <van-button type="default" round @click="handleRegister" :class="{ 'is-loading': loading }">注册</van-button>
     </div>
   </div>
 </template>
@@ -59,9 +41,9 @@ export default {
   data() {
     return {
       registerForm: {
-        account: "",
-        password: "",
-        repassword: ""
+        account: "18024589062",
+        password: "5634398",
+        repassword: "5634398"
       },
       pswType: "password",
       loading: false
@@ -75,11 +57,15 @@ export default {
       this.pswType = this.pswType === "text" ? "password" : "text";
     },
     handleRegister() {
+      if (this.registerForm.account === "") return this.$toast("请输入帐号");
+      if (this.registerForm.password === "") return this.$toast("请输入密码");
+      if (this.registerForm.password.length < 6)
+        return this.$toast("密码长度必须大于6");
       this.$store
         .dispatch("user/RegiterByAccount", this.registerForm)
-        .then(() => {
+        .then(resp => {
           this.loading = false;
-          this.$router.push({ name: "/userIndex" });
+          this.$router.push({ name: "userIndex" });
         })
         .catch(e => {
           this.$toast(e);

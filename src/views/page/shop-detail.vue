@@ -1,7 +1,7 @@
 
 <template>
   <div class="shop-detail">
-    <shop-nav :track-opacity="trackOpacity" :is-top="isTop" />
+    <shop-nav :track-opacity="trackOpacity" :is-top="isTop"/>
     <div ref="shopBanner" class="shop-header-box">
       <shop-header
         :title="shopInfo.shop_title"
@@ -12,28 +12,19 @@
     <div class="shop-good" :style="shopGoodStyle">
       <div class="shop-good-tab">
         <van-tabs v-model="tabActive" :line-width="25" swipeable sticky>
-          <van-tab
-            v-for="(tab, index) in tabs"
-            :title="tab.label"
-            :key="index"
-          />
+          <van-tab v-for="(tab, index) in tabs" :title="tab.label" :key="index"/>
         </van-tabs>
       </div>
       <div class="shop-good-content" v-if="tabActive === 0">
         <div class="shop-good-menu">
-          <mt-better-scroll
-            :options="scrollOption"
-            :is-disable="FoodListScrollDisabel"
-          >
+          <mt-better-scroll :options="scrollOption" :is-disable="FoodListScrollDisabel">
             <div
               class="menu-item"
               v-for="(category, index) in foodCatalog"
               :key="category.id"
               :class="{ 'active-index': currentIndex === index }"
               @click="scrollToCat(index)"
-            >
-              {{ category.label }}
-            </div>
+            >{{ category.label }}</div>
           </mt-better-scroll>
         </div>
         <div class="shop-good-list">
@@ -57,7 +48,7 @@
           </mt-better-scroll>
         </div>
       </div>
-      <shopDetailReview v-if="tabActive === 1" :shopId="shopId" />
+      <shopDetailReview v-if="tabActive === 1" :shopId="shopId"/>
     </div>
     <cart-list
       :threshold="shopInfo.threshold"
@@ -200,7 +191,7 @@ export default {
         shop_id: this.shopId,
         picture: this.foodSelected.picture
       };
-      this.pushCart(data, isExist, null, ev);
+      this.pushCart(data, isExist, -1, ev);
     },
     // 清空购物车
     emptyCart() {
@@ -212,7 +203,7 @@ export default {
     toSettle() {
       this.$router.push({
         name: "orderCreate",
-        params: { shopId: this.shopId, isAll: true }
+        query: { shopId: this.shopId, isAll: true }
       });
     },
     // 获取要选规格的商品信息
@@ -305,11 +296,16 @@ export default {
           this.$store
             .dispatch("cart/addProductToCart", data)
             .then(value => {
-              this.$store.dispatch("cart/getCartList");
-              this.foodList[indexMenu].selectNum++;
-              this.startBallAni(ev);
+              try {
+                this.$store.dispatch("cart/getCartList");
+                this.foodList[indexMenu].selectNum++;
+                this.startBallAni(ev);
+              } catch (error) {
+                console.log(error);
+              }
             })
             .catch(err => {
+              console.log(err);
               this.$toast(err);
             });
         }

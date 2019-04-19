@@ -104,8 +104,10 @@
           <img class="good-img" :src="item.food_picture" alt="" />
           <div class="good-info">
             <div class="good-info-header">
-              <span class="good-info-name">{{ item.food_name }}</span>
+              <div class="mt-flex-space-between">
+                <span class="good-info-name">{{ item.food_name }}</span>
               <span class="good-info-price">￥{{ item.price }}</span>
+              </div>
               <p v-if="item.spec_text.length" class="good-info-spec">
                 {{ item.spec_text.join(",") }}
               </p>
