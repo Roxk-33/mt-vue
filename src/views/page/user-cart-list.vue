@@ -4,52 +4,34 @@
       <!-- <span>编辑</span> -->
     </header-nav>
     <div class="cart-list">
-      <div
-        class="cart-list-item"
-        v-for="(item, index) in cartList"
-        :key="item.shop_info.shop_id"
-      >
+      <div class="cart-list-item" v-for="(item, index) in cartList" :key="item.shop_info.shop_id">
         <div class="shop-info">
-          <check-box
-            v-model="item.selectAll"
-            @change="toggleSelectItem(index)"
-          />
+          <check-box v-model="item.selectAll" @change="toggleSelectItem(index)"/>
           <router-link
             class="shop-info-box"
             :to="{ name: 'shopDetail', params: { id: item.shop_info.id } }"
           >
             <span class="shop-title">{{ item.shop_info.shop_title }}</span>
-            <i class="iconfont icon-xiangyou" />
+            <i class="iconfont icon-xiangyou"/>
           </router-link>
         </div>
         <div class="food-list">
-          <van-checkbox-group
-            v-model="item.selArr"
-            @change="toggleSelectAll(index)"
-          >
-            <van-swipe-cell
-              :right-width="65"
-              v-for="foodInfo in item.foodList"
-              :key="foodInfo.id"
-            >
+          <van-checkbox-group v-model="item.selArr" @change="toggleSelectAll(index)">
+            <van-swipe-cell :right-width="65" v-for="foodInfo in item.foodList" :key="foodInfo.id">
               <div class="food-list-item">
-                <van-checkbox :name="foodInfo.id" />
+                <van-checkbox :name="foodInfo.id"/>
                 <div class="content">
                   <div class="food-info-box">
-                    <img class="food-img" :src="foodInfo.picture" />
+                    <img class="food-img" :src="foodInfo.picture">
                     <div class="food-info">
                       <p class="food-info-title">{{ foodInfo.food_name }}</p>
                       <p
                         class="food-info-spec"
                         v-if="foodInfo.spec_text.length"
-                      >
-                        规格：{{ foodInfo.spec_text.join(",") }}
-                      </p>
+                      >规格：{{ foodInfo.spec_text.join(",") }}</p>
                       <div class="food-info-num">
                         <span class="num">x{{ foodInfo.num }}</span>
-                        <span class="price"
-                          >￥{{ foodInfo.num * foodInfo.price }}</span
-                        >
+                        <span class="price">￥{{ foodInfo.num * foodInfo.price }}</span>
                       </div>
                     </div>
                   </div>
@@ -67,7 +49,7 @@
           </div>
         </div>
         <div class="settle-info mt-flex-space-between">
-          <span class="other-info" />
+          <span class="other-info"/>
           <!-- <span class="other-info">已优惠2元</span> -->
           <div class="right">
             <span class="total-price">￥{{ item.totalPrice }}</span>
@@ -75,9 +57,9 @@
               class="settle-btn"
               :class="{ not: item.shop_info.threshold - item.totalPrice > 0 }"
             >
-              <span v-if="item.shop_info.threshold - item.totalPrice > 0"
-                >￥{{ item.shop_info.threshold - item.totalPrice }}起送</span
-              >
+              <span
+                v-if="item.shop_info.threshold - item.totalPrice > 0"
+              >￥{{ item.shop_info.threshold - item.totalPrice }}起送</span>
               <span v-else @click="toSettle(item)">去结算</span>
             </button>
           </div>
@@ -183,7 +165,7 @@ export default {
       if (foodIdArr.length === target.foodList.length) isAll = true;
       this.$router.push({
         name: "orderCreate",
-        params: { shopId: target.shop_info.id, isAll, foodIdArr }
+        query: { shopId: target.shop_info.id, isAll, foodIdArr }
       });
     }
   },

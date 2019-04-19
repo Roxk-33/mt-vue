@@ -3,7 +3,7 @@
     <header-nav :title="headerTitle" :left-click="true" @left-click-fn="back" />
     <div class="order-pay-info">
       <div class="residual-time">
-        剩余时间{{ this.coutMin }}:{{ this.coutSec }}
+        剩余时间{{ this.coutMin }}{{ this.coutSec }}
       </div>
       <div class="pay-price">
         ￥<span class="content">{{ payData.price }}</span>

@@ -4,17 +4,10 @@
       <div class="specification-box">
         <div class="specification-box_header">
           <span class="specification-box_title">{{ foodInfo.food_name }}</span>
-          <i
-            class="specification-box_close iconfont icon-close"
-            @click="value = false"
-          />
+          <i class="specification-box_close iconfont icon-close" @click="value = false"/>
         </div>
         <div class="specification-box_content">
-          <div
-            class="box-item"
-            v-for="(typeItem, index) in totalSpec"
-            :key="typeItem.value"
-          >
+          <div class="box-item" v-for="(typeItem, index) in totalSpec" :key="typeItem.value">
             <p class="box-item_title">{{ typeItem.spec_name }}</p>
             <ul class="box-item-specification">
               <li
@@ -25,9 +18,7 @@
                   'box-item_selected': specArr[index] == item.id,
                   'slod-out': item.stock == 0
                 }"
-              >
-                {{ item.label }}
-              </li>
+              >{{ item.label }}</li>
             </ul>
           </div>
         </div>
@@ -36,12 +27,8 @@
             <span class="footer-info_price">￥{{ totalPrice }}</span>
             <span class="footer-info_specification">({{ slogan }})</span>
           </div>
-          <van-button
-            size="small"
-            @click="pushCart"
-            v-if="isExist == -1 || num == 0"
-          >
-            <i class="iconfont icon-jia1" />加入购物车
+          <van-button size="small" @click="pushCart($event)" v-if="isExist == -1 || num == 0">
+            <i class="iconfont icon-jia1"/>加入购物车
           </van-button>
           <div class="specification-box-num-btn" v-else>
             <i class="iconfont icon-jianshao" @click="adjustNum(-1)"></i>
@@ -178,7 +165,7 @@ export default {
       Object.keys(temp).forEach(key => this.totalSpec.push(temp[key]));
     },
 
-    pushCart() {
+    pushCart(ev) {
       this.num++;
       this.$emit(
         "pushSpecToCart",
@@ -186,10 +173,12 @@ export default {
         this.specArr,
         this.specText,
         this.totalPrice,
-        1
+        1,
+        ev
       );
     },
     adjustNum(type, ev) {
+      console.log(ev);
       if (type === 1) {
         if (this.specInfo.stock < this.num) return this.$toast("库存不足");
         console.log("增加");

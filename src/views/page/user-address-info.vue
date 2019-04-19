@@ -1,6 +1,6 @@
 <template>
   <div class="user-address-info">
-    <header-nav :title="title" />
+    <header-nav :title="title"/>
     <form-item
       label="联系人"
       :is-required="true"
@@ -9,25 +9,14 @@
     />
 
     <div class="user-address-info-sex">
-      <van-radio
-        :name="SEX_EN['male']"
-        :value="SEX_EN['male']"
-        v-model="addressInfo.user_sex"
-        >先生</van-radio
-      >
+      <van-radio :name="SEX_EN['male']" :value="SEX_EN['male']" v-model="addressInfo.user_sex">先生</van-radio>
       <van-radio
         :name="SEX_EN['female']"
         :value="SEX_EN['female']"
         v-model="addressInfo.user_sex"
-        >女士</van-radio
-      >
+      >女士</van-radio>
     </div>
-    <form-item
-      label="手机号"
-      :is-required="true"
-      v-model="addressInfo.tel"
-      placeholder="请填写收货人手机号码"
-    />
+    <form-item label="手机号" :is-required="true" v-model="addressInfo.tel" placeholder="请填写收货人手机号码"/>
     <form-item
       label="收货地址"
       :is-required="true"
@@ -43,12 +32,7 @@
       placeholder="详细地址，例：25栋5楼402室"
       v-model="addressInfo.stress"
     ></form-item>
-    <form-item
-      label="标签"
-      :is-required="false"
-      v-model="addressInfo.tag"
-      :show-slot="true"
-    >
+    <form-item label="标签" :is-required="false" v-model="addressInfo.tag" :show-slot="true">
       <div class="tag-box">
         <span
           class="tag"
@@ -56,9 +40,7 @@
           :class="{ active: addressInfo.tag === tag.value }"
           v-for="tag in tags"
           :key="tag.value"
-        >
-          {{ tag.label }}
-        </span>
+        >{{ tag.label }}</span>
       </div>
     </form-item>
     <div class="footer-box">
@@ -66,10 +48,7 @@
     </div>
 
     <van-popup v-model="showMap">
-      <user-address-map
-        @select-address="selectAddress"
-        @close="closeAddressMap"
-      />
+      <user-address-map @select-address="selectAddress" @close="closeAddressMap"/>
     </van-popup>
   </div>
 </template>
@@ -139,18 +118,18 @@ export default {
       this.showMap = false;
     },
     getAddress() {
-      // getLocation().then(data => {
-      //   this.$store
-      //     .dispatch("user/getMapInfo", {
-      //       location: data
-      //     })
-      //     .then(resp => {
-      //       this.addressInfo.address = resp.result.formatted_address;
-      //     })
-      //     .catch(err => {
-      //       console.log(err);
-      //     });
-      // });
+      getLocation().then(data => {
+        this.$store
+          .dispatch("user/getMapInfo", {
+            location: data
+          })
+          .then(resp => {
+            this.addressInfo.address = resp.result.formatted_address;
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      });
     },
     onSumbit() {
       try {
@@ -158,14 +137,14 @@ export default {
           this.$store
             .dispatch("user/addAddress", this.addressInfo)
             .then(data => {
-              this.$router.push({ name: "userAddressList" });
+              this.$router.go(-1);
             });
         } else {
           console.log(this.addressInfo);
           this.$store
             .dispatch("user/editAddress", this.addressInfo)
             .then(data => {
-              this.$router.push({ name: "userAddressList" });
+              this.$router.go(-1);
             });
         }
       } catch (error) {

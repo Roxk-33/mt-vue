@@ -14,7 +14,7 @@
     <!-- 当订单未支付时显示 -->
     <div class="detail-box detail-other" v-if="orderStatus === 'UNPAY'">
       <i class="iconfont icon-bell" />
-      请在{{ this.coutMin }}:{{ this.coutSec }}分钟内完成支付，超时将自动取消
+      请在{{ this.coutMin }}{{ this.coutSec }}分钟内完成支付，超时将自动取消
     </div>
     <div class="detail-box detail-other">
       <p v-if="orderStatus !== 'UNPAY'">{{ ORDER_STATUS_MSG[orderStatus] }}</p>
@@ -104,8 +104,10 @@
           <img class="good-img" :src="item.food_picture" alt="" />
           <div class="good-info">
             <div class="good-info-header">
-              <span class="good-info-name">{{ item.food_name }}</span>
+              <div class="mt-flex-space-between">
+                <span class="good-info-name">{{ item.food_name }}</span>
               <span class="good-info-price">￥{{ item.price }}</span>
+              </div>
               <p v-if="item.spec_text.length" class="good-info-spec">
                 {{ item.spec_text.join(",") }}
               </p>

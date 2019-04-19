@@ -1,24 +1,21 @@
 <template>
   <div class="order-pay">
-    <header-nav :title="headerTitle" :border="false" headerbgColor="#fbd475" />
+    <header-nav :title="headerTitle" :border="false" headerbgColor="#fbd475"/>
     <div class="order-pay-header">
-      <div class="header-address box-right-arrow " @click="showAddress = true">
-        <p class="address-content" v-if="orderInfo.address.address">
-          {{ orderInfo.address.address }}
-        </p>
-        <span class="address-person" v-if="orderInfo.address.user_name"
-          >{{ orderInfo.address.user_name }} {{ orderInfo.address.tel }}</span
-        >
+      <div class="header-address box-right-arrow" @click="showAddress = true">
+        <p class="address-content" v-if="orderInfo.address.address">{{ orderInfo.address.address }}</p>
+        <span
+          class="address-person"
+          v-if="orderInfo.address.user_name"
+        >{{ orderInfo.address.user_name }} {{ orderInfo.address.tel }}</span>
         <p v-else class="address-select">请选择地址</p>
-        <i class="iconfont icon-xiangyou right" />
+        <i class="iconfont icon-xiangyou right"/>
       </div>
       <div class="header-shipping-time box-right-arrow mt-flex-space-between">
         <span class="shipping-type">立即送出</span>
         <!-- 送达时间暂时定为当前时间后15分钟 -->
-        <span class="shipping-time"
-          >大约{{ orderInfo.arrivalTime.substr(-5) }}送达</span
-        >
-        <i class="iconfont icon-xiangyou right" />
+        <span class="shipping-time">大约{{ orderInfo.arrivalTime.substr(-5) }}送达</span>
+        <i class="iconfont icon-xiangyou right"/>
       </div>
     </div>
     <div class="order-pay-main">
@@ -28,7 +25,7 @@
       <ul class="main-food-list order-pay-main-item">
         <li class="food-list-item" v-for="item in foodList" :key="item.id">
           <div class="food-pic">
-            <img :src="item.picture" />
+            <img :src="item.picture">
           </div>
           <!-- TODO:样式实现较差，需要优化 -->
           <div class="food-info">
@@ -52,7 +49,7 @@
         <!-- <div>
           <span class='food-fee-title'>包装费</span>
           <span class='food-fee-price'>￥16</span>
-        </div> -->
+        </div>-->
         <div>
           <span class="food-fee-title">配送费</span>
           <span class="food-fee-price">￥{{ shopInfo.freight }}</span>
@@ -61,9 +58,9 @@
       <div class="food-pay">
         <!-- <span>已优惠
           <i class='food-pay-discount'>￥21.2</i>
-        </span> -->
-        <span
-          >小计
+        </span>-->
+        <span>
+          小计
           <i class="food-pay-total">￥{{ totalPrice }}</i>
         </span>
       </div>
@@ -79,7 +76,7 @@
         <span class="note-item-left">备注</span>
         <div class="note-item-right-box">
           <span class="note-item-right">{{ orderInfo.remarks }}</span>
-          <i class="iconfont icon-xiangyou" />
+          <i class="iconfont icon-xiangyou"/>
         </div>
       </div>
       <div
@@ -88,17 +85,19 @@
       >
         <span class="note-item-left">餐具数量</span>
         <div class="note-item-right-box">
-          <span class="note-item-right">{{
+          <span class="note-item-right">
+            {{
             orderInfo.tableware !== null ? orderInfo.tableware + "人" : "未选择"
-          }}</span>
-          <i class="iconfont icon-xiangyou" />
+            }}
+          </span>
+          <i class="iconfont icon-xiangyou"/>
         </div>
       </div>
       <!-- <div class='order-pay-note-item box-right-arrow mt-flex-space-between'>
         <span class='note-item-left'>发票</span>
         <span class='note-item-right' />
         <i class='iconfont icon-xiangyou' />
-      </div> -->
+      </div>-->
       <div class="order-pay-note-item box-right-arrow mt-flex-space-between">
         <span class="note-item-left">支付方式</span>
         <div class="note-item-right-box">
@@ -112,11 +111,9 @@
       <div class="footer-box-left mt-flex-space-between">
         <!-- <span class='footer-left_discount'>
           已优惠￥40.4
-        </span> -->
+        </span>-->
         合计￥
-        <span class="footer-left_total">
-          {{ totalPrice }}
-        </span>
+        <span class="footer-left_total">{{ totalPrice }}</span>
       </div>
       <div class="footer-box-right" @click="sumbitOrder">
         <span>提交订单</span>
@@ -142,7 +139,7 @@
     <van-popup v-model="showAddress" position="bottom" :overlay="true">
       <pop-up
         class="address-list"
-        @cancel="cancel('address')"
+        @cancel="toAddAddress"
         @clickHeaderLeft="cancel('address')"
         header-title="选择收货地址"
         header-left="取消"
@@ -150,7 +147,7 @@
         bottom-text-icon="icon-add_icon"
       >
         <div class="address-list-box">
-          <ul class="list-box">
+          <ul class="list-box" v-if="addressList.length">
             <li
               class="list-box-item"
               v-for="(item, index) in addressList"
@@ -174,31 +171,26 @@
                       school: item.tag === '1',
                       home: item.tag === '2'
                     }"
-                  >
-                    {{ TAGS[item.tag] }}
-                  </div>
+                  >{{ TAGS[item.tag] }}</div>
                 </div>
                 <p class="person">
-                  <span class="name">{{ item.user_name }}</span
-                  ><span>{{ item.tel }}</span>
+                  <span class="name">{{ item.user_name }}</span>
+                  <span>{{ item.tel }}</span>
                 </p>
               </div>
               <div class="edit-icon">
-                <i class="iconfont icon-xiugai1" />
+                <i class="iconfont icon-xiugai1"/>
               </div>
             </li>
           </ul>
+          <div v-else class="empty-list">请添加收货地址</div>
         </div>
       </pop-up>
     </van-popup>
     <!-- 备注 -->
     <van-popup v-model="showRemarks" position="right" :overlay="false">
       <div class="remark-box">
-        <header-nav
-          title="添加备注"
-          @left-click-fn="showRemarks = false"
-          :left-click="true"
-        >
+        <header-nav title="添加备注" @left-click-fn="showRemarks = false" :left-click="true">
           <span @click="saveRemarks" class="save-btn">完成</span>
         </header-nav>
         <van-field
@@ -394,6 +386,9 @@ export default {
       this.orderInfo.remarks = this.tempRemarks;
       this.cancel("remarks");
     },
+    toAddAddress() {
+      this.$router.push({ name: "userAddressInfo", query: { type: "add" } });
+    },
     sumbitOrder() {
       if (!this.orderInfo.address.address) {
         return this.$toast("请选择地址");
@@ -431,13 +426,13 @@ export default {
       );
     },
     shopId() {
-      return this.$route.params.shopId || false;
+      return this.$route.query.shopId || false;
     },
     isAll() {
-      return this.$route.params.isAll || false;
+      return this.$route.query.isAll || false;
     },
     foodIdArr() {
-      return this.$route.params.foodIdArr || [];
+      return this.$route.query.foodIdArr || [];
     }
   }
 };
@@ -674,6 +669,13 @@ export default {
 }
 .address-list-box {
   padding-bottom: 0.5rem;
+  .empty-list {
+    text-align: center;
+    font-size: 0.5rem;
+    color: $mt-color;
+    padding: 0.3rem;
+    margin-bottom: -0.5rem;
+  }
   .list-box-item {
     display: flex;
     justify-content: flex-start;

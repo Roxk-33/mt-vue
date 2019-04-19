@@ -23,7 +23,7 @@ service.interceptors.request.use(
   error => {
     console.error(error); // for debug
     Promise.reject(error);
-  },
+  }
 );
 // respone interceptor
 service.interceptors.response.use(
@@ -42,6 +42,7 @@ service.interceptors.response.use(
         }, 10);
         return Promise.reject(data.message);
       }
+      return Promise.reject(data);
     } else {
       return Promise.resolve(data);
     }
@@ -54,7 +55,7 @@ service.interceptors.response.use(
       return Promise.reject(error.response.data.message);
     }
     return Promise.reject('系统错误');
-  },
+  }
 );
 
 export default service;
