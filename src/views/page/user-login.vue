@@ -1,28 +1,15 @@
 <template>
   <div class="login-container">
-    <header-nav
-      title=""
-      :isBack="false"
-      :border="false"
-      :back-router="backRouter"
-    >
+    <header-nav title :isBack="false" :border="false" :back-router="backRouter">
       <router-link to="/user/register" class="register">注册</router-link>
     </header-nav>
     <div class="container-box">
       <p class="container-box-title">欢迎登录嘻嘻外卖</p>
       <div class="form-item">
-        <input
-          type="text"
-          v-model="loginForm.account"
-          placeholder="请输入账号"
-        />
+        <input type="text" v-model="loginForm.account" placeholder="请输入账号">
       </div>
       <div class="form-item">
-        <input
-          :type="pswType"
-          v-model="loginForm.password"
-          placeholder="请输入密码"
-        />
+        <input :type="pswType" v-model="loginForm.password" placeholder="请输入密码">
         <i
           class="iconfont"
           @click="showPsw"
@@ -36,8 +23,7 @@
         @click="handleLogin"
         loading-text="登录中"
         :class="{ 'is-loading': loading }"
-        >登录</van-button
-      >
+      >登录</van-button>
     </div>
   </div>
 </template>
@@ -54,8 +40,8 @@ export default {
       },
       pswType: "password",
       loginForm: {
-        account: "admin",
-        password: "5634398"
+        account: "",
+        password: ""
       }
     };
   },

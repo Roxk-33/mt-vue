@@ -98,6 +98,7 @@ export default {
       return this.orderInfo.shop_info;
     },
     orderId() {
+      console.log(this.orderInfo);
       return this.orderInfo.id;
     },
     orderStatus() {

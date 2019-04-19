@@ -71,7 +71,7 @@ export default {
     },
     cancelOrder(id) {
       this.$store
-        .dispatch("order/cancelOrder", id)
+        .dispatch("order/cancelOrder", {orderId :id, isTimeOut:0})
         .then(resp => {
           this.page = 0;
           this.orderList = [];

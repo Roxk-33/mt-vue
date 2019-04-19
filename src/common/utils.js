@@ -202,7 +202,6 @@ export function scrollTo(y, time = 0) {
 export function isBusinessHours(businessHours, colsingHours) {
   businessHours = new Date(businessHours);
   colsingHours = new Date(colsingHours);
-  return 0;
   // 获取营业时间 00:00:00的时间戳
   let tempObj = new Date(businessHours);
   tempObj.setHours(0);
