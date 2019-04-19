@@ -7,6 +7,7 @@ export default {
       cb: null,
       coutMin: 0,
       coutSec: 0,
+      slogan: '',
     };
   },
   methods: {
@@ -38,12 +39,13 @@ export default {
   watch: {
     countTime(val) {
       if (val <= 60) {
-        this.coutMin = '0';
+        this.coutMin = '0:';
       } else {
-        this.coutMin = Math.floor(val / 60);
+        this.coutMin = Math.floor(val / 60) + ':';
       }
       if (val == 0) {
         this.coutSec = '0';
+        this.coutMin = '';
       } else {
         this.coutSec = Math.floor(val - this.coutMin * 60);
         this.coutSec = this.coutSec < 10 ? '0' + this.coutSec : this.coutSec;

@@ -14,7 +14,7 @@
     <!-- 当订单未支付时显示 -->
     <div class="detail-box detail-other" v-if="orderStatus === 'UNPAY'">
       <i class="iconfont icon-bell" />
-      请在{{ this.coutMin }}:{{ this.coutSec }}分钟内完成支付，超时将自动取消
+      请在{{ this.coutMin }}{{ this.coutSec }}分钟内完成支付，超时将自动取消
     </div>
     <div class="detail-box detail-other">
       <p v-if="orderStatus !== 'UNPAY'">{{ ORDER_STATUS_MSG[orderStatus] }}</p>
