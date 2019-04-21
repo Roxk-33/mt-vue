@@ -25,12 +25,12 @@
         >送达
       </p>
       <div class="detail-top-btn">
-        <span
+        <!-- <span
           class="mt-color"
           v-if="['ACCEPT', 'ONTHEWAY'].includes(orderStatus)"
         >
           催单
-        </span>
+        </span> -->
         <span
           v-if="['UNPAY', 'PAY', 'ACCEPT', 'ONTHEWAY'].includes(orderStatus)"
           @click="cancelOrder"
