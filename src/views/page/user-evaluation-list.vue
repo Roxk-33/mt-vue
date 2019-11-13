@@ -34,7 +34,7 @@
                 <span class="review-time">2018.11.24</span>
               </div>
               <div class="detail-middle">
-                <div class="shop-rate">
+                <div class="shop-rate test">
                   商家
                   <rate
                     v-model="rate"
