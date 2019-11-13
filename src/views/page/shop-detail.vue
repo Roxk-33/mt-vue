@@ -1,8 +1,8 @@
 
 <template>
   <div class="shop-detail">
-    <shop-nav :track-opacity="trackOpacity" :is-top="isTop"/>
-    <div ref="shopBanner" class="shop-header-box">
+    <shop-nav :track-opacity="trackOpacity" :is-top="isTop" />
+    <div ref="shopBanner" class="shop-header-box test">
       <shop-header
         :title="shopInfo.shop_title"
         :announcement="shopInfo.announcement"
@@ -12,19 +12,28 @@
     <div class="shop-good" :style="shopGoodStyle">
       <div class="shop-good-tab">
         <van-tabs v-model="tabActive" :line-width="25" swipeable sticky>
-          <van-tab v-for="(tab, index) in tabs" :title="tab.label" :key="index"/>
+          <van-tab
+            v-for="(tab, index) in tabs"
+            :title="tab.label"
+            :key="index"
+          />
         </van-tabs>
       </div>
       <div class="shop-good-content" v-if="tabActive === 0">
         <div class="shop-good-menu">
-          <mt-better-scroll :options="scrollOption" :is-disable="FoodListScrollDisabel">
+          <mt-better-scroll
+            :options="scrollOption"
+            :is-disable="FoodListScrollDisabel"
+          >
             <div
               class="menu-item"
               v-for="(category, index) in foodCatalog"
               :key="category.id"
               :class="{ 'active-index': currentIndex === index }"
               @click="scrollToCat(index)"
-            >{{ category.label }}</div>
+            >
+              {{ category.label }}
+            </div>
           </mt-better-scroll>
         </div>
         <div class="shop-good-list">
@@ -48,7 +57,7 @@
           </mt-better-scroll>
         </div>
       </div>
-      <shopDetailReview v-if="tabActive === 1" :shopId="shopId"/>
+      <shopDetailReview v-if="tabActive === 1" :shopId="shopId" />
     </div>
     <cart-list
       :threshold="shopInfo.threshold"
